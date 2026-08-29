@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 70,
-  "commit": "105053b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-70/unus.dmg",
-  "sha256": "6b87289c66c0ba197e912a34c2d2317109111e5b45c82941ddc40d79a8b84f88",
+  "build": 71,
+  "commit": "67f1c5a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-71/unus.dmg",
+  "sha256": "233c06067d5d31cb6fa00375cec99f68ec793a684dac90fcdd05f7e735ab44eb",
   "minimumSystemVersion": "26.0",
-  "notes": "Round 4: 12 agents, 30 confirmed defects, all fixed and pinned"
+  "notes": "Revert "Scrub a number, pin a result, sparkline a sum, and sheets go plural""
 }
