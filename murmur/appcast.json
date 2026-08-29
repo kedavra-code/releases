@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 76,
-  "commit": "e1dd9fd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-76/murmur.dmg",
-  "sha256": "939b9c8be163c22d588ed63c0ecfe33b58ca05321cdbbcf1f3367fe265500c0f",
+  "build": 77,
+  "commit": "97c4168",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-77/murmur.dmg",
+  "sha256": "67f6785cb47d119fac391f0ba18bb93a4d7e151b7527ddd00703f4bf3f05394b",
   "minimumSystemVersion": "26.0",
-  "notes": "The 0-tests line has a twin, and it is innocent"
+  "notes": "Cancel the download, and think twice before deleting"
 }
