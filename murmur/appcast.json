@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 75,
-  "commit": "b29ae20",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-75/murmur.dmg",
-  "sha256": "16fc833423b18d08abe5aeb4b3b8c9595e034b93e223c017f648d59feec9aa7d",
+  "build": 76,
+  "commit": "e1dd9fd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-76/murmur.dmg",
+  "sha256": "939b9c8be163c22d588ed63c0ecfe33b58ca05321cdbbcf1f3367fe265500c0f",
   "minimumSystemVersion": "26.0",
-  "notes": "Four lessons ride home from unus"
+  "notes": "The 0-tests line has a twin, and it is innocent"
 }
