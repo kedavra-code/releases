@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 73,
-  "commit": "9af5d50",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-73/murmur.dmg",
-  "sha256": "892b58ffcf08b41ac662d9cc28af7d13bf49e55ef74942de63624f172539324d",
+  "build": 74,
+  "commit": "84d9ea6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-74/murmur.dmg",
+  "sha256": "e927b2cd07c0baf7bef24e870e65ef872122acbfdd895bca38860a5eefb9fb59",
   "minimumSystemVersion": "26.0",
-  "notes": "Publish every commit, not just build it"
+  "notes": "Install belongs with commit, push and publish"
 }
