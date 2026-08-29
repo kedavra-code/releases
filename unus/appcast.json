@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 71,
-  "commit": "67f1c5a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-71/unus.dmg",
-  "sha256": "233c06067d5d31cb6fa00375cec99f68ec793a684dac90fcdd05f7e735ab44eb",
+  "build": 75,
+  "commit": "b8cb9e1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-75/unus.dmg",
+  "sha256": "8422bbbe77eb85d1d0badbc100c5624d47853753be20e1aca700964fb5fe8081",
   "minimumSystemVersion": "26.0",
-  "notes": "Revert "Scrub a number, pin a result, sparkline a sum, and sheets go plural""
+  "notes": "The caret stops jumping, workdays learn whole years, About gets a soul"
 }
