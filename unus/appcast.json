@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 81,
-  "commit": "de73fd0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-81/unus.dmg",
-  "sha256": "12465e666d99521f227e7dce5304f852a42e3710937e8d4e5872a1e283013b73",
+  "build": 82,
+  "commit": "28da050",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-82/unus.dmg",
+  "sha256": "abe52ae36205e9360891e392f01482800d0f6bfe42822e6b79bf6ba1d7674fb8",
   "minimumSystemVersion": "26.0",
-  "notes": "The provenance gate: an AI answer may not invent numbers"
+  "notes": "The micrometre teaches a pair and finds a spelling"
 }
