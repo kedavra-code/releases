@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 74,
-  "commit": "84d9ea6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-74/murmur.dmg",
-  "sha256": "e927b2cd07c0baf7bef24e870e65ef872122acbfdd895bca38860a5eefb9fb59",
+  "build": 75,
+  "commit": "b29ae20",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-75/murmur.dmg",
+  "sha256": "16fc833423b18d08abe5aeb4b3b8c9595e034b93e223c017f648d59feec9aa7d",
   "minimumSystemVersion": "26.0",
-  "notes": "Install belongs with commit, push and publish"
+  "notes": "Four lessons ride home from unus"
 }
