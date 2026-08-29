@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 66,
-  "commit": "ae01d62",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-66/murmur.dmg",
-  "sha256": "0093f7459c2138adce7b94b92d21949abaf057f83b46e0a88db69c0a0a1b7992",
+  "build": 68,
+  "commit": "50b952a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-68/murmur.dmg",
+  "sha256": "59d37641fe656b268990598bf70417c760934b267d5ad1818c47330da4b7ce5a",
   "minimumSystemVersion": "26.0",
-  "notes": "Notarising staples the app as well as the image"
+  "notes": "Settings fits its content, and one certificate signs everything"
 }
