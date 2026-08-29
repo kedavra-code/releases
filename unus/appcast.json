@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 91,
-  "commit": "331867a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-91/unus.dmg",
-  "sha256": "b4ad69bd50f2626c668719a6062f942dbedf2b55b40553044fb5e74e8fd30e69",
+  "build": 92,
+  "commit": "0de6e34",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-92/unus.dmg",
+  "sha256": "14609334622064dd922bd4f650532ee523cfeba64de50c67654f61a21e0920f1",
   "minimumSystemVersion": "26.0",
-  "notes": "Every commit is released: murmur's ship ritual becomes unus's"
+  "notes": "The questions answer themselves now"
 }
