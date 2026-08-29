@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 55,
-  "commit": "49b6a98",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-55/unus.dmg",
-  "sha256": "f87a89c5b671c1a0f61b6cb5c6d40884567756bc4eb2ae0f6296fc6b87e62e4b",
+  "build": 70,
+  "commit": "105053b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-70/unus.dmg",
+  "sha256": "6b87289c66c0ba197e912a34c2d2317109111e5b45c82941ddc40d79a8b84f88",
   "minimumSystemVersion": "26.0",
-  "notes": "Sign the disk image, or Gatekeeper refuses what everything else approved"
+  "notes": "Round 4: 12 agents, 30 confirmed defects, all fixed and pinned"
 }
