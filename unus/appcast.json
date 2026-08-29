@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 79,
-  "commit": "e9f16c3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-79/unus.dmg",
-  "sha256": "33ebef48869bfee53289b0362fab7be770abf79cd663c67f5e2a804db6923cc6",
+  "build": 81,
+  "commit": "de73fd0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-81/unus.dmg",
+  "sha256": "12465e666d99521f227e7dce5304f852a42e3710937e8d4e5872a1e283013b73",
   "minimumSystemVersion": "26.0",
-  "notes": "An AI assistant that unus can grade: on-device, gated, receipted"
+  "notes": "The provenance gate: an AI answer may not invent numbers"
 }
