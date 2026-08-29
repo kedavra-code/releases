@@ -1,0 +1,9 @@
+{
+  "app": "unus",
+  "build": 49,
+  "commit": "8b2afd2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-49/unus.dmg",
+  "sha256": "00beb2a216009ba353bce771e6e9fc06b47497a10e74c5a727d3a3c7c06ed9d1",
+  "minimumSystemVersion": "26.0",
+  "notes": "An updater, and one public repo to serve every app"
+}
