@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 51,
-  "commit": "69e2cd9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-51/unus.dmg",
-  "sha256": "74dfc1710ace33d558ee6785c445036ac853412fe016da22b652b2bd38644069",
+  "build": 52,
+  "commit": "44b0100",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-52/unus.dmg",
+  "sha256": "aa932f82a577f9d44775fa683343b5d1f559485d9868065e9d64ea0477c36455",
   "minimumSystemVersion": "26.0",
-  "notes": "Check for Updates, in the menu under Settings"
+  "notes": "Words that do arithmetic, and periods that are dates"
 }
