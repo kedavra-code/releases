@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 50,
-  "commit": "9465d57",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-50/unus.dmg",
-  "sha256": "f26019613a5861cc0b07d7a0b3a05c3dd50d699c0e49c18124a6d20bf17b40fc",
+  "build": 51,
+  "commit": "69e2cd9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-51/unus.dmg",
+  "sha256": "74dfc1710ace33d558ee6785c445036ac853412fe016da22b652b2bd38644069",
   "minimumSystemVersion": "26.0",
-  "notes": "release.sh says what to do when gh is missing"
+  "notes": "Check for Updates, in the menu under Settings"
 }
