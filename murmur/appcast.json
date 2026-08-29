@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 68,
-  "commit": "50b952a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-68/murmur.dmg",
-  "sha256": "59d37641fe656b268990598bf70417c760934b267d5ad1818c47330da4b7ce5a",
+  "build": 73,
+  "commit": "9af5d50",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-73/murmur.dmg",
+  "sha256": "892b58ffcf08b41ac662d9cc28af7d13bf49e55ef74942de63624f172539324d",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings fits its content, and one certificate signs everything"
+  "notes": "Publish every commit, not just build it"
 }
