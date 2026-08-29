@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 82,
-  "commit": "28da050",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-82/unus.dmg",
-  "sha256": "abe52ae36205e9360891e392f01482800d0f6bfe42822e6b79bf6ba1d7674fb8",
+  "build": 85,
+  "commit": "d86f262",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-85/unus.dmg",
+  "sha256": "0eed0acc1529811494b79ddf10d4c3310090dddfb40c52c32e6e89dce13c844b",
   "minimumSystemVersion": "26.0",
-  "notes": "The micrometre teaches a pair and finds a spelling"
+  "notes": "Handover: the status section tells the truth again"
 }
