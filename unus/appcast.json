@@ -1,0 +1,9 @@
+{
+  "app": "unus",
+  "build": 54,
+  "commit": "595dec9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-54/unus.dmg",
+  "sha256": "895bcd78f592430467854c52f431c4848f5f81df57c3f0e7db9ae03e2872f0c2",
+  "minimumSystemVersion": "26.0",
+  "notes": "release.sh reads the build out of the DMG, not the working tree"
+}
