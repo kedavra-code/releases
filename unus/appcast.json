@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 75,
-  "commit": "b8cb9e1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-75/unus.dmg",
-  "sha256": "8422bbbe77eb85d1d0badbc100c5624d47853753be20e1aca700964fb5fe8081",
+  "build": 79,
+  "commit": "e9f16c3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-79/unus.dmg",
+  "sha256": "33ebef48869bfee53289b0362fab7be770abf79cd663c67f5e2a804db6923cc6",
   "minimumSystemVersion": "26.0",
-  "notes": "The caret stops jumping, workdays learn whole years, About gets a soul"
+  "notes": "An AI assistant that unus can grade: on-device, gated, receipted"
 }
