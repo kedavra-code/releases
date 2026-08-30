@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 99,
-  "commit": "a19eb7a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-99/unus.dmg",
-  "sha256": "88a4d284de29c66f03b0c2ad485d61d6799974989f4bbb4f627079a111ebebc2",
+  "build": 103,
+  "commit": "0ff2966",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-103/unus.dmg",
+  "sha256": "1aeda5ecf0ba8aba55868ce685b7647224c5206cf1f74fb8cfa803a2d4976086",
   "minimumSystemVersion": "26.0",
-  "notes": "Notarising moves to the publish half, where it was always needed"
+  "notes": "16'000: the apostrophe takes grouping, and the comma gets to be a comma"
 }
