@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 113,
-  "commit": "e614bd1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-113/unus.dmg",
-  "sha256": "0f4e2a0953c908ea7e3e7be41adeeb708e612e213b444902c666280af0e833f1",
+  "build": 115,
+  "commit": "b2009b7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-115/unus.dmg",
+  "sha256": "f17dda7e6818140acbbe0c4cf2d549baebcbaacc5f220c88cb6e88c3ed330d29",
   "minimumSystemVersion": "26.0",
-  "notes": "Value becomes a sum type, and five dates stop pretending to be numbers"
+  "notes": "Eight themes, and the amber stops being the only colour unus knows"
 }
