@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 78,
-  "commit": "5987f29",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-78/murmur.dmg",
-  "sha256": "774214c5bfb0e0c23f3b44efce061c705c017e1cf690f13024524e854dfb556e",
+  "build": 79,
+  "commit": "188185b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-79/murmur.dmg",
+  "sha256": "e37e99bf992d246e3567a6e3cc10581e2ad8a50b1bb094f757711daf12ba3c67",
   "minimumSystemVersion": "26.0",
-  "notes": "The shelf prunes itself"
+  "notes": "Publishing becomes a decision, and unpublished work stays visible"
 }
