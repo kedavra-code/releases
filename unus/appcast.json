@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 93,
-  "commit": "ff1ecd8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-93/unus.dmg",
-  "sha256": "d04c2b40f2fce50c5d173140d88fc303266449b0f86d21b408870fecd7fc396e",
+  "build": 94,
+  "commit": "260119e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-94/unus.dmg",
+  "sha256": "3b619eace8530953c9c9d845673d4c3fa4ce086bc3e9e7b74afd68e1352a53ab",
   "minimumSystemVersion": "26.0",
-  "notes": "A quantity is not a conversion target: "21 km in 2 h" stops answering "2 h""
+  "notes": "The shelf prunes itself"
 }
