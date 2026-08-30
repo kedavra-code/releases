@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 109,
-  "commit": "06132bd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-109/unus.dmg",
-  "sha256": "ccc70fa99fb3d29ab36b81a5d266b14210be4feca6dcab58055a23f07aa99833",
+  "build": 113,
+  "commit": "e614bd1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-113/unus.dmg",
+  "sha256": "0f4e2a0953c908ea7e3e7be41adeeb708e612e213b444902c666280af0e833f1",
   "minimumSystemVersion": "26.0",
-  "notes": "A whole-number line prints every digit, because a Double holds only 16"
+  "notes": "Value becomes a sum type, and five dates stop pretending to be numbers"
 }
