@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 94,
-  "commit": "260119e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-94/unus.dmg",
-  "sha256": "3b619eace8530953c9c9d845673d4c3fa4ce086bc3e9e7b74afd68e1352a53ab",
+  "build": 95,
+  "commit": "a36f97f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-95/unus.dmg",
+  "sha256": "0034b3ab8adf0036d3b76237da826edfcb4ba0391ab73812a7db21ffc800033e",
   "minimumSystemVersion": "26.0",
-  "notes": "The shelf prunes itself"
+  "notes": "The eval numbers say what the eval says"
 }
