@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 103,
-  "commit": "0ff2966",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-103/unus.dmg",
-  "sha256": "1aeda5ecf0ba8aba55868ce685b7647224c5206cf1f74fb8cfa803a2d4976086",
+  "build": 109,
+  "commit": "06132bd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-109/unus.dmg",
+  "sha256": "ccc70fa99fb3d29ab36b81a5d266b14210be4feca6dcab58055a23f07aa99833",
   "minimumSystemVersion": "26.0",
-  "notes": "16'000: the apostrophe takes grouping, and the comma gets to be a comma"
+  "notes": "A whole-number line prints every digit, because a Double holds only 16"
 }
