@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 96,
-  "commit": "6dc1ad7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-96/unus.dmg",
-  "sha256": "776bdc1c2bd013248473101bb5d2284feb265f3618a3560aad2b564618b44b60",
+  "build": 98,
+  "commit": "dd2cf01",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-98/unus.dmg",
+  "sha256": "5c37daebfc663e600ea68659489867360d6fdfb7206ab7c6d4a9746fbf6d6755",
   "minimumSystemVersion": "26.0",
-  "notes": "The ship rule stops contradicting itself"
+  "notes": "The sheet has one home"
 }
