@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 98,
-  "commit": "dd2cf01",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-98/unus.dmg",
-  "sha256": "5c37daebfc663e600ea68659489867360d6fdfb7206ab7c6d4a9746fbf6d6755",
+  "build": 99,
+  "commit": "a19eb7a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-99/unus.dmg",
+  "sha256": "88a4d284de29c66f03b0c2ad485d61d6799974989f4bbb4f627079a111ebebc2",
   "minimumSystemVersion": "26.0",
-  "notes": "The sheet has one home"
+  "notes": "Notarising moves to the publish half, where it was always needed"
 }
