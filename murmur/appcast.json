@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 77,
-  "commit": "97c4168",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-77/murmur.dmg",
-  "sha256": "67f6785cb47d119fac391f0ba18bb93a4d7e151b7527ddd00703f4bf3f05394b",
+  "build": 78,
+  "commit": "5987f29",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-78/murmur.dmg",
+  "sha256": "774214c5bfb0e0c23f3b44efce061c705c017e1cf690f13024524e854dfb556e",
   "minimumSystemVersion": "26.0",
-  "notes": "Cancel the download, and think twice before deleting"
+  "notes": "The shelf prunes itself"
 }
