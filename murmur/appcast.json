@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 79,
-  "commit": "188185b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-79/murmur.dmg",
-  "sha256": "e37e99bf992d246e3567a6e3cc10581e2ad8a50b1bb094f757711daf12ba3c67",
+  "build": 81,
+  "commit": "d497c1f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-81/murmur.dmg",
+  "sha256": "51d37594e42afdc53fea9981fab4770ff34dde34915ae7581ecc151cd56dffb1",
   "minimumSystemVersion": "26.0",
-  "notes": "Publishing becomes a decision, and unpublished work stays visible"
+  "notes": "release.sh ends with the same three lines install.sh does"
 }
