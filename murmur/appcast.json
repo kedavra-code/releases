@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 82,
-  "commit": "97a24c0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-82/murmur.dmg",
-  "sha256": "561aab3ebc258e7fcc2680e1d9c69add3b977ba821fb4ad97b11966f82b18133",
+  "build": 83,
+  "commit": "b47c8ec",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-83/murmur.dmg",
+  "sha256": "e07ff27e45829f04288a087d0a3763ac0e77081858ec2bd6f3627a1f9dccca9d",
   "minimumSystemVersion": "26.0",
-  "notes": "The History tab becomes Transcript"
+  "notes": "Settings grows a Brain tab"
 }
