@@ -34,6 +34,33 @@ reader's own corpus. The layout is otherwise the same, and the file says what
 the current download is; the name differs because calling it an appcast would
 promise an update feed that does not exist.
 
+## Keeping the two copies honest
+
+Shipping a component in the tree *and* as an archive means two copies of one
+thing, and two copies drift. `release.py` is what stops them:
+
+```
+python3 release.py check   00_Cerebrum                     before every push
+python3 release.py build   00_Cerebrum --build N --commit SHA
+python3 release.py publish 00_Cerebrum --build N --commit SHA
+```
+
+`check` repacks the tree in memory and compares it against the sha256 the
+manifest advertises. Edit a file in the tree and push without rebuilding, and
+the manifest now describes an archive nobody can get; `check` exits 1 and says
+so. It also compares the packed file list against `git ls-files` in both
+directions, so a file that is in the tree and not the archive — or staged in
+neither — is caught as well.
+
+**The archive is the tree minus `manifest.json`.** The manifest is this
+repository's record of the component rather than part of it: unpacking the
+tarball should give you the thing, not a note saying where you got it.
+
+The packing is deterministic — fixed timestamps, sorted entries, no uid or
+gid, gzip's own mtime zeroed — so repacking an unchanged tree gives byte-
+identical archives and a no-op rebuild shows up as no change at all. That is
+what makes a checksum comparison meaningful rather than noise.
+
 The split is deliberate. GitHub Releases have no folders and exactly one
 "latest" per repository, so a `releases/latest/download/` URL for one app
 resolves to whichever app shipped most recently — unus's URL would break the

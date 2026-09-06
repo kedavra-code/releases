@@ -1,0 +1,10 @@
+# Build output of release.py. These are the release assets, and the assets are
+# the one thing this repository deliberately does not track — a git repository
+# that stores binaries grows forever, which is the reason the DMGs live on the
+# Releases page and not here. Rebuild rather than keep: the packing is
+# deterministic, so `python3 release.py build <component>` reproduces any
+# published archive byte for byte from the tree it was cut from.
+dist/
+
+.DS_Store
+__pycache__/
