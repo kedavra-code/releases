@@ -65,6 +65,13 @@ _snapshots/
 !.claude/skills
 .claude/settings.local.json
 
+# The harness's own search index over the vault: a SQLite database and its
+# write-ahead log, and large — 185 MB in the vault this was cut from, rewritten
+# whenever the corpus changes. Same class as `.claude/*`: machine-local,
+# regenerable, no part of the knowledge. Ignored rather than merely untracked,
+# because `_scripts/sync.sh` stages with `git add -A` and would not have asked.
+.context/
+
 # Node dependencies for _scripts/viewer-check.js. The lockfile and manifest
 # are tracked so the viewer check's dependency is recorded; node_modules/ is
 # not. Run `npm install` before the first viewer check.

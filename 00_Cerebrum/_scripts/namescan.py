@@ -56,11 +56,9 @@ import argparse
 import json
 import os
 import re
+import importlib.util as _ilu
 import statistics
 import sys
-
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import coverage as _coverage        # one definition of archive_layer
 
 try:
     import yaml
@@ -68,6 +66,20 @@ except ImportError:
     sys.exit('namescan.py needs PyYAML: python3 -m pip install --user pyyaml')
 
 VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def _load_coverage():
+    """`coverage.py` as a module, so `archive_layer` has one definition.
+
+    Same loader as `verify.py`'s, deliberately: copying the key's default
+    would give a vault two places that decide where a bundle's archive lives,
+    and the next edit would land in only one of them.
+    """
+    spec = _ilu.spec_from_file_location(
+        'cerebrum_coverage', os.path.join(VAULT, '_scripts', 'coverage.py'))
+    m = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
 
 
 def discover():
@@ -95,10 +107,11 @@ def discover():
     Its archive root is the single directory inside that layer, or the layer
     itself if it holds more than one.
     """
+    cov = _load_coverage()
     out = {}
     for kb in sorted(os.listdir(VAULT)):
         base = os.path.join(VAULT, kb)
-        layer = _coverage.archive_layer(kb)
+        layer = cov.archive_layer(kb)
         arch = os.path.join(base, layer)
         if not (os.path.exists(os.path.join(base, 'CLAUDE.md'))
                 and os.path.isdir(arch)):
