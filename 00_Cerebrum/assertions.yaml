@@ -1,0 +1,48 @@
+# Vault-level assertions, enforced by _scripts/verify.py.
+#
+# The per-knowledge-base `<KB>/assertions.yaml` files guard concepts. This one
+# guards the files that sit above them: CLAUDE.md, SPEC.md, the KB template,
+# _ACTION-ITEMS.md. Without it nothing checks those at all, which is how a
+# stale concept count sits in CLAUDE.md through run after run while every
+# audit reports the bundles clean.
+#
+# Hand-curated. An entry is added when a fact settles and a pattern can express
+# it. Never removed without a line in CHANGELOG.md saying why.
+
+# Each entry scans one markdown section of one file and fails on a match.
+#   path      — relative to the vault root
+#   section   — the heading whose body is scanned, up to the next heading of
+#               the same level. Omit to scan the whole file.
+#   lines     — 'table' scans only table rows (lines starting with |);
+#               'all' scans every line. Default 'all'.
+#   pattern   — a regex; a match is a DEFECT
+#   reason    — why, in enough detail that a future run does not undo it
+forbid_in:
+  - path: CLAUDE.md
+    section: '## Current state'
+    lines: table
+    pattern: "\\d+\\s+concepts?\\b|\\bnothing compiled\\b|\\d[\\d']*\\s+pages\\b"
+    reason: >-
+      The Current state table carries no counts. A count here goes stale and
+      nothing keeps it true, and CLAUDE.md is the one file every session reads
+      end to end, so a wrong number here is read more often than anywhere else.
+      Counts live in each knowledge base's memory.md, rewritten in place on
+      every run that changes the answer, and in the generated COVERAGE.md. Same
+      reasoning as _ACTION-ITEMS.md being generated rather than authored. The
+      prose under the table may discuss numbers; only the table rows are
+      scanned.
+
+# Add an entry per knowledge base as facts settle. Two patterns worth copying,
+# both learned from manuals that went stale while the generated files beside
+# them stayed correct:
+#
+#   - path: <KB>/CLAUDE.md
+#     pattern: '\d+(\.\d+)? per cent (of the archive|coverage)|carries \*\*\d[\d'']*\s+pages'
+#     reason: Coverage is measured in COVERAGE.md and regenerated. A figure
+#       copied into the manual goes stale the next time the archive moves.
+#
+#   - path: <KB>/Wiki/index.md
+#     pattern: "\\d[\\d']*\\s+concepts?\\b"
+#     reason: The bundle-root index.md is the one index reindex.py never
+#       touches, so nothing regenerates it and nothing else checks it. A count
+#       written here cannot be kept true.

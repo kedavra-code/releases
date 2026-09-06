@@ -3,6 +3,7 @@
   "kind": "template",
   "build": 114,
   "commit": "46635ef",
+  "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
   "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-114/00_Cerebrum-template-114.tar.gz",
   "sha256": "617f5b781e8885d807d7e6f24b9a00d11dee163ff8f1cc332292d46d3ac127af",
   "zip": {
@@ -11,9 +12,15 @@
   },
   "requires": {
     "python": ">=3.9",
-    "pip": ["pyyaml", "numpy"],
-    "optional": ["claude-code", "node + playwright (for _scripts/viewer-check.js)"]
+    "pip": [
+      "pyyaml",
+      "numpy"
+    ],
+    "optional": [
+      "claude-code",
+      "node + playwright (for _scripts/viewer-check.js)"
+    ]
   },
   "licence": "MIT",
-  "notes": "First public cut of the vault machinery: the operating manual, the OKF v0.2 spec, three skills and thirty scripts. No corpus."
+  "notes": "First public cut of the vault machinery: the operating manual, the OKF v0.2 spec, three skills and 29 scripts. No corpus. The files are in the tree beside this manifest; the archives are the same tree packaged."
 }
