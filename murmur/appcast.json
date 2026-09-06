@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 81,
-  "commit": "d497c1f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-81/murmur.dmg",
-  "sha256": "51d37594e42afdc53fea9981fab4770ff34dde34915ae7581ecc151cd56dffb1",
+  "build": 82,
+  "commit": "97a24c0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-82/murmur.dmg",
+  "sha256": "561aab3ebc258e7fcc2680e1d9c69add3b977ba821fb4ad97b11966f82b18133",
   "minimumSystemVersion": "26.0",
-  "notes": "release.sh ends with the same three lines install.sh does"
+  "notes": "The History tab becomes Transcript"
 }
