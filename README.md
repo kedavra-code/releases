@@ -1,20 +1,31 @@
 # releases
 
-Update manifests and downloads for kedavra-code's Mac apps.
+Update manifests and downloads for kedavra-code's Mac apps, and for anything
+else that ships as a versioned download.
 
 | App | What it is | Latest |
 |---|---|---|
 | [unus](unus/appcast.json) | An offline natural-language calculator | see [Releases](../../releases?q=unus) |
 | [murmur](murmur/appcast.json) | On-device dictation | see [Releases](../../releases?q=murmur) |
+| [00_Cerebrum](00_Cerebrum/manifest.json) | A self-improving knowledge-base system for Claude Code — the machinery, no corpus | see [Releases](../../releases?q=00_Cerebrum) |
 
 ## Layout
 
 ```
-unus/appcast.json      ← manifests live here, in the repo tree
+unus/appcast.json         ← manifests live here, in the repo tree
 murmur/appcast.json
+00_Cerebrum/manifest.json
 ```
 
-The DMGs are **release assets**, tagged `unus-49`, `murmur-31` and so on.
+The downloads are **release assets**, tagged `unus-49`, `murmur-31`,
+`00_Cerebrum-114` and so on.
+
+The two apps carry an `appcast.json`, which is what their updater polls.
+00_Cerebrum carries a `manifest.json` instead: nothing polls it, because a
+vault template is unpacked once rather than auto-updated. The layout is the
+same and the file says what the current download is; the name is different
+because calling it an appcast would promise an update feed that does not
+exist.
 
 The split is deliberate. GitHub Releases have no folders and exactly one
 "latest" per repository, so a `releases/latest/download/` URL for one app
