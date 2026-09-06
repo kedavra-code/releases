@@ -31,12 +31,22 @@ zeroed. Repacking an unchanged tree produces byte-identical archives, so
 `check` can compare checksums rather than contents, and a rebuild that changes
 nothing shows up as no change at all.
 
-Build numbers follow the same convention as the apps: `build` is the source
-repository's commit count, a monotonic integer with no version string to parse.
-For `00_Cerebrum` that is the private vault the template is extracted from, so
-it cannot be computed here and has to be passed in. `--commit` is that
-repository's short hash. Both are recorded so a published archive can be traced
-to the state it was cut from.
+Build numbers follow the same convention as the apps: a monotonic integer with
+no version string to parse. Here it is **this repository's** commit count for
+the component directory, so it needs no argument and cannot be typed wrong.
+
+That count has an off-by-one to be honest about. `build` names the state being
+published, and at build time the commit carrying it does not exist yet — so the
+count is taken at HEAD and one is added when the component has uncommitted
+changes. The dirty check ignores `manifest.json`, the same file the archive
+excludes, because bookkeeping about a release is not a change to the component.
+Build N is therefore the Nth commit to touch this component, which is exactly
+what the tag `<component>-N` points at.
+
+`commit` is this repository's short hash at build time. `source_commit` is
+optional and records the upstream a component was extracted from — for
+`00_Cerebrum` that is the private vault, which cannot be reached from here and
+so cannot be computed, only passed with `--source-commit`.
 """
 import argparse
 import gzip
@@ -135,6 +145,27 @@ def sha(b):
     return hashlib.sha256(b).hexdigest()
 
 
+def git(*args):
+    return subprocess.run(['git', '-C', ROOT, *args],
+                          capture_output=True, text=True).stdout.strip()
+
+
+def next_build(component):
+    """This repository's commit count for the component, counting the one coming.
+
+    `git rev-list --count` sees only commits that exist, and the commit carrying
+    this build is not one of them yet. So a component with uncommitted changes
+    is one ahead of its own history — and manifest.json is excluded from that
+    test for the reason it is excluded from the archive: it records the release
+    rather than being part of what is released, so a rebuild that only rewrites
+    checksums must not push the number up again.
+    """
+    n = int(git('rev-list', '--count', 'HEAD', '--', component + '/') or 0)
+    dirty = [l for l in git('status', '--porcelain', '--', component + '/').splitlines()
+             if not l.endswith('/manifest.json')]
+    return n + 1 if dirty else n
+
+
 def manifest_path(component):
     return os.path.join(ROOT, component, 'manifest.json')
 
@@ -178,22 +209,21 @@ def check(component):
         print('%s: manifest and tree disagree\n' % component)
         for b in bad:
             print('  ' + b)
-        print('\nRebuild with: python3 release.py build %s --build %s --commit %s'
-              % (component, m.get('build', 'N'), m.get('commit', 'SHA')))
+        print('\nRebuild with: python3 release.py build %s' % component)
         return 1
     print('%s: manifest matches the tree (%d files, build %s)'
           % (component, len(packed), m.get('build')))
     return 0
 
 
-def build(component, build_no, commit, outdir):
+def build(component, build_no, commit, outdir, source_commit=None):
     """Pack the tree, write both archives, and rewrite the manifest to match."""
     root = os.path.join(ROOT, component)
     if not os.path.isdir(root):
         sys.exit('no such component: %s' % component)
     m = load(component)
-    build_no = build_no if build_no is not None else m['build']
-    commit = commit or m['commit']
+    build_no = build_no if build_no is not None else next_build(component)
+    commit = commit or git('rev-parse', '--short', 'HEAD')
 
     os.makedirs(outdir, exist_ok=True)
     base = '%s-template-%s' % (component, build_no)
@@ -207,6 +237,8 @@ def build(component, build_no, commit, outdir):
 
     dl = 'https://github.com/kedavra-code/releases/releases/download/%s-%s/' % (component, build_no)
     m['build'], m['commit'] = build_no, commit
+    if source_commit:
+        m['source_commit'] = source_commit
     m['url'], m['sha256'] = dl + '%s.tar.gz' % base, sha(tgz)
     m['zip'] = {'url': dl + '%s.zip' % base, 'sha256': sha(zp)}
     with open(manifest_path(component), 'w', encoding='utf-8') as f:
@@ -220,8 +252,8 @@ def build(component, build_no, commit, outdir):
     return paths
 
 
-def publish(component, build_no, commit, outdir, notes):
-    paths = build(component, build_no, commit, outdir)
+def publish(component, build_no, commit, outdir, notes, source_commit=None):
+    paths = build(component, build_no, commit, outdir, source_commit)
     m = load(component)
     if check(component):
         sys.exit('refusing to publish: the manifest does not match the tree')
@@ -240,8 +272,10 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('action', choices=('check', 'build', 'publish'))
     ap.add_argument('component')
-    ap.add_argument('--build', type=int, help="source repo's commit count; kept if omitted")
-    ap.add_argument('--commit', help="source repo's short hash; kept if omitted")
+    ap.add_argument('--build', type=int,
+                    help='override the self-computed build number; rarely wanted')
+    ap.add_argument('--commit', help="override this repo's short hash")
+    ap.add_argument('--source-commit', help='upstream commit the component was cut from')
     ap.add_argument('--out', default=os.path.join(ROOT, 'dist'))
     ap.add_argument('--notes', help='path to a release-notes file, for publish')
     a = ap.parse_args()
@@ -249,9 +283,9 @@ def main():
     if a.action == 'check':
         sys.exit(check(a.component))
     if a.action == 'build':
-        build(a.component, a.build, a.commit, a.out)
+        build(a.component, a.build, a.commit, a.out, a.source_commit)
         sys.exit(check(a.component))
-    publish(a.component, a.build, a.commit, a.out, a.notes)
+    publish(a.component, a.build, a.commit, a.out, a.notes, a.source_commit)
 
 
 if __name__ == '__main__':

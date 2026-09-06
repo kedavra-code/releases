@@ -40,10 +40,18 @@ Shipping a component in the tree *and* as an archive means two copies of one
 thing, and two copies drift. `release.py` is what stops them:
 
 ```
-python3 release.py check   00_Cerebrum                     before every push
-python3 release.py build   00_Cerebrum --build N --commit SHA
-python3 release.py publish 00_Cerebrum --build N --commit SHA
+python3 release.py check   00_Cerebrum      before every push
+python3 release.py build   00_Cerebrum
+python3 release.py publish 00_Cerebrum
 ```
+
+The build number needs no argument: it is this repository's commit count for
+the component directory, plus one while the component has uncommitted changes,
+because the commit carrying a build does not exist when the build is made. So
+`00_Cerebrum-3` is the third commit to touch `00_Cerebrum/`, and the tag points
+at exactly that. `--source-commit` optionally records the upstream a component
+was cut from, which for `00_Cerebrum` is a private vault this repository cannot
+reach.
 
 `check` repacks the tree in memory and compares it against the sha256 the
 manifest advertises. Edit a file in the tree and push without rebuilding, and
@@ -90,6 +98,9 @@ https://raw.githubusercontent.com/kedavra-code/releases/main/unus/appcast.json
 `build` is the app's commit count — a monotonic integer, so there is no
 version string to parse. An app installs only a build **strictly greater**
 than its own.
+
+Tree-shipped components number the same way but from *this* repository, since
+that is where their source lives; `release.py` computes it.
 
 ## Downloads are verified, not trusted
 

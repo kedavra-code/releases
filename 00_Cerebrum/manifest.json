@@ -1,13 +1,13 @@
 {
   "name": "00_Cerebrum",
   "kind": "template",
-  "build": 114,
-  "commit": "46635ef",
+  "build": 3,
+  "commit": "10b0b85",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
-  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-114/00_Cerebrum-template-114.tar.gz",
+  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-3/00_Cerebrum-template-3.tar.gz",
   "sha256": "2a3afd333d10e77663ebae01ae2c28a2891a45963c4d0b181eaf00972bb29b20",
   "zip": {
-    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-114/00_Cerebrum-template-114.zip",
+    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-3/00_Cerebrum-template-3.zip",
     "sha256": "b0e96625f706147cd1bc803851d8356a73d45e1f2f287796fcd6937aa3c0a3fa"
   },
   "requires": {
@@ -22,5 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "First public cut of the vault machinery: the operating manual, the OKF v0.2 spec, three skills and 29 scripts. No corpus. The files are in the tree beside this manifest; the archives are the same tree packaged."
+  "notes": "First public cut of the vault machinery: the operating manual, the OKF v0.2 spec, three skills and 29 scripts. No corpus. The files are in the tree beside this manifest; the archives are the same tree packaged.",
+  "source_commit": "caa2837"
 }
