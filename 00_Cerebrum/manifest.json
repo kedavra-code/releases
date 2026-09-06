@@ -1,14 +1,14 @@
 {
   "name": "00_Cerebrum",
   "kind": "template",
-  "build": 5,
-  "commit": "0b44a89",
+  "build": 6,
+  "commit": "18ee4d2",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
-  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-5/00_Cerebrum-template-5.tar.gz",
-  "sha256": "847ea8e735110a9b647648d8327d3ecd2631bea423427c05cdb320623ff4b683",
+  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-6/00_Cerebrum-template-6.tar.gz",
+  "sha256": "a1b2636d31e14aa23d65f172b167014a2123f7163d3833f8aef7b8e7e775af46",
   "zip": {
-    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-5/00_Cerebrum-template-5.zip",
-    "sha256": "5bb05e6f51db25405309cd4a2aec4bea498ddb3de9bed631b99ade6bf4f48b70"
+    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-6/00_Cerebrum-template-6.zip",
+    "sha256": "11a04982a1fbfb5da6234f76775bbbf8988efdae1e0f4a0e5c56323f59e7f7b6"
   },
   "requires": {
     "python": ">=3.9",

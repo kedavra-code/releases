@@ -186,10 +186,20 @@ def check(component):
     # -z and split on NUL, not whitespace: `About me/writing-rules.md` has a
     # space in it, and splitting on whitespace reported it as two files that
     # were each missing from the other side. Found by this check's first run.
-    tracked = subprocess.run(['git', '-C', ROOT, 'ls-files', '-z', component],
-                             capture_output=True, text=True).stdout.split('\0')
-    tracked = {p[len(component) + 1:] for p in tracked
-               if p.startswith(component + '/')}
+    # Tracked *and* untracked-but-not-ignored, because `git ls-files` alone
+    # cannot see a stray until it has already been committed — which is how
+    # `_scripts/verify-state.json`, written into the tree by a verify run and
+    # swept up by `git add -A`, got past this check once and was only caught on
+    # the pass after. A file that is present and not ignored will be committed
+    # by the next `add -A`, so it counts as being in the tree now.
+    present = set()
+    for args in (['ls-files', '-z', component],
+                 ['ls-files', '-z', '--others', '--exclude-standard', component]):
+        for p in subprocess.run(['git', '-C', ROOT, *args],
+                                capture_output=True, text=True).stdout.split('\0'):
+            if p.startswith(component + '/'):
+                present.add(p[len(component) + 1:])
+    tracked = present
     packed = {rel for rel, _ in entries(root)}
     for rel in sorted(tracked - packed - EXCLUDE):
         bad.append('in the tree but not in the archive: %s' % rel)
