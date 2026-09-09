@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 168,
-  "commit": "89562d0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-168/GLaDOS.dmg",
-  "sha256": "765774143708603955d369917346e016986fb560763539e129442289d9be7faa",
+  "build": 169,
+  "commit": "5426a53",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-169/GLaDOS.dmg",
+  "sha256": "c55fc0b86b3931c76fce262e732d03285c3ff1e0904c9cae235991363ea2044a",
   "minimumSystemVersion": "26.0",
-  "notes": "Setup says the vault is there, and what it would take to use it"
+  "notes": "The appcast push is the step that goes stale"
 }
