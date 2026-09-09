@@ -1,0 +1,9 @@
+{
+  "app": "GLaDOS",
+  "build": 163,
+  "commit": "ef9b3fd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-163/GLaDOS.dmg",
+  "sha256": "aef6768a8ccaabae8ae393d8c8a7bdea52260bcf086fee6bfc4b71fcbf2f40b8",
+  "minimumSystemVersion": "26.0",
+  "notes": "Timers, removed"
+}
