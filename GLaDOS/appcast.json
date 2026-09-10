@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 169,
-  "commit": "5426a53",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-169/GLaDOS.dmg",
-  "sha256": "c55fc0b86b3931c76fce262e732d03285c3ff1e0904c9cae235991363ea2044a",
+  "build": 170,
+  "commit": "09bfefe",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-170/GLaDOS.dmg",
+  "sha256": "804b08a2b6b5f111ab329d569f14905ddcd82dab91ed866a609d7d1c9427d867",
   "minimumSystemVersion": "26.0",
-  "notes": "The appcast push is the step that goes stale"
+  "notes": "She presents a page, and the page follows her"
 }
