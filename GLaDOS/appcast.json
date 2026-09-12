@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 170,
-  "commit": "09bfefe",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-170/GLaDOS.dmg",
-  "sha256": "804b08a2b6b5f111ab329d569f14905ddcd82dab91ed866a609d7d1c9427d867",
+  "build": 172,
+  "commit": "7183032",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-172/GLaDOS.dmg",
+  "sha256": "d9b05e07e2c7cad74bddd1c879a6a467f950ceb34dfbd0b35c4beb712e31b2fd",
   "minimumSystemVersion": "26.0",
-  "notes": "She presents a page, and the page follows her"
+  "notes": "The voice follows her words, not the switch"
 }
