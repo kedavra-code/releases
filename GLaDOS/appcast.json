@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 172,
-  "commit": "7183032",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-172/GLaDOS.dmg",
-  "sha256": "d9b05e07e2c7cad74bddd1c879a6a467f950ceb34dfbd0b35c4beb712e31b2fd",
+  "build": 177,
+  "commit": "c500434",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-177/GLaDOS.dmg",
+  "sha256": "d414445833a5249397da6727475f051687643db5be0c8add1be64f6d5de43770",
   "minimumSystemVersion": "26.0",
-  "notes": "The voice follows her words, not the switch"
+  "notes": "The dictionary reaches the recogniser, and changes nothing"
 }
