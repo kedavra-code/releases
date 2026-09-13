@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 117,
-  "commit": "c58e9b9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-117/unus.dmg",
-  "sha256": "5b8b452173529fe0871367dc5d47cd5cff056694dfccc31a35d9f6cff078c866",
+  "build": 119,
+  "commit": "4889357",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-119/unus.dmg",
+  "sha256": "3ca59d00bb6a2bd86f2d3fec0796aa5807b53edbb724aca034ea406238ce1885",
   "minimumSystemVersion": "26.0",
-  "notes": "install.sh stops deleting the app before it has a replacement"
+  "notes": "Disk images are made with diskutil too, and package.sh stops warning"
 }
