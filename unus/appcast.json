@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 115,
-  "commit": "b2009b7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-115/unus.dmg",
-  "sha256": "f17dda7e6818140acbbe0c4cf2d549baebcbaacc5f220c88cb6e88c3ed330d29",
+  "build": 117,
+  "commit": "c58e9b9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-117/unus.dmg",
+  "sha256": "5b8b452173529fe0871367dc5d47cd5cff056694dfccc31a35d9f6cff078c866",
   "minimumSystemVersion": "26.0",
-  "notes": "Eight themes, and the amber stops being the only colour unus knows"
+  "notes": "install.sh stops deleting the app before it has a replacement"
 }
