@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 177,
-  "commit": "c500434",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-177/GLaDOS.dmg",
-  "sha256": "d414445833a5249397da6727475f051687643db5be0c8add1be64f6d5de43770",
+  "build": 180,
+  "commit": "de10bb2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-180/GLaDOS.dmg",
+  "sha256": "97a4f656a79e42eb9c0fe1d66bba49b4787bcc22f9829930eaead38a39bf0b35",
   "minimumSystemVersion": "26.0",
-  "notes": "The dictionary reaches the recogniser, and changes nothing"
+  "notes": "The install checks it can write before it deletes anything"
 }
