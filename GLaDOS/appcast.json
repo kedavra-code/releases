@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 180,
-  "commit": "de10bb2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-180/GLaDOS.dmg",
-  "sha256": "97a4f656a79e42eb9c0fe1d66bba49b4787bcc22f9829930eaead38a39bf0b35",
+  "build": 181,
+  "commit": "396c916",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-181/GLaDOS.dmg",
+  "sha256": "75433881c4bf967e7682fadac204d1d1936b84d02d511699137a5559b8c14467",
   "minimumSystemVersion": "26.0",
-  "notes": "The install checks it can write before it deletes anything"
+  "notes": "Her home is measured to her glow, not her ring"
 }
