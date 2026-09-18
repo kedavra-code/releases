@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 181,
-  "commit": "396c916",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-181/GLaDOS.dmg",
-  "sha256": "75433881c4bf967e7682fadac204d1d1936b84d02d511699137a5559b8c14467",
+  "build": 184,
+  "commit": "9638262",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-184/GLaDOS.dmg",
+  "sha256": "713f7137374465b7b34e4693fd624bfc9e068aef579559a45758c8598d3e9ddb",
   "minimumSystemVersion": "26.0",
-  "notes": "Her home is measured to her glow, not her ring"
+  "notes": "The big eye is a fifth smaller"
 }
