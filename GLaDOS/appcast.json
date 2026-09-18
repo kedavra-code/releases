@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 184,
-  "commit": "9638262",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-184/GLaDOS.dmg",
-  "sha256": "713f7137374465b7b34e4693fd624bfc9e068aef579559a45758c8598d3e9ddb",
+  "build": 185,
+  "commit": "b894c49",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-185/GLaDOS.dmg",
+  "sha256": "27aeb74590ce6051890d62e410d9397e6fb2ff28573a773736fd662ad11a6e52",
   "minimumSystemVersion": "26.0",
-  "notes": "The big eye is a fifth smaller"
+  "notes": "A click on her eye no longer switches her off"
 }
