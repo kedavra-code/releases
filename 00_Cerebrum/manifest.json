@@ -1,14 +1,14 @@
 {
   "name": "00_Cerebrum",
   "kind": "template",
-  "build": 7,
-  "commit": "d9d7578",
+  "build": 9,
+  "commit": "e926b27",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
-  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-7/00_Cerebrum-template-7.tar.gz",
-  "sha256": "b37bfccfd456c853b3d194f066f3bdb5eff5f9778bf16bf765f899ff2ea5969a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-9/00_Cerebrum-template-9.tar.gz",
+  "sha256": "c8a92f2df6d57a75fcf8f0181c23461493604803bead82a1e0782d1a5ab84474",
   "zip": {
-    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-7/00_Cerebrum-template-7.zip",
-    "sha256": "e609c7ea77c21614650fdfdef9a8099013ff1d1b06f09a3a6f5221dbccc3e666"
+    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-9/00_Cerebrum-template-9.zip",
+    "sha256": "f5ee8b15892ec7dbc9cba10548e37ca0776fd08af349b713dbe6ee5c6b318f36"
   },
   "requires": {
     "python": ">=3.9",
@@ -22,6 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "The vault machinery with no corpus: the operating manual, WHY.md (what each rule cost and which run paid for it), the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 7 adds WHY.md and eight scripts, and carries seven new verify.py guards. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
-  "source_commit": "34a67c7"
+  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 9 ports visualize.py and viewer-check.js from the source vault for the first time: the graph derives its corners on a unit circle and its blocks, legend and mark from your own data, and the checker asserts structure rather than one vault's ontology. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
+  "source_commit": "eaa73e6"
 }

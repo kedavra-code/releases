@@ -136,7 +136,7 @@ for cid, c in concepts.items():
 # Guard against the escaping bug of 10.08.2026 returning. These fields are drawn
 # on the canvas and set with textContent as well as injected as HTML, so they
 # must hold raw text; an entity here means something escaped them too early and
-# "Beta Technology & IT" would render as "Beta Technologie &amp; IT".
+# "Beta Technologie & IT" would render as "Beta Technologie &amp; IT".
 _ENT = re.compile(r'&(amp|lt|gt|quot|#\d+);')
 _bad = [(cid, f, v) for cid, d in data.items() for f in ('t', 'd', 'ty', 'st')
         for v in [d[f]] if isinstance(v, str) and _ENT.search(v)]
@@ -149,18 +149,20 @@ if _bad:
 
 # ---- precomputed layout: anchored per knowledge base, ships settled ----
 #
-# An earlier version packed connected components on a spiral, which put the
+# Until 15.08.2026 this packed connected components on a spiral, which put the
 # largest component at the origin and everything else wherever it fitted. Once
-# a vault holds several knowledge bases that stops saying anything: cross-KB
-# links fuse them into one component and the spiral draws one blob.
+# Combined_kb became three knowledge bases that stopped saying anything: the
+# cross-KB links to the career concepts fused all three employers into one
+# component, so the spiral drew one undifferentiated blob.
 #
-# So each knowledge base gets its own corner, and the arrangement is the place
-# to put meaning the force simulation cannot invent. The default below spaces
-# the corners evenly, which asserts nothing; replace it with a hand-placed
-# ANCHOR once your vault has a shape worth stating.
+# The arrangement below is the owner's, and it carries meaning the force
+# simulation cannot invent: Gamma top left, Beta bottom left, Alpha to the
+# right, the two career concepts in the middle of that triangle, and Zeta
+# below it because the private knowledge base is not part of the work story
+# and shares no links with it.
 #
-# Each group is laid out on its own intra-group edges, so a bundle's shape is
-# its own structure rather than a compromise with its neighbours. Nodes
+# Each group is laid out on its own intra-group edges, so an employer's shape
+# is its own structure rather than a compromise with its neighbours. Nodes
 # with no intra-group edge are not special-cased: repulsion pushes them into a
 # halo around their own knowledge base, which is where they belong and where
 # the old global isolate ring could not put them.
@@ -173,7 +175,7 @@ except ImportError:
              '    python3 -m pip install --user numpy\n'
              'If pip refuses with "externally-managed-environment", add\n'
              '--break-system-packages. Do not reach for that flag first: it is\n'
-             'pip 23.0+, and the macOS Command Line Tools pip predates\n'
+             'pip 23.0+, and the Command Line Tools pip on the owner Mac predates\n'
              'it and fails with "no such option". Learned 15.08.2026.')
 
 _ids = list(data)
@@ -183,20 +185,31 @@ _n = len(_ids)
 _deg = [0] * _n
 for a, b in _edges: _deg[a] += 1; _deg[b] += 1
 
-# Concepts that belong to no single knowledge base and should sit in the
-# middle of the picture rather than inside one group. Empty by default: fill
-# it with concept ids (`<KB>/Wiki/<group>/<name>.md`) if your vault has
-# concepts that genuinely span several bundles.
+# Concepts belonging to no single knowledge base: a person two bases both
+# describe, a timeline spanning them. They get the middle rather than one
+# corner, because putting a shared subject inside one bundle says it belongs
+# there.
+#
+# The test is whether the *subject* spans the bases, not whether the concept
+# happens to cite more than one. A system deployed at one employer and being
+# replaced at another is a concept about a system, and it belongs in the
+# bundle whose story it is; put it in PIN_INWARD instead to hold it at that
+# bundle's inner rim, beside the centre without claiming to be part of it.
 CENTRE = set()
 
+# Concepts to hold in the middle, belonging to no single knowledge base. Empty
+# by default. Put a concept id here when two or more bases genuinely share its
+# subject — a person who appears across all of them, a timeline that spans
+# them — and it will sit at the centroid of the corners rather than inside one.
+
 # Every knowledge base gets a corner, spaced evenly on a unit circle and
-# ordered by name so the picture does not shuffle between runs. The owner's
-# own vault replaced this with a hand-placed arrangement carrying meaning the
-# simulation cannot invent; do the same once your vault has a shape worth
-# saying something about, and keep the centroid at the origin so `_centre`
-# lands in the actual middle.
-ANCHOR = {'_centre': (0.0, 0.0)}          # filled in below, once the groups are known
+# ordered by name so the picture does not shuffle between runs. A vault with a
+# shape worth stating replaces this with a hand-placed arrangement carrying
+# meaning the simulation cannot invent; if you do, keep the centroid at the
+# origin so `_centre` lands in the actual middle.
+ANCHOR = {'_centre': (0.0, 0.0)}          # filled in below, once groups are known
 GAP = 130.0
+
 
 def _group_of(i):
     """Every knowledge base is its own group, whether or not it has a corner."""
@@ -206,15 +219,17 @@ def _group_of(i):
 _groups = {}
 for i in range(_n):
     _groups.setdefault(_group_of(i), []).append(i)
+
 # Corners, one per knowledge base, evenly spaced and ordered by name. The
 # centroid of a regular polygon is its centre, so `_centre` lands in the actual
 # middle of them rather than merely between two. With one knowledge base the
 # circle degenerates to a single point at the origin, which is correct: there
 # is nothing to separate it from.
-_corners = sorted(k for k in _groups if k != '_centre')
-for _i, _k in enumerate(_corners):
-    _a = 2 * math.pi * _i / len(_corners) - math.pi / 2
-    ANCHOR[_k] = (0.0, 0.0) if len(_corners) == 1 else (math.cos(_a), math.sin(_a))
+_corners_all = sorted(k for k in _groups if k != '_centre')
+for _i, _k in enumerate(_corners_all):
+    _a = 2 * math.pi * _i / len(_corners_all) - math.pi / 2
+    ANCHOR[_k] = (0.0, 0.0) if len(_corners_all) == 1 else (math.cos(_a),
+                                                            math.sin(_a))
 
 def _layout(members):
     """Fruchterman-Reingold over one group's own edges. Returns positions and radius."""
@@ -239,12 +254,26 @@ def _layout(members):
         # Gravity toward the group's own middle. Stronger for small groups:
         # with a dozen nodes and few edges the simulation settles into two or
         # three sub-clumps with nothing pulling them together, which is what
-        # makes a small bundle read as scattered rather than as one thing.
+        # made Zeta read as scattered rather than as one knowledge base.
         disp -= P * (0.03 + 0.22 / math.sqrt(m))
         ln = np.sqrt((disp ** 2).sum(-1)) + 1e-6
         P += (disp / ln[:, None]) * np.minimum(ln, tmp)[:, None]
     P -= P.mean(0)
-    Rt = 26.0 * m ** 0.55 if m > 1 else 26.0
+    # The exponent, not the constant, is what sets a cluster's density: it
+    # decides how much more room 435 concepts get than 25. It was 0.55 until
+    # 20.09.2026, when the owner asked for the Alpha cluster to be less dense.
+    # Raised to 0.57, which gives Alpha about 13 per cent more radius and the
+    # small bundles about 6 — the big cluster gains most, which is where the
+    # crowding is. Changing the exponent rather than adding a factor for one
+    # knowledge base keeps a single rule: no bundle is a special case, and Alpha
+    # stops being dense because it is large, not because it is Alpha.
+    #
+    # Nothing below needs adjusting for it. The triangle scale `_T` is solved
+    # from the clusters' own extents plus GAP, the halo walk clears the glows,
+    # and the Delta/Epsilon pair is placed by its own walk — so every other
+    # cluster moves outward on its own and the separations hold by
+    # construction rather than by a number kept in step by hand.
+    Rt = 26.0 * m ** 0.57 if m > 1 else 26.0
 
     # A node with no intra-group edge is placed by repulsion alone, so its
     # position carries no structure: it is simply as far from everything as it
@@ -259,9 +288,9 @@ def _layout(members):
     # single furthest node stretches every gap in the group to accommodate one
     # outlier, which is half of why twelve concepts filled a disc sized for a
     # hundred. **Take that percentile over the linked nodes only.** One bundle
-    # had 47 unlinked concepts in 345, more than a tenth, so the 90th
-    # percentile of *all* radii landed out among them: Rc came back 647 against
-    # a connected body whose median radius was 47, the scale factor was ~1, and
+    # measured here had 47 unlinked concepts in 345, more than a tenth, so the
+    # 90th percentile of *all* radii landed out among them: Rc came back 647
+    # against a connected body whose median radius was 47, the factor was ~1, and
     # 298 concepts stayed crammed into two per cent of the area they had been
     # given while Beta and Gamma — with no unlinked nodes — were scaled up
     # correctly. The dense middle was not Alpha being denser. It was Alpha being
@@ -304,14 +333,13 @@ def _layout(members):
 _lay = {g: _layout(mem) for g, mem in _groups.items()}
 
 # Concepts held at the inner edge of their own group — the side facing the
-# middle of the picture. Empty by default; fill PIN_INWARD below to place a
-# concept near the centre without taking the centre itself.
+# centre of the triangle. Owner's instruction of 22.08.2026, for two Alpha
+# concepts he wanted near the vault owner without taking the middle itself.
 #
-# This is deliberately not the same thing as CENTRE. A pinned concept keeps
-# its knowledge base, its colour and its place in that group's sidebar; only
-# its position is overridden. So it reads as "this bundle, nearest the
-# middle" rather than as "belongs to no corner", which is what the origin
-# means.
+# This is deliberately not the same thing as CENTRE. A pinned concept keeps its
+# knowledge base, its colour and its place in that group's sidebar; only its
+# position is overridden. So it reads as "Alpha, nearest the person" rather than
+# as "belongs to no corner", which is what the origin means.
 #
 # The force simulation is not asked to produce this. A spring pulling two nodes
 # inward would drag their neighbours with them and quietly restate the whole
@@ -368,6 +396,79 @@ for a in _keys:
         if sep < 1e-9: continue
         _T = max(_T, (_ext[a] + _ext[b] + GAP) / sep)
 
+# The halo the page draws round each knowledge base, measured here and handed to
+# the page, so the layout can clear what the page paints. Until 14.09.2026 the
+# page measured it for itself, and the layout, which cannot see the page,
+# cleared only the clusters' extents. The edge is the 90th-percentile distance
+# from the knowledge base's centroid, not the farthest concept: the farthest
+# made the glow inconsistent, because Beta is dense right up to its rim and its
+# halo stopped at the outer nodes, while Alpha's sparse outliers inflated its
+# radius and the glow reached far past the dense mass. One robust edge, 30 past
+# it and at least 60, and every halo reaches out from it by the same 1.3.
+def _halo(points):
+    """Centre and drawn radius of the halo round a set of (x, y) positions."""
+    pts = np.asarray(points, float)
+    cx, cy = pts.mean(0)
+    d = np.sort(np.hypot(pts[:, 0] - cx, pts[:, 1] - cy))
+    return float(cx), float(cy), max(60.0, float(d[int(math.floor(0.9 * (len(d) - 1)))]) + 30.0) * 1.3
+
+def _kb_points(kb, centres):
+    """One knowledge base's concepts where they land, given each placed group's centre."""
+    return [(float(P[sub[i], 0]) + centres[g][0], float(P[sub[i], 1]) + centres[g][1])
+            for g, (P, _Rt, _e, sub) in _lay.items() if g in centres
+            for i in _groups[g] if data[_ids[i]]['kb'] == kb]
+
+# The least room between two halos: the 40 units Gamma's halo already kept
+# from Alpha's when the owner asked for Delta and Epsilon to be moved out of it.
+HALO_GAP = 40.0
+
+# The corners clear each other's halos, not only their extents. Owner's
+# instruction of 14.09.2026, after Delta and Epsilon were moved out of Alpha's halo:
+# "also move Beta slightly out". Beta's halo reached 92 units into Alpha's. A corner
+# whose halo reaches into another's steps out along its own ray, keeping its
+# angle, until the two clear by HALO_GAP. The smaller halo steps, so Alpha, the
+# largest, stays where the solve put it. The corners then no longer stand at one
+# distance from the centre, the property the unit circle was chosen for, and
+# that is the trade the instruction makes: the angles hold, and the career
+# concepts keep the middle.
+_corners = [k for k in _corners_all if k in _groups]
+for _ in range(400):
+    _cent = {g: (ANCHOR[g][0] * _T, ANCHOR[g][1] * _T) for g in ANCHOR if g in _groups}
+    _stepped = False
+    for _i, _a in enumerate(_corners):
+        for _b in _corners[_i + 1:]:
+            _ha, _hb = _halo(_kb_points(_a, _cent)), _halo(_kb_points(_b, _cent))
+            _short = _ha[2] + _hb[2] + HALO_GAP - math.hypot(_ha[0] - _hb[0], _ha[1] - _hb[1])
+            if _short > 0:
+                _g = _a if _ha[2] < _hb[2] else _b
+                _ux, _uy = ANCHOR[_g]
+                _ul = math.hypot(_ux, _uy)
+                ANCHOR[_g] = (_ux + _ux / _ul * (_short + 1.0) / _T, _uy + _uy / _ul * (_short + 1.0) / _T)
+                _stepped = True
+                _cent = {g: (ANCHOR[g][0] * _T, ANCHOR[g][1] * _T) for g in ANCHOR if g in _groups}
+    if not _stepped:
+        break
+else:
+    print('warning: the corners\' halos did not clear in 400 steps', file=sys.stderr)
+
+# The two Alpha knowledge bases hang off Alpha's corner rather than being given
+# corners of their own: they are that side's own bundles, not a fourth and
+# fifth employer, and a corner would claim otherwise. Both stay out of the
+# triangle's separation solve for the reason Zeta does — an extra anchor
+# would inflate the triangle to clear something that is not one of its corners.
+#
+# **They are stacked vertically, one above the other.** Epsilon sits up and to
+# the right of Alpha, on the mirror of Gamma's own offset; Delta sits directly
+# below it, level with Alpha. Owner's instruction of 31.08.2026.
+#
+# That leaves exactly one free number — how far out along its ray Epsilon goes —
+# because Delta's x is then Epsilon's x and its y is Alpha's. So the placement is a
+# single walk on that number, pushed out until all three pairs clear each other
+# by their extents plus the gap. Solving it as one quantity is the point: an
+# earlier version placed Delta first and Epsilon second, and aligning them
+# afterwards put the pair 5 units inside their own clearance with nothing to
+# notice it.
+#
 _pos = {}
 for g, members in _groups.items():
     P, Rt, _e, sub = _lay[g]
@@ -375,39 +476,196 @@ for g, members in _groups.items():
     for i in members:
         _pos[i] = (float(P[sub[i], 0]) + cx, float(P[sub[i], 1]) + cy)
 
-# Centre the picture on the origin the anchors are built around, not on the
-# mean of every node: the mean is dragged around by whichever knowledge base
-# grew last, so the middle would move every time one bundle outgrew another.
+# Centre the picture on the middle of the work triangle, not on the mean of
+# every node: the mean is dragged around by whichever knowledge base grew last,
+# and Zeta sitting below would push the career concepts off centre.
 _mx = _my = 0.0
 for i, c in enumerate(_ids):
     x, y = _pos[i]
     data[c]['x'] = round(x - _mx, 1); data[c]['y'] = round(y - _my, 1)
     data[c]['deg'] = _deg[i]
 
+# first appearance, the order the page used to meet them in, so the halos still
+# overlay each other in the same order
+halos = {}
+for c in _ids:
+    kb = data[c]['kb']
+    if kb not in halos:
+        hx, hy, hr = _halo([(data[o]['x'], data[o]['y']) for o in _ids if data[o]['kb'] == kb])
+        halos[kb] = {'cx': round(hx, 1), 'cy': round(hy, 1), 'halo': round(hr, 1)}
+
 print('graph layout: ' + ', '.join('%s %d (r=%d, extent=%d)' % (g, len(m), _lay[g][1], _ext[g])
                                    for g, m in sorted(_groups.items())), file=sys.stderr)
 
-ncit = sum(len([s for s in (c['fm'].get('sources') or []) if isinstance(s, dict) and s.get('resource')]) for c in concepts.values())
 stamp = datetime.datetime.now().strftime('%d.%m.%Y, %H:%M')
 
-# The mark, defined once and placed twice — the sidebar brand and the About
-# dialog — because two copies of one drawing is the fault this vault keeps
-# finding in its own generated files. Size is the caller's, set in CSS.
+# The block hues, worn by the graph's halos, the Settings buttons and the mark.
+# One definition, handed to the page as KB_BLOCKS. It was a literal in the page
+# script until 14.09.2026, which the mark, drawn here, could not read.
 #
-# Generic by design: three groups on a circle around a centre, which is what
-# the layout above computes for a vault that has not been given an
-# arrangement of its own. Colours are the same palette tokens the legend and
-# the graph use, so the mark cannot drift away from what the page draws.
-logo_svg = '''<svg viewBox="0 0 128 128" role="img" aria-label="">
-<g stroke="var(--rule)" stroke-width="2" fill="none">
-<line x1="64" y1="64" x2="64" y2="26"/><line x1="64" y1="64" x2="97" y2="83"/>
-<line x1="64" y1="64" x2="31" y2="83"/>
-</g>
-<g fill="var(--s1)"><circle cx="64" cy="26" r="11"/></g>
-<g fill="var(--s2)"><circle cx="97" cy="83" r="11"/></g>
-<g fill="var(--s3)"><circle cx="31" cy="83" r="11"/></g>
-<g fill="var(--acc)"><circle cx="64" cy="64" r="7"/></g>
-</svg>'''
+# One block per knowledge base by default, ordered by name so the picture and
+# the legend do not shuffle between runs. Group several bundles into one block
+# where your vault has a real grouping to say — three employers against two
+# reference corpora, say — by writing the blocks out as literals instead; the
+# legend, the halo hues, the Settings buttons and the mark all follow whatever
+# this list says, and nothing else needs changing.
+KB_HUES = ['#e8a14a', '#4fc3d0', '#c76bd4', '#7fbf6a',
+           '#e07b7b', '#8e9ae0', '#d9b34a', '#6fb3a8']
+KB_BLOCKS = [{'kbs': [k], 'hue': KB_HUES[i % len(KB_HUES)],
+              'tag': k[:-3] if k.endswith('_kb') else k}
+             for i, k in enumerate(sorted(g for g in _groups if g != '_centre'))]
+
+# The mark, defined once and placed twice — the header brand and the About
+# dialog — because two copies of one drawing is the fault this vault keeps
+# finding in its own generated files. Size is the caller's, set in CSS. Each
+# placement prefixes its own ids, so the two copies' gradients cannot collide.
+#
+# It is the graph, abstracted, and drawn from the numbers the graph is drawn
+# from. Owner's instruction of 14.09.2026: "make it like the abstracted graph.
+# use the halo color of the kb's in the graph as colors in the graph. indicate
+# the connections somehow. surprise me. make it look good." What each part says:
+#   * Each knowledge base stands at the centre of its halo in the graph, in a
+#     glow at 80% of that halo's radius, in its block's hue. The mark moves when
+#     the layout does, and the viewBox is framed on what is drawn.
+#   * Inside the glow, a constellation on a golden-angle spiral, its first and
+#     largest dot facing the hub. More concepts make it wider, as the square
+#     root, and fuller, as the logarithm, so 435 concepts read larger than 15
+#     without drowning them.
+#   * The pale hub is whatever CENTRE puts in the middle — concepts belonging
+#     to no single knowledge base. Empty CENTRE, no hub.
+#   * A strand for about every eleven links between two parts of the graph,
+#     drawn for each pair with ten or more, fading from one end's colour to the
+#     other's. A bundle sharing no link with any other simply stands alone.
+#   * In About only, light runs out along the strands from the end nearer the
+#     hub, slowly, unless the reader has asked for less motion.
+#
+# **Nothing here is hand-placed**, which is the point: the mark is derived from
+# the same numbers the graph is, so it follows your vault rather than
+# describing someone else's. The drawing it replaced was a layout typed in by
+# hand under a comment claiming the generator checked it against the real one.
+# No such check had ever been written. `viewer-check.js` now compares the mark
+# with the page's own data, which is what that comment had been promising.
+GLOW = 0.80   # of the graph's halo: at 95% the glow took the room the clusters need at 58px
+
+def _mark(p, pulse=False):
+    """The mark as SVG. `p` prefixes its ids; `pulse` adds About's moving light."""
+    hue = {kb: b['hue'] for b in KB_BLOCKS for kb in b['kbs']}
+    mid = [c for c in _ids if c in CENTRE]
+    hx = sum(data[c]['x'] for c in mid) / len(mid) if mid else 0.0
+    hy = sum(data[c]['y'] for c in mid) / len(mid) if mid else 0.0
+    hub_r, ga = 140.0, math.pi * (3 - math.sqrt(5))
+    defs, glows, dots, dot_at = [], [], [], {}
+    for kb, h in halos.items():
+        col = hue.get(kb, '#a49a85')
+        defs.append('<radialGradient id="%s-halo-%s"><stop offset="0" stop-color="%s" stop-opacity=".72"/>'
+                    '<stop offset=".5" stop-color="%s" stop-opacity=".3"/><stop offset="1" stop-color="%s" stop-opacity="0"/>'
+                    '</radialGradient>' % (p, kb, col, col, col))
+        glows.append('<circle data-kb="%s" cx="%.1f" cy="%.1f" r="%.1f" fill="url(#%s-halo-%s)"/>'
+                     % (kb, h['cx'], h['cy'], h['halo'] * GLOW, p, kb))
+        n = len(_groups.get(kb, ())) or 1
+        m = max(2, round(1.5 + 1.4 * math.log(n)))
+        rc = max(120.0, 26.0 * math.sqrt(n))
+        face = math.atan2(hy - h['cy'], hx - h['cx'])
+        pts = []
+        for j in range(m):
+            t = j / (m - 1)
+            pts.append((h['cx'] + rc * math.sqrt(t) * math.cos(face + j * ga),
+                        h['cy'] + rc * math.sqrt(t) * math.sin(face + j * ga),
+                        rc * 1.21 * (1 - 0.5 * math.sqrt(t)) / math.sqrt(m)))
+        dot_at[kb] = pts
+        dots.append('<g data-kb="%s" fill="%s">%s</g>' % (kb, col, ''.join(
+            '<circle cx="%.0f" cy="%.0f" r="%.0f"/>' % q for q in pts)))
+    dot_at['_centre'] = [(hx, hy, hub_r)]
+    links = collections.Counter()
+    for a in _ids:
+        for b in data[a]['out']:
+            if b in _ix and b != a and _group_of(_ix[a]) != _group_of(_ix[b]):
+                links[tuple(sorted((_group_of(_ix[a]), _group_of(_ix[b]))))] += 1
+    bundles, lights, k_light = [], [], 0
+    for i, ((a, b), k) in enumerate(sorted(links.items(), key=lambda t: (t[1], t[0]))):
+        if k < 10 or a not in dot_at or b not in dot_at:
+            continue
+        # the end nearer the hub first, so the light runs outward
+        ends = sorted((a, b), key=lambda g: math.hypot(dot_at[g][0][0] - hx, dot_at[g][0][1] - hy) if g != '_centre' else -1.0)
+        mids = [(sum(q[0] for q in dot_at[g]) / len(dot_at[g]), sum(q[1] for q in dot_at[g]) / len(dot_at[g])) for g in ends]
+        cols = ['style="stop-color:var(--fg)"' if g == '_centre' else 'stop-color="%s"' % hue.get(g, '#a49a85') for g in ends]
+        defs.append('<linearGradient id="%s-link-%d" gradientUnits="userSpaceOnUse" x1="%.0f" y1="%.0f" x2="%.0f" y2="%.0f">'
+                    '<stop offset="0" %s/><stop offset="1" %s/></linearGradient>'
+                    % (p, i, mids[0][0], mids[0][1], mids[1][0], mids[1][1], cols[0], cols[1]))
+        s_n = max(1, round(k / 11))
+        near = [sorted(dot_at[g], key=lambda q: math.hypot(q[0] - o[0], q[1] - o[1]))
+                for g, o in ((ends[0], mids[1]), (ends[1], mids[0]))]
+        paths = ['M%.0f %.0f L%.0f %.0f' % (near[0][t % len(near[0])][0], near[0][t % len(near[0])][1],
+                                            near[1][t % len(near[1])][0], near[1][t % len(near[1])][1]) for t in range(s_n)]
+        bundles.append('<g data-link="%s %s" data-n="%d" stroke="url(#%s-link-%d)" stroke-width="24" stroke-opacity=".55" '
+                       'stroke-linecap="round">%s</g>' % (a, b, k, p, i, ''.join('<path d="%s"/>' % d for d in paths)))
+        for d in paths:
+            lights.append('<path d="%s" pathLength="100" style="--d:%.2fs"/>' % (d, (k_light * 0.37) % 6.4))
+            k_light += 1
+    defs.append('<radialGradient id="%s-hub"><stop offset="0" style="stop-color:var(--fg)" stop-opacity=".55"/>'
+                '<stop offset="1" style="stop-color:var(--fg)" stop-opacity="0"/></radialGradient>' % p)
+    hub = ('<g data-ids="%s"><circle cx="%.0f" cy="%.0f" r="%.0f" fill="url(#%s-hub)"/>'
+           '<circle cx="%.0f" cy="%.0f" r="%.0f" style="fill:var(--fg)"/></g>'
+           % (' '.join(mid), hx, hy, hub_r * 3.2, p, hx, hy, hub_r))
+    x0 = min(h['cx'] - h['halo'] * GLOW for h in halos.values()) - 30
+    x1 = max(h['cx'] + h['halo'] * GLOW for h in halos.values()) + 30
+    y0 = min(h['cy'] - h['halo'] * GLOW for h in halos.values()) - 30
+    y1 = max(h['cy'] + h['halo'] * GLOW for h in halos.values()) + 30
+    return ('<svg viewBox="%.0f %.0f %.0f %.0f" role="img" aria-label=""><defs>%s</defs>%s%s%s%s%s</svg>'
+            % (x0, y0, x1 - x0, y1 - y0, ''.join(defs), ''.join(glows), ''.join(bundles),
+               '<g class="pulse">%s</g>' % ''.join(lights) if pulse else '', hub, ''.join(dots)))
+
+# The header's controls are icons, as j4k's top bar is, each named by its
+# tooltip. Drawn here in one line weight rather than taken from an icon set, so
+# the page stays a single file with nothing to fetch. The graph icon's strokes
+# stop at the circles' edges, which takes arithmetic rather than typed numbers.
+def _icon(body):
+    return ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg>' % body)
+
+def _spoke(a, b, r):
+    """A line between two circles of radius r, from edge to edge."""
+    d = math.hypot(b[0] - a[0], b[1] - a[1])
+    ux, uy = (b[0] - a[0]) / d, (b[1] - a[1]) / d
+    return 'M%.2f %.2f L%.2f %.2f' % (a[0] + ux * r, a[1] + uy * r, b[0] - ux * r, b[1] - uy * r)
+
+def _gear(teeth=8, outer=9.3, root=6.9, hole=2.9):
+    """Eight flat-topped teeth: each is two points on the root circle and two on the outer."""
+    pts = []
+    for k in range(teeth):
+        a = 2 * math.pi * k / teeth - math.pi / 2
+        for da, r in ((-0.31, root), (-0.17, outer), (0.17, outer), (0.31, root)):
+            pts.append('%.2f %.2f' % (12 + r * math.cos(a + da), 12 + r * math.sin(a + da)))
+    return '<path d="M%s Z"/><circle cx="12" cy="12" r="%g"/>' % (' L'.join(pts), hole)
+
+_nodes = ((6.0, 7.0), (18.0, 6.0), (12.0, 18.0))
+icon_graph = _icon(''.join('<circle cx="%g" cy="%g" r="2.6"/>' % p for p in _nodes)
+                   + '<path d="%s"/>' % ' '.join(_spoke(_nodes[i], _nodes[j], 2.6)
+                                                 for i, j in ((0, 1), (0, 2), (1, 2))))
+# the Concept view's own shape: the list on the left, the page beside it
+icon_concepts = _icon('<rect x="3" y="4" width="18" height="16" rx="2.5"/>'
+                      '<path d="M9 4v16M12.5 9h5M12.5 12.5h5M12.5 16h3"/>')
+icon_gear = _icon(_gear())
+icon_search = _icon('<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20.5 20.5"/>')
+# Ask Claude and the report list, the pair j4k puts in its own search box: a
+# sparkle for the model and a document list for what it has written. The
+# sparkle is drawn as three four-pointed stars rather than a glyph, so it keeps
+# this page's one line weight and needs nothing fetched.
+def _star(cx, cy, r, w=None):
+    w = w or r * 0.34
+    return ('<path d="M%g %g C%g %g %g %g %g %g C%g %g %g %g %g %g '
+            'C%g %g %g %g %g %g C%g %g %g %g %g %g Z"/>'
+            % (cx, cy - r, cx, cy - w, cx + w, cy, cx + r, cy,
+               cx + w, cy, cx, cy + w, cx, cy + r,
+               cx, cy + w, cx - w, cy, cx - r, cy,
+               cx - w, cy, cx, cy - w, cx, cy - r))
+icon_spark = _icon(_star(10, 9.6, 6.1) + _star(18.2, 6.4, 3.0)
+                   + _star(17.6, 17.2, 3.6))
+icon_reports = _icon('<rect x="4" y="3" width="16" height="18" rx="2.4"/>'
+                     '<path d="M8 8h8M8 12h8M8 16h5"/>')
+# Collapse all and Expand all: two chevrons closing on the middle, or opening away from it
+icon_collapse = _icon('<path d="m7 4 5 5 5-5"/><path d="m7 20 5-5 5 5"/>')
+icon_expand = _icon('<path d="m7 9 5-5 5 5"/><path d="m7 15 5 5 5-5"/>')
 
 # The commit the vault sat at when this file was written, and whether the tree
 # was clean. This is the viewer's analogue of j4k's build code: the first thing
@@ -443,14 +701,37 @@ except ValueError:
 if _git('status', '--porcelain'):
     git_id += ' · uncommitted'
 page = """<!DOCTYPE html><html><head><meta charset="utf-8"><title>00_Cerebrum — OKF viewer</title><style>
-:root{color-scheme:dark;--bg:#242424;--fg:#f9f2d9;--mut:#a49a85;--line:#3a3733;--acc:#f0c755;--h3:#e5d5a1;--side:#191919;--card:#2b2b2b;--item:#bbaf96;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--s9:#38b2c3;--s10:#9fae2f;--s11:#c08b52;--s12:#8ecae6;--s13:#b0b7c3;--s14:#7fd1ae;--s15:#cb54d6;--s16:#e0c04d}
-*{box-sizing:border-box}body{margin:0;font:16px/1.6 -apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--fg);display:flex;height:100vh}
-#side{container-type:inline-size;width:450px;min-width:220px;max-width:60vw;flex:0 0 auto;background:var(--side);overflow-y:auto;scrollbar-gutter:stable;padding:14px 8px 14px 14px}
+:root{color-scheme:dark;--bg:#242424;--fg:#f9f2d9;--mut:#a49a85;--line:#3a3733;--acc:#f0c755;--h3:#e5d5a1;--side:#191919;--card:#2b2b2b;--item:#bbaf96;--ph:#757575;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--s9:#38b2c3;--s10:#9fae2f;--s11:#c08b52;--s12:#8ecae6;--s13:#b0b7c3;--s14:#7fd1ae;--s15:#cb54d6;--s16:#e0c04d}
+*{box-sizing:border-box}[hidden]{display:none!important}
+/* One header over two full-screen views. Owner's instruction of 14.09.2026: the
+   mark on the left, the categories to its right, and below that either the
+   Graph view or the Concept view with the whole window to itself. The page is a
+   column, so the header keeps its own height and the view takes the rest. The
+   body never scrolls; each view scrolls inside itself. */
+body{margin:0;font:16px/1.6 -apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+#top{flex:0 0 auto;position:relative;z-index:20;display:flex;align-items:center;gap:20px;padding:10px 16px 10px 10px;background:var(--side);border-bottom:1px solid var(--line)}
+#stage{flex:1;min-height:0;display:flex;position:relative}
+#gpane,#cpane{flex:1;min-width:0;position:relative;display:flex}
+#gpane{flex-direction:column}
+/* The view is a body class, so one switch decides both panes and nothing can
+   leave the two showing together. */
+body.vg #cpane,body.vc #gpane{display:none}
+/* The list scrolls and the controls above it do not: the search box moved into
+   this column, and a search box that scrolls away with the list is gone exactly
+   when the list is long enough to need it. Both parts reserve the same scrollbar
+   gutter, so the box and the rows under it share a right edge. */
+#side{width:var(--sidew,450px);min-width:220px;max-width:60vw}
+#side{flex:0 0 auto;background:var(--side);display:flex;flex-direction:column;min-height:0}
+#sidetop{flex:0 0 auto;overflow:hidden;scrollbar-gutter:stable;padding:14px 8px 9px 14px;border-bottom:1px solid var(--line)}
+#tree{flex:1;min-height:0;overflow-y:auto;scrollbar-gutter:stable;padding:9px 8px 14px 14px}
 #splitter{flex:0 0 6px;position:relative;cursor:col-resize;background:transparent}
 #splitter::before{content:'';position:absolute;top:0;bottom:0;left:-6px;right:-6px}
 #splitter::after{content:'';position:absolute;top:0;bottom:0;left:2px;width:2px;background:var(--line)}
 #splitter:hover::after,#splitter.on::after{left:0;width:6px;background:var(--acc)}
-#main{flex:1;overflow-y:auto;scrollbar-gutter:stable;padding:30px 46px}#main>*{max-width:980px}#main p,#main ul,#main ol,#main blockquote{max-width:72ch;line-height:1.7}#main li{margin:.15em 0}
+/* The page is one column centred in what the list leaves. Centring each child
+   instead, which full screen did, put a 72ch paragraph and a 980px table on two
+   different left edges. */
+#main{flex:1;min-width:0;overflow-y:auto;scrollbar-gutter:stable;padding:30px 46px}#main .doc{max-width:980px;margin:0 auto}#main p,#main ul,#main ol,#main blockquote{max-width:72ch;line-height:1.7}#main li{margin:.15em 0}
 h1,h2{color:var(--acc)}h3,h4,h5{color:var(--h3)}h1{font-size:1.75em;margin:.2em 0;letter-spacing:-.01em}h2{font-size:1.35em;border-bottom:1px solid var(--line);padding-bottom:5px;margin-top:1.9em}h3{font-size:1.15em;margin-top:1.5em}
 /* One control surface. Buttons and inputs do not inherit font-family, so every
    control on this page rendered in the UA's Arial beside the page's own
@@ -462,35 +743,127 @@ h1,h2{color:var(--acc)}h3,h4,h5{color:var(--h3)}h1{font-size:1.75em;margin:.2em 
 button,input{font-family:inherit;font-size:.9em;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
 input{width:100%;padding:8px 10px;margin-bottom:10px;cursor:text}
 /* The house label: a group header in the list, a section head on the graph
-   card, the eyebrows and card labels in About. Six rules carried these five
-   properties, and one of the six carried them wrong — `#gcard .sec` had no
-   font-weight, so the graph card's headings rendered lighter than the
+   card, the eyebrows and card labels in About and Settings. Six rules carried
+   these five properties, and one of the six carried them wrong — `#gcard .sec`
+   had no font-weight, so the graph card's headings rendered lighter than the
    identical-looking headers a few hundred pixels to their left. */
-.grp,#gcard .sec,#aboutBtn .eyebrow,#aboutBox .eyebrow,#aboutFacts dt,.aboutLogo .tl{color:var(--mut);font-size:.78em;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.grp,#gcard .sec,#aboutBtn .eyebrow,#aboutBox .eyebrow,#setBox .eyebrow,.sgt,#aboutFacts dt,.aboutLogo .tl{color:var(--mut);font-size:.78em;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
 .grp{margin:12px 0 2px;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;padding:2px 4px;border-radius:5px}
 .grp:hover{color:var(--fg);background:var(--line)}.grp .gn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .grp .cv{display:inline-block;width:9px;transition:transform .12s;font-size:.9em}.grp.shut .cv{transform:rotate(-90deg)}
 .gitems{padding-left:15px;border-left:1px solid var(--line);margin-left:8px}
 .grp small{font-weight:400;opacity:.75;font-size:.95em}.grp.flat{cursor:default}.grp.flat:hover{background:none;color:var(--mut)}.grp.flat .cv{visibility:hidden}
-#qwrap{position:relative;margin-bottom:9px}#tree .grp:first-child{margin-top:0}
-/* One grammar for the whole sidebar, and it is the concept row's: every
-   control rests in --item on no fill behind a transparent border, hovers to
-   --fg on --line, and marks itself active with the accent border. Identical
-   to `.it`, `.it:hover` and `.it.on` below — the transparent border is what
-   keeps a row from shifting a pixel when it activates. Owner's instruction
-   of 01.09.2026, after three passes that moved the concept row toward the
-   buttons; this moves the buttons to the row, which is the direction the
-   list wanted all along. */
-#views button,#ball,#q{background:transparent;border:1px solid transparent;border-radius:5px;color:var(--item);font-size:.95em;padding:4px 7px}
-#views button:hover,#ball:hover,#q:hover{background:var(--line);color:var(--fg)}
-#views button.on{border-color:var(--acc);color:var(--fg)}
-#q{margin-bottom:0;padding-right:30px}
+#tree .grp:first-child{margin-top:0}
+/* The search bar spans the window. Until 16.09.2026 it sat in a 450px column
+   above the list and was re-parented on every view switch; the owner asked for
+   the full width, and Ask Claude needs the room. The shape is j4k's
+   `.overviewSearchBox`: a grid of auto tracks around one `minmax(0,1fr)`, the
+   mode buttons at the left, so the input takes whatever the buttons leave and
+   nothing wraps at any width. */
+#askbar{flex:0 0 auto;position:relative;z-index:19;background:var(--side);
+ border-bottom:1px solid var(--line);padding:9px 16px 10px}
+#qwrap{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;
+ align-items:center;gap:6px;position:relative}
+/* j4k's mode pair, not a toggle: the magnifier and the sparkle stand side by
+   side and the active one is lit, so the box always says which of the two it
+   is. Its buttons are 30px square at 6px radius and carry no hover rule of
+   their own — state is the `.on` class and nothing else. */
+#qwrap .mb{width:30px;height:30px;padding:0;display:inline-flex;align-items:center;
+ justify-content:center;border:1px solid var(--line);border-radius:6px;
+ background:transparent;color:var(--item)}
+#qwrap .mb svg{width:16px;height:16px}
+#qwrap .mb.on{border-color:var(--acc);color:var(--fg);background:var(--line)}
+/* Ask is j4k's bronze, the one colour on this page that is not a token: the
+   two search bars are meant to feel like the same control, and this half of it
+   is the half that costs money. `#c8901d` border on `#f7edd6`, `#8a5c00` text
+   in j4k's light theme; here the fill is the dark-theme pair it ships,
+   `#302811` under `#e3aa3c`. */
+#mAsk.on{border-color:#c8901d;background:#f7edd6;color:#8a5c00}
+/* The login is running out. A tooltip nobody hovers is not a warning, so the
+   button carries it: the page's warn colour on its border, and a dot in the
+   corner that stays whichever mode is lit. */
+#mAsk.warn{border-color:var(--s2)}
+#mAsk.warn::before{content:'';position:absolute;top:-3px;right:-3px;width:7px;
+ height:7px;border-radius:50%;background:var(--s2)}
+#mAsk{position:relative}
+#qwrap .mb:disabled{opacity:.42;cursor:default}
+#askbar.ask #q{border-color:#c8901d}
+#askbar.ask #q::placeholder{color:#8a5c00;opacity:.85;font-style:italic}
+@media (prefers-color-scheme:dark){#mAsk.on{border-color:#e3aa3c;background:#302811;color:#e3aa3c}
+ #askbar.ask #q{border-color:#e3aa3c}#askbar.ask #q::placeholder{color:#e3aa3c;opacity:.8}}
+/* One grammar for every control, and it is the concept row's: a control rests
+   in --item on no fill behind a transparent border, hovers to --fg on --line,
+   and marks itself active with the accent border. Identical to `.it`, `.it:hover`
+   and `.it.on` below — the transparent border is what keeps a row from shifting
+   a pixel when it activates. Owner's instruction of 01.09.2026, after three
+   passes that moved the concept row toward the buttons; this moves the buttons
+   to the row, which is the direction the list wanted all along. The header's
+   icon buttons and the graph's Fit joined it on 14.09.2026, so the switch that
+   says which view is showing speaks the same language as the row that says
+   which concept is. */
+.ib,#ball,#q,#gfit{background:transparent;border:1px solid transparent;border-radius:5px;color:var(--item);font-size:.95em;padding:4px 7px}
+.ib:hover,#ball:hover,#q:hover,#gfit:hover{background:var(--line);color:var(--fg)}
+.ib.on{border-color:var(--acc);color:var(--fg)}
+#q{margin-bottom:0;min-width:0;padding-right:30px;position:relative}#q::placeholder{color:var(--ph)}
+/* The progress bar. A report takes minutes and the page has to say so, but
+   nothing here knows how long the librarian will take, so the bar is not a
+   guess against a clock: it steps when the helper reports a real milestone —
+   the run starting, each tool the librarian picks up, the report filed. The
+   steps shrink as they go (1/2 of what is left, then 1/3, then 1/4), so it
+   always advances and never reaches the end before the end does.
+   **It fills the search box itself.** Until 16.09.2026 it was a 2px line under
+   the bar, and the owner read that as a hairline rather than a bar. The input
+   is already the right shape and already carries the running commentary in its
+   placeholder, so the fill goes behind that text: the question's progress and
+   the question's box are one control rather than two. It is placed in the
+   input's own grid cell, so it matches the input at every width with no pixel
+   arithmetic, and both are stretched to the row so the cell is the input.
+   The input is static and the fill is not positioned, so the input's text
+   paints above it whatever the DOM order. */
+#q,#qbar{grid-column:3;grid-row:1;align-self:stretch}
+#qbar{margin:1px;border-radius:4px;overflow:hidden;pointer-events:none}
+#qbar i{display:block;height:100%;width:0;background:rgba(200,144,29,.26);
+ transition:width .45s ease-out}
+#qbar.done i{width:100%;background:rgba(200,144,29,.42)}
+@media (prefers-color-scheme:dark){#qbar i{background:rgba(227,170,60,.2)}
+ #qbar.done i{background:rgba(227,170,60,.32)}}
+/* Thinking: j4k twinkles its sparkle button while the model works. One
+   pseudo-element carries the whole starfield, each star a box-shadow with its
+   own colour, so the keyframes fade them out of step and no two wink together. */
+#mAsk.busy{position:relative}
+#mAsk.busy::after{content:'';position:absolute;left:50%;top:50%;width:1.5px;height:1.5px;
+ border-radius:50%;pointer-events:none;
+ animation:spark 2.6s linear infinite}
+@keyframes spark{
+ 0%,100%{box-shadow:-9px -6px 0 .4px rgba(200,144,29,.85),7px -8px 0 .2px rgba(200,144,29,.15),
+  10px 5px 0 .4px rgba(200,144,29,.55),-6px 8px 0 .2px rgba(200,144,29,.2),0px -11px 0 .3px rgba(200,144,29,.35)}
+ 33%{box-shadow:-9px -6px 0 .2px rgba(200,144,29,.2),7px -8px 0 .4px rgba(200,144,29,.8),
+  10px 5px 0 .2px rgba(200,144,29,.15),-6px 8px 0 .4px rgba(200,144,29,.6),0px -11px 0 .2px rgba(200,144,29,.8)}
+ 66%{box-shadow:-9px -6px 0 .4px rgba(200,144,29,.55),7px -8px 0 .2px rgba(200,144,29,.25),
+  10px 5px 0 .4px rgba(200,144,29,.85),-6px 8px 0 .2px rgba(200,144,29,.15),0px -11px 0 .4px rgba(200,144,29,.3)}}
+@media (prefers-reduced-motion:reduce){#mAsk.busy::after{animation:none}}
 #q:focus{border-color:var(--acc);color:var(--fg);outline:none}
+/* Buttons carried no focus style, so they showed the UA's blue ring — and it
+   appeared at a confusing moment: clicking a button sets :focus without
+   :focus-visible, and the *first keystroke afterwards* switches the browser to
+   keyboard modality, so pressing Escape lit up the button that had been
+   clicked minutes earlier. The ring is not removed, because a control reachable
+   by Tab has to show where you are; it is given the page's own accent. */
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 #qwrap.has #q{border-color:var(--acc);color:var(--fg)}
-#qx{position:absolute;right:5px;top:50%;transform:translateY(-50%);display:none;border:0;background:none;padding:0 6px;line-height:1;font-size:1.15em;color:var(--mut);border-radius:5px}
+/* The icon takes the button's own colour rather than --mut: the label is the
+   placeholder's grey and the two sat a shade apart, which was invisible while
+   the search icon above it was --mut too and obvious once the bar moved. */
+#ball .qi{position:absolute;left:10px;top:50%;transform:translateY(-50%);display:flex;color:inherit;pointer-events:none}#ball .qi svg{width:16px;height:16px}
+#qx{position:absolute;right:58px;top:50%;transform:translateY(-50%);display:none;border:0;background:none;padding:0 6px;line-height:1;font-size:1.15em;color:var(--mut);border-radius:5px}
 #qx:hover{color:var(--fg);background:var(--line)}
 #qwrap.has #qx{display:block}
-#ball{width:100%;margin-bottom:9px}#ball:disabled{opacity:.45;cursor:default;background:transparent;border-color:transparent;color:var(--item)}
+/* Collapse all is the search bar's second row: its icon under the search icon,
+   its label where the search text starts, in the placeholder's grey. Owner's
+   instruction of 14.09.2026. That grey was a default each browser picks for
+   itself until then, so the page sets it now, for both. The icon stands at
+   9px, not 10: the button has a border and the search bar's wrapper has none. */
+#ball{width:100%;position:relative;text-align:left;padding-left:32px;color:var(--ph)}#ball .qi{left:9px}#ball:disabled{opacity:.45;cursor:default;background:transparent;border-color:transparent;color:var(--ph)}
 /* The transparent border at rest is what keeps the row from shifting by a
    pixel when it is selected; every item carries it, so nothing moves. */
 .it{display:block;padding:3px 7px;border:1px solid transparent;border-radius:5px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.95em}
@@ -507,58 +880,183 @@ code{background:var(--side);border:1px solid var(--line);border-radius:4px;paddi
 blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color:var(--mut)}
 .fns{border-top:1px solid var(--line);margin-top:1.8em;padding-top:.7em;font-size:.9em;color:var(--mut);max-width:72ch;line-height:1.55}
 .meta{color:var(--mut);font-size:.92em;margin:.4em 0 1.3em}.gbtn{float:right;margin:6px 0 10px 18px;border-color:var(--acc);color:var(--acc)}.gbtn:hover{background:var(--acc);color:var(--bg)}sup.fn{color:var(--mut)}
-.links{font-size:.88em;color:var(--mut);margin:.8em 0}.stat{color:var(--mut);font-size:.82em;margin-bottom:9px}  /* The sidebar is symmetric about its control stack: 9px from the stat text down to the first button row, 6px between the button rows, and 9px either side of the search box down to the first group header. Owner's instruction of 31.08.2026 — symmetry is king. An earlier 22px here was the same instruction read as "push the buttons down", which bought a boundary at the cost of the balance. */
-#views{display:flex;gap:6px;margin-bottom:6px}#kbbar{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}#kbbar .krow{display:flex;gap:6px}#kbbar .krow button{flex:1;padding:6px;white-space:nowrap;min-width:0}#kbbar button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}/* fallback for a KB no block names; the three known blocks override inline */#kbbar button small{opacity:.7;margin-left:5px;font-size:.85em;color:inherit}#views button{flex:1}
-#gpane{flex:1;display:none;flex-direction:column;position:relative;min-width:0}
-#legend{display:flex;flex-direction:column;gap:4px;padding:9px 14px;border-bottom:1px solid var(--line);font-size:.8em;color:var(--mut)}
-#legend .lrow{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.links{font-size:.88em;color:var(--mut);margin:.8em 0}
+/* The header, left to right: the mark, the categories, the controls. */
+/* The brand is the About control. It repeats the dialog's own header — eyebrow
+   over the name — so pressing it opens something that looks like what was
+   pressed, and the mark carries the identity in both places. The border stays
+   declared and transparent so the hover outline costs no layout shift. */
+#aboutBtn{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:6px 16px 6px 8px;border:1px solid transparent;border-radius:8px;background:transparent;cursor:pointer}
+/* Hover is the outline alone. Filling the cell put back the surface the row
+   had just been relieved of, a moment after it was taken away. */
+#aboutBtn:hover{border-color:var(--acc)}
+#aboutBtn svg{width:69px;height:60px;flex:0 0 auto}
+#aboutBtn .tx{display:grid;gap:2px;min-width:0;text-align:left}
+#aboutBtn .wm{color:var(--acc);font-size:1.3em;font-weight:700;line-height:1.1;white-space:nowrap}
+/* The categories. 12px rather than the old legend's .8em: at .8em the employer
+   row measured 1107px, and it has to share a 1440px window with the mark and
+   the controls without wrapping. At 12px it measures 991px. */
+#legend{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut)}
+#legend .lrow{display:flex;flex-wrap:wrap;gap:5px 6px;align-items:center}
 #legend .lrow i{font-style:normal;opacity:.7;font-size:.92em;margin-right:2px}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:2px 9px;border:1px solid var(--line);border-radius:12px;cursor:pointer;user-select:none}
+.chip{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px 0 6px;border:1px solid var(--line);border-radius:12px;cursor:pointer;user-select:none;white-space:nowrap}
+.chip:hover{background:var(--line)}
 .chip.off{opacity:.32}.chip b{font-weight:600;color:var(--fg)}.chip small{color:var(--mut)}
 .kbchip{border-width:2px;border-color:var(--fg)}.ldiv{width:1px;align-self:stretch;background:var(--line);margin:0 4px}
+/* The controls are icons, as j4k's top bar is: each is named by its tooltip.
+   Views first, then Settings, set a little apart because it opens something
+   rather than switching something. */
+#tools{flex:0 0 auto;display:flex;align-items:center;gap:12px}
+#views{display:flex;gap:4px}
+.ib{position:relative;display:inline-grid;place-items:center;width:38px;height:38px;padding:0;border-radius:8px}
+.ib svg{width:20px;height:20px}
+/* The count of hidden knowledge bases, on the button that can bring them
+   back. A setting is kept between visits, and Chrome keeps one store for every
+   file:// page, so a selection made weeks ago can greet a fresh load. A graph
+   missing two clusters with nothing to say why reads as lost data. */
+#bSet .dot{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border:2px solid var(--side);border-radius:9px;background:var(--acc);color:var(--bg);font-size:10px;font-weight:700;line-height:13px;text-align:center}
+/* Settings, in the shape of j4k's Options menu: a panel hanging under the
+   header rather than a dialog over a dimmed page, closed by its ×, by Escape or
+   by a click anywhere else. The frame is About's, border, radius, background
+   and shadow alike, so the two read as one family. */
+#setBox{position:absolute;top:calc(100% + 8px);right:12px;z-index:40;display:grid;gap:12px;width:min(430px,calc(100vw - 24px));padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--bg);box-shadow:0 24px 80px rgba(0,0,0,.55);cursor:default}
+.sgrp{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+#kbN{color:var(--mut);font-size:.8em}
+#setBox .hint{color:var(--mut);font-size:.82em;line-height:1.5}
+/* Brain. The Settings tab of the owner's GLaDOS is the shape: the model first,
+   then what it costs to run, then — because this is where the network rule
+   stops being abstract — one line saying what leaves this Mac. Two selects on
+   one row, the effort one greying out for a model that takes none rather than
+   disappearing, so the row does not jump when the choice changes. */
+/* The effort column was `auto`, so it shrank to the widest word in it and
+   the model select took everything else. The owner asked for the balance
+   the other way on 16.09.2026: a fixed effort column, which also stops the
+   row twitching when the label changes from `low` to `medium`. */
+#brain{display:grid;grid-template-columns:minmax(0,1fr) 104px;gap:6px}
+#brain select{font:inherit;font-size:.95em;padding:5px 7px;border-radius:5px;
+ border:1px solid var(--line);background:var(--side);color:var(--fg)}
+#brain select:disabled{opacity:.42}
+#brainWhere{margin:0}
+#brainWhere b{color:var(--s2);font-weight:600}
+/* A weights row per local model, in the shape of GLaDOS's `LocalModelRow`:
+   a name over one quiet line of detail, and the action on the right. Installed
+   reads as a tick, its size on disk and Delete; missing reads as where the
+   bytes come from and Download with the cost in the button. The rows sit on
+   the panel's own card so three of them read as a list rather than as text. */
+#bWeights{display:flex;flex-direction:column;gap:1px;border:1px solid var(--line);
+ border-radius:7px;overflow:hidden}
+#bWeights .wr{display:flex;align-items:center;gap:10px;padding:8px 10px;
+ background:var(--side)}
+#bWeights .wl{flex:1;min-width:0}
+#bWeights .wt{display:block;color:var(--fg);font-size:.92em}
+#bWeights .wt .tick{color:var(--s3);margin-right:5px;font-weight:700}
+#bWeights .ws{display:block;color:var(--mut);font-size:.8em;margin-top:1px;
+ overflow-wrap:anywhere}
+#bWeights .ws .no{color:var(--s2)}
+#bWeights .wr button{flex:0 0 auto;font:inherit;font-size:.82em;padding:4px 10px;
+ border-radius:5px;border:1px solid var(--line);background:transparent;
+ color:var(--item);white-space:nowrap}
+#bWeights .wr button:hover:not(:disabled){background:var(--line);color:var(--fg)}
+#bWeights .wr button:disabled{opacity:.4}
+/* Delete asks first, because it takes an instant and costs the whole download
+   to undo — GLaDOS puts the way out before the action rather than during it.
+   The confirmation replaces the row's own detail line, so the cost of saying
+   yes is read in the place the row was just describing. */
+#bWeights .wr.arm{background:var(--card)}
+#bWeights .wr.arm .ws{color:var(--s2)}
+#bWeights .wr button.del:hover:not(:disabled){border-color:var(--s2);color:var(--s2);
+ background:transparent}
+#bWeights .pb{height:3px;border-radius:2px;background:var(--line);overflow:hidden;
+ margin-top:5px}
+#bWeights .pb i{display:block;height:100%;width:0;background:#c8901d;
+ transition:width .3s ease-out}
+#kbbar{display:flex;flex-direction:column;gap:6px}#kbbar .krow{display:flex;gap:6px}#kbbar .krow button{flex:1;padding:6px;white-space:nowrap;min-width:0}#kbbar button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}/* fallback for a KB no block names; the three known blocks override inline */#kbbar button small{opacity:.7;margin-left:5px;font-size:.85em;color:inherit}#kbbar button[aria-disabled="true"]{cursor:not-allowed}
 #gc{flex:1;cursor:grab;touch-action:none;min-height:0}
-#gfit{position:absolute;bottom:18px;right:18px;z-index:2}
-#gcard{position:absolute;top:56px;right:14px;width:320px;max-height:calc(100% - 130px);overflow-y:auto;background:var(--bg);border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 26px rgba(0,0,0,.55);padding:14px 16px;display:none;z-index:3}
+/* The card and the tools float on the graph on one surface. The search box
+   does not: it stands exactly where it stands in the Concept view, in a box
+   cut from the top of the list, with the list's width, ground, padding and
+   divider, and the list's width follows the splitter in both. Owner's
+   instructions of 14.09.2026. Its right-hand line is the splitter's, 2px of
+   the page's ground and then 2px of line, so the line does not step sideways
+   when the view switches. Both are shadows: a border takes its pixel from the
+   search box, 412px against the list's 413. */
+#gtools,#gcard{position:absolute;z-index:3;background:var(--bg);border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 26px rgba(0,0,0,.55)}
+#gtools{bottom:16px;right:16px;z-index:2;display:flex;gap:4px;padding:4px}
+#gfit{padding:5px 14px}
+#gcard{top:16px;right:16px;width:320px;max-height:calc(100% - 100px);overflow-y:auto;padding:14px 16px;display:none}
 #gcard h3{margin:.1em 0 .3em;font-size:1.08em}#gcard .desc{font-size:.95em;margin:.5em 0;line-height:1.55}
 #gcard .sec{margin:.9em 0 .2em}
 #gcard .nb{display:block;font-size:.92em;padding:1px 0;color:var(--acc);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #gcard .open{margin-top:12px;width:100%;border:none;background:var(--acc);color:var(--bg)}
 #gcard .x{position:absolute;top:8px;right:12px;cursor:pointer;color:var(--mut);font-size:1.1em}
-/* The brand row is the About control. It repeats the dialog's own header —
-   eyebrow over the name — so pressing it opens something that looks like what
-   was pressed, and the mark carries the identity in both places. */
-/* No cell of its own: the brand sits on the sidebar, not in a box on it. The
-   border stays declared and transparent so the hover outline costs no layout
-   shift, and the hover fill is unchanged. */
-#aboutBtn{display:flex;align-items:center;justify-content:center;gap:26px;width:100%;text-align:left;padding:14px 16px;margin-bottom:12px;border:1px solid transparent;border-radius:8px;background:transparent;cursor:pointer}
-/* Hover is the outline alone. Filling the cell put back the surface the row
-   had just been relieved of, a moment after it was taken away. */
-#aboutBtn:hover{border-color:var(--acc)}
-#aboutBtn svg{width:131px;height:114px;flex:0 0 auto}
-#aboutBtn .tx{display:grid;gap:2px;min-width:0}
-#aboutBtn .wm{color:var(--acc);font-size:1.35em;font-weight:700;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* The splitter can take this box to 220px, where a 72px mark and a 26px gap
-   leave the name as `00…`. j4k answers the same problem with explicit logo
-   breakpoints; these are the same idea against the container rather than the
-   viewport, because the width here is dragged and not the window's. */
-@container (max-width: 400px){#aboutBtn{gap:16px;padding:12px}#aboutBtn svg{width:106px;height:92px}#aboutBtn .wm{font-size:1.15em}}
-@container (max-width: 320px){#aboutBtn{gap:10px;padding:10px}#aboutBtn svg{width:76px;height:66px}#aboutBtn .wm{font-size:.95em}#aboutBtn .eyebrow{font-size:.72em}}
+/* A narrow window takes the brand down before it squeezes the categories, the
+   way j4k steps its logo down at breakpoints. */
+@media (max-width:1200px){#top{gap:14px}#aboutBtn{gap:10px}#aboutBtn svg{width:58px;height:50px}#aboutBtn .wm{font-size:1.1em}}
+@media (max-width:860px){#aboutBtn .tx{display:none}}
 /* The shape is j4k's About dialog: eyebrow over the name, the logo as the real
    heading, one story line, then label/value facts in two columns, a built-with
    line and an actions row. Its light palette maps onto this viewer's tokens —
    card `#282828` on `#242424` becomes `--card` on `--bg`, and its `#3d3d3d`
    borders are already what `--line` is. */
 #aboutWrap{position:fixed;inset:0;z-index:60;display:none;place-items:center;padding:18px;background:rgba(10,9,7,.58)}
+/* The reports window, on the About dialog's shell: same backdrop, same card,
+   same header grammar. It lists what `Outputs/_REPORTS.md` holds, because that
+   register is the vault's own record of every report and carries what a
+   directory scan cannot — the scope, the question as asked, and whether the
+   report is an audit. Grouped by folder, since 16.09.2026 put the audits in
+   `Outputs/HealthChecks/` and left the question reports at the root. */
+#repWrap{position:fixed;inset:0;z-index:60;display:none;place-items:center;padding:18px;background:rgba(10,9,7,.58)}
+#repWrap.on{display:grid}
+/* j4k's assistant window, shape for shape: `min(560px, 100%)` wide,
+   `min(640px, 100vh - 36px)` tall, a header row over one scrolling column, and
+   rows on a 10px radius. The one scrollbar is the vertical one on the list, and
+   there is none anywhere else: a row wraps rather than being cut with an
+   ellipsis, because a question you cannot read is a row you cannot choose.
+   Owner's instruction of 16.09.2026, on both counts. */
+#repBox{display:grid;gap:14px;grid-template-rows:auto 1fr auto;width:min(880px,94vw);
+ height:min(860px,calc(100vh - 36px));border:1px solid var(--line);border-radius:8px;
+ background:var(--bg);padding:18px 20px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+#repList{overflow-y:auto;overflow-x:hidden;min-height:0}
+/* A row is two wrapped lines, so without a rule between them the list reads
+   as one block of text. The hairline is the page's own --line, and it sits
+   between rows rather than around them, so a hovered row is a single filled
+   shape and not a box inside a box.
+   **The date and the knowledge base share the first line.** They were two
+   lines of their own until 16.09.2026, which cost a line per row for two short
+   strings that answer the same question — which report is this. The owner asked
+   for the space back. They are one flex line that wraps rather than scrolling,
+   so a narrow window drops the scope under the date instead of cutting it. */
+#repList .rr{display:block;padding:7px 10px;border:1px solid transparent;
+ border-radius:10px;cursor:pointer}
+#repList .rr + .rr{border-top-color:var(--line);border-top-left-radius:0;
+ border-top-right-radius:0}
+#repList .rr:hover{background:var(--line);color:var(--fg);border-color:transparent}
+#repList .rr:hover .rq{color:var(--acc)}
+#repList .rr .rm{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 7px;
+ color:var(--mut);font-size:.84em}
+#repList .rr .rd{font-variant-numeric:tabular-nums;letter-spacing:.04em}
+#repList .rr .rs{overflow-wrap:anywhere}
+#repList .rr .rs::before{content:'·';margin-right:7px}
+#repList .rr .rq{display:block;margin:1px 0 0;overflow-wrap:anywhere;
+ word-break:break-word;white-space:normal;color:var(--fg)}
+#repList .rr.gone{opacity:.45;cursor:default}
+#repBox .hint{color:var(--mut);font-size:.82em;line-height:1.5;margin:0}
 #aboutWrap.on{display:grid}
 #aboutBox{display:grid;gap:14px;width:min(460px,100%);max-height:min(830px,calc(100vh - 36px));overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:18px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
-#aboutBox header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px}
-#aboutBox h2,#aboutBox p{margin:0}
-#aboutBox h2{font-size:1.35em;color:var(--fg);font-weight:700;border:none;padding:0;margin:0}
-#aboutBox .x{background:none;border:none;color:var(--mut);cursor:pointer;font-size:1.1em;line-height:1;padding:0 6px;border-radius:5px}
-#aboutBox .x:hover{color:var(--fg);background:var(--line)}
+#aboutBox header,#setBox header,#repBox header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px}
+#aboutBox h2,#aboutBox p,#setBox h2,#setBox p,#repBox h2,#repBox p{margin:0}
+#aboutBox h2,#setBox h2,#repBox h2{font-size:1.35em;color:var(--fg);font-weight:700;border:none;padding:0;margin:0}
+#aboutBox .x,#setBox .x,#repBox .x{background:none;border:none;color:var(--mut);cursor:pointer;font-size:1.1em;line-height:1;padding:0 6px;border-radius:5px}
+#aboutBox .x:hover,#setBox .x:hover,#repBox .x:hover{color:var(--fg);background:var(--line)}
 #aboutContent{display:grid;gap:10px;justify-items:center;text-align:center}
 .aboutLogo{display:grid;justify-items:center;gap:7px;margin-top:4px}
 .aboutLogo svg{width:145px;height:126px;display:block}
+/* The light that runs along the mark's strands in About: a bead a twenty-fifth
+   of a strand long, out and fading, one strand after another. Never in the
+   header, and never for a reader who has asked for less motion. */
+.aboutLogo .pulse path{fill:none;stroke:var(--fg);stroke-width:26;stroke-linecap:round;stroke-dasharray:4 96;stroke-dashoffset:4;opacity:0;animation:markpulse 6.4s ease-in-out var(--d) infinite}
+@keyframes markpulse{0%{stroke-dashoffset:4;opacity:0}6%{opacity:.8}48%{stroke-dashoffset:-96;opacity:.8}54%,100%{stroke-dashoffset:-96;opacity:0}}
+@media (prefers-reduced-motion:reduce){.aboutLogo .pulse{display:none}}
 .aboutLogo .wm{font-size:1.35em;font-weight:700;color:var(--acc);line-height:1}
 #aboutBox .story{max-width:42ch;color:var(--item);font-size:.92em}
 #aboutFacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;width:100%;margin:4px 0 0;text-align:left}
@@ -566,55 +1064,109 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 #aboutFacts dd{margin:0;color:var(--fg);font-size:.9em;font-weight:600;overflow-wrap:anywhere}
 #aboutBox .built{max-width:42ch;color:var(--mut);font-size:.82em}
 #aboutActions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%}
-/* the dialog's controls follow the same grammar as the sidebar's, which is
-   the concept row's — its close button matches the search box's clear
-   button, the same control one layer down. */
+/* the dialog's controls follow the same grammar as the header's, which is the
+   concept row's — its close button matches the search box's clear button, the
+   same control one layer down. */
 #aboutActions button{background:transparent;border:1px solid transparent;border-radius:5px;color:var(--item);font-size:.95em}
 #aboutActions button:hover{background:var(--line);color:var(--fg)}
-</style></head><body>
-<div id="side"><button id="aboutBtn" title="What this vault is, and the facts to quote when something looks wrong">__LOGO__<span class="tx"><span class="eyebrow">About</span><span class="wm">00_Cerebrum</span></span></button><div class="stat"><b>00_Cerebrum</b> · __NC__ concepts · __CIT__ citations<br>generated __STAMP__ by _scripts/visualize.py</div>
-<div id="views"><button id="bList" class="on">Concepts</button><button id="bGraph">Graph</button></div><div id="kbbar"></div><button id="ball" title="Fold or unfold every group in the list">Collapse all</button><div id="qwrap"><input id="q" placeholder="Search title, description, tags…"><button id="qx" type="button" title="Clear the search" aria-label="Clear the search">×</button></div><div id="tree"></div></div><div id="splitter" title="drag to resize"></div>
-<div id="main"><div class="meta">Pick a concept, or search. Dashed links point at concepts not written yet — legitimate under OKF.</div></div><div id="gpane"><div id="legend"></div><button id="gfit" title="Frame the whole graph (or double-click the background)">Fit</button><canvas id="gc"></canvas><div id="gcard"></div></div>
+</style></head><body class="vg">
+<header id="top">
+<button id="aboutBtn" title="What this vault is, and the facts to quote when something looks wrong">__LOGO__<span class="tx"><span class="eyebrow">About</span><span class="wm">00_Cerebrum</span></span></button>
+<div id="legend" role="group" aria-label="Categories"></div>
+<div id="tools"><div id="views" role="group" aria-label="View"><button id="bGraph" class="ib on" title="Graph view: the whole vault as one map" aria-label="Graph view" aria-pressed="true">__IGRAPH__</button><button id="bList" class="ib" title="Concept view: the list of concepts, and the concept page beside it" aria-label="Concept view" aria-pressed="false">__ICONCEPTS__</button></div><button id="bSet" class="ib" title="Settings" aria-label="Settings" aria-haspopup="dialog" aria-expanded="false">__IGEAR__</button></div>
+<div id="setBox" role="dialog" aria-label="Settings" hidden>
+<header><div><p class="eyebrow">Settings</p><h2>00_Cerebrum</h2></div><button class="x" id="setX" title="Close settings (Esc)">&#215;</button></header>
+<div class="sgrp"><span class="sgt">Brain</span><span id="brainN"></span></div>
+<div id="brain"><select id="bModel" aria-label="Which model answers"></select><select id="bEffort" aria-label="Effort level"></select></div>
+<p class="hint" id="brainWhere"></p>
+<div id="bWeights"></div>
+<p class="hint" id="brainDisk"></p>
+<div class="sgrp"><span class="sgt">Knowledge bases</span><span id="kbN"></span></div>
+<div id="kbbar"></div>
+<p class="hint">A hidden knowledge base leaves the graph, the concept list and the category counts. The choice is kept for the next visit.</p>
+</div>
+</header>
+<div id="askbar"><div id="qwrap"><button id="mSearch" class="mb on" type="button" title="Search the vault" aria-label="Search the vault" aria-pressed="true">__ISEARCH__</button><button id="mAsk" class="mb" type="button" title="Ask Claude for a report instead of searching" aria-label="Ask Claude" aria-pressed="false">__ISPARK__</button><div id="qbar" hidden><i></i></div><input id="q" placeholder="Search title, description, tags…" aria-label="Search concepts"><button id="qx" type="button" title="Clear the search" aria-label="Clear the search">×</button><button id="bRep" class="mb" type="button" title="The reports in Outputs/" aria-label="Reports" aria-haspopup="dialog" aria-expanded="false">__IREPORTS__</button></div></div>
+<div id="stage">
+<div id="gpane"><canvas id="gc"></canvas><div id="gcard"></div><div id="gtools"><button id="gfit" title="Frame the whole graph (f, or double-click the background)">Fit</button></div></div>
+<div id="cpane"><div id="side"><div id="sidetop"><button id="ball" title="Fold or unfold every group in the list">Collapse all</button></div><div id="tree"></div></div><div id="splitter" title="drag to resize"></div><div id="main"><div class="doc"><div class="meta">Pick a concept, or search. Dashed links point at concepts not written yet — legitimate under OKF.</div></div></div></div>
+</div>
+<div id="repWrap"><div id="repBox">
+<header><div><p class="eyebrow">Outputs</p><h2>Reports</h2></div><button class="x" id="repX" title="Close reports (Esc)">&#215;</button></header>
+<div id="repList"></div>
+<p class="hint" id="repHint"></p>
+</div></div>
 <div id="aboutWrap"><div id="aboutBox">
 <header><div><p class="eyebrow">About</p><h2>00_Cerebrum</h2></div><button class="x" id="aboutX" title="Close about">&#215;</button></header>
 <div id="aboutContent">
 <div class="aboutLogo">__LOGO__
 <div class="wm">00_Cerebrum</div><div class="tl">Open Knowledge Format</div>
 </div>
-<p class="story">A knowledge base that reads its own sources and cites every claim back to the page it came from, and the machinery that keeps it honest. <i>Cerebrum</i> is the Latin for brain.</p>
+<p class="story">A knowledge base that reads its own sources and cites every claim back to the page it came from, and the machinery that keeps it honest. <i>Cerebrum</i> is the Latin for brain. Built by your-account with Claude Code.</p>
 <dl id="aboutFacts"></dl>
 <p class="built">Markdown and YAML in an Obsidian vault, Open Knowledge Format v0.2 for the bundles, Python for the checks, GitHub for the code.</p>
-<div id="aboutActions"><button id="aboutList">Concepts</button><button id="aboutGraph">Graph</button></div>
+<div id="aboutActions"><button id="aboutGraph">Graph</button><button id="aboutList">Concepts</button></div>
 </div></div></div>
 <script>const D=__DATA__;const GIT='__GIT__';const STAMP='__STAMP__';const BUILDNO='__BUILDNO__';const STARTED='__STARTED__';
-/* One order for the whole viewer: the knowledge-base buttons and the
-   sidebar groups read the same sequence, so the two can never disagree.
-   `KB_BLOCKS` is the single source of it and is derived from the concepts
-   actually present — one block per knowledge base, sorted by name, each
-   with its own hue and legend row.
+/* One pinned order for the whole viewer: the knowledge-base buttons two per
+   row (Alpha and Beta, then Gamma and Zeta) and the sidebar groups in the
+   same sequence. Pinned rather than sorted so a rename cannot reshuffle
+   either, and so the two never disagree. Anything not listed sorts after. */
+/* The blocks are the vault's real structure — the three employer archives,
+   the two Alpha documentation bundles, the private base — and they are the one
+   source of the ordering. The selector in Settings draws them 3 / 2 / 1 across
+   its width, each block symmetric on its own line, and the concept tree reads
+   them flat in the same sequence. A knowledge base no block names lands in a
+   fourth selector row and sorts last in the tree.
 
-   Group several bundles into one block if your vault has a real grouping
-   to state; `KB_ORDER` and the legend follow whatever the blocks say. */
-const KB_HUES=['#e8a14a','#4fc3d0','#c76bd4','#7fbf6a','#e07b7b','#8e9ae0','#d9b34a','#6fb3a8'];
-const KB_BLOCKS=[...new Set(Object.values(D).map(c=>c.kb))].sort()
-  .map((k,i)=>({kbs:[k],hue:KB_HUES[i%KB_HUES.length],tag:k.replace(/_kb$/,'')}));
+   `KB_ORDER` is derived rather than written out. It was a second hand-kept
+   list until 01.09.2026 and it had already drifted: it still carried the
+   order of 29.08.2026, Delta and Epsilon directly after Alpha, while the blocks
+   introduced that morning put them in their own row after the employers. So
+   the buttons read Alpha, Beta, Gamma, Delta, Epsilon, Zeta and the concept
+   tree read Alpha, Delta, Epsilon, Beta, Gamma, Zeta. The comment on the old
+   list promised the two could never disagree; deriving one from the other is
+   what actually keeps that promise. */
+const KB_BLOCKS=__KB_BLOCKS__;
 const HUE={};KB_BLOCKS.forEach(b=>b.kbs.forEach(k=>HUE[k]=b.hue));
 const KB_ORDER=KB_BLOCKS.flatMap(b=>b.kbs);
 const tree=document.getElementById('tree'),main=document.getElementById('main'),q=document.getElementById('q');
+const side=document.getElementById('side'),sidetop=document.getElementById('sidetop'),qwrap=document.getElementById('qwrap');
 const KB_LABEL={};        /* display names where the folder name is not the one you want */
 function kbOf(id){return id.split('/')[0]}
 function kbName(k){return KB_LABEL[k]||k.replace('_kb','')}
 function group(id){const p=id.split('/'),sub=p.slice(2,-1).join('/');
 /* A concept at the bundle root — questions.md — has no subpath, and the
    old expression relied on ||, which never fired because the left side was
-   already truthy. It rendered as 'Name / ' with a dangling separator. */
+   already truthy. It rendered as 'Alpha / ' with a dangling separator. */
 return sub?kbName(p[0])+' / '+sub:kbName(p[0])}
-/* Order the sidebar by knowledge base first, using the same order as the
-   buttons, then by group inside it. localeCompare on the group label is
-   case-insensitive, so a lowercase folder name used to sort into the middle
-   of the others — an ordering that meant nothing and read as an accident. */
+/* Order the sidebar by knowledge base first, using the same pinned order as
+   the buttons, then by group inside it. localeCompare on the group label is
+   case-insensitive, which put Zeta between Alpha and Beta purely because of
+   its lowercase name — an ordering that meant nothing and read as an
+   accident. Owner's request of 15.08.2026: Zeta sits below Gamma. */
 function kbRank(id){const i=KB_ORDER.indexOf(kbOf(id));return i<0?KB_ORDER.length:i}
+/* Which knowledge bases are shown is a setting, and a setting is kept between
+   visits, as j4k keeps what its Options menu sets and nothing else. Two ways a
+   kept value turns into a dead page, both taken seriously because Chrome shares
+   one store between every file:// page: a name no knowledge base carries any
+   more is dropped, and a store that hides every knowledge base is ignored,
+   since a page showing nothing looks broken rather than configured. */
+const KB_ALL=[...new Set(Object.values(D).map(c=>c.kb))];
 var offKB=new Set();
+try{const s=JSON.parse(localStorage.getItem('okf.kbOff')||'[]');
+ if(Array.isArray(s))offKB=new Set(s.filter(k=>KB_ALL.includes(k)))}catch(e){}
+if(offKB.size>=KB_ALL.length)offKB.clear();
+function saveKb(){try{localStorage.setItem('okf.kbOff',JSON.stringify([...offKB]))}catch(e){}}
+/* Full screen, 09.09.2026 to 14.09.2026, kept its choice under this name. Both
+   views are full screen now, so nothing reads it; clear it rather than leave a
+   dead value in the store Chrome shares with every other file:// page. */
+try{localStorage.removeItem('okf.fs')}catch(e){}
+/* Categories switched off in the header. A working selection, not a setting:
+   it lasts while the page is open, as j4k's tag scope and search text do. It
+   filters both views, because the header sits over both. */
+const off=new Set();
+let view='graph';
 /* Collapsible groups. 223 concepts in one scroll is the length problem;
    folding is per group, persisted, and never allowed to hide a search hit.
    Items stay in the DOM when folded — the container is what hides — so
@@ -627,13 +1179,13 @@ function saveFold(){try{localStorage.setItem('okf.collapsed',JSON.stringify([...
 function markSel(){if(!cur)return;document.querySelectorAll('.it').forEach(e=>e.classList.toggle('on',e.dataset.t===cur))}
 function build(filter){tree.innerHTML='';const gs=new Map();
 Object.keys(D).sort((a,b)=>{const ra=kbRank(a),rb=kbRank(b);if(ra!==rb)return ra-rb;
-const ga=group(a),gb=group(b);return ga===gb?D[a].t.localeCompare(D[b].t):ga.localeCompare(gb)}).forEach(id=>{const c=D[id];if(offKB.has(c.kb))return;
+const ga=group(a),gb=group(b);return ga===gb?D[a].t.localeCompare(D[b].t):ga.localeCompare(gb)}).forEach(id=>{const c=D[id];if(offKB.has(c.kb)||off.has(CATS.indexOf(cat(id))))return;
 if(filter){const hay=(c.t+' '+c.d+' '+c.tags.join(' ')+' '+id).toLowerCase();if(!hay.includes(filter))return}
 const g=group(id);if(!gs.has(g))gs.set(g,[]);gs.get(g).push(id)});
 curGroups=[...gs.keys()];
 gs.forEach((ids,g)=>{const open=!!filter||!collapsed.has(g);
 const h=document.createElement('div');h.className='grp'+(open?'':' shut')+(filter?' flat':'');
-const cv=document.createElement('span');cv.className='cv';cv.textContent='\u25be';h.appendChild(cv);
+const cv=document.createElement('span');cv.className='cv';cv.textContent='▾';h.appendChild(cv);
 const gn=document.createElement('span');gn.className='gn';gn.textContent=g;h.appendChild(gn);
 const ct=document.createElement('small');ct.textContent=ids.length;h.appendChild(ct);
 h.title=filter?'showing search results':(open?'click to fold this group':'click to unfold this group');
@@ -642,49 +1194,343 @@ ids.forEach(id=>{const c=D[id];const e=document.createElement('a');e.className='
 if(!filter)h.onclick=()=>{collapsed.has(g)?collapsed.delete(g):collapsed.add(g);saveFold();build(q.value.toLowerCase())};
 tree.appendChild(h);tree.appendChild(box)});
 const anyOpen=curGroups.some(g=>!collapsed.has(g));
-ball.textContent=anyOpen?'Collapse all':'Expand all';ball.disabled=!!filter||!curGroups.length;
+ball.innerHTML='<span class="qi" aria-hidden="true">'+(anyOpen?'__ICOLLAPSE__':'__IEXPAND__')+'</span>'+(anyOpen?'Collapse all':'Expand all');ball.disabled=!!filter||!curGroups.length;
 ball.title=filter?'the list is showing search results':'Fold or unfold every group in the list';
 markSel()}
 ball.onclick=()=>{const anyOpen=curGroups.some(g=>!collapsed.has(g));
 curGroups.forEach(g=>anyOpen?collapsed.add(g):collapsed.delete(g));saveFold();build(q.value.toLowerCase())};
 function E(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function chip(txt,cls){return '<span class="badge '+(cls||'')+'">'+E(txt)+'</span>'}
-function show(id){const c=D[id];if(!c)return;cur=id;
+/* Opening a concept is what the Concept view is for, so it switches there from
+   wherever it was asked: the list, a link in a page, the graph card. */
+function show(id){const c=D[id];if(!c)return;cur=id;setView('concepts');
 /* A concept reached from a body link may sit in a folded group; leaving it
    folded loses the highlight and the reader's place in the tree. */
 if(!q.value&&collapsed.has(group(id))){collapsed.delete(group(id));saveFold();build('')}
-markSel();const selEl=tree.querySelector('.it.on');if(selEl&&selEl.scrollIntoView)selEl.scrollIntoView({block:'nearest'});
-let h='<button class="gbtn" title="Select this concept in the graph">&#9883; Show in graph</button><h1>'+E(c.t)+'</h1><div class="meta">'+chip(c.ty)+chip(c.st,c.st==='draft'?'dr':'')+chip(c.tr,c.tr==='human-reviewed'?'hu':'')+chip(c.ns+' sources')+' '+c.tags.map(t=>'#'+E(t)).join(' ')+'<br>'+E(c.d)+'</div>';
+/* Out of sight, the row comes to the middle of the list; in sight, it stays
+   put. 'nearest' left a concept opened from the graph on the list's bottom
+   edge, and centring every time would jump the list under the pointer that
+   had just clicked a visible row. */
+markSel();const selEl=tree.querySelector('.it.on');
+if(selEl){const tb=tree.getBoundingClientRect(),rb=selEl.getBoundingClientRect();
+if(rb.top<tb.top||rb.bottom>tb.bottom)selEl.scrollIntoView({block:'center'})}
+let h='<div class="doc">'+(idx[id]===undefined?'':'<button class="gbtn" title="Select this concept in the graph">&#9883; Show in graph</button>')+'<h1>'+E(c.t)+'</h1><div class="meta">'+chip(c.ty)+chip(c.st,c.st==='draft'?'dr':'')+chip(c.tr,c.tr==='human-reviewed'?'hu':'')+chip(c.ns+' sources')+' '+c.tags.map(t=>'#'+E(t)).join(' ')+'<br>'+E(c.d)+'</div>';
 if(c.inb.length)h+='<div class="links">← linked from: '+c.inb.map(x=>'<a class="nav" data-t="'+x+'">'+E(D[x].t)+'</a>').join(' · ')+'</div>';
 h+=c.html;
 if(c.srcs.length){h+='<h2>Sources</h2><table><tr><th>Source</th><th>last_modified</th></tr>'+c.srcs.map(s=>'<tr><td>'+E(s[0])+'</td><td>'+E(s[1])+'</td></tr>').join('')+'</table>'}
-main.innerHTML=h;main.scrollTop=0;
-main.querySelectorAll('a.nav').forEach(a=>a.onclick=()=>show(a.dataset.t))}
-q.oninput=()=>build(q.value.toLowerCase());build('');
-const qwrap=document.getElementById('qwrap'),qx=document.getElementById('qx');
+main.innerHTML=h+'</div>';main.scrollTop=0;
+main.querySelectorAll('a.nav').forEach(a=>a.onclick=()=>show(a.dataset.t));
+const b=main.querySelector('.gbtn');if(b)b.onclick=()=>{setView('graph');select(idx[id]);centerOn(idx[id])}}
+const qx=document.getElementById('qx');
 q.addEventListener('input',()=>qwrap.classList.toggle('has',!!q.value));
 qx.onclick=()=>{q.value='';q.dispatchEvent(new Event('input'));q.focus()};
+
+/* ---- The other half of the box: Ask Claude, and the reports it writes.
+   The page is one file opened from disk, so it can reach nothing by itself.
+   `_scripts/viewer-server.py` on 127.0.0.1 is what serves the two things it
+   cannot do: run the librarian over the vault, and read `Outputs/`. The helper
+   is started by hand and is usually not running, so everything below is built
+   to be absent: the page searches exactly as before, and the two buttons say
+   plainly that the helper is off rather than failing when pressed. */
+const HELPER='http://127.0.0.1:8760';
+const mSearch=document.getElementById('mSearch'),mAsk=document.getElementById('mAsk'),
+ bRep=document.getElementById('bRep'),askbar=document.getElementById('askbar'),
+ qbar=document.getElementById('qbar'),qbarFill=qbar.firstElementChild,
+ repWrap=document.getElementById('repWrap'),repList=document.getElementById('repList'),
+ repHint=document.getElementById('repHint'),repX=document.getElementById('repX');
+const SEARCH_PH='Search title, description, tags…',
+ ASK_PH='Ask Claude for a report on the vault — Enter to send';
+let helper=null,asking=false,askMode=false;
+/* The blank line that ends one event. Built rather than written: this
+   whole page is one Python string, so a backslash escape is resolved when
+   the generator is parsed and never reaches the browser. */
+const EVSEP=String.fromCharCode(10,10);
+
+/* Whether the helper is there at all. One call at load, and again whenever the
+   Ask side is pressed: it is started and stopped by hand, so the answer at load
+   is often out of date by the time it is wanted. */
+async function pingHelper(){
+ try{const r=await fetch(HELPER+'/health',{cache:'no-store'});helper=r.ok?await r.json():null}
+ catch(e){helper=null}
+ const off=!helper;
+ mAsk.disabled=off;bRep.disabled=off;
+ /* The command-line login dies after about a month and says nothing. macOS
+    notifications do not reach this Mac, so the two places that do are the
+    launcher and here, on the button the question is asked from. */
+ const L=(helper&&helper.login)||null;
+ let warn=null;
+ if(L&&L.state==='expired')warn=' — the Claude Code login expired on '+L.when+', run: claude auth login';
+ else if(L&&L.state==='soon')warn=' — the Claude Code login expires in '+L.days+' day(s), on '+L.when;
+ mAsk.title=off?'Ask Claude — open the vault with "Open 00_Cerebrum.command" to use this'
+  :('Ask Claude for a report instead of searching ('+helper.model+', '+helper.effort+' effort)'+(warn||''));
+ mAsk.classList.toggle('warn',!!warn);
+ bRep.title=off?'Reports — open the vault with "Open 00_Cerebrum.command" to use this'
+  :('The reports in Outputs/ ('+helper.reports+')');
+ if(off&&askMode)setMode(false);
+ return helper}
+
+function setMode(ask){askMode=!!ask&&!!helper;
+ mSearch.classList.toggle('on',!askMode);mAsk.classList.toggle('on',askMode);
+ mSearch.setAttribute('aria-pressed',String(!askMode));
+ mAsk.setAttribute('aria-pressed',String(askMode));
+ askbar.classList.toggle('ask',askMode);
+ q.setAttribute('aria-label',askMode?'Ask Claude':'Search concepts');
+ q.placeholder=askMode?ASK_PH:SEARCH_PH;
+ /* Leaving Ask mode must not leave the list filtered by a question nobody
+    searched for, and entering it must not filter by one either. */
+ if(q.value){q.value='';q.dispatchEvent(new Event('input'))}
+ q.focus()}
+mSearch.onclick=()=>setMode(false);
+mAsk.onclick=async()=>{if(!helper)await pingHelper();setMode(true)};
+
+/* The bar advances on real milestones, never on a timer. Each step closes half
+   the remaining gap, then a third, then a quarter, so it always moves and never
+   arrives before the report does. */
+let step=0;
+function bar(reset){if(reset){step=0;qbar.hidden=false;qbar.classList.remove('done');
+  qbarFill.style.width='0%';return}
+ step++;let w=0,left=100;for(let i=1;i<=step;i++){const take=left/(i+1);w+=take;left-=take}
+ qbarFill.style.width=w.toFixed(1)+'%'}
+function barDone(ok){qbar.classList.toggle('done',!!ok);qbarFill.style.width='100%';
+ setTimeout(()=>{qbar.hidden=true;qbar.classList.remove('done')},ok?2600:1200)}
+
+async function ask(){
+ const text=q.value.trim();if(!text||asking)return;
+ if(!await pingHelper()){q.placeholder='the helper is not running';return}
+ asking=true;mAsk.classList.add('busy');q.value='';q.blur();
+ q.placeholder='asking the librarian…';bar(true);
+ let path=null,err=null;
+ try{
+  const res=await fetch(HELPER+'/ask',{method:'POST',
+   headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({question:text},brainBody()))});
+  if(res.status===409){throw new Error('a report is already being written')}
+  if(!res.ok){throw new Error('the helper answered '+res.status)}
+  /* The body is an event stream read by hand rather than an EventSource,
+     because the question has to go up in a POST and EventSource only gets. A
+     chunk boundary can fall inside an event, so the tail is kept. */
+  const rd=res.body.getReader(),dec=new TextDecoder();let buf='';
+  for(;;){const {value,done}=await rd.read();if(done)break;
+   buf+=dec.decode(value,{stream:true});let i;
+   while((i=buf.indexOf(EVSEP))>-1){
+    const raw=buf.slice(0,i).replace(/^data: /,'');buf=buf.slice(i+2);
+    if(!raw)continue;let ev;try{ev=JSON.parse(raw)}catch(e){continue}
+    if(ev.type==='step'||ev.type==='note'){bar();if(ev.text)q.placeholder=ev.text}
+    else if(ev.type==='error'){err=ev.error}
+    else if(ev.type==='done'){path=ev.path;
+     /* Both languages, every time, since 16.09.2026 — so the box says whether
+        the German version is really there rather than letting it be assumed. */
+     q.placeholder=path?('report filed in '+ev.seconds+'s, '
+       +(ev.de?'EN and DE':'English only — the German version failed')
+       +' — opening it')
+      :'the librarian finished without filing a report'}}}
+ }catch(e){err=e.message}
+ asking=false;mAsk.classList.remove('busy');
+ if(err){q.placeholder=err;barDone(false);return}
+ barDone(true);
+ if(path){openReport(path);loadReports()}}
+
+function openReport(rel){window.open(HELPER+'/report/'+rel.split('/').map(encodeURIComponent).join('/'),'_blank')}
+
+/* The list is the register's, not a directory's. `Outputs/_REPORTS.md` is where
+   the vault records every report, and it carries the scope and the question as
+   asked; a folder listing carries neither. Grouped by folder, because an audit
+   lives in `Outputs/HealthChecks/` and a question report at the root. */
+async function loadReports(){
+ if(!await pingHelper()){repList.innerHTML='';
+  repHint.textContent='The helper is not running. Start it with: python3 _scripts/viewer-server.py';return}
+ let rows=[];
+ try{rows=(await (await fetch(HELPER+'/reports',{cache:'no-store'})).json()).reports||[]}
+ catch(e){repHint.textContent='the helper answered nothing';return}
+ /* Only the question reports. The audits live in `Outputs/HealthChecks/` since
+    16.09.2026 and are 40 of the 50 rows, which is what buried the ten that
+    answer a question; this window is for those ten. Owner's instruction. */
+ const q1=rows.filter(r=>!r.audit);
+ repList.innerHTML=q1.map(r=>
+   '<div class="rr'+(r.exists?'':' gone')+'" data-p="'+E(r.path)+'">'+
+   '<span class="rm"><span class="rd">'+E(r.date)+'</span>'+
+   '<span class="rs">'+E(r.scope)+(r.exists?'':' · missing on disk')+'</span></span>'+
+   '<span class="rq">'+E(r.question||r.title)+'</span></div>').join('');
+ repHint.textContent=q1.length+' report(s). The health checks are in Outputs/HealthChecks/ and are not listed here. A row opens the report in a new tab.';
+ repList.querySelectorAll('.rr').forEach(el=>{if(el.classList.contains('gone'))return;
+  el.onclick=()=>openReport(el.dataset.p)})}
+
+/* ---- Brain: which model answers, and at what effort ----------------------
+   The page holds the choice and sends it with every request; the helper keeps
+   the allowlist and refuses anything it does not name, because an id reaches a
+   command line and names a folder on disk. Two stores, because the two answer
+   different questions and a model that takes no effort must not lose the level
+   the last one used. Both survive a reload, like the knowledge-base toggles. */
+const brainEl=document.getElementById('brain'),bModel=document.getElementById('bModel'),
+ bEffort=document.getElementById('bEffort'),bWeights=document.getElementById('bWeights'),
+ brainWhere=document.getElementById('brainWhere'),brainN=document.getElementById('brainN'),
+ brainDisk=document.getElementById('brainDisk');
+let MODELS=[],EFFORTS=[],picked=null,pickedEffort=null;
+function loadPick(){try{picked=localStorage.getItem('okf.model')||null;
+  pickedEffort=localStorage.getItem('okf.effort')||null}catch(e){}}
+function savePick(){try{if(picked)localStorage.setItem('okf.model',picked);
+  if(pickedEffort)localStorage.setItem('okf.effort',pickedEffort)}catch(e){}}
+loadPick();
+/* What every request carries. A model the helper has since stopped naming —
+   a registry edited between two visits — falls back to its default rather than
+   being sent and refused. */
+function brainBody(){const m=MODELS.find(x=>x.id===picked);
+ return m?{model:m.id,effort:pickedEffort||undefined}:{}}
+function curModel(){return MODELS.find(x=>x.id===picked)||MODELS[0]||null}
+
+async function loadBrain(){
+ if(!helper){brainEl.hidden=true;bWeights.innerHTML='';
+  brainWhere.textContent='Start the helper to choose a model.';
+  brainN.textContent='';return}
+ brainEl.hidden=false;
+ let d=null;try{d=await (await fetch(HELPER+'/models',{cache:'no-store'})).json()}
+ catch(e){brainWhere.textContent='the helper answered nothing';return}
+ MODELS=d.models||[];EFFORTS=d.efforts||[];
+ if(!MODELS.some(m=>m.id===picked))picked=d.default;
+ if(EFFORTS.indexOf(pickedEffort)<0)pickedEffort=d.defaultEffort;
+ bModel.innerHTML=MODELS.map(m=>'<option value="'+E(m.id)+'"'+
+   (m.id===picked?' selected':'')+(m.installed?'':' disabled')+'>'+E(m.label)+
+   (m.installed?'':' — not installed')+'</option>').join('');
+ bEffort.innerHTML=EFFORTS.map(x=>'<option value="'+E(x)+'"'+
+   (x===pickedEffort?' selected':'')+'>'+E(x)+'</option>').join('');
+ paintBrain(d)}
+
+/* The line that says what leaves this Mac, and the one warning worth carrying
+   into the window: a local model is a completion and Ask Claude is an agent, so
+   picking one here means the Ask button will say so rather than run. */
+function paintBrain(d){const m=curModel();if(!m)return;
+ bEffort.disabled=!m.effort;
+ bEffort.title=m.effort?'How hard the model thinks':m.label+' takes no effort level';
+ brainN.textContent=m.label;
+ brainWhere.innerHTML=(m.provider==='local'
+   ? 'Runs here. <b>Nothing leaves this Mac.</b> Translates only; Ask needs a Claude model.'
+   : 'Reads the vault at Anthropic.')+' '+E(m.note||'');
+ const local=MODELS.filter(x=>x.provider==='local');
+ bWeights.innerHTML=local.map(row).join('');
+ /* "free" alone read as memory, and the owner asked on 16.09.2026 why three
+    models would not fit when switching between them frees the RAM. They do
+    free it — one model is loaded at a time — and the limit was never RAM.
+    Weights sit on disk whether or not they are loaded, so the line says disk. */
+ brainDisk.innerHTML=local.length
+   ? (d.free/1e9).toFixed(0)+' GB free on disk. Each model stays on disk whether or not it is loaded; only one is in memory at a time.'
+     +(d.mlx?'':' <b>mlx-lm is not installed</b> — run: python3 -m pip install --user mlx-lm')
+   : '';
+ wireWeights()}
+
+/* One row, in GLaDOS's two-line shape: the name, one quiet line of detail, and
+   the action on the right. */
+function row(x){
+ const gb=n=>(n/1e9).toFixed(1)+' GB';
+ const on=x.installed;
+ return '<div class="wr" data-m="'+E(x.id)+'" data-gb="'+E(gb(x.bytes||0))+
+   '" data-disk="'+E(gb(x.onDisk||0))+'">'+
+  '<span class="wl"><span class="wt">'+(on?'<span class="tick">&#10003;</span>':'')+
+    /* Every row here is local, so the label's own "(local)" says nothing.
+       It stays in the dropdown, where Claude models sit beside these. */
+    E(x.label.replace(' (local)',''))+'</span><span class="ws">'+
+    (on?gb(x.onDisk||0)+' on disk'
+      :'One-time download from Hugging Face'+(x.fits?''
+        :' &middot; <span class="no">not enough free disk</span>'))+
+  '</span></span>'+
+  (on?'<button type="button" class="del">Delete</button>'
+     :'<button type="button" class="get"'+(x.fits?'':' disabled')+'>Download '+
+       gb(x.bytes||0)+'</button>')+
+  '</div>'}
+
+function wireWeights(){
+ bWeights.querySelectorAll('.wr').forEach(r=>{
+  const b=r.querySelector('button');if(!b)return;
+  if(b.classList.contains('get')){b.onclick=()=>pullModel(r.dataset.m,b);return}
+  /* Delete asks first and the question names what saying yes costs, because
+     the way out has to come before the action rather than during it. */
+  b.onclick=()=>{
+   if(!r.classList.contains('arm')){
+    r.classList.add('arm');
+    r.querySelector('.ws').innerHTML='Frees '+E(r.dataset.disk)+
+      '. Getting it back is '+E(r.dataset.gb)+' from Hugging Face.';
+    b.textContent='Delete, really';
+    setTimeout(()=>{if(r.classList.contains('arm'))loadBrain()},8000);
+    return}
+   b.disabled=true;b.textContent='…';
+   delModel(r.dataset.m,r)}})}
+
+async function delModel(id,r){
+ let err=null;
+ try{const res=await fetch(HELPER+'/models/delete',{method:'POST',
+   headers:{'content-type':'application/json'},body:JSON.stringify({model:id})});
+  const j=await res.json().catch(()=>({}));
+  if(!res.ok)err=j.error||('the helper answered '+res.status)}
+ catch(e){err=e.message}
+ /* A failed delete leaves the row installed. GLaDOS's own review found the
+    message written only under the not-installed branch, so the reader confirmed
+    a destructive action, nothing happened, and nothing said why. */
+ await loadBrain();
+ if(err){const row=bWeights.querySelector('[data-m="'+CSS.escape(id)+'"] .ws');
+  if(row)row.innerHTML='<span class="no">'+E(err)+'</span>'}}
+
+bModel.onchange=()=>{picked=bModel.value;savePick();paintBrain({free:0,dir:'',mlx:true});loadBrain()};
+bEffort.onchange=()=>{pickedEffort=bEffort.value;savePick()};
+
+/* The download. Seventeen gigabytes is minutes of silence otherwise, so the
+   helper streams what it has and the row carries a bar. Same event shape as a
+   question, so nothing new had to be parsed. */
+async function pullModel(id,btn){const row=btn.closest('.wr');
+ btn.disabled=true;btn.textContent='…';
+ let pb=row.querySelector('.pb');
+ if(!pb){pb=document.createElement('div');pb.className='pb';pb.innerHTML='<i></i>';
+  row.appendChild(pb)}
+ try{
+  const res=await fetch(HELPER+'/models/pull',{method:'POST',
+   headers:{'content-type':'application/json'},body:JSON.stringify({model:id})});
+  if(!res.ok)throw new Error('the helper answered '+res.status);
+  const rd=res.body.getReader(),dec=new TextDecoder();let buf='';
+  for(;;){const {value,done}=await rd.read();if(done)break;
+   buf+=dec.decode(value,{stream:true});let i;
+   while((i=buf.indexOf(EVSEP))>-1){
+    const raw=buf.slice(0,i).replace(/^data: /,'');buf=buf.slice(i+2);
+    if(!raw)continue;let ev;try{ev=JSON.parse(raw)}catch(e){continue}
+    if(ev.type==='step'&&ev.total)pb.firstElementChild.style.width=
+      (100*ev.received/ev.total).toFixed(1)+'%';
+    else if(ev.type==='error'){row.querySelector('.wl').innerHTML+=
+      ' <span class="no">'+E(ev.error)+'</span>'}}}
+ }catch(e){row.querySelector('.wl').innerHTML+=' <span class="no">'+E(e.message)+'</span>'}
+ loadBrain()}
+
+function showReports(on){repWrap.classList.toggle('on',on);
+ bRep.setAttribute('aria-expanded',String(on));if(on)loadReports()}
+bRep.onclick=()=>showReports(!repWrap.classList.contains('on'));
+repX.onclick=()=>showReports(false);
+repWrap.onclick=e=>{if(e.target===repWrap)showReports(false)};
+/* The Brain is loaded with the first ping rather than when Settings opens, so
+   the very first question already carries the chosen model — the owner may
+   never open Settings again after picking one. */
+pingHelper().then(loadBrain);
+/* The helper is started by hand and may come up after the page is open, so one
+   check at load would leave the two buttons grey until a reload. Ask again when
+   the window is looked at again, which is what happens after starting it, and
+   never more than once every few seconds. */
+let lastPing=Date.now();
+addEventListener('focus',()=>{if(Date.now()-lastPing>3000){lastPing=Date.now();pingHelper()}});
+document.addEventListener('visibilitychange',()=>{
+ if(!document.hidden&&Date.now()-lastPing>3000){lastPing=Date.now();pingHelper()}});
 /* ---- graph view, built on a precomputed layout: opens settled, identical
    every regeneration. Click selects and shows the concept card with its
-   neighbourhood lit; Open (or double-click) goes to the full page. Colors
+   neighbourhood lit, and a second click on the same concept lets it go;
+   Open (or double-click) goes to the full page. A double-click's own second
+   click lets go of the concept, so the open selects it again. Colors
    are the validated palette; identity is never hue alone: shapes + legend +
    labels. ---- */
-/* One palette across every bundle. CATS names the Wiki subdirectories the
-   viewer knows how to shelve; a concept in a directory CATS does not name
-   renders as "meta / references", which is right for questions.md and
-   references/ and wrong for real content. So when a bundle's groups are
-   not in this list, add them here rather than special-casing the bundle:
-   a set of concepts rendering as meta is the symptom that they are
-   missing. Keep SHAPES at least as long as CATS. */
+/* A concept's category is its Wiki subdirectory when that is a name CATS knows,
+   and `meta` otherwise — which covers questions.md at a bundle root and any
+   shelf this list has not been told about. Add your own group names here and
+   they get their own shape, their own legend entry and their own place in the
+   sort; leave them out and they collect under meta, which is honest rather
+   than wrong. */
 const CATS=['people','systems','projects','decisions','meeting-series','organisation','timelines','services','procedures','policies','hardware','tools','references','meta'];
 const SHAPES=['circle','square','triangle','diamond','pentagon','hexagon','star','cross','ring','invtriangle','bars','shield','chip','gear','card','stack'];
 const LBL={'meeting-series':'meeting series','meta':'meta / references'};
-/* A concept's category is its Wiki subdirectory when that is a name CATS knows,
-   and 'meta' otherwise — so a group you have not named yet still renders. Add
-   your own group names to CATS rather than special-casing a knowledge base. */
 function cat(id){const p=id.split('/');const g=p.length>3?p[2]:'meta';
 return CATS.includes(g)?g:'meta'}
-const gpane=document.getElementById('gpane'),gc=document.getElementById('gc'),card=document.getElementById('gcard'),
+const gc=document.getElementById('gc'),card=document.getElementById('gcard'),
 bL=document.getElementById('bList'),bG=document.getElementById('bGraph'),legend=document.getElementById('legend');
 const ids=Object.keys(D),idx={};ids.forEach((id,i)=>idx[id]=i);
 const N=ids.map((id,i)=>({id,i,c:CATS.indexOf(cat(id)),kb:D[id].kb,x:D[id].x,y:D[id].y,r:5.5+2.3*Math.sqrt(D[id].inb.length)}));
@@ -692,19 +1538,10 @@ const L=[];ids.forEach(id=>D[id].out.forEach(o=>{if(idx[o]!==undefined&&idx[o]!=
 const NB=N.map(()=>new Set());L.forEach(([a,b])=>{NB[a].add(b);NB[b].add(a)});
 let tx=0,ty=0,sc=1,hov=-1,sel=-1,drag=null,pan=null,qv='',dirty=true,dpr=devicePixelRatio||1;
 /* one soft halo per knowledge base, in its block's hue, so the clusters in
-   the graph visibly belong to the sidebar block and legend row that share the
-   colour. Geometry is derived from the settled layout at load. */
-const KBC={};N.forEach(n=>{const c=KBC[n.kb]=KBC[n.kb]||{sx:0,sy:0,k:0,d:[]};c.sx+=n.x;c.sy+=n.y;c.k++});
-for(const kb in KBC){const c=KBC[kb];c.cx=c.sx/c.k;c.cy=c.sy/c.k}
-N.forEach(n=>{KBC[n.kb].d.push(Math.hypot(n.x-KBC[n.kb].cx,n.y-KBC[n.kb].cy))});
-/* the cluster edge is the 90th-percentile distance, not the farthest node.
-   Max-dist made the glow inconsistent: Beta is dense right up to its rim, so
-   its halo stopped at the outer nodes, while Alpha's sparse outliers inflated
-   its radius and the glow reached far past the dense mass. One robust edge,
-   one multiplier, and every halo reaches out by the same proportion. */
-for(const kb in KBC){const c=KBC[kb];c.d.sort((a,b)=>a-b);
-c.r=Math.max(60,c.d[Math.floor(.9*(c.d.length-1))]+30);delete c.d}
-const off=new Set();
+   the graph visibly belong to the settings block and legend row that share the
+   colour. The generator measures each halo and hands it over, because the
+   layout has to clear what this draws: see _halo in visualize.py. */
+const KBC=__HALO__;
 function hid(n){return off.has(n.c)||offKB.has(n.kb)}
 function rEff(n){return Math.min(30,Math.max(7,n.r*Math.sqrt(sc)))/sc}
 function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
@@ -713,60 +1550,73 @@ loadCols();matchMedia('(prefers-color-scheme: dark)').addEventListener('change',
 function ghost(n){if(hid(n))return true;
 if(qv){const d=D[n.id];if(!(d.t+' '+d.d+' '+d.tags.join(' ')).toLowerCase().includes(qv))return true}
 if(sel>=0&&n.i!==sel&&!NB[sel].has(n.i))return true;return false}
-function setView(v){gpane.style.display=v==='graph'?'flex':'none';main.style.display=v==='graph'?'none':'block';
-bG.classList.toggle('on',v==='graph');bL.classList.toggle('on',v!=='graph');if(v==='graph'){resize();fit()}}
-bL.onclick=()=>setView('list');bG.onclick=()=>setView('graph');
-const oldShow=show;show=function(id){setView('list');oldShow(id);
-const b=main.querySelector('.gbtn');if(b){if(idx[id]===undefined)b.style.display='none';
-else b.onclick=()=>{setView('graph');select(idx[id]);centerOn(idx[id])}}};
-document.querySelectorAll('.it').forEach(e=>e.onclick=()=>show(e.dataset.t));
+/* The two views. The search box no longer moves between them: since
+   16.09.2026 it is one bar across the window, above both panes, so its text,
+   its clear button and its filter are the same in both without anything being
+   re-parented on every switch. Owner's instruction. */
+function setView(v){view=v==='graph'?'graph':'concepts';const g=view==='graph';
+document.body.classList.toggle('vg',g);document.body.classList.toggle('vc',!g);
+bG.classList.toggle('on',g);bL.classList.toggle('on',!g);
+bG.setAttribute('aria-pressed',String(g));bL.setAttribute('aria-pressed',String(!g));
+/* The canvas is sized from its client box, and a hidden canvas measures zero:
+   a window resized while the Concept view was showing leaves the graph with no
+   backing store until this runs. */
+if(g){resize();fit()}}
+bL.onclick=()=>setView('concepts');bG.onclick=()=>setView('graph');
 const kbbarEl=document.getElementById('kbbar');
 /* The selector mirrors the vault's real structure, one block per ontology:
    the three employer archives, the two Alpha documentation bundles, the private
-   base. 3 / 2 / 1 across full width, so each block is symmetric on its own
+   base. 3 / 2 / 1 across the panel, so each block is symmetric on its own
    line and the grouping needs no label. A knowledge base this list does not
-   know lands in a fourth row rather than nowhere. */
-function kbbar(){kbbarEl.innerHTML='';const seen=[...new Set(Object.values(D).map(c=>c.kb))];
+   know lands in a fourth row rather than nowhere. It moved from the sidebar
+   into Settings on 14.09.2026, on the owner's instruction, unchanged. */
+function kbbar(){kbbarEl.innerHTML='';
 const known=KB_BLOCKS.flatMap(b=>b.kbs);
-const blocks=[...KB_BLOCKS.map(b=>({kbs:b.kbs.filter(k=>seen.includes(k)),hue:b.hue})),
- {kbs:seen.filter(k=>!known.includes(k)).sort(),hue:''}];
+const blocks=[...KB_BLOCKS.map(b=>({kbs:b.kbs.filter(k=>KB_ALL.includes(k)),hue:b.hue})),
+ {kbs:KB_ALL.filter(k=>!known.includes(k)).sort(),hue:''}];
 /* the buttons wear the block hue directly — filled when on, a tinted
    outline when off — so the row needs no accent bar. Owner's instruction
    of 01.09.2026, replacing the vertical line of the same morning. */
 blocks.forEach(block=>{if(!block.kbs.length)return;
 const row=document.createElement('div');row.className='krow';
-block.kbs.forEach(kb=>{const s=document.createElement('button');s.className=offKB.has(kb)?'':'on';
-if(block.hue){if(offKB.has(kb)){s.style.borderColor=block.hue+'66';s.style.color=block.hue}
+block.kbs.forEach(kb=>{const on=!offKB.has(kb);
+/* The last knowledge base showing stays on. Hiding it would leave both
+   views empty, which is the dead page the stored choice is guarded against. */
+const last=on&&offKB.size===KB_ALL.length-1;
+const s=document.createElement('button');s.className=on?'on':'';
+if(block.hue){if(!on){s.style.borderColor=block.hue+'66';s.style.color=block.hue}
 else{s.style.background=block.hue;s.style.borderColor=block.hue;s.style.color='var(--bg)'}}
 s.textContent=kbName(kb);
 const sm=document.createElement('small');sm.textContent=Object.values(D).filter(c=>c.kb===kb).length;s.appendChild(sm);
-s.title='show / hide this knowledge base — list and graph alike';
-s.onclick=()=>{offKB.has(kb)?offKB.delete(kb):offKB.add(kb);kbbar();build(q.value.toLowerCase());if(sel>=0&&hid(N[sel]))clearSel();dirty=true};
+s.title=last?'the last knowledge base showing stays on':'show / hide this knowledge base — graph, list and counts alike';
+if(last)s.setAttribute('aria-disabled','true');
+s.onclick=()=>{if(last)return;on?offKB.add(kb):offKB.delete(kb);saveKb();kbbar();kbBadge();chips();build(q.value.toLowerCase());if(sel>=0&&hid(N[sel]))clearSel();dirty=true};
 row.appendChild(s)});
 kbbarEl.appendChild(row)})}
-/* One row per KB_BLOCKS entry, carrying the categories that block's own
-   concepts actually use. Per block rather than global, so the legend rows and
-   the sidebar's knowledge-base buttons stay one-to-one — viewer-check asserts
-   that their accents match, and a global row count breaks it the moment a
-   second knowledge base exists. */
+/* One legend row per block, counting that block's own concepts. The counts
+   follow what is showing: with a knowledge base hidden in Settings its
+   concepts leave the counts, and a row with nothing left in it leaves the
+   header, so no chip offers a filter that would change nothing. */
 function chips(){legend.innerHTML='';
-KB_BLOCKS.forEach((blk,bi)=>{
+KB_BLOCKS.forEach(blk=>{
 const inBlk=new Set(blk.kbs);
-const cnt=CATS.map(()=>0);N.forEach(n=>{if(inBlk.has(n.kb))cnt[n.c]++});
+const cnt=CATS.map(()=>0);N.forEach(n=>{if(inBlk.has(n.kb)&&!offKB.has(n.kb))cnt[n.c]++});
 const row=document.createElement('div');row.className='lrow';
 /* the accent bar alone names the block — a text tag repeated the sidebar
    and pushed each row's chips right by a different width, so the category
-   columns never aligned. */
+   columns never aligned. Owner's instruction of 01.09.2026. */
 row.style.borderLeft='3px solid '+blk.hue;row.style.paddingLeft='8px';
 let any=false;
 for(let i=0;i<CATS.length;i++){const c=CATS[i];if(!cnt[i])continue;any=true;
 const s=document.createElement('span');s.className='chip'+(off.has(i)?' off':'');
-const cv=document.createElement('canvas');cv.width=cv.height=16;const x2=cv.getContext('2d');
-x2.translate(8,8);x2.fillStyle=COL[i];shp(x2,5.5,i);x2.fill();
+/* drawn at the screen's pixel density: a 16px bitmap blurs on a Retina display,
+   and the header is where every category mark is seen first */
+const cv=document.createElement('canvas');cv.width=cv.height=Math.round(16*dpr);cv.style.width=cv.style.height='16px';const x2=cv.getContext('2d');
+x2.scale(dpr,dpr);x2.translate(8,8);x2.fillStyle=COL[i];shp(x2,5.5,i);x2.fill();
 s.appendChild(cv);const bb=document.createElement('b');bb.textContent=LBL[c]||c;s.appendChild(bb);
 const sm=document.createElement('small');sm.textContent=cnt[i];s.appendChild(sm);
-s.title='click to hide / show this group';
-s.onclick=()=>{off.has(i)?off.delete(i):off.add(i);if(sel>=0&&hid(N[sel]))clearSel();chips();dirty=true};
+s.title='click to hide / show this category — graph and list alike';
+s.onclick=()=>{off.has(i)?off.delete(i):off.add(i);if(sel>=0&&hid(N[sel]))clearSel();chips();build(q.value.toLowerCase());dirty=true};
 row.appendChild(s)}
 if(any)legend.appendChild(row)})}
 function shp(x2,r,k){x2.beginPath();const s=SHAPES[k];
@@ -787,11 +1637,18 @@ else{const m=s==='pentagon'?5:s==='hexagon'?6:10;for(let j=0;j<m;j++){const rr=s
 const a=-Math.PI/2+j*2*Math.PI/m;x2[j?'lineTo':'moveTo'](rr*Math.cos(a),rr*Math.sin(a))}x2.closePath()}}
 function resize(){gc.width=gc.clientWidth*dpr;gc.height=gc.clientHeight*dpr;dirty=true}
 addEventListener('resize',resize);
+/* Frame the graph clear of what floats on it. The search box holds the top-left
+   corner, where Gamma sits, and the old pad of 70 world units came to about
+   twenty pixels on screen, so the corner of that cluster was framed underneath
+   the box. The margins are in screen pixels, and the top one is the box's
+   height with room to spare; the graph is centred in what they leave. */
+const FIT_TOP=76,FIT_SIDE=28,FIT_BOTTOM=28;
 function fit(){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9,any=false;
 for(const n of N){if(hid(n))continue;any=true;x0=Math.min(x0,n.x);y0=Math.min(y0,n.y);x1=Math.max(x1,n.x);y1=Math.max(y1,n.y)}
-if(!any)return;const pad=70;
-sc=Math.max(.08,Math.min(2.2,Math.min(gc.clientWidth/(x1-x0+2*pad),gc.clientHeight/(y1-y0+2*pad))));
-tx=-(x0+x1)/2;ty=-(y0+y1)/2;dirty=true}
+if(!any)return;
+const w=gc.clientWidth-2*FIT_SIDE,h=gc.clientHeight-FIT_TOP-FIT_BOTTOM;
+sc=Math.max(.08,Math.min(2.2,Math.min(w/Math.max(x1-x0,1),h/Math.max(y1-y0,1))));
+tx=-(x0+x1)/2;ty=(FIT_TOP-FIT_BOTTOM)/(2*sc)-(y0+y1)/2;dirty=true}
 function centerOn(i){const n=N[i];sc=Math.max(sc,1.5);tx=-n.x;ty=-n.y;dirty=true}
 function world(e){const b=gc.getBoundingClientRect();
 return[((e.clientX-b.left)-gc.clientWidth/2)/sc-tx,((e.clientY-b.top)-gc.clientHeight/2)/sc-ty]}
@@ -824,15 +1681,17 @@ const h=pick(wx,wy);if(h!==hov){hov=h;dirty=true}
 gc.style.cursor=hov>=0?'pointer':'grab'});
 gc.addEventListener('mousedown',e=>{const[wx,wy]=world(e);const h=pick(wx,wy);
 if(h>=0){drag=N[h];drag._m=0}else pan=[e.clientX,e.clientY]});
-addEventListener('mouseup',()=>{if(drag&&(drag._m||0)<6)select(drag.i);drag=null;pan=null});
+addEventListener('mouseup',()=>{if(drag&&(drag._m||0)<6){if(sel===drag.i)clearSel();else select(drag.i)}drag=null;pan=null});
 gc.addEventListener('dblclick',e=>{const[wx,wy]=world(e);const h=pick(wx,wy);
-if(h>=0)show(N[h].id);else fit()});
+if(h>=0){select(h);show(N[h].id)}else fit()});
 gc.addEventListener('wheel',e=>{e.preventDefault();const b=gc.getBoundingClientRect();const[wx,wy]=world(e);
 const ns=Math.max(.08,Math.min(14,sc*Math.exp(-e.deltaY*.0015)));
 tx=(e.clientX-b.left-gc.clientWidth/2)/ns-wx;ty=(e.clientY-b.top-gc.clientHeight/2)/ns-wy;sc=ns;dirty=true},{passive:false});
-addEventListener('keydown',e=>{if(gpane.style.display==='none')return;
-if(e.key==='Escape')clearSel();if(e.key==='f')fit()});
-const _oldQ=q.oninput;q.oninput=()=>{const f=q.value.toLowerCase();build(f);qv=f;dirty=true};
+/* In Ask mode the box is a question, not a filter: typing one must not empty
+   the list behind it, and clearing it must not leave the list filtered by half
+   a question. `askMode` is the switch; the filter is fed the empty string. */
+q.oninput=()=>{const f=askMode?'':q.value.toLowerCase();build(f);qv=f;dirty=true};
+q.addEventListener('keydown',e=>{if(e.key==='Enter'&&askMode){e.preventDefault();ask()}});
 document.getElementById('gfit').onclick=fit;
 function sxy(n){return[(n.x+tx)*sc+gc.clientWidth/2,(n.y+ty)*sc+gc.clientHeight/2]}
 function draw(){const x2=gc.getContext('2d');x2.setTransform(dpr,0,0,dpr,0,0);
@@ -840,9 +1699,9 @@ x2.clearRect(0,0,gc.clientWidth,gc.clientHeight);
 x2.save();x2.translate(gc.clientWidth/2,gc.clientHeight/2);x2.scale(sc,sc);x2.translate(tx,ty);
 const anySel=sel>=0;
 for(const kb in KBC){if(offKB.has(kb)||!HUE[kb])continue;const c=KBC[kb];
-const g=x2.createRadialGradient(c.cx,c.cy,0,c.cx,c.cy,c.r*1.3);
+const g=x2.createRadialGradient(c.cx,c.cy,0,c.cx,c.cy,c.halo);
 g.addColorStop(0,HUE[kb]+'30');g.addColorStop(.7,HUE[kb]+'1c');g.addColorStop(1,HUE[kb]+'00');
-x2.fillStyle=g;x2.beginPath();x2.arc(c.cx,c.cy,c.r*1.3,0,7);x2.fill();
+x2.fillStyle=g;x2.beginPath();x2.arc(c.cx,c.cy,c.halo,0,7);x2.fill();
 }
 x2.lineWidth=1/sc;
 for(const[a,b]of L){const na=N[a],nb2=N[b];if(hid(na)||hid(nb2))continue;
@@ -861,9 +1720,9 @@ x2.restore()}
    with a dark halo. Two placements tried first: above the cluster (drifts
    off-canvas for a big radius, Gamma lost its name) and a centroid
    watermark under the nodes (invisible exactly where the cluster is dense —
-   only the sparsest bundle let its through). */
+   only Zeta's fifteen sparse nodes let its through). */
 for(const kb in KBC){if(offKB.has(kb)||!HUE[kb])continue;const c=KBC[kb];
-/* one size for every name — scaling by radius made the big bundle shout and
+/* one size for every name — scaling by radius made Alpha shout and Zeta
    whisper, and the six names are peers. Owner: symmetry and consistency. */
 const fs=80;
 x2.font='700 '+fs+'px system-ui,-apple-system,sans-serif';x2.textAlign='center';x2.textBaseline='middle';
@@ -885,16 +1744,16 @@ if(placed.some(p=>box[0]<p[2]&&box[2]>p[0]&&box[1]<p[3]&&box[3]>p[1]))continue;p
 x2.lineWidth=3;x2.strokeStyle=css('--bg');x2.strokeText(txt,bx,by);
 x2.fillStyle=n.i===sel?css('--fg'):css('--mut');x2.fillText(txt,bx,by)}
 }
-(function loop(){if(gpane.style.display!=='none'&&(dirty||drag)){dirty=false;draw()}requestAnimationFrame(loop)})();
-const side=document.getElementById('side'),split=document.getElementById('splitter');
+(function loop(){if(view==='graph'&&(dirty||drag)){dirty=false;draw()}requestAnimationFrame(loop)})();
+const split=document.getElementById('splitter');
 let sdrag=false;
 split.addEventListener('mousedown',e=>{sdrag=true;split.classList.add('on');document.body.style.userSelect='none';e.preventDefault()});
-addEventListener('mousemove',e=>{if(!sdrag)return;const w=Math.max(220,Math.min(innerWidth*.6,e.clientX));side.style.width=w+'px';resize()});
-addEventListener('mouseup',()=>{if(sdrag){sdrag=false;split.classList.remove('on');document.body.style.userSelect='';resize()}});
+addEventListener('mousemove',e=>{if(!sdrag)return;const w=Math.max(220,Math.min(innerWidth*.6,e.clientX));document.documentElement.style.setProperty('--sidew',w+'px')});
+addEventListener('mouseup',()=>{if(sdrag){sdrag=false;split.classList.remove('on');document.body.style.userSelect=''}});
 // About: every number is derived from D at open time, so the panel cannot
 // drift from the page it describes the way a baked-in count would. The
-// knowledge-base breakdown is deliberately absent — the selectors above the
-// list already carry a count each, and a second copy is this vault's oldest
+// knowledge-base breakdown is deliberately absent — the selectors in Settings
+// already carry a count each, and a second copy is this vault's oldest
 // recurring fault.
 const aboutWrap=document.getElementById('aboutWrap');
 const REPO='';   /* your repository URL, or '' to hide the link */
@@ -909,11 +1768,11 @@ function aboutFill(){
  const cs=Object.values(D),f=document.getElementById('aboutFacts');f.innerHTML='';
  // The four build facts lead, as they do in j4k's About: what this page is,
  // before what the corpus in it holds.
- fact(f,'Build code',GIT,'The commit this page was generated from. \u2019uncommitted\u2019 means the vault held edits that were in no commit when it ran, so the page matches no commit exactly and there is nothing to link to. Set REPO above to link the hash to your own repository.',
+ fact(f,'Build code',GIT,'The commit this page was generated from. ’uncommitted’ means the vault held edits that were in no commit when it ran, so the page matches no commit exactly and there is nothing to link to. Set REPO above to link the hash to your own repository.',
   REPO&&/^[0-9a-f]{7,40}$/.test(GIT)?REPO+'/commit/'+GIT:null);
  fact(f,'Build number',BUILDNO,'Commits on main when this page was generated');
- fact(f,'Build date',STAMP,'When _scripts/visualize.py last ran, in this machine\u2019s timezone');
- fact(f,'Started',STARTED,'The vault\u2019s first commit, and which day of building this is');
+ fact(f,'Build date',STAMP,'When _scripts/visualize.py last ran, in this machine’s timezone');
+ fact(f,'Started',STARTED,'The vault’s first commit, and which day of building this is');
  fact(f,'Concepts',cs.length+' in '+new Set(cs.map(c=>c.kb)).size+' bases');
  fact(f,'Citations',cs.reduce((a,c)=>a+(c.ns||0),0));
  fact(f,'Inbound links',cs.reduce((a,c)=>a+(c.inb||[]).length,0),'Concept-to-concept links across the whole vault, counted where they land. A bundle that is a list rather than a graph shows up here before it shows up anywhere else.');
@@ -926,11 +1785,59 @@ document.getElementById('aboutX').onclick=aboutClose;
 aboutWrap.onclick=e=>{if(e.target===aboutWrap)aboutClose()};
 document.getElementById('aboutList').onclick=()=>{aboutClose();bL.click()};
 document.getElementById('aboutGraph').onclick=()=>{aboutClose();bG.click()};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&aboutWrap.classList.contains('on'))aboutClose()});
-kbbar();chips();resize();
+/* Settings. Opened from the gear, closed by its ×, by Escape, or by a press
+   anywhere outside it — j4k's house rule for its menus, and on pointerdown in
+   the capture phase for j4k's reason: a press that lands on another control
+   must close the panel before that control acts. */
+const setBox=document.getElementById('setBox'),bSet=document.getElementById('bSet');
+function setOpen(){setBox.hidden=false;bSet.classList.add('on');bSet.setAttribute('aria-expanded','true')}
+function setClose(){setBox.hidden=true;bSet.classList.remove('on');bSet.setAttribute('aria-expanded','false')}
+bSet.onclick=async()=>{if(setBox.hidden){setOpen();await pingHelper();loadBrain()}else setClose()};
+document.getElementById('setX').onclick=setClose;
+document.addEventListener('pointerdown',e=>{if(setBox.hidden||setBox.contains(e.target)||bSet.contains(e.target))return;setClose()},true);
+function kbBadge(){const n=offKB.size;let d=bSet.querySelector('.dot');
+if(n){if(!d){d=document.createElement('span');d.className='dot';bSet.appendChild(d)}d.textContent=n}
+else if(d)d.remove();
+bSet.title=n?'Settings · '+n+(n>1?' knowledge bases':' knowledge base')+' hidden':'Settings';
+document.getElementById('kbN').textContent=(KB_ALL.length-n)+' of '+KB_ALL.length+' showing'}
+/* One keyboard handler for the page. Escape closes the nearest thing open —
+   About, then Settings, then the graph card — and then lets go of any button
+   still holding focus. The owner reported the reason on 09.09.2026, on the
+   full-screen button: a button keeps focus after a click, the first keystroke
+   afterwards switches the browser to keyboard modality, and Escape itself
+   draws the ring. Every button can be the last one clicked, so every button
+   is let go of. Reports is first in the chain, because it is the thing most
+   recently opened when it is open at all. `f` frames the graph, and never
+   while typing: a search for "fokus" framed it. */
+addEventListener('keydown',e=>{
+if(e.key==='Escape'){
+if(repWrap.classList.contains('on'))showReports(false);
+else if(aboutWrap.classList.contains('on'))aboutClose();
+else if(!setBox.hidden)setClose();
+else if(view==='graph')clearSel();
+const a=document.activeElement;if(a&&a.tagName==='BUTTON')a.blur();
+return}
+const t=e.target;if(e.metaKey||e.ctrlKey||e.altKey||(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')))return;
+if(view==='graph'&&(e.key==='f'||e.key==='F'))fit()});
+/* The page opens on the graph: the Graph view is the first of the two, and a
+   working selection like the view is not kept between visits. */
+build('');kbbar();kbBadge();chips();setView('graph');
 </script></body></html>"""
-page = (page.replace('__LOGO__', logo_svg).replace('__GIT__', git_id)
-        .replace('__BUILDNO__', build_no).replace('__STARTED__', started)).replace('__NC__', str(len(concepts))).replace('__CIT__', "%d" % ncit).replace('__STAMP__', stamp).replace('__DATA__', json.dumps(data, ensure_ascii=False))
+page = (page.replace('__LOGO__', _mark('h'), 1).replace('__LOGO__', _mark('a', pulse=True), 1)
+        .replace('__KB_BLOCKS__', json.dumps(KB_BLOCKS, ensure_ascii=False)).replace('__GIT__', git_id)
+        .replace('__IGRAPH__', icon_graph).replace('__ICONCEPTS__', icon_concepts)
+        .replace('__IGEAR__', icon_gear).replace('__ISEARCH__', icon_search)
+        .replace('__ICOLLAPSE__', icon_collapse).replace('__IEXPAND__', icon_expand)
+        .replace('__ISPARK__', icon_spark).replace('__IREPORTS__', icon_reports)
+        .replace('__HALO__', json.dumps(halos))
+        .replace('__BUILDNO__', build_no).replace('__STARTED__', started)).replace('__STAMP__', stamp).replace('__DATA__', json.dumps(data, ensure_ascii=False))
 out = os.path.join(VAULT, '00_Cerebrum_viewer.html')
-open(out, 'w', encoding='utf-8').write(page)
+# Written whole or not at all. This used to write straight over the file, which
+# was safe while a session ran it by hand and waited; since 16.09.2026 the
+# post-commit hook runs it, so it can land while the owner has the viewer open
+# and a browser reload could otherwise read a 16 MB file mid-write. `os.replace`
+# is atomic on the same filesystem, so a reader sees the old page or the new one.
+tmp = out + '.tmp'
+open(tmp, 'w', encoding='utf-8').write(page)
+os.replace(tmp, out)
 print('wrote %s  (%d concepts, %.1f MB)' % (out, len(concepts), os.path.getsize(out) / 1e6))

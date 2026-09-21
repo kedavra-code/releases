@@ -60,7 +60,7 @@ def items(kb):
     sec = m.group(1) if m else ''
     # Cells are copied verbatim into a file that sits one level up, at the
     # vault root, so a link written relative to <KB>/Wiki/ does not resolve
-    # there. Rebase them. Found 15.08.2026: two links to systems/intune.md
+    # there. Rebase them. Found 15.08.2026: two links to a systems concept
     # were the only broken paths left in the vault after the three-way split,
     # and they were in this generated file rather than in any concept.
     def rebase(cell):

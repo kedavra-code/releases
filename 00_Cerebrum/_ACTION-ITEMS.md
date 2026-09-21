@@ -4,7 +4,7 @@
 
 Editing here would create a second place recording the same state, and the two would drift. Change an item where it lives; this file catches up on the next run.
 
-Last generated **21.09.2026, 18:41 UTC**, by script, from the tables themselves. Knowledge bases covered: .
+Last generated **21.09.2026, 19:09 UTC**, by script, from the tables themselves. Knowledge bases covered: .
 
 ## Needing you now
 
