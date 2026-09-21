@@ -2,7 +2,7 @@
   "name": "00_Cerebrum",
   "kind": "template",
   "build": 7,
-  "commit": "fc142a1",
+  "commit": "d9d7578",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
   "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-7/00_Cerebrum-template-7.tar.gz",
   "sha256": "b37bfccfd456c853b3d194f066f3bdb5eff5f9778bf16bf765f899ff2ea5969a",
@@ -22,6 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "First public cut of the vault machinery: the operating manual, the OKF v0.2 spec, three skills and 29 scripts. No corpus. The files are in the tree beside this manifest; the archives are the same tree packaged.",
+  "notes": "The vault machinery with no corpus: the operating manual, WHY.md (what each rule cost and which run paid for it), the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 7 adds WHY.md and eight scripts, and carries seven new verify.py guards. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
   "source_commit": "34a67c7"
 }
