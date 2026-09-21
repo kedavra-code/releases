@@ -34,6 +34,7 @@ import datetime
 import glob
 import os
 import re
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -49,12 +50,86 @@ def previous_run(kb):
     f = os.path.join(VAULT, kb, 'CHANGELOG.md')
     if not os.path.exists(f):
         return None
+    # Newest first, today's entries included. This skipped same-day entries
+    # until 08.09.2026, on the reasonable-looking guard that a run must not
+    # read its own baseline — but the entry is written at the *end* of a run
+    # and this is a planning step, so every entry on disk belongs to an
+    # earlier one. The cost showed up the day a second sweep ran hours after
+    # the first: the baseline came back as 31.08, nine days stale, and the
+    # read set would have been 135 concepts the morning had already covered.
     hits = ENTRY.findall(open(f, encoding='utf-8').read())
-    today = datetime.date.today().isoformat()
-    for d in hits:
-        if d < today:
-            return d
-    return hits[-1] if hits else None
+    return hits[0] if hits else None
+
+
+def run_committed_at(kb, day):
+    """When the health check of `day` was committed, as a Unix time, or None.
+
+    Day granularity was the fault of Gamma_kb AI-2026-08-31-7: `mt > since`
+    on date strings lets nothing modified on the day of the previous health
+    check into the read set, so 84 concepts repaired on the evening of
+    22.08.2026, after that day's health check, were never read by the next
+    one, and a run's own drafts, written on the day of its entry, never
+    entered any later read set. The commit that added the run's CHANGELOG
+    heading is the moment its work was finished; anything touched after it is
+    changed since, whatever the day. Read with --no-optional-locks, so this
+    never takes the index lock.
+    """
+    try:
+        out = subprocess.run(
+            ['git', '--no-optional-locks', '-C', VAULT, 'log', '--format=%ct',
+             '-S', '## %s — Health check' % day, '--',
+             '%s/CHANGELOG.md' % kb],
+            capture_output=True, text=True, timeout=60).stdout.split()
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return int(out[-1]) if out else None
+
+
+def body_changed_since(kb, rel, since):
+    """Did the concept's PROSE change, or only its frontmatter?
+
+    Compares the file on disk with the newest commit made on or before the
+    previous health check's date, frontmatter stripped from both. Returns True
+    — read it — whenever the question cannot be answered: no git, no such
+    commit, an unreadable blob. A read that was not needed costs tokens; a
+    concept wrongly dropped from the set costs a missed error, and the rule
+    this script exists to enforce says nothing about saving money.
+    """
+    path = '%s/%s' % (kb, rel.replace(os.sep, '/'))
+    try:
+        rev = subprocess.run(
+            ['git', '--no-optional-locks', '-C', VAULT, 'rev-list', '-1',
+             '--before=%s 23:59:59' % since, 'HEAD', '--', path],
+            capture_output=True, text=True, timeout=20).stdout.strip()
+        if not rev:
+            return True
+        old = subprocess.run(
+            ['git', '--no-optional-locks', '-C', VAULT, 'show',
+             '%s:%s' % (rev, path)],
+            capture_output=True, text=True, timeout=20)
+        if old.returncode != 0:
+            return True
+        with open(os.path.join(VAULT, path), encoding='utf-8') as fh:
+            now = fh.read()
+    except (OSError, subprocess.SubprocessError):
+        return True
+    return _strip_fm(old.stdout) != _strip_fm(now)
+
+
+def _strip_fm(text):
+    """The body, with leading YAML frontmatter removed and space normalised."""
+    if text.startswith('---'):
+        parts = text.split('---', 2)
+        if len(parts) == 3:
+            text = parts[2]
+    return re.sub(r'\s+', ' ', text).strip()
+
+
+def changed_since(mtime, since, committed):
+    """Whether a file modified at `mtime` changed after the previous run."""
+    if committed is not None:
+        return mtime > committed
+    return datetime.date.fromtimestamp(mtime).isoformat() > since
 
 
 def main():
@@ -63,6 +138,8 @@ def main():
     since = sys.argv[sys.argv.index('--since') + 1] if '--since' in sys.argv \
         else previous_run(kb)
     root = os.path.join(VAULT, kb)
+    committed = (run_committed_at(kb, since)
+                 if since and '--since' not in sys.argv else None)
 
     concepts, bodies = [], {}
     for p in sorted(glob.glob(os.path.join(root, 'Wiki', '**', '*.md'),
@@ -94,7 +171,7 @@ def main():
     reasons = collections.defaultdict(list)
     for rel in concepts:
         p = os.path.join(root, rel)
-        mt = datetime.date.fromtimestamp(os.path.getmtime(p)).isoformat()
+        mtime = os.path.getmtime(p)
         if since is None:
             # No previous health check in the CHANGELOG. Until 31.08.2026 the
             # test read `if since and mt > since`, so this arm contributed
@@ -109,14 +186,34 @@ def main():
             # the answer still looks derived.
             reasons[rel].append('no previous health check — first run reads '
                                 'the whole bundle')
-        elif mt > since:
-            reasons[rel].append('changed since %s' % since)
+        elif changed_since(mtime, since, committed):
+            if body_changed_since(kb, rel, since):
+                reasons[rel].append('changed since %s' % since)
+            else:
+                reasons[rel].append(None)      # frontmatter only; see below
+    # A frontmatter-only change is not a reason to re-read a concept. The
+    # cheapest edit in the vault used to produce the most expensive possible
+    # read set: the dating pass of 20.09.2026 rewrote `last_modified` on 4'735
+    # citations without touching one sentence of prose, and the health check
+    # that followed had to read all six bundles end to end on the strength of
+    # it. Nothing in the read rule's three arms is about frontmatter — the
+    # changed-since arm exists because new work is where fresh error lives,
+    # and a scripted key rewrite is neither new work nor prose. The value the
+    # key holds is still checked, unconditionally, by `verify.py`, which never
+    # samples. (`Beta_kb` AI-2026-09-20-2.)
+    for rel in list(reasons):
+        reasons[rel] = [r for r in reasons[rel] if r is not None]
+        if not reasons[rel]:
+            del reasons[rel]
     for rel, n in inbound.most_common(top):
         reasons[rel].append('top %d by inbound links (%d)' % (top, n))
 
     size = sum(len(b) for b in bodies.values())
     print('%s: %d concepts, %.1f MB of body text' % (kb, len(concepts), size / 1e6))
-    print('previous health check: %s' % (since or 'none found'))
+    print('previous health check: %s%s' % (
+        since or 'none found',
+        ', committed %s' % datetime.datetime.fromtimestamp(committed)
+        .strftime('%H:%M') if committed else ''))
     print('\nread in full (%d of %d):' % (len(reasons), len(concepts)))
     for rel in sorted(reasons, key=lambda r: (-inbound[r], r)):
         print('  %-58s %s' % (rel, '; '.join(reasons[rel])))

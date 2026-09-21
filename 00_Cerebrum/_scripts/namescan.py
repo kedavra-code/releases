@@ -2,8 +2,8 @@
 """Calibrated name scan for the 00_Cerebrum vault.
 
 The mentioned-but-never-written scan was wrong by an order of magnitude
-twice: Alex Fischer reported at 153 archive pages and standing on 198
-(AI-2026-08-09-22), Mila Roth reported at 11 and standing on 200+
+twice: Gustav Lindqvist reported at 153 archive pages and standing on 198
+(AI-2026-08-09-22), Paula Ferreira reported at 11 and standing on 200+
 (AI-2026-08-10-1). Each fix taught the scan one more spelling family, and
 each family revealed the next. This script replaces the enumeration with a
 measurement.
@@ -29,7 +29,7 @@ Spelling families, per person:
 Usage:
   python3 _scripts/namescan.py --tree Gamma_kb --cache          # pass 1
   python3 _scripts/namescan.py --tree Beta_kb --cache --report    # pass 2
-  python3 _scripts/namescan.py --candidates "Alfred Brunner, Sam Weber"
+  python3 _scripts/namescan.py --candidates "Gregor Palmquist, Kasimir Oduya"
 
 --tree limits one invocation to one knowledge base so a pass fits inside a
 bridge session's 45-second command cap; --cache accumulates passes in
@@ -72,8 +72,8 @@ def _load_coverage():
     """`coverage.py` as a module, so `archive_layer` has one definition.
 
     Same loader as `verify.py`'s, deliberately: copying the key's default
-    would give a vault two places that decide where a bundle's archive lives,
-    and the next edit would land in only one of them.
+    would give this vault two places that decide where a bundle's archive
+    lives, and the next edit would land in one of them.
     """
     spec = _ilu.spec_from_file_location(
         'cerebrum_coverage', os.path.join(VAULT, '_scripts', 'coverage.py'))
@@ -85,8 +85,8 @@ def _load_coverage():
 def discover():
     """{knowledge base: archive root}, found on disk rather than hard-coded.
 
-    This was once a literal map keyed on chapter names. Those were the
-    chapter directories inside a combined bundle,
+    Until 15.08.2026 this was a literal map keyed on chapter names. Those
+    were the chapter directories inside one combined knowledge base,
     and they outlived the three-way split by a day: the map still named them
     after the folder was gone, which meant Zeta_kb could not be scanned at
     all and the health check fell back to hand-counting. That fallback moved
@@ -97,24 +97,28 @@ def discover():
     convenience is exactly what left `Combined_kb` standing in six live
     places through two green health checks; the rename is the whole point.
 
-    A knowledge base is a directory with a CLAUDE.md and an archive layer. The
-    layer's folder name comes from `coverage.py`'s `archive_layer`, which reads
-    the knowledge base's own `assertions.yaml` and falls back to `OneNote`, so
-    the two scripts cannot disagree about where an archive lives. Hardcoding
-    the folder name here is how a bundle whose corpus arrived from somewhere
-    else becomes invisible to one script while another measures it fine.
+    A knowledge base is a directory with a CLAUDE.md and an archive layer. Its
+    archive root is the single directory inside that layer, or the layer itself
+    if it holds more than one.
 
-    Its archive root is the single directory inside that layer, or the layer
-    itself if it holds more than one.
+    **The layer's folder name is not `OneNote` by assumption.** It comes from
+    `coverage.py`'s `archive_layer`, which reads the bundle's own
+    `assertions.yaml`, so the two scripts cannot disagree about where an
+    archive lives. Hardcoding it here is why `Epsilon_kb` — which declares
+    `archive_layer: Raw` and has been measured by `coverage.py` since
+    31.08.2026 — was invisible to `--tree` and could not be name-scanned at
+    all, silently: argparse simply never offered it as a choice. Same defect
+    class as the literal chapter map above, one layer down, and the same cure.
     """
     cov = _load_coverage()
     out = {}
     for kb in sorted(os.listdir(VAULT)):
         base = os.path.join(VAULT, kb)
+        if not os.path.exists(os.path.join(base, 'CLAUDE.md')):
+            continue
         layer = cov.archive_layer(kb)
         arch = os.path.join(base, layer)
-        if not (os.path.exists(os.path.join(base, 'CLAUDE.md'))
-                and os.path.isdir(arch)):
+        if not os.path.isdir(arch):
             continue
         subs = [d for d in sorted(os.listdir(arch))
                 if os.path.isdir(os.path.join(arch, d))]
@@ -138,9 +142,9 @@ def known_people():
     are marked chapter=None and scanned against every tree; without that,
     the vault owner would be counted in one archive out of three.
     """
-    # Concept stems that belong to no single knowledge base and must be
-    # scanned against every archive. Without this a person who appears in
-    # several archives is counted in only the one their concept lives in.
+    # Concepts that span more than one knowledge base, so a person in them
+    # belongs to no single chapter. Empty here: a fresh vault has none.
+    # Add the stem of any people concept two bundles both cite.
     SPANNING = set()
     out = {}
     for chapter, kb in KBS.items():
@@ -167,8 +171,8 @@ def known_people():
 def alias_map():
     """Aliases from every knowledge base, each scoped to its own chapter.
 
-    The maps are deliberately not pooled. "Beni" is Robin Vogel in
-    Gamma_kb, Robin Moser in Beta_kb and Robin Bader in Alpha_kb, so an
+    The maps are deliberately not pooled. "Dori" is Dorothea Vance in
+    Gamma_kb, Dorian Melis in Beta_kb and Doris Brunner in Alpha_kb, so an
     alias declared in one knowledge base may only ever be applied to that
     one's archive. Before the split a single file carried a `chapter:` key per
     entry to say the same thing; now the file's location says it.
@@ -299,11 +303,6 @@ def main():
     a = ap.parse_args()
 
     people = known_people()
-    if not TREES:
-        sys.exit('No knowledge base in this vault has an archive layer to scan.\n'
-                 'namescan reads archives, not Wiki bundles. Add an archive layer,\n'
-                 'or declare its folder as archive_layer in the knowledge base\'s\n'
-                 'assertions.yaml if it is not called OneNote/.')
     trees = a.tree or sorted(TREES)
     cache = {}
     if os.path.exists(CACHE):

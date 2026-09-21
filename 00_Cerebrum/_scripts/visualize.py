@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates okf-viewer.html — a static, self-contained browser for the
+"""Generates 00_Cerebrum_viewer.html — a static, self-contained browser for the
 vault's OKF bundles. Derived output, never hand-edited; regenerate with:
 
     python3 _scripts/visualize.py
@@ -931,6 +931,6 @@ kbbar();chips();resize();
 </script></body></html>"""
 page = (page.replace('__LOGO__', logo_svg).replace('__GIT__', git_id)
         .replace('__BUILDNO__', build_no).replace('__STARTED__', started)).replace('__NC__', str(len(concepts))).replace('__CIT__', "%d" % ncit).replace('__STAMP__', stamp).replace('__DATA__', json.dumps(data, ensure_ascii=False))
-out = os.path.join(VAULT, 'okf-viewer.html')
+out = os.path.join(VAULT, '00_Cerebrum_viewer.html')
 open(out, 'w', encoding='utf-8').write(page)
 print('wrote %s  (%d concepts, %.1f MB)' % (out, len(concepts), os.path.getsize(out) / 1e6))

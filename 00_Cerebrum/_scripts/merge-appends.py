@@ -13,7 +13,7 @@ noise.
 
 Block format, as written into <KB>/_extractions/<batch>.md:
 
-    ### APPEND Wiki/people/marco-gehrig.md
+    ### APPEND Wiki/people/marek-gundlach.md
     #### SOURCES
     - id: kt-2017-03-14
       resource: ../../OneNote/...
@@ -31,11 +31,17 @@ Usage:  python3 _scripts/merge-appends.py <KB> [batch-file ...]   (default: all)
 import collections
 import datetime
 import glob
+import importlib.util
 import os
 import re
 import sys
 
 VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_spec = importlib.util.spec_from_file_location(
+    'cerebrum_tableorder', os.path.join(VAULT, '_scripts', 'tableorder.py'))
+tableorder = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(tableorder)
+FOOTDEF = re.compile(r'^\[\^[^\]]+\]:', re.M)
 BLOCK = re.compile(r'^### APPEND (\S+)\s*$', re.M)
 # [ \t]* not \s*: \s* matches the newline, so the first line of every
 # block was captured as the heading's argument and silently dropped.
@@ -152,7 +158,7 @@ def apply(kb_root, req, dry):
                 # A page title containing ": " is a YAML mapping value where
                 # a scalar was meant, and it breaks the frontmatter of the
                 # whole concept — one agent wrote `title: 20200713
-                # Jira-Accounts: Team Meeting` on 15.08.2026 and
+                # Jira-Accounts: Besprechung Services` on 15.08.2026 and
                 # verify.py could not parse the file at all. The archive is
                 # full of such titles, so quote on the way in rather than
                 # asking every agent to remember.
@@ -179,13 +185,30 @@ def apply(kb_root, req, dry):
     for name, chunk in req['sections']:
         if not chunk.strip():
             continue
-        h = re.search(r'^(#{1,3})\s+%s\s*$' % re.escape(name), body, re.M)
+        # An agent may write the heading's own hashes into the name,
+        # `#### SECTION ## The CIS rule table`. Until 15.09.2026 the name was
+        # used as given, matched only at levels one to three, and when it did
+        # not match a new `# ## The CIS rule table` went on at the very end,
+        # below the footnote definitions: eleven headings in four Epsilon_kb
+        # concepts on 31.08.2026 (AI-2026-08-31-4). Strip the hashes, match at
+        # any level, and put a genuinely new section above the footnotes.
+        name = name.lstrip('#').strip()
+        h = re.search(r'^(#{1,6})\s+%s\s*$' % re.escape(name), body, re.M)
         if not h:
-            body = body.rstrip('\n') + '\n\n# %s\n\n%s\n' % (name, chunk)
+            fd = FOOTDEF.search(body)
+            pend = re.search(r'^#\s+Pending attachments\s*$', body, re.M)
+            at = min([x.start() for x in (fd, pend) if x] or [len(body)])
+            body = (body[:at].rstrip('\n') + '\n\n# %s\n\n%s\n\n'
+                    % (name, chunk.strip('\n')) + body[at:].lstrip('\n'))
             added_sec += 1
             continue
         nxt = re.search(r'^#{1,3}\s+\S', body[h.end():], re.M)
         cut = h.end() + (nxt.start() if nxt else len(body) - h.end())
+        # The last section of a concept runs into its footnote definitions,
+        # and an append cut there lands below them.
+        fdn = FOOTDEF.search(body, h.end())
+        if fdn and fdn.start() < cut:
+            cut = fdn.start()
         head = body[:cut].rstrip('\n')
         # One newline glues the chunk onto whatever was there. That is right
         # when a chunk of table rows continues the table above it — the usual
@@ -200,6 +223,18 @@ def apply(kb_root, req, dry):
         body = (head + ('\n' if same_block else '\n\n') + chunk
                 + '\n\n' + body[cut:].lstrip('\n'))
         added_sec += 1
+        # Rows appended to a Date table go to their date, not to the bottom.
+        # Appending at the bottom is how 238 tables across four bundles came
+        # to run to 2026 and restart at 2022 (Alpha_kb and Beta_kb
+        # AI-2026-08-31-2). The sort is the one tableorder.py defines, so the
+        # merge, the repair and the check cannot disagree.
+        if same_block and first[:1] == '|':
+            lines = body.split('\n')
+            for hi, s, e in list(tableorder.date_tables(lines)):
+                rows = lines[s:e]
+                if tableorder.jumps(rows):
+                    lines[s:e] = tableorder.sort_rows(rows)
+            body = '\n'.join(lines)
 
     if req['footnotes']:
         for line in req['footnotes'].split('\n'):

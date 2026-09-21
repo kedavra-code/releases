@@ -72,6 +72,19 @@ def items(kb):
         out.append(dict(id=r[0].strip(), item=rebase(r[2].strip()),
                         state=state_of(r[3]),
                         res=rebase(r[4].strip())))
+    # A file that carries AI- ids and parses to no rows is unreadable, not
+    # empty, and the difference is invisible in the roll-up: both count as
+    # nothing. Epsilon_kb's table sat last in its questions.md with no heading
+    # after it and four cells in a different order, so from 31.08. to
+    # 14.09.2026 this script read none of its rows and the vault view said
+    # 0 open while eight stood, one of them a password rotation. Raising
+    # here is the same reasoning as `state_of` raising on an unknown state.
+    if not out and re.search(r'^\|?\s*AI-\d{4}-\d{2}-\d{2}-\d+', t, re.M):
+        raise ValueError(
+            '%s/Wiki/questions.md carries AI- ids but no row was parsed. The '
+            'Action items table must be a section headed `# Action items`, '
+            'ended by the next `# ` heading, whose rows have five cells in '
+            'the order id, raised, item, state, resolution.' % kb)
     return out
 
 

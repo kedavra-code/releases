@@ -56,19 +56,8 @@ GUID = re.compile(r'\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-'
 MDLINK = re.compile(r'\[([^\]]{1,80})\]\(https?://[^)]+\)')
 
 
-def clean(path, kb_root):
-    raw = open(path, encoding='utf-8', errors='ignore').read()
-    m = re.match(r'^---\n(.*?)\n---\n', raw, re.S)
-    fm, body = ({}, raw)
-    if m:
-        body = raw[m.end():]
-        for line in m.group(1).split('\n'):
-            k, _, v = line.partition(':')
-            if k.strip() in KEEP_FM and v.strip():
-                fm[k.strip()] = v.strip().strip('"')
-    body = MDLINK.sub(r'\1<link>', body)
-    body = URL.sub('<link>', body)
-    body = GUID.sub('<id>', body)
+def _squeeze(body):
+    """Boilerplate lines out, runs of blank lines down to one."""
     lines = [l.rstrip() for l in body.split('\n') if not BOILER.search(l)]
     out, blank = [], 0
     for l in lines:
@@ -79,7 +68,47 @@ def clean(path, kb_root):
         else:
             blank = 0
         out.append(l)
-    return fm, '\n'.join(out).strip()
+    return '\n'.join(out).strip()
+
+
+def clean_text(raw):
+    """Returns (frontmatter, packed body, identity).
+
+    **The identity is the page before its links and ids were replaced, and
+    the duplicate check must use it rather than the packed body.** Packing
+    swaps every URL for `<link>` and every GUID for `<id>`, which is the
+    saving this script exists for — and it also erases the only difference
+    between two pages whose bodies are otherwise the same words. Hashing the
+    packed body then declared them identical and dropped one as
+    `DUPLICATE-OF` the other, so a compile agent was handed a marker instead
+    of a page it had been told to read.
+
+    It happened three times in the Delta compile of 20.09.2026, caught by
+    hand by three agents independently, and the page dropped was in one case
+    the one carrying a broken link — the fault the concept should have
+    recorded went into the bin and its correct twin was kept. `verify.py`
+    holds the check (`packer_dedup`) so the class cannot come back quietly.
+
+    A page that differs only in a link is still packed with `<link>`: the
+    saving is unchanged. Only the comparison moved.
+    """
+    m = re.match(r'^---\n(.*?)\n---\n', raw, re.S)
+    fm, body = ({}, raw)
+    if m:
+        body = raw[m.end():]
+        for line in m.group(1).split('\n'):
+            k, _, v = line.partition(':')
+            if k.strip() in KEEP_FM and v.strip():
+                fm[k.strip()] = v.strip().strip('"')
+    ident = _squeeze(body)
+    body = MDLINK.sub(r'\1<link>', body)
+    body = URL.sub('<link>', body)
+    body = GUID.sub('<id>', body)
+    return fm, _squeeze(body), ident
+
+
+def clean(path, kb_root):
+    return clean_text(open(path, encoding='utf-8', errors='ignore').read())
 
 
 def seen_from_cited(kb_root):
@@ -147,8 +176,9 @@ def main():
         for rel in files:
             p = os.path.join(kb_root, rel)
             bytes_in += os.path.getsize(p)
-            fm, body = clean(p, kb_root)
-            h = hashlib.md5(body.encode()).hexdigest()
+            fm, body, ident = clean(p, kb_root)
+            # Hashed on the identity, never on the packed body: see clean_text.
+            h = hashlib.md5(ident.encode()).hexdigest()
             if h in seen_body and body:
                 dupes += 1
                 chunks.append('=== PAGE %s\n=== DUPLICATE-OF %s\n' % (rel, seen_body[h]))

@@ -35,10 +35,15 @@ Agents share nothing inside their own knowledge base and would collide on everyt
 |---|---|
 | `00_Cerebrum/Outputs/_REPORTS.md` | One register for the whole vault since 21.08.2026. Two agents appending a row at once keep one row |
 | `00_Cerebrum/_ACTION-ITEMS.md` | Derived from every base's table, so it is only correct once the last agent has finished |
-| `okf-viewer.html` | Renders the whole vault, so regenerating it mid-sweep captures a half-audited state |
+| `00_Cerebrum_viewer.html` | Renders the whole vault, so regenerating it mid-sweep captures a half-audited state |
 | `.git` | One commit for the sweep, opening on one CHANGELOG heading |
+| `_scripts/verify-state.json` | The finding clock. Every agent runs `verify.py`, so this was written concurrently by all of them — see below |
 
 So each agent **writes its own report file and returns its register row as text**, and the orchestrator appends the rows serially once every agent is in. This is the pattern `merge-appends.py` uses on a compile, for the same reason and against the same failure: concurrent agents may create, and may not edit what they share.
+
+**The fifth row was added on 08.09.2026, by an agent that noticed it mid-sweep.** `verify-state.json` records how many distinct run-days each finding has stood, and every agent runs `verify.py`, so every agent wrote it. The agent that raised it judged the collision benign because all agents stamp the same date. It was not: `verify.py` read the whole file at start and wrote the whole file at the end, so an agent auditing a base with **no** clocked findings would write back the copy it read and roll another base's clock back by a run-day. Three run-days is what escalates a standing finding to a DEFECT, so a lost day delays that escalation and nothing says so.
+
+`verify.py` now re-reads and merges at write time, keeping only the prefixes the run actually audited and taking every other prefix from disk. The fix is at the source rather than in this file, so a sweep that forgets the rule is still safe — but an agent has no reason to run the vault-wide `verify.py` anyway, and the orchestrator runs it once in the closing sequence.
 
 ### Closing a sweep
 
@@ -59,7 +64,7 @@ Passed to each agent with `<full path>` filled in:
 ```
 Run the knowledge-base-health-check-skill against the knowledge base at <full path>. Audit that base only. Apply all auto-fixes, rewrite memory.md, auto-draft up to three new concepts where evidence supports them, and log to that knowledge base's CHANGELOG.md and Wiki/log.md. Write an Outputs report to 00_Cerebrum/Outputs/ if the run raises action items or applies fixes. Do not web search on any internal topic. Do not pause for input.
 
-Four things are the orchestrator's and you must not write them: 00_Cerebrum/Outputs/_REPORTS.md, 00_Cerebrum/_ACTION-ITEMS.md, okf-viewer.html, and anything under .git. If you filed a report, return the register row you would have added as a final line prefixed ROW:, and leave the appending to the orchestrator.
+Four things are the orchestrator's and you must not write them: 00_Cerebrum/Outputs/_REPORTS.md, 00_Cerebrum/_ACTION-ITEMS.md, 00_Cerebrum_viewer.html, and anything under .git. If you filed a report, return the register row you would have added as a final line prefixed ROW:, and leave the appending to the orchestrator.
 
 Return one line:
 KB: <name> | concepts: N machine-scanned, N read in full | citations broken: N | auto-fixed: N | new concepts: N | held: N | action items: N new, N carried | report: <path|none> | clean: <yes|no>
@@ -128,7 +133,7 @@ Filenames are lowercase: `questions.md`, `index.md`, `Raw/`. macOS filesystems a
 9. **Write the CHANGELOG entry and the `Wiki/log.md` entry.**
 10. **Write a `00_Cerebrum/Outputs/` report if this run qualifies.** See *When a run writes a report* below.
 11. **Regenerate `00_Cerebrum/_ACTION-ITEMS.md`** if this run touched any action item. In a multi-knowledge-base run, once at the end, after every sub-agent has reported.
-12. **If the run regenerated `okf-viewer.html`** (a compile changed concepts, or `_scripts/visualize.py` changed), run `node 00_Cerebrum/_scripts/viewer-check.js` where node exists and deliver nothing that fails it. The delivery rule lives in `00_Cerebrum/CLAUDE.md`; on a machine without node, say in the summary that the viewer is regenerated but unchecked.
+12. **If the run regenerated `00_Cerebrum_viewer.html`** (a compile changed concepts, or `_scripts/visualize.py` changed), run `node 00_Cerebrum/_scripts/viewer-check.js` where node exists and deliver nothing that fails it. The delivery rule lives in `00_Cerebrum/CLAUDE.md`; on a machine without node, say in the summary that the viewer is regenerated but unchecked.
 13. **Commit and push, if this session can run git.** `verify.py` must be green; the message opens with the CHANGELOG entry's heading; the entry and the changes travel together. A bridge session leaves the tree clean and states in its summary that a commit is pending.
 14. **Print the summary**, ending with a `computer://` link. If interactive and pending items exist, follow it with a numbered list and wait.
 
@@ -152,6 +157,8 @@ The three arms do different jobs. Changed-since catches new work, which is where
 
 On the run immediately after a compile the read set is the whole bundle, because everything changed. That is correct, and it is also when the run is most expensive; budget for it rather than trimming it.
 
+**Before the read set, read the stale-claims list.** `python3 _scripts/stale-claims.py <KB>` lists sentences a concept's own later content may have disproved: a "to at least <date>" bound that a newer cited source passes, and claims that something is written, dated or resolved nowhere. An ingest appends at the bottom of a concept and does not revisit the sentence near the top that the new evidence closes, so the stale claim is the one a reader meets first; the Alpha run of 14.09.2026 repaired 818 of them. Read each listed sentence against the concept below it and against its cited pages, grep the archive once for what an absence claim says is missing, and correct what no longer holds. It is a list of sentences, not of concepts, so it does not widen the read set. `verify.py` prints its length as a bundle gauge, which never escalates, because about half the date hits are still true and only a reading can tell. Owner's decision of 15.09.2026 (Alpha_kb AI-2026-08-31-1).
+
 **Revisit this again if the machine scan itself stops completing.** The read arms are bounded by design; `verify.py` is the part that scales with the bundle.
 
 **The distinction that still matters is mechanical versus judgement**, because it explains why some checks are scripted and some are read.
@@ -169,6 +176,7 @@ Run them with a single pass that parses frontmatter and bodies. Never do them by
 **Judgement audits** need a concept read and understood, so they cost real effort:
 
 - Audit 3, writing rules
+- the stale-claims list, read before the read set
 - unsourced claims that read as factual
 - concepts misplaced across chapters
 - Audit 6, reading each clustered pair for actual disagreement
@@ -218,7 +226,7 @@ Exempt: frontmatter, direct quotes from sources, and the navigation files `memor
 
 - Every `index.md` matches its directory's actual contents, and quotes each concept's current `description`.
 - Concept filenames are kebab-case, lowercase, with umlauts transliterated.
-- **Placement follows what a concept is about, not what it cites.** A concept belongs at the group root when its subject genuinely spans chapters. Citing another chapter's archive incidentally does not make it cross-chapter: a concept about one chapter's org unit may legitimately cite another chapter's page describing the role someone was moving to. Judge the subject, then check the citation mix as corroboration, never the reverse. A naive "cites more than one chapter" test produces false positives and was withdrawn after flagging a correctly placed concept.
+- **Placement follows what a concept is about, not what it cites.** A concept belongs at the group root when its subject genuinely spans chapters. Citing another chapter's archive incidentally does not make it cross-chapter: an Alpha org unit may legitimately cite an Beta page that describes the Alpha role someone was moving to. Judge the subject, then check the citation mix as corroboration, never the reverse. A naive "cites more than one chapter" test produces false positives and was withdrawn on 09.08.2026 after flagging `organisation/alpha/alpha-id.md`, which is correctly placed.
 - Flag genuine misplacements; do not move a concept without asking, because the path is the Concept ID and moving it breaks every inbound link.
 - Broken concept links: count and list. Never fix.
 - **Once per run, sweep the instruction files** — `00_Cerebrum/CLAUDE.md`, the template, each `<KB>/CLAUDE.md` — for restated rules. A rule living in two places with detail in both is the duplication-plus-edit hazard in the governance layer: the delivery rule needed five edits in one day because of it. Report restatements; the fix is one home and pointers.
@@ -245,11 +253,11 @@ The check that most reliably says what to write next. Concepts that exist but ar
 
 Scan concept bodies, excluding headings, table rows, footnote definitions and fenced blocks, for capitalised two-word name shapes. Drop any candidate already matching a `people/` filename after transliteration, and drop candidates where either word is a section word — `The`, `Outcome`, `Notes`, `Purpose`, `Participants`, a month name — since those come from sentence boundaries, not names. Report anything appearing in **three or more distinct concepts**.
 
-**Count with `00_Cerebrum/_scripts/namescan.py`, or the counts lie.** The grep procedure this paragraph used to describe was wrong by an order of magnitude twice — Alex Fischer 153 reported against 198 standing (09.08.2026), Mila Roth 11 against roughly 200 (10.08.2026) — because each fix taught it one spelling family and each family revealed the next. The script measures instead: every family (full name, `Surname, Firstname`, `F. Surname`, first-name-only, mapped aliases) against the people who already have concepts, so every archive count for an unknown is presented as a floor with the calibrated range attached (10.08.2026: median 2.1x, p90 7.5x). Three rules ride along. **Aliases and Kürzel count only when the `aliases` section of `<KB>/assertions.yaml` maps them** — an unmapped shorthand is an interview question for the owner, never a count and never a silent attribution. **Aliases are chapter-scoped**: "Robin" is Robin Moser in one bundle and Robin Vogel in another. **First-name-only counts are ceilings, not floors**: unknown people share first names too.
+**Count with `00_Cerebrum/_scripts/namescan.py`, or the counts lie.** The grep procedure this paragraph used to describe was wrong by an order of magnitude twice — Gustav Lindqvist 153 reported against 198 standing (09.08.2026), Paula Ferreira 11 against roughly 200 (10.08.2026) — because each fix taught it one spelling family and each family revealed the next. The script measures instead: every family (full name, `Surname, Firstname`, `F. Surname`, first-name-only, mapped aliases) against the people who already have concepts, so every archive count for an unknown is presented as a floor with the calibrated range attached (10.08.2026: median 2.1x, p90 7.5x). Three rules ride along. **Aliases and Kürzel count only when the `aliases` section of `<KB>/assertions.yaml` maps them** — an unmapped shorthand is an interview question for the owner, never a count and never a silent attribution. **Aliases are chapter-scoped**: "Dori" is Dorian Melis at Beta and Dorothea Vance at Gamma. **First-name-only counts are ceilings, not floors**: unknown people share first names too.
 
 Three or more concepts is the threshold that matters. A name in one concept is a passing mention. A name in four, with no page, is a person the corpus keeps needing and cannot link to.
 
-The same scan surfaces systems and vendors alongside people. Separate the two buckets by hand; `Chris Keller` and `Exchange Online` have the same shape and different answers. Write the candidates into the *Concepts worth writing next* section of `questions.md` with their mention counts, and never auto-draft a person concept from mentions alone: a name appearing four times is evidence someone matters, not evidence of who they are.
+The same scan surfaces systems and vendors alongside people. Separate the two buckets by hand; `Wilhelm Kroner` and `Exchange Online` have the same shape and different answers. Write the candidates into the *Concepts worth writing next* section of `questions.md` with their mention counts, and never auto-draft a person concept from mentions alone: a name appearing four times is evidence someone matters, not evidence of who they are.
 
 ## Audit 5 — archive coverage
 
@@ -269,7 +277,7 @@ Before 09.08.2026 the skill said what to do *when* two concepts disagreed and ne
 
 Comparing every concept against every other is not affordable and not necessary. Two concepts can only contradict each other about something they both describe, and shared evidence is the cheap proxy for that.
 
-1. **Cluster mechanically.** For every pair of concepts, count shared `sources[].resource` values. Pairs sharing **three or more** are the candidate set. On a 108-concept bundle this gave 94 pairs, which is readable; on a larger one, raise the threshold rather than sampling, and say in the report that you did.
+1. **Cluster mechanically.** For every pair of concepts, count shared `sources[].resource` values. Pairs sharing **three or more** are the candidate set. On a 108-concept bundle this gave 94 pairs, which is readable; on a larger one, raise the threshold rather than sampling, and say in the report that you did. **The threshold is the owner's to move, and it is recorded per knowledge base** as `contradiction_threshold` in `<KB>/assertions.yaml`, which `verify.py`'s gauge reads too. Absent means three. `Beta_kb` is at seven since 15.09.2026: its set at three grew from 94 to 366 over six runs while five pairs a run were read, and every contradiction it found came from a pair sharing seven or more. Where the set outgrows the reading in another bundle, measure which band the findings came from and raise an action item with the numbers; do not move the key from a run.
 2. **Read each pair for disagreement**, looking specifically at: dates for the same event, who held a role and when, whether something happened at all, sequence, and outcomes. These are where a corpus of meeting minutes actually contradicts itself.
 3. **Do not harmonise.** Two well-sourced concepts disagreeing is a finding worth keeping. Add a line to each pointing at the other, and record the tension in the Contradictions table in `questions.md` with both positions and the evidence for each.
 4. **Do not resolve from inference.** A contradiction between two sourced claims is resolved by evidence or by the vault owner, never by whichever reading seems more plausible. The MFA contradiction of 09.08.2026 was resolved against the position the owner initially asserted, because post numbering fixed the date, and the correction produced a better account than either side held.
@@ -278,7 +286,7 @@ Expect the top of the cluster list to be project-versus-timeline and person-vers
 
 ### A concept can contradict itself, and clustering will never find it
 
-Self-contradiction needs no second document, so it does not appear in any pair. One instance was found only because a reader happened to have two concepts open and noticed one handling a claim more carefully than the other: a project concept asserted in one section that a board had demanded a control, and recorded four sections later that the claim was false.
+Self-contradiction needs no second document, so it does not appear in any pair. It was found on 09.08.2026 only because a reader happened to have two concepts open and noticed one handling a claim more carefully than the other: `projects/beta/mfa-introduction.md` asserted in one section that the the executive board had demanded MFA, and recorded four sections later that the claim was false.
 
 So read each concept in the cluster **against itself** as well as against its pair. The shape to look for is a confident claim in a narrative section that a later *Open questions*, *Notes on dating* or *Contradictions* section corrects. Long concepts written in several passes are where this lives.
 
@@ -305,13 +313,13 @@ A correction applied to one of a coupled pair does not half-fix the bundle. It c
 
 Duplication is not a defect and is not reported on its own. Concepts are meant to stand alone, so restating a fact in three places is correct under OKF, and a standing list of every repeated passage would be long, almost always harmless, and quickly ignored. It was ruled out as a standing audit on 09.08.2026 for exactly that reason.
 
-What makes it dangerous is duplication plus an edit. One such cluster restated whole passages — a kickoff meeting described in four concepts, one licence figure in three, five people entries word for word between a programme concept and its successor. Each is a place a correction has to land more than once. So the check fires when a correction lands and at no other time.
+What makes it dangerous is duplication plus an edit. The Gamma cluster restates whole passages — the kickoff of 11.09.2014 in four concepts, the licence figure of 8'859 of 9'236 in three, five people entries word for word between the programme and EP II concepts. Each is a place a correction has to land more than once. So the check fires when a correction lands and at no other time.
 
 ## Audit 7 — outputs and promotion
 
 **Register check is mechanical; promotion judgement is read.**
 
-- Every report in `00_Cerebrum/Outputs/` has a row in `Outputs/_REPORTS.md`. Add missing rows. The register covers the whole vault, so filter to rows whose **Scope** names the knowledge base under audit.
+- Every report in `00_Cerebrum/Outputs/` and `Outputs/HealthChecks/` has a row in `Outputs/_REPORTS.md`. Add missing rows, and write the link with the `HealthChecks/` prefix for an audit. The register covers the whole vault, so filter to rows whose **Scope** names the knowledge base under audit.
 - Rows marked `pending review` or `partial` are surfaced as promotion candidates in the pending bucket.
 - A report whose synthesis exists nowhere in the bundle is a candidate. So is any question asked twice — the strongest available signal that a concept is missing.
 - Mine each report's **Corpus sufficiency** lines. A question the Wiki could not answer alone names the concepts to write and the scopes to compile next; that is the compile queue, ordered by actual use rather than by guess.
@@ -381,6 +389,8 @@ Before deciding what this run found:
 
 Each row: id, raising run, the item in one sentence, state, and resolution. A resolution is not "done" — it says what was done, or why the item was withdrawn, or what condition reopens it.
 
+**A count carries how it was counted.** In an item and in a concept alike, a figure states the command that produced it, or says it is a hand count and therefore a floor, so the next run reruns rather than re-enumerates. Settled 15.09.2026 (Beta_kb AI-2026-09-08-5), after four counts in that bundle's open items were remeasured and all four were low, each produced by hand: chronology tables at 11 against 66, em-dash paragraphs at 8 against 35, currency forms at 324 against 617, and eight of thirteen mention counts. A hand count that was never labelled one is read as a measurement, and decisions were being taken on them.
+
 **Withdrawn rows are the most valuable entries in the table.** They record what the audit got wrong, not what the corpus got wrong. A false positive that is not written down is rediscovered every quarter, and each rediscovery costs the same effort as the first.
 
 ### The vault roll-up, regenerated at the end of every run
@@ -433,13 +443,13 @@ Log in the pending bucket **and open an action item row**, unless reconciliation
 
 **One report per run, never one per audit.** The report follows the run, not the finding. A health check that reads every concept and runs all seven audits produces a single report with a section per audit that found something — contradictions included. Seven audits do not make seven reports; that would scatter one run's reasoning across `Outputs/` and leave `_REPORTS.md` unreadable.
 
-The exception is a run of one audit. When an audit is invoked on its own — "sweep for contradictions", "check the archive coverage" — that is its own run and gets its own report, named for what it was rather than for the health check it was not. The contradiction sweep of 09.08.2026 is one: it was asked for directly, so it filed `2026-08-09_contradiction-sweep.md` rather than appearing inside a health check report that never ran.
+The exception is a run of one audit. When an audit is invoked on its own — "sweep for contradictions", "check the archive coverage" — that is its own run and gets its own report, named for what it was rather than for the health check it was not. The contradiction sweep of 09.08.2026 is one: it was asked for directly, so it filed `HealthChecks/2026-08-09_contradiction-sweep.md` rather than appearing inside a health check report that never ran.
 
 Either way the audit's own state lives in `questions.md`, not in the report. The contradiction reading queue, the action items table and the coverage table all survive independently of which report happened to mention them. A report is a snapshot; `questions.md` is the running state.
 
 Not every run writes one. `CHANGELOG.md` is the audit trail and is enough for a run that finds and fixes nothing; duplicating it into `00_Cerebrum/Outputs/` would create two places to look for the same thing.
 
-Write a report to `00_Cerebrum/Outputs/YYYY-MM-DD_health-check-<kb-slug>.md` when **either** condition holds. The folder is shared by the whole vault, so the `<kb-slug>` in the filename is what says which knowledge base was audited:
+Write a report to `00_Cerebrum/Outputs/HealthChecks/YYYY-MM-DD_health-check-<kb-slug>.md` when **either** condition holds. **Audit reports live in `Outputs/HealthChecks/`, question reports at the root of `Outputs/`** — the owner's instruction of 16.09.2026, after the audits had grown to 40 of the 50 reports on file and buried the ten that answer a question. The register stays one file at `Outputs/_REPORTS.md` and covers both, and its Promotion cell is what tells them apart: an audit row reads `audit` and is never promoted. `verify.py` fails a run that files an audit at the root, or a question report in the folder. The folder is shared by the whole vault, so the `<kb-slug>` in the filename is what says which knowledge base was audited:
 
 - the run raised or carried **one or more action items**, or
 - the run **applied auto-fixes**.
@@ -570,7 +580,7 @@ device bridge tools present: no
 VERDICT: a scheduled run on this account CANNOT reach the vault unattended.
 ```
 
-The reason is structural: a vault on a local machine is reachable from a cloud session only through a device bridge, and scheduled cloud runs do not get one. Retrying, rescheduling or moving the hour changes nothing; the folder is not merely disconnected, the whole mechanism for connecting it is missing. Create such a task from a session running on the machine itself, with the vault connected, and prove it runs before trusting it.
+The reason is that the vault lives in the cloud drive on the user's Mac, and a cloud session reaches a Mac only through the device bridge. Scheduled cloud runs do not get one. Retrying, rescheduling or moving the hour changes nothing; the folder is not merely disconnected, the whole mechanism for connecting it is missing. The task created that way was deleted the same day.
 
 So: **do not create this task with `create_trigger` from a cloud session.** If you are reading this in a cloud session and the user asks for the monthly schedule, tell them what this section says and stop. Creating it anyway produces a task that fails identically every month and writes nothing, which is worse than no task, because the vault then looks audited and is not.
 
@@ -592,7 +602,7 @@ Parameters, once you are in a session that can actually do this:
 Prompt, passed verbatim. Every firing starts a fresh session with no memory of this one:
 
 ```
-Your working folder is the vault at [VAULT].
+Your working folder is the the cloud drive vault at 00_Cerebrum.
 
 First, confirm you can reach it: list the folder and check that 00_Cerebrum/CLAUDE.md exists. If it does not, stop immediately. Do not search for the vault elsewhere, do not troubleshoot, and do not write anything. Report one line — "Health check did not run: the vault was not reachable from this session" — and end. A run that cannot read the vault has nothing to audit, and a silent failure is worse than a loud one because the vault then looks audited and is not.
 

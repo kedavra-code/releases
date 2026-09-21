@@ -24,6 +24,7 @@ Usage:  python3 _scripts/coverage.py [KnowledgeBase ...]   (default: all)
 import glob
 import json
 import os
+import unicodedata
 import re
 import sys
 import collections
@@ -70,13 +71,68 @@ def archive_layer(kb):
 
 
 def archive_roots(kb):
-    """Every immediate subfolder of the KB's archive layer is a chapter."""
+    """The chapters of the KB's archive layer, or the layer itself if it is flat.
+
+    Two faults, both found by the sweep of 08.09.2026 and both silent, because
+    returning no roots makes `measure()` yield no chapters and the caller write
+    the "archive layer is empty" table — over a corpus that is not empty.
+
+    **Dot directories counted as chapters.** The filter skipped `_`-prefixed
+    names and not `.`-prefixed ones, so a `.claude` directory was a chapter. It
+    holds no pages, so a layer containing only it measured as empty.
+
+    **A flat layer had no root at all.** The rule assumed pages live one level
+    down, under a chapter. `Delta_kb` mirrors a help centre into 751 files
+    directly in `Raw/`, with no subdirectory, so every immediate subfolder is
+    none of them. A layer whose pages sit in it *is* one scope, and
+    `scope_of()` already names that case `(root)`.
+
+    Chapters win where both exist, so no bundle that measured before measures
+    differently now.
+    """
     base = os.path.join(VAULT, kb, archive_layer(kb))
     if not os.path.isdir(base):
         return []
-    return [os.path.join(base, d) for d in sorted(os.listdir(base))
+    subs = [os.path.join(base, d) for d in sorted(os.listdir(base))
             if os.path.isdir(os.path.join(base, d))
-            and not d.startswith('_')]
+            and not d.startswith(('_', '.'))]
+    if subs:
+        return subs
+    return [base] if pages(base) else []
+
+
+def _p(path):
+    """One canonical spelling for a path, so the three sets can be compared.
+
+    macOS stores filenames decomposed (NFD): `regulär` is `r-e-g-u-l-a-` plus a
+    combining diaeresis. A citation typed or rewritten in a markdown file is
+    composed (NFC), one code point for the whole letter. The two strings are
+    not equal, so a set of pages read off the filesystem and a set of pages
+    read out of `sources[].resource` never intersect on those names, and the
+    page reads as uncited.
+
+    `verify.py` does not see this because it asks the filesystem whether the
+    path resolves, and macOS compares normalisation-insensitively. So the
+    citation is real and provable, and the coverage number is wrong -- which is
+    the worst shape a measurement bug can take.
+
+    Found 08.09.2026. The vault sweep of that day rewrote citations in the
+    concepts it repaired, normalising them to NFC on the way, and coverage fell
+    from 100.0 to 92.6 per cent in `Alpha_kb` and to 96.0 in `Beta_kb`. Those
+    losses were 195 and 93 pages, exactly the number of NFD-only filenames in
+    each archive. `Gamma_kb` has 94 such filenames and lost nothing, because
+    the sweep skipped it -- so the corpus had not changed at all, and 288 pages
+    were about to be re-read for nothing.
+    """
+    return unicodedata.normalize('NFC', os.path.abspath(path))
+
+
+# Files in an archive layer that are bookkeeping, not pages. `_index.md` is a
+# section index the exporter generates. `_INGESTED.md` is the register of what
+# Raw/ holds: harmless where the layer has chapter subdirectories, because it
+# sits above them, and counted as a page where the layer is a flat Raw/. Delta_kb
+# measured 751 pages against 750 on 14.09.2026 for exactly that reason.
+NOT_PAGES = ('_index.md', '_INGESTED.md')
 
 
 def pages(root):
@@ -84,8 +140,8 @@ def pages(root):
     for dp, dn, fn in os.walk(root):
         dn[:] = [d for d in dn if d != '_assets']
         for n in fn:
-            if n.endswith('.md') and n != '_index.md':
-                out.add(os.path.abspath(os.path.join(dp, n)))
+            if n.endswith('.md') and n not in NOT_PAGES:
+                out.add(_p(os.path.join(dp, n)))
     return out
 
 
@@ -120,7 +176,7 @@ def cited(kb):
             if not r:
                 continue
             n_cites += 1
-            out.add(os.path.abspath(os.path.normpath(os.path.join(d, str(r)))))
+            out.add(_p(os.path.normpath(os.path.join(d, str(r)))))
     return out, n_concepts, n_cites
 
 
@@ -130,13 +186,65 @@ def ledger(kb):
     if not os.path.exists(p):
         return set()
     base = os.path.join(VAULT, kb)
-    return {os.path.abspath(os.path.join(base, m))
+    return {_p(os.path.join(base, m))
             for m in LEDGER_PAGE.findall(open(p, encoding='utf-8').read())}
+
+
+def state_key(kb, chapters=None, n_concepts=None, n_cites=None):
+    """What `.coverage-state.json` holds: the fact a table is stale against.
+
+    One definition, called by `coverage.py` when it writes and by `verify.py`
+    when it checks. They held a copy each until 08.09.2026, and the copies
+    disagreed the moment this key gained its archive side — the same
+    duplication-plus-edit hazard the block in `verify.py` was already written
+    to describe, repeated one change later by the person reading the warning.
+    """
+    if chapters is None:
+        chapters, n_concepts, n_cites = measure(kb)
+    return {'concepts': n_concepts, 'citations': n_cites,
+            'pages': sum(sum(t.values()) for t, _, _ in chapters.values()),
+            'covered': sum(sum(h.values()) + sum(r.values())
+                           for _, h, r in chapters.values())}
 
 
 def scope_of(page, root):
     rel = os.path.relpath(page, root).split(os.sep)
     return rel[0] if len(rel) > 1 else '(root)'
+
+
+def _is_page(p):
+    """The same test `pages()` applies, so the guard cannot flag what it excludes.
+
+    Three kinds of citation legitimately point into an archive without naming a
+    page, and none of them is a normalisation fault: a folder, when a concept
+    cites a whole section; an attachment under `_assets/`; and a section's own
+    generated `_index.md`. Flagging those made the guard cry wolf on its first
+    run, on 13 real folder citations in `Beta_kb` and on Alpha attachments.
+    """
+    parts = p.split(os.sep)
+    return (p.endswith('.md') and parts[-1] not in NOT_PAGES
+            and '_assets' not in parts)
+
+
+def unmeasured(cit, allp, root):
+    """Citations into this archive that exist on disk and are not in the page set.
+
+    The invariant this guards: a citation `verify.py` can resolve must be one
+    this script can count. Those two answers came apart on 08.09.2026 over
+    Unicode normalisation and the disagreement was silent, because each script
+    was internally consistent — verify asked the filesystem, coverage compared
+    strings, and only the second was wrong. A measurement that is quietly wrong
+    is worse than one that fails, so this makes the disagreement loud.
+
+    Deliberately broader than that one cause. Any future path spelling the two
+    sides canonicalise differently — a symlinked scope, a doubled separator, a
+    trailing dot — lands here rather than as a drop in the percentage that
+    reads like real uncovered work.
+    """
+    return sorted(p for p in cit
+                  if p.startswith(root + os.sep)
+                  and p not in allp and os.path.isfile(p)
+                  and _is_page(p))
 
 
 def measure(kb):
@@ -147,6 +255,17 @@ def measure(kb):
         allp = pages(root)
         if not allp:
             continue
+        bad = unmeasured(cit, allp, _p(root))
+        if bad:
+            sys.stderr.write(
+                '%s: %d citation(s) resolve on disk but are not counted as '
+                'coverage. The two sides spell the same path differently, so '
+                'the percentage below is wrong rather than low:\n' % (kb, len(bad)))
+            for p in bad[:5]:
+                sys.stderr.write('  %s\n' % os.path.relpath(p, VAULT))
+            if len(bad) > 5:
+                sys.stderr.write('  ... and %d more\n' % (len(bad) - 5))
+            sys.exit(2)
         tot = collections.Counter()
         hit = collections.Counter()
         red = collections.Counter()
@@ -169,8 +288,8 @@ def render(kb, chapters, n_concepts, n_cites, stamp):
          'Coverage is the share of archive pages that some concept actually '
          'cites, plus pages the compile ledger records as read with nothing '
          'citable. It is not "does a concept exist for this scope" — that '
-         'question is about the bundle, and it can report a bundle fully '
-         'compiled while most of its pages have never been read.',
+         'question is about the bundle and it reported Alpha as fully compiled '
+         'while 96 per cent of its pages had never been read (15.08.2026).',
          '',
          'Measured **%s** from %d concepts and %d citations.'
          % (stamp, n_concepts, n_cites), '']
@@ -251,7 +370,16 @@ def main():
             continue
         out = os.path.join(VAULT, kb, 'COVERAGE.md')
         state = os.path.join(VAULT, kb, '.coverage-state.json')
-        now = {'concepts': n_concepts, 'citations': n_cites}
+        # The archive side belongs in the staleness key, not just the bundle
+        # side. Until 08.09.2026 this recorded {concepts, citations} alone, so
+        # no change on the archive side could ever mark a table stale. That is
+        # the one check that fires in a frozen base, where the bundle does not
+        # move: `Gamma_kb` carried a table reading 100.0 per cent for seven
+        # hours while the truth was 94.2, because its archive had been
+        # re-materialised into a normalisation the measurement could not match.
+        # `covered` moves when what is countable moves, which is what that
+        # fault did; `pages` moves when the corpus does.
+        now = state_key(kb, chapters, n_concepts, n_cites)
         if check:
             old = {}
             if os.path.exists(state):

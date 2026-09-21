@@ -36,8 +36,8 @@ curated order is the one thing that cannot be wrong.
 
 Everything above the first list item — heading, prose, any Navigation block —
 is hand-written, not derived, and is copied through untouched. The
-bundle-root index.md is left alone entirely: it carries `okf_version` and a
-navigation section rather than a concept list.
+bundle-root index.md is never rebuilt, because its sections are written by
+hand, but the concept lists inside it are kept current; see `requote`.
 
 Usage:  python3 _scripts/reindex.py [KnowledgeBase ...]   (default: all)
         python3 _scripts/reindex.py --check               (exit 1 if stale)
@@ -83,7 +83,16 @@ def concepts_in(d):
         m = verify.FM.match(t)
         if not m:
             continue
-        fm = yaml.safe_load(m.group(1)) or {}
+        # One concept with unparseable frontmatter must not stop the run.
+        # An unquoted colon in a `description` raised here on 16.09.2026 and
+        # took `verify.py`'s index check down with it, so a single bad file
+        # made the whole audit unrunnable for every worker. `verify.py`
+        # reports unparseable frontmatter as a defect of its own, which is
+        # where that fault belongs; here it is skipped.
+        try:
+            fm = yaml.safe_load(m.group(1)) or {}
+        except yaml.YAMLError:
+            continue
         out[os.path.basename(f)] = (
             str(fm.get('title') or os.path.basename(f)[:-3]).strip(),
             ' '.join(str(fm.get('description') or '').split()))
@@ -145,6 +154,99 @@ def rebuild(idx):
     return '\n'.join(lines[:first] + body + lines[last + 1:])
 
 
+QUOTE = re.compile(r'^(\s*[*-] )\[([^\]]*)\]\(([^)#\s]+)\) - (.*)$')
+
+
+def requote(text, d, is_root):
+    """Keep entries current where they list concepts from another directory.
+
+    `rebuild` compares an index only with the concepts in its own directory,
+    and until 14.09.2026 the bundle-root index was skipped outright, on the
+    reasoning that it carries navigation rather than a concept list. Three
+    bundles' root indexes do list concepts, in the `[title](path) -
+    description` form, and nothing kept them current. Zeta_kb's quoted a
+    description eleven days out of date (AI-2026-09-13-1); Beta_kb's quoted
+    five disproven readings, one a job title its concept had withdrawn, and
+    lacked 36 people written since it was last edited.
+
+    So an entry in that form pointing into another directory has its title
+    and description refreshed. A root entry pointing at a file beside it,
+    `questions.md`, is navigation: its description is refreshed and its link
+    text is left to whoever wrote it. And where the root index lists concepts
+    from a directory, a concept of that directory it does not link at all is
+    added beside the others, in sorted position when they are sorted and
+    after the last of them otherwise, as `rebuild` does. Nothing is dropped
+    or reordered, and entries in any other form are not touched.
+    """
+    cache = {}
+
+    def have(home):
+        if home not in cache:
+            cache[home] = concepts_in(home)
+        return cache[home]
+
+    lines = text.split('\n')
+    linked = set()
+    runs = {}
+    for i, ln in enumerate(lines):
+        e = ENTRY.match(ln)
+        if e:
+            linked.add(os.path.normpath(os.path.join(d, e.group(3))))
+        m = QUOTE.match(ln)
+        if not m:
+            continue
+        bullet, name, path, quote = m.groups()
+        tgt = os.path.normpath(os.path.join(d, path))
+        home = os.path.dirname(tgt)
+        if (not (is_root or home != d) or not os.path.isfile(tgt)
+                or os.path.basename(tgt) in ('index.md', 'log.md')):
+            continue
+        title, desc = have(home).get(os.path.basename(tgt), ('', ''))
+        if home != d and title:
+            name = title
+        if desc and ' '.join(quote.split()) != desc:
+            quote = desc
+        if (name, quote) != m.group(2, 4):
+            lines[i] = '%s[%s](%s) - %s' % (bullet, name, path, quote)
+        if is_root and home != d:
+            runs.setdefault(home, []).append((i, bullet, os.path.basename(tgt)))
+
+    before = {}
+    for home, run in runs.items():
+        known = have(home)
+        missing = [fn for fn in known if os.path.join(home, fn) not in linked]
+        if not missing:
+            continue
+        names = [fn for _, _, fn in run]
+        by_title = names == sorted(names, key=lambda f: sortkey(known[f][0]))
+        key = ((lambda f: sortkey(known[f][0])) if by_title
+               else (lambda f: f) if names == sorted(names) else None)
+        rel = os.path.relpath(home, d)
+        for fn in (sorted(missing, key=key) if key else sorted(missing)):
+            at = run[-1][0] + 1
+            if key:
+                at = next((i for i, _, f in run if key(f) > key(fn)), at)
+            before.setdefault(at, []).append(line_for(
+                os.path.join(rel, fn), known[fn][0], known[fn][1], run[-1][1]))
+    out = []
+    for i, ln in enumerate(lines):
+        out.extend(before.get(i, []))
+        out.append(ln)
+    out.extend(before.get(len(lines), []))
+    return '\n'.join(out)
+
+
+def expected(idx):
+    """What an existing index.md should read. reindex.py writes it and
+    verify.py compares against it, so the two cannot disagree."""
+    d = os.path.dirname(idx)
+    is_root = os.path.basename(d) == 'Wiki' \
+        and os.path.basename(os.path.dirname(d)).endswith('_kb')
+    old = open(idx, encoding='utf-8').read()
+    new = None if is_root else rebuild(idx)
+    return requote(old if new is None else new, d, is_root)
+
+
 DIR_TITLE = {
     'decisions': ('Decisions', 'Rulings taken, with what was decided, by whom '
                                'and on what evidence'),
@@ -200,10 +302,12 @@ def main():
                        glob.glob(os.path.join(root, '**', '*.md'),
                                  recursive=True)})
         for d in dirs:
-            if d == root or '_to_delete' in d:
+            if '_to_delete' in d:
                 continue
             idx = os.path.join(d, 'index.md')
             if not os.path.exists(idx):
+                if d == root:
+                    continue
                 made = create(d)
                 if made is None:
                     continue
@@ -217,8 +321,8 @@ def main():
                     print('created %s (%d concepts)'
                           % (rel, len(concepts_in(d))))
                 continue
-            new = rebuild(idx)
-            if new is None or new == open(idx, encoding='utf-8').read():
+            new = expected(idx)
+            if new == open(idx, encoding='utf-8').read():
                 continue
             stale += 1
             rel = os.path.relpath(idx, VAULT)
@@ -227,8 +331,8 @@ def main():
             else:
                 open(idx, 'w', encoding='utf-8').write(new)
                 written += 1
-                print('rewrote %s (%d concepts)'
-                      % (rel, len(concepts_in(os.path.dirname(idx)))))
+                print('rewrote %s (%s)' % (rel, 'bundle root' if d == root
+                      else '%d concepts' % len(concepts_in(d))))
     if check:
         print('%d index files stale or missing' % stale)
         sys.exit(1 if stale else 0)

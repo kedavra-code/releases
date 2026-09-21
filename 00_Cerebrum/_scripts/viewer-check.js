@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Rendered-output audit for okf-viewer.html — the verify.py of the pixels.
+/* Rendered-output audit for 00_Cerebrum_viewer.html — the verify.py of the pixels.
  *
  * Every viewer defect so far was caught by the owner, not by any check:
  * the radius-zero graph, the unclickable zoom, the &amp; in node labels,
@@ -7,7 +7,7 @@
  * page was the thing that was wrong. This script is the render-and-look
  * habit made executable, so it survives the session that learned it.
  *
- * Usage:  node _scripts/viewer-check.js [path/to/okf-viewer.html]
+ * Usage:  node _scripts/viewer-check.js [path/to/00_Cerebrum_viewer.html]
  * Runs wherever node + playwright exist (librarian sessions). Exit 1 on any
  * failure. The delivery rule in 00_Cerebrum/CLAUDE.md: no viewer delivery
  * without this green — and it replaces none of the eyeballing, because it
@@ -16,7 +16,7 @@
 const path = require('path');
 const { chromium } = require('playwright');
 
-const FILE = path.resolve(process.argv[2] || path.join(__dirname, '..', 'okf-viewer.html'));
+const FILE = path.resolve(process.argv[2] || path.join(__dirname, '..', '00_Cerebrum_viewer.html'));
 let failures = 0;
 const check = (ok, label, detail) => {
   console.log((ok ? 'ok      ' : 'FAIL    ') + label + (detail ? '  [' + detail + ']' : ''));

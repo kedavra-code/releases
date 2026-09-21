@@ -11,7 +11,6 @@ This file is a template, not a live CLAUDE.md. To create a new knowledge base:
 6. Leave everything else intact unless deliberately customising the system rules.
 7. Create the OKF scaffolding: Wiki/index.md (with okf_version), Wiki/log.md, Wiki/questions.md, plus memory.md, CHANGELOG.md, an assertions.yaml (may start empty) and Raw/_INGESTED.md. Reports go to the vault-level 00_Cerebrum/Outputs/, which already exists and needs nothing created.
 
-Alpha_kb/CLAUDE.md is a worked example of this template filled in, for a live knowledge base with an archive layer; Gamma_kb/CLAUDE.md is the frozen-archive variant. This file lives in the vault root, beside 00_Cerebrum/CLAUDE.md and SPEC.md, because it belongs to no single knowledge base.
 The top-level 00_Cerebrum/CLAUDE.md points to this file as the canonical source.
 -->
 
@@ -19,7 +18,7 @@ The top-level 00_Cerebrum/CLAUDE.md points to this file as the canonical source.
 
 ## Read this file whole
 
-**Read this file end to end at the start of a session, together with the vault `CLAUDE.md`, before acting.** Not the section that looks relevant. Owner's instruction of 15.08.2026; the reasoning is in the vault `CLAUDE.md` under *Read this file whole*.
+**Read this file end to end at the start of a session, together with the vault `CLAUDE.md`, before acting.** Not the section that looks relevant. Owner's instruction of 15.08.2026; the reasoning is in the vault's `WHY.md` under *Read this file whole*.
 
 ## What This Is
 
@@ -70,9 +69,9 @@ Wiki/
 
 Every directory gets an `index.md` once it holds more than a couple of concepts. Links between concepts are relative (`../group/concept.md`); no `[[wikilinks]]`.
 
-**Optional: a second level inside each group.** Where a knowledge base covers several clearly separate eras, employers, clients or products, you can add a subdirectory per one inside each group (`projects/era-one/`, `projects/era-two/`). Under OKF this is navigation only and carries no meaning, so it stays reversible. Two rules keep it honest: a concept that genuinely spans the divisions sits at the group root rather than being forced into one, and the division must not be inferable only from the path — `tags` and `sources` carry it.
+**Optional: a second level inside each group.** Where a knowledge base covers several clearly separate eras, employers, clients or products, you can add a subdirectory per one inside each group (`projects/gamma/`, `projects/beta/`). Under OKF this is navigation only and carries no meaning, so it stays reversible. Two rules keep it honest: a concept that genuinely spans the divisions sits at the group root rather than being forced into one, and the division must not be inferable only from the path — `tags` and `sources` carry it.
 
-**Prefer separate knowledge bases where the divisions have different operating rules.** `Combined_kb` used the chapter level for three employers and was split into `Gamma_kb`, `Beta_kb` and `Alpha_kb` on 15.08.2026, because two of the three were closed archives and one takes weekly ingests — and a single `CLAUDE.md`, a single coverage table and a single action-item queue cannot say two different things about writing cadence at once. The chapter level was measured before the split: 238 links crossed it, but only 7 went directly between employers. Almost all the coupling was three concepts that genuinely spanned all three, and those went to the live knowledge base with the other two citing across.
+**Prefer separate knowledge bases where the divisions have different operating rules.** A vault that used the chapter level for three employers and was split into `Gamma_kb`, `Beta_kb` and `Alpha_kb` on 15.08.2026, because two of the three were closed archives and one takes weekly ingests — and a single `CLAUDE.md`, a single coverage table and a single action-item queue cannot say two different things about writing cadence at once. The chapter level was measured before the split: 238 links crossed it, but only 7 went directly between employers. Almost all the coupling was three concepts that genuinely spanned all three, and those went to the live knowledge base with the other two citing across.
 
 The trade is real and worth knowing before choosing. Chapter directories keep one alias map, one contradiction sweep and one queue; separate knowledge bases give each division its own rules and its own cadence. Split when the operating rules differ, not when the subject matter does.
 
@@ -199,27 +198,26 @@ One entry per operation, most recent first, each naming its scope:
 
 ## Output Filing Rules
 
-Outputs land in `../Outputs/` first. An output gets promoted into the bundle only when:
+Outputs land in `../Outputs/` first. A question report's findings get written into the bundle by "compile all kb", without asking, when:
 
-- It contains synthesised knowledge that didn't exist there before, AND
-- The synthesis feels foundational or likely to be referenced by future queries, AND
-- I propose the promotion and you approve.
+- The bundle does not already carry them, AND
+- The pages the report read support them, checked page by page, because a report can be wrong.
 
-Promotion means rewriting the output as a proper concept with full frontmatter and `sources` — not moving the file. The report stays in `../Outputs/` as query history.
+Promotion means rewriting the findings into proper concepts with full frontmatter and `sources` naming those pages — not moving the file. The report stays in `../Outputs/` as query history. Owner's decision of 15.09.2026, replacing the rule that a promotion waited for the owner's approval; the procedure is in `knowledge-base-compile-skill`.
 
-**Delivery** follows the *Output presentation rule* in `../CLAUDE.md`, which is the single home of that rule: one file, one reference — question reports arrive as rendered pages, everything else as a `computer://` link, never both for the same file.
+**Delivery** follows the *Output presentation rule* in `../CLAUDE.md`, which is the single home of that rule: one file, one reference — a question report arrives as a rendered page, everything else is named by its path, never both for the same file.
 
 ## Questions and Web Research
 
 Question answering and concept drafting follow the system rules in `../CLAUDE.md`:
 
-- *Question report protocol* — every question generates a dated report in `../Outputs/` with citations, delivered into the chat as a readable page and linked with `computer://`.
+- *Question report protocol* — every question generates a dated report in `../Outputs/` with citations, delivered into the chat as a readable page and named by its filename.
 - *Action items across the vault* — findings needing judgement are raised in `Wiki/questions.md`, which is the only place their state lives. `00_Cerebrum/_ACTION-ITEMS.md` is a generated roll-up across all knowledge bases and is never edited by hand.
 - *Concept drafting and web research* — internal topics are answered from the corpus, where the archive is the authority. External topics may use web search, and new sources land in `Raw/` or `Wiki/references/digests/` first.
 
 ## Health Check
 
-When you ask for a health check, I run the `knowledge-base-health-check-skill` against this knowledge base. The monthly scheduled task fires the same skill on the 1st of each month. Every run reads every concept; there is no cheap and expensive variant.
+When you ask for a health check, I run the `knowledge-base-health-check-skill` against this knowledge base. Nothing in this repository schedules it; `../CLAUDE.md` under *The monthly scheduled task* says what is and is not automatic. What a run reads in full is the read rule under *Health check skill* in `../CLAUDE.md`, which this file does not restate.
 
 It auto-fixes routine drift (writing-rules violations, stale index entries, unresolved footnote labels, `draft`→`stable` promotions where sourcing now supports it, contradiction cross-references), checks OKF conformance, auto-drafts up to three suggested new concepts where there's enough evidence, and flags only judgement calls (out-of-scope Raw, output promotion candidates, stale rewrites that need taste).
 
@@ -248,7 +246,7 @@ Sensitivity is not on this list. Nothing is excluded for being personal, awkward
 ## Default Behaviour
 
 - "Compile" or "process Raw" → ingestion protocol on anything new since the last `_INGESTED.md` entry. For an archive layer I ask for a scope first.
-- A question → the Question Report Protocol in `../CLAUDE.md` fires automatically; the report lands in `../Outputs/`, and arrives in the chat as a readable page with a `computer://` link beside it.
+- A question → the Question Report Protocol in `../CLAUDE.md` fires automatically; the report lands in `../Outputs/`, and arrives in the chat as a readable page, with its filename named in the sentence around it.
 - "Draft a concept on X" or "enrich X" → corpus first; web search only for external topics.
 - "Run a health check" → the `knowledge-base-health-check-skill`.
 - "Where should I start?" → I read `questions.md` for coverage gaps and propose the next scope.

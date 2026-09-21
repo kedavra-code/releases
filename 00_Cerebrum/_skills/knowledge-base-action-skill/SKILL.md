@@ -81,7 +81,7 @@ python3 _scripts/actionitems.py      # the roll-up
 python3 _scripts/reindex.py          # indexes from frontmatter
 python3 _scripts/inventory.py        # the concept list agents read
 python3 _scripts/coverage.py         # archive coverage
-python3 _scripts/visualize.py        # okf-viewer.html
+python3 _scripts/visualize.py        # 00_Cerebrum_viewer.html
 bash    _scripts/viewer-check-sandbox.sh
 python3 _scripts/verify.py           # must end green
 ```

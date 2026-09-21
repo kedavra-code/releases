@@ -43,6 +43,30 @@ exec python3 _scripts/verify.py
 HOOK
 chmod +x .git/hooks/pre-commit
 
+# The viewer is built before a commit, because `viewer-check.js` has to be green
+# before the work goes in — so at build time the tree still holds the edits, and
+# the page stamps itself with the previous commit and the word `uncommitted`.
+# Nothing rebuilt it afterwards, so the word never went away and the build code
+# named the wrong commit for the life of the page. The owner asked why on
+# 16.09.2026. The stamp was never wrong; the order was. Rebuilding after the
+# commit costs eight seconds and makes the page match the commit exactly.
+#
+# It must never fail a commit that has already been made, so every failure is
+# reported and swallowed.
+cat > .git/hooks/post-commit <<'HOOK'
+#!/bin/sh
+# Installed by _scripts/gitsetup.sh. Rebuilds the viewer so its build code
+# names the commit just made, rather than the one before it plus `uncommitted`.
+cd "$(git rev-parse --show-toplevel)" || exit 0
+if python3 _scripts/visualize.py >/dev/null 2>&1; then
+  echo "· viewer rebuilt for $(git --no-optional-locks rev-parse --short HEAD)"
+else
+  echo "!! the viewer was not rebuilt. Run: python3 _scripts/visualize.py"
+fi
+exit 0
+HOOK
+chmod +x .git/hooks/post-commit
+
 git add -A
 if git diff --cached --quiet && git rev-parse -q --verify HEAD >/dev/null; then
   echo "Nothing new to commit."

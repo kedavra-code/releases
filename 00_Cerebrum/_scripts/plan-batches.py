@@ -80,7 +80,7 @@ def main():
         p = sys.argv[sys.argv.index('--exclude') + 1]
         for line in open(p, encoding='utf-8'):
             if line.strip():
-                excluded.add(os.path.abspath(os.path.join(root, line.strip())))
+                excluded.add(coverage._p(os.path.join(root, line.strip())))
 
     # coverage.cited() returns (paths, n_concepts, n_citations)
     done = coverage.cited(kb)[0] | coverage.ledger(kb)

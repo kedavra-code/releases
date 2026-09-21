@@ -15,7 +15,7 @@ sources:
 
 # What this governs
 
-Every concept body in a `Wiki/` folder, every prose-heavy file in `Outputs/`, and any draft written for the person who owns this vault.
+Every concept body in a `Wiki/` folder, every prose-heavy file in an `Outputs/` folder, and any draft written for the person who owns this vault.
 
 Not governed: frontmatter, navigation files (`index.md`, `log.md`, `CHANGELOG.md`, `_INGESTED.md`, `CLAUDE.md`), and quotations from source material, which stay verbatim in their original language even where they break every rule below.
 
@@ -62,7 +62,7 @@ Do not write "it is not just X, it is Y" or "not only X but also Y". The pattern
 Do not reach for three parallel adjectives or three parallel clauses. Wikipedia flags the triplet because writers use it for rhythm when they have one thing to say.
 
 > **No.** The rollout was efficient, effective, and well received.
-> **Yes.** The rollout finished four weeks early. Two departments filed complaints about the migration window.
+> **Yes.** The rollout finished four weeks early. Two ISGs filed complaints about the migration window.
 
 Three items are fine when there are exactly three things and each is doing separate work.
 
@@ -109,11 +109,11 @@ Cut "moreover", "furthermore", "in addition", "additionally". "However" and "but
 No rhetorical questions, no scene-setting, no "Have you ever wondered". A concept opens with its subject.
 
 > **No.** What makes a service-level agreement work in a federated university?
-> **Yes.** SLAs here are negotiated per department, not centrally.
+> **Yes.** Alpha's SLAs are negotiated per department, not centrally.
 
 # Punctuation
 
-**Em dash.** At most one per paragraph, and only for a genuine aside. Where a comma works, use a comma. Where the aside is long, use a full stop. This is the most-cited tell and the easiest to overrun.
+**Em dash.** At most one aside per paragraph, and only a genuine one: a single dash, or one pair around an aside in the middle of a sentence. Where a comma works, use a comma. Where the aside is long, use a full stop. This is the most-cited tell and the easiest to overrun.
 
 **En dash** for numeric and date ranges: 2019–2022, pages 4–7. Not a hyphen.
 
@@ -146,7 +146,7 @@ Plain, specific, direct. Short sentences carrying facts. Vary sentence length so
 
 Concepts are written in the third person, about their subject and about their own making alike. A coverage note, a caveat or an open question is still the concept speaking, not the librarian: "No page in this scope states the naming rule" rather than "I did not find a page that states the naming rule".
 
-This said the opposite until 22.08.2026, on the reasoning that first person beats passive evasion. The reasoning was right and the inference was wrong. The cure for "the 2023 pages were not read" is not the pronoun — it is "this scope does not cover the 2023 pages", which names an agent and evades nothing. What the old rule could not anticipate is that a corpus built from one person's own notes makes the pronoun ambiguous in a way it would not be elsewhere: a reader meeting "I use this table to place people in streams" cannot tell whether the "I" is the note's author or the compile agent that wrote the sentence.
+This said the opposite until 22.08.2026, on the reasoning that first person beats passive evasion. The reasoning was right and the inference was wrong. The cure for "the 2023 pages were not read" is not the pronoun — it is "this scope does not cover the 2023 pages", which names an agent and evades nothing. What the old rule could not anticipate is that this corpus is built from one person's own notes, so the pronoun is ambiguous here as it would not be elsewhere: the owner read "I use this table to place people in streams" and asked whether the "I" was his. It was a compile agent's.
 
 `verify.py` enforces this. Quotes and their bracketed glosses are exempt, because there the "I" belongs to the person quoted and stays verbatim, as do roman numerals and bare letters used as labels.
 
@@ -156,16 +156,16 @@ Never write a compliment about the subject matter. Never editorialise on whether
 
 **British English**, not American: organisation, prioritise, analyse, behaviour, licence (noun) / license (verb), programme (a body of work) / program (software). LLMs default to American spelling, which makes consistent British spelling a small anti-tell as well as the correct register here.
 
-**Local conventions** where they apply. This vault's are Swiss: thousands separator `1'500`, currency as `CHF 4,500` or `kCHF 45`, dates in prose as `12.03.2024`, dates in frontmatter and tables as ISO `2024-03-12`. Replace them with your own and keep them consistent — consistency is the point, not the particular choice.
+**Swiss conventions** where they apply: thousands separator `1'500`, currency as `CHF 4'500` or `kCHF 45`, dates in prose as `12.03.2024`, dates in frontmatter and tables as ISO `2024-03-12`.
 
-**Source-language terms** keep their real names and are never translated — meeting series, org units, roles and document types alike. Gloss on first use in a concept, then use plainly. These are the strings the archive is searched with; translating them severs the concept from its source. List the ones your corpus actually uses here, so a run can recognise them.
+**German source terms** keep their real names and are never translated: Steering Group, standing bilateral, Bila, offsite, Retraite, salary round, MAG, written warning, interim reference, Aussprache, Steuerungsausschuss, the executive board, Fachführung. Gloss on first use in a concept, then use plainly. These are the strings the archive is searched with; translating them severs the concept from its source.
 
 # Self-check
 
 Before saving anything:
 
 1. Search the text for every word in the banned vocabulary list.
-2. Count em dashes. More than one per paragraph means rewrite.
+2. Count em dashes. More than one aside per paragraph, or three dashes or more, means rewrite.
 3. Find every `-ing` word that ends a sentence and ask whether it adds a fact.
 4. Find every bolded item and justify it.
 5. Find every opinion and confirm it has a footnote resolving to a `sources[].id`.

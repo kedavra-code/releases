@@ -1,6 +1,6 @@
 ---
 name: knowledge-base-compile-skill
-description: "Compiles an archive layer of a 00_Cerebrum knowledge base into OKF concepts by dispatching batches of ~55 archive pages to parallel sub-agents, then merging what they hand back. Plans batches, packs them, runs up to eight agents concurrently, merges append-requests, writes the compile ledger, and measures coverage as the share of archive pages actually cited rather than asserted. Use whenever the user says \"compile the archives\", \"compile the [name] archive\", \"run a compile\", \"continue the compile\", \"read the rest of the archive\", or asks how much of an archive has actually been read. Also covers the routine ingest of new material into a live knowledge base, from its Raw/ folder and from a weekly OneNote export delta. \"Compile the archives\", plural, means every live knowledge base in turn and never a frozen one."
+description: "Compiles an archive layer of a 00_Cerebrum knowledge base into OKF concepts by dispatching batches of ~55 archive pages to parallel sub-agents, then merging what they hand back. Plans batches, packs them, runs up to eight agents concurrently, merges append-requests, writes the compile ledger, and measures coverage as the share of archive pages actually cited rather than asserted. Use whenever the user says \"compile the archives\", \"compile all kb\", \"compile the [name] archive\", \"run a compile\", \"continue the compile\", \"read the rest of the archive\", or asks how much of an archive has actually been read. Also covers the routine ingest of new material into a live knowledge base, from its Raw/ folder and from a weekly OneNote export delta. \"Compile the archives\" or \"compile all kb\", plural, means every live knowledge base in turn and never a frozen one's archive, and it ends by writing the checked findings of question reports in Outputs/ into the Wiki, frozen knowledge bases included."
 ---
 
 # Knowledge base compile
@@ -13,7 +13,7 @@ Reads an archive layer end to end and turns it into cited OKF concepts, and keep
 
 ## When to invoke
 
-- **"compile the archives"**, plural — every live knowledge base in turn. See the next section; this is the routine command.
+- **"compile the archives"** or **"compile all kb"**, plural — every live knowledge base in turn, then the question reports. See the next section; this is the routine command.
 - "compile the Alpha archive", "run a compile", "continue the compile", "finish reading the archive" — one named knowledge base.
 - The user asks what share of an archive has actually been read, and the answer is "less than all of it".
 - A live knowledge base's routine ingest, from `Raw/` or from a weekly export delta. **This used to say the opposite** — that the skill was for bulk archive layers only and not for routine ingest. That split made sense while the archives were mostly unread; now that they are all at 100 per cent it left the frequent case with no home, so ingest is in scope and has its own section below.
@@ -29,27 +29,28 @@ Liveness is not hardcoded here, and must not be. Each `<KB>/memory.md` declares 
 | _(read each `memory.md`)_ | live | yes |
 | | frozen | **no** |
 
-**A frozen archive is complete and closed.** There is no ingest cadence, no queue, and nothing arrives. A run that changes anything under one is a mistake rather than an update — so a plural invocation must not touch them, and must not report them as "compiled, 0 pages" either, which invites the next run to check again.
+**A frozen archive is complete and closed.** There is no ingest cadence, no queue, and nothing arrives. A run that changes anything under one is a mistake rather than an update — so a plural invocation must not compile them, and must not report them as "compiled, 0 pages" either, which invites the next run to check again. The one thing it writes into a frozen knowledge base is a question report's checked findings, in the last step; the archive stays untouched.
 
 Plural is a sequence, not a merge. The scripts take one knowledge base per invocation and the concept namespaces are separate; run one to completion, close it out, then start the next.
+
+**Then the question reports, last, every time.** When the last knowledge base is closed out, run *Question reports into the Wiki* below — also when no knowledge base had anything to compile.
 
 ## Where new material comes from
 
 Each live knowledge base has its own sources, and they are not interchangeable.
 
-Each live knowledge base's `CLAUDE.md` names its own. Record them here as you add knowledge bases, because a run that guesses will plan batches over the wrong folder:
-
 | Knowledge base | Sources |
 |---|---|
-| _(name each one and where its new material lands)_ | |
+| `Alpha_kb` | `Alpha_kb/Raw/`, **and** the weekly OneNote export delta under `Alpha_kb/OneNote/Work Alpha/` |
+| `Zeta_kb` | `Zeta_kb/Raw/` **only** |
 
-**Not every archive folder is a compile queue.** A folder of static pages that no exporter feeds — kept because other bundles cite across into it — reads as 0 per cent covered in `COVERAGE.md`, and that is not a backlog to clear. Note such folders here explicitly, and do not plan batches over one without asking the owner.
+**`Zeta_kb/OneNote/Personal/` is not a compile queue.** It is 19 static pages, cited across from `Beta_kb` and `Alpha_kb` for the career record, and it is not fed by any exporter. It reads as 0 per cent covered in `COVERAGE.md` and that is not a backlog to clear — do not plan batches over it without asking the owner.
 
 ## Before anything else
 
 Read, in this order and whole: the knowledge base's `memory.md`, the vault `CLAUDE.md`, the knowledge base's `CLAUDE.md`. Then `00_Cerebrum/_COMPILE-RESUME.md`, which carries the current state of any paused run and the measured costs.
 
-**Access note, and pass it to every sub-agent.** In some sandboxes the file tools return `EPERM` for the vault path and `Glob` returns nothing, while bash reads the same files cleanly — a filesystem-permission matter, and a property of the session rather than of the machine. Where that is the case, use bash for all vault access and say so to every sub-agent: an `EPERM` or an empty `Glob` is not evidence a file is missing, and only bash failing means the vault is unreachable. **Never run `git`** from a bridge or sandbox session; a bare `git status` takes `.git/index.lock`, which such a session cannot remove, and it wedges the owner's next commit. Read history only through `_scripts/git-read.sh`.
+**Access note, and pass it to every sub-agent.** In some sandboxes the file tools return `EPERM` for the vault path and `Glob` returns nothing, while bash reads the same files cleanly. Where that happens, use bash for all vault access, and treat an `EPERM` or an empty `Glob` as saying nothing about whether a file exists — only bash failing means the vault is unreachable. **Never run `git`** from a session that cannot delete files; a bare `git status` takes `.git/index.lock`, which such a session cannot remove, and the next commit then fails. Read history only through `_scripts/git-read.sh`.
 
 ## Compiling a live knowledge base
 
@@ -104,7 +105,26 @@ python3 _scripts/plan-batches.py <KB> --dry-run # new pages, found without being
 ls <KB>/Raw/                                    # anything dropped by hand
 ```
 
-Zero unread, a changelog line of all zeros, and nothing new in `Raw/` means there is nothing to do. **Say that and stop.** Manufacturing a pass over a bundle that has not changed is how a corpus acquires concepts nobody needed.
+Zero unread, a changelog line of all zeros, and nothing new in `Raw/` means there is nothing to compile. **Say that and stop** — a plural run still goes on to the question reports. Manufacturing a pass over a bundle that has not changed is how a corpus acquires concepts nobody needed.
+
+## Question reports into the Wiki
+
+**The last step of "compile all kb", run every time, even when no knowledge base had anything to compile.** Owner's decision of 15.09.2026. Until then no compile read `Outputs/`. A report's findings reached the Wiki only through a promotion the owner had to approve, nothing asked the owner, and that day five reports had stood at `pending review` for 12 to 29 days.
+
+**Which reports.** Every row in `Outputs/_REPORTS.md` whose Promotion cell starts with `pending review`, whatever its Scope names — `Gamma_kb` and `Beta_kb` included, because a report's findings are not archive material. Nothing under `OneNote/` or `Raw/` is touched. Audit rows are never promoted, and a row at `promoted`, `partial` or `none` is already decided.
+
+**One report at a time, in this order:**
+
+1. Read the report whole, including *Corpus sufficiency*, which names the concepts that should have existed.
+2. List its findings — each fact or synthesis it states about the subject — and check the Wiki for each. One the Wiki already carries is done.
+3. **Check every other finding against the pages the report cites**, opened and read, never against the report's own wording. A report is a secondary account and can be wrong: the Glenfis report of 14.09.2026 carried two statements its own source contradicted. A finding the pages do not support stays out.
+4. Write what holds into the knowledge base whose subject it is, following that base's `CLAUDE.md`: into the concept that covers the subject, as a section or table rows, or as a new concept where none does. `sources` name the pages, never the report. Every claim footnoted, no `verified` key written, `generated.at` restamped on every concept changed. A report spanning two knowledge bases writes each finding where its subject lives and links across rather than copying. **A concept that carried a `verified` key loses it**: the owner confirmed the text as it stood, and `_REPAIR-LEDGER.md` rules that a change to a claim clears the key.
+5. **Where a finding disagrees with a concept, do not write over it.** If the concept misreads a page it cites, correct it from that page by attribution, as a health check does. If two pages disagree, record both positions in the Contradictions table of `questions.md`.
+6. Update the register row: `promoted`, naming the concepts; `partial`, naming what was left out and why; or `none`, with the reason. An open action item that asked whether to promote the report is set to `actioned`, with the same note.
+
+**Close it like any run that changed concepts:** `reindex.py`; a `Wiki/log.md` and a `CHANGELOG.md` entry in each knowledge base written into; `memory.md` where its answer changed; `actionitems.py` where an item changed; `readblocks.py --write` where a `verified` key was cleared, so the concept is back on the owner's reading list (without `--write` the script only prints, and the file stays stale); `verify.py` green; the viewer regenerated and checked. **The closing summary names each report, what it added where, and every `verified` key it cleared.** The owner no longer approves each promotion, so that summary is the review it gets.
+
+**Run the reports one after another.** They are few, and two agents writing one concept lose a write.
 
 ## The bulk loop
 
@@ -124,7 +144,7 @@ python3 _scripts/coverage.py <KB>
 python3 _scripts/verify.py <KB>                    # must be 0 defects
 ```
 
-**Then the linking pass, before the wave is closed.** Count concepts with no inbound link and divide by the bundle size. Every mature bundle in this vault sits at or under 2 per cent — Alpha 2, Gamma 1, Beta 0, Delta 0. **Above about 5 per cent, run a linking pass**: one agent, no concurrency, editing existing concepts directly, adding links where a real relationship exists and cross-KB links where a sibling bundle covers the same subject from another side. `verify.py` already reports each such concept as a finding, so the measurement is free:
+**Then the linking pass, before the wave is closed.** Count concepts with no inbound link and divide by the bundle size. Every mature bundle in this vault sits at or under 2 per cent — Alpha 2, Gamma 1, Beta 0, Delta 0. **Above about 5 per cent, run a linking pass**: one agent, no concurrency, editing existing concepts directly, adding links where a real relationship exists and cross-KB links where a sibling bundle covers the same subject from another side. **Link by editing the sentence that names the subject; never append a linked copy of it.** The pass of 31.08.2026 left five `Epsilon_kb` concepts carrying the same sentence twice, once plain and once linked, and `verify.py` reports a paragraph that stands twice, or once as the start of another, since 15.09.2026 (AI-2026-08-31-5). `verify.py` already reports each such concept as a finding, so the measurement is free:
 
 ```bash
 python3 _scripts/verify.py <KB> | grep -c 'no inbound link'
@@ -157,12 +177,14 @@ This is the part that cannot be reconstructed from the scripts. Every clause bel
 
 > You are a compile agent for the **[KB]** knowledge base. You compile ONE batch: **[BATCH-ID]**, [N] pages from `[SCOPE PATH]`. [Seven] other agents are running other batches concurrently right now.
 >
-> **ACCESS NOTE.** Include this line only where the file tools actually fail for the vault path: the Read/Write/Edit/Glob/Grep tools return EPERM here. **Use bash for ALL vault access.** Vault root: `[VAULT]`. An EPERM is not evidence a file is missing. Never run `git`.
+> **ACCESS NOTE.** [Include only where it applies: in this environment the Read/Write/Edit/Glob/Grep tools return EPERM for the vault path.] **Use bash for ALL vault access.** Vault root: `[VAULT]`. An EPERM is not evidence a file is missing. Never run `git`.
 >
 > **Step 1 — the bulk reads, then work.** Read exactly these four and nothing else exploratory:
 > `_extractions/_packed-[BATCH-ID].txt`, `_extractions/_INVENTORY.md` (the [N] concepts that already exist), `[KB]/CLAUDE.md`, `About me/writing-rules.md`.
 > Reading a specific named concept you intend to append to is expected and is not exploration. **No `ls` sweeps, no `find` over the archive, no opening individual OneNote pages.** If the pack overflows the bash output cap, read it in `sed -n '1,400p'` windows rather than one truncating `cat`.
 > One `=== PAGE <relative path>` header per page — **cite that path exactly as given**. `[+N lines carried, first in <file>]` means that content already appears elsewhere in the corpus: an item carried forward again, not missing information. A page that is almost entirely such markers is a duplicate, and the marker names its source.
+>
+> **Your batch is not the corpus. Never write that the export lost something.** The pack strips frontmatter and URLs, replaces every link with a marker and cannot show you an image, so what is absent from your batch is absent from your batch and nothing more. Write "the pages in this batch do not carry X", never "X did not survive the export" or "X is not in the export". Sixteen claims of that shape stood in `Epsilon_kb` while the attachment folders held the files, three of them corrected once and written again by the next wave (`Epsilon_kb` AI-2026-09-14-2). `verify.py` now reports the phrasing as a finding in a bundle that opts in with `export_loss_claims`.
 >
 > **[ARCHIVE HAZARDS — from the KB's CLAUDE.md and memory.md: date fields that lie, Kürzel maps, homonyms, redaction relationships, settled facts that must not be re-litigated. Name them explicitly. This section is what separates a good batch from a plausible one.]**
 >
