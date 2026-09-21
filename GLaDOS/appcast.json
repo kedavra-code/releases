@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 185,
-  "commit": "b894c49",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-185/GLaDOS.dmg",
-  "sha256": "27aeb74590ce6051890d62e410d9397e6fb2ff28573a773736fd662ad11a6e52",
+  "build": 193,
+  "commit": "f97c0fa",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-193/GLaDOS.dmg",
+  "sha256": "413bd14415cedd9c8aeee264fe1e5c28a65bfc971d05a51721549014c0a98117",
   "minimumSystemVersion": "26.0",
-  "notes": "A click on her eye no longer switches her off"
+  "notes": "Her two rings move as one, and further"
 }
