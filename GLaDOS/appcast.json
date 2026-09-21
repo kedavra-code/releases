@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 193,
-  "commit": "f97c0fa",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-193/GLaDOS.dmg",
-  "sha256": "413bd14415cedd9c8aeee264fe1e5c28a65bfc971d05a51721549014c0a98117",
+  "build": 194,
+  "commit": "42a3330",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-194/GLaDOS.dmg",
+  "sha256": "29755c293a67fb80695f62fbefef4188383e7061d04c517b09b8b8624f7277a8",
   "minimumSystemVersion": "26.0",
-  "notes": "Her two rings move as one, and further"
+  "notes": "The blue listening ring moves out with the stronger rings"
 }
