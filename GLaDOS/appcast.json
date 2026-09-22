@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 194,
-  "commit": "42a3330",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-194/GLaDOS.dmg",
-  "sha256": "29755c293a67fb80695f62fbefef4188383e7061d04c517b09b8b8624f7277a8",
+  "build": 197,
+  "commit": "9136798",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-197/GLaDOS.dmg",
+  "sha256": "0741d94bbbe3d3ddaa8ade3c2aee90250a43e2f7e947a5b0c4dbed400bffc8be",
   "minimumSystemVersion": "26.0",
-  "notes": "The blue listening ring moves out with the stronger rings"
+  "notes": "The old English voice is deleted: one English bundle, and the store removes the retired one"
 }
