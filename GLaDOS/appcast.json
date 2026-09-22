@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 197,
-  "commit": "9136798",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-197/GLaDOS.dmg",
-  "sha256": "0741d94bbbe3d3ddaa8ade3c2aee90250a43e2f7e947a5b0c4dbed400bffc8be",
+  "build": 198,
+  "commit": "f047a7d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-198/GLaDOS.dmg",
+  "sha256": "5ec5f6fdc87e7b01a0266f82c34d4d61418898f2916499646a18ac223a6ec34f",
   "minimumSystemVersion": "26.0",
-  "notes": "The old English voice is deleted: one English bundle, and the store removes the retired one"
+  "notes": "Opus 5.5 at high effort replaces Opus 5 as her default brain"
 }
