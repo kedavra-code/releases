@@ -268,7 +268,11 @@ EXPORT_LOSS = re.compile(
     r'recovered)|link marker)\b[^.\n]{0,80}?\bexport\b'
     r'|unavailable from this corpus'
     r')')
-AUTHOR_FORM = re.compile(r'^(?:human:[a-z0-9\-]+|process:[\w\-/\.]+|unknown)$')
+# `team:<id>` added 23.09.2026. SPEC.md gives it for a source written by a
+# group rather than a person (its own examples cite `team:ga4-docs`), and the
+# first version of this pattern left it out, so an EBU page correctly written
+# as `team:ebu` failed the audit for following the format.
+AUTHOR_FORM = re.compile(r'^(?:human:[a-z0-9\-]+|team:[a-z0-9\-]+|process:[\w\-/\.]+|unknown)$')
 NO_CONCEPT = re.compile(
     r'([A-Z\u00c4\u00d6\u00dc][\w\u00e4\u00f6\u00fc\u00e9\u00e8\u00e0]+'
     r'(?: [A-Z\u00c4\u00d6\u00dc][\w\u00e4\u00f6\u00fc\u00e9\u00e8\u00e0]+){1,2})'
@@ -481,7 +485,7 @@ def audit(kb):
 
         # An `author` on an archive citation that is not one of the three
         # forms the format allows. `SPEC.md` and every manual give
-        # `human:<slug>`, `process:<id>` or `unknown`; 140 archive citations
+        # `human:<slug>`, `team:<id>`, `process:<id>` or `unknown`; 140 archive citations
         # write a bare display name instead — `Yusuf Demirel`, `Tobias
         # Bärtschi`, and in one concept `librarian/claude-opus-5`, which is the
         # `generated.by` form in the wrong field. It matters beyond tidiness:
@@ -502,7 +506,7 @@ def audit(kb):
             a = str(s.get('author'))
             if not AUTHOR_FORM.match(a):
                 findings.append((rel, 'source author %r is not human:<slug>, '
-                                      'process:<id> or unknown' % a))
+                                      'team:<id>, process:<id> or unknown' % a))
         # A verified key is legitimate, and only when the CHANGELOG records
         # the confirmation that produced it. Until 15.08.2026 this forbade the
         # key outright, which was the right guard while nothing was verified
@@ -1056,7 +1060,14 @@ def audit(kb):
         # "Dorian Mölk" finds `dorian-moelk.md`. Calibrated 20.09.2026
         # over all six bundles: seven sentences of the shape, one of them
         # stale, no false positives. (`Beta_kb` AI-2026-09-20-8.)
-        for pm in NO_CONCEPT.finditer(prose_c):
+        # Not in `questions.md`. The item table's whole job is to record faults,
+        # so a row describing this very class quotes the sentence that caused
+        # it — and the check then fires on the record of its own fix. It did,
+        # on 22.09.2026, against the row that had closed it two days earlier.
+        # A guard that cannot tell a defect from the note saying the defect was
+        # repaired is a guard that punishes writing things down.
+        for pm in ([] if rel.endswith('questions.md')
+                   else NO_CONCEPT.finditer(prose_c)):
             cand = re.sub(r'[^a-z0-9]+', '-', translit(pm.group(1))).strip('-')
             if cand in person_pages:
                 findings.append((rel, 'says %r has no concept, but %s.md '
@@ -1888,7 +1899,7 @@ def export_contract(kb):
 # found by a reader on 16.09.2026 rather than by this check. The arm now takes
 # any digit run of six or more after the words, however it is grouped.
 #
-# The separator class was ` ` and `:` only, so `conference identifier, 1192350`
+# The separator class was ` ` and `:` only, so `conference identifier, 9999999`
 # escaped it on a comma. That form stood in `Gamma_kb` in `people/joerg-lanker.md`
 # and `meeting-series/cfo-board.md` until 20.09.2026 and was again found by a
 # reader rather than by this check, one run after the arm was last widened.

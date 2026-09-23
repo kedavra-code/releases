@@ -545,6 +545,18 @@ const pngPixels = buf => {
         Math.round(gv.gc.width) + 'x' + Math.round(gv.gc.height) + ' in ' + gv.win + 'x' + gv.winH +
         ', header ends ' + Math.round(gv.top.bottom) + ', sidebar ' + gv.side);
   check(gv.searchIn === 'askbar', 'the search box is the bar above the graph, not inside it', 'parent=' + gv.searchIn);
+  // Each graph says how to drive it, bottom left, in one style: owner's
+  // request of 23.09.2026, for the 2D graph after the 3D view had one.
+  const hints = await page.evaluate(() => {
+    const one = id => { const e = document.getElementById(id), r = e.getBoundingClientRect(), c = getComputedStyle(e);
+      return { shown: r.width > 0, left: r.left, bottom: innerHeight - r.bottom, font: c.fontSize, color: c.color, text: e.textContent }; };
+    return { g2: one('g2hint'), g3: one('g3hint'), hasFit: !!document.getElementById('gfit') };
+  });
+  check(hints.g2.shown && !hints.g3.shown && /Drag.*move.*Scroll.*zoom.*Click.*select.*Double-click.*open.*Double-click empty space.*fit/.test(hints.g2.text) &&
+        /Double-click empty space.*fit/.test(hints.g3.text) && !hints.hasFit &&
+        hints.g2.left === 16 && hints.g2.font === hints.g3.font && hints.g2.color === hints.g3.color,
+        'the Graph view says how to move, zoom, select, open and fit, in the 3D view\'s style, and there is no Fit button',
+        JSON.stringify(hints.g2.text) + ' at left ' + hints.g2.left + ', ' + hints.g2.font);
 
   await page.click('#bList');
   await page.waitForTimeout(300);
@@ -707,6 +719,27 @@ const pngPixels = buf => {
     return N[i].id;
   });
   await page.waitForTimeout(150);
+  // The card is a segment of the page, docked in the search bar's grammar,
+  // not a floating window: owner's instruction of 23.09.2026. It runs from the
+  // search bar to the bottom at the right edge, on the bar's ground, with the
+  // bar's divider on its open side. Its open action
+  // is the Concept view icon.
+  const dock = await page.evaluate(() => {
+    const cs = e => getComputedStyle(e), c = document.getElementById('gcard'), bar = document.getElementById('askbar');
+    const r = c.getBoundingClientRect(), o = c.querySelector('.open');
+    return { top: r.top, barBottom: bar.getBoundingClientRect().bottom, right: r.right, bottom: r.bottom, win: innerWidth, winH: innerHeight,
+             radius: cs(c).borderTopLeftRadius, shadow: cs(c).boxShadow, bg: cs(c).backgroundColor, barBg: cs(bar).backgroundColor,
+             line: cs(c).borderLeftColor, barLine: cs(bar).borderBottomColor, lineW: cs(c).borderLeftWidth,
+             openIcon: !!(o && o.querySelector('svg')), openText: o ? o.textContent.trim() : null };
+  });
+  check(Math.abs(dock.top - dock.barBottom) < 1 && Math.abs(dock.right - dock.win) < 1 && Math.abs(dock.bottom - dock.winH) < 1 &&
+        dock.radius === '0px' && dock.shadow === 'none' && dock.bg === dock.barBg && dock.line === dock.barLine && dock.lineW === '1px',
+        'the concept card is docked right, full height, in the search bar\'s ground and divider',
+        'top ' + Math.round(dock.top) + ' vs bar ' + Math.round(dock.barBottom) + ', right ' + Math.round(dock.right) + ', bottom ' +
+        Math.round(dock.bottom) + ', radius ' + dock.radius + ', shadow ' + dock.shadow + ', ground ' + dock.bg + ' vs ' + dock.barBg +
+        ', line ' + dock.lineW + ' ' + dock.line + ' vs ' + dock.barLine);
+  check(dock.openIcon && dock.openText === '', 'the card opens its concept with the Concept view icon, not a text button',
+        'icon=' + dock.openIcon + ' text=' + JSON.stringify(dock.openText));
   await page.click('#gcard .open');
   await page.waitForTimeout(300);
   const landed = await page.evaluate(id => {
@@ -722,12 +755,31 @@ const pngPixels = buf => {
         'Open concept on the graph card lands in the Concept view, list and page',
         'concept view=' + landed.concepts + ' page=' + landed.h1);
   check(landed.rowShown, 'and the concept\'s row is scrolled into sight in the list');
-  await page.click('#main .gbtn');
+  // Since 23.09.2026 the concept page carries the header's two graph icons in
+  // place of "Show in graph", one for each graph.
+  await page.click('#main .g2');
   await page.waitForTimeout(300);
   const back = await page.evaluate(id => ({ graph: document.body.classList.contains('vg'), sel: sel === idx[id],
     card: getComputedStyle(document.getElementById('gcard')).display }), picked);
-  check(back.graph && back.sel && back.card !== 'none', 'Show in graph returns to the Graph view with the concept selected',
+  check(back.graph && back.sel && back.card !== 'none', 'the Graph icon on a concept page returns to the Graph view with the concept selected',
         'graph view=' + back.graph + ' selected=' + back.sel + ' card=' + back.card);
+  await page.evaluate(id => show(id), picked);
+  await page.waitForTimeout(300);
+  const icons = await page.evaluate(() => [...document.querySelectorAll('#main .gbtns button')].map(b =>
+    b.className + ':' + (b.querySelector('svg') ? 'svg' : 'none')));
+  check(icons.join() === 'ib g2:svg,ib g3:svg', 'a concept page shows the Graph and 3D icons, and nothing else there',
+        icons.join(' ') || 'none');
+  await page.click('#main .g3');
+  await page.waitForTimeout(900);
+  const back3 = await page.evaluate(id => { const g = document.getElementById('g3'), p = G3.project(idx[id]);
+    return { v3: document.body.classList.contains('v3'), sel: sel === idx[id],
+             card: getComputedStyle(document.getElementById('gcard')).display,
+             off: p ? Math.hypot(p[0] - g.clientWidth / 2, p[1] - g.clientHeight / 2) : 1e9 }; }, picked);
+  check(back3.v3 && back3.sel && back3.card !== 'none' && back3.off < 5,
+        'the 3D icon on a concept page opens the 3D view with the concept selected and centred',
+        '3D view=' + back3.v3 + ' selected=' + back3.sel + ' card=' + back3.card + ', ' + Math.round(back3.off) + 'px from centre');
+  await page.click('#bGraph');
+  await page.waitForTimeout(300);
 
   // Fit frames the graph inside the canvas. Until 16.09.2026 this checked that
   // nothing sat under the search box, which floated over the graph's top-left
@@ -812,18 +864,19 @@ const pngPixels = buf => {
   await page.waitForTimeout(250);
 
   // 8. Escape lets go of a button it would otherwise ring. The owner reported
-  // it on 09.09.2026 against the full-screen button. The Fit button is the same
-  // case now: clicked, still focused, and Escape is the first keystroke after.
+  // it on 09.09.2026 against the full-screen button. The Graph view button is
+  // the same case: clicked, still focused, and Escape is the first keystroke
+  // after. It was the Fit button until Fit went, 23.09.2026.
   // A real click, not element.click() through evaluate: only a real one moves
   // focus to the button, and without focus there is no ring to catch.
-  await page.click('#gfit');
+  await page.click('#bGraph');
   await page.waitForTimeout(150);
   const f1 = await page.evaluate(() => document.activeElement ? document.activeElement.id : '');
-  check(f1 === 'gfit', 'clicking Fit focuses it (the ring precondition)', 'activeElement=' + (f1 || 'body'));
+  check(f1 === 'bGraph', 'clicking a view button focuses it (the ring precondition)', 'activeElement=' + (f1 || 'body'));
   await page.keyboard.press('Escape');
   await page.waitForTimeout(150);
   const f2 = await page.evaluate(() => document.activeElement ? document.activeElement.id : '');
-  check(f2 !== 'gfit', 'Escape in the graph leaves no focus ring on the button', 'activeElement=' + (f2 || 'body'));
+  check(f2 !== 'bGraph', 'Escape in the graph leaves no focus ring on the button', 'activeElement=' + (f2 || 'body'));
   // Read the rule, not the computed style: a programmatic .focus() does not
   // set :focus-visible in Chromium, so getComputedStyle returned the default
   // outline colour (currentColor, the button's own text) and the check failed
@@ -847,6 +900,452 @@ const pngPixels = buf => {
   check(typed.value === 'f' && typed.sc === 3, 'typing f into the search does not refit the graph',
         'value=' + JSON.stringify(typed.value) + ' scale=' + typed.sc);
   await page.evaluate(() => { const q = document.getElementById('q'); q.value = ''; q.dispatchEvent(new Event('input')); q.blur(); });
+  // The 2D zoom goes far past its old limits of 0.08 and 14, owner's request
+  // of 23.09.2026, and a double-click on empty space fits, as the help line
+  // says now that the Fit button is gone.
+  await page.evaluate(() => { fit(); });
+  const gmid = await page.evaluate(() => { const b = gc.getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; });
+  await page.mouse.move(gmid.x, gmid.y);
+  for (let k = 0; k < 40; k++) await page.mouse.wheel(0, -400);
+  await page.waitForTimeout(200);
+  const zin = await page.evaluate(() => sc);
+  for (let k = 0; k < 80; k++) await page.mouse.wheel(0, 400);
+  await page.waitForTimeout(200);
+  const zout = await page.evaluate(() => sc);
+  check(zin > 14 && zout < .08, 'the 2D graph zooms far past its old limits both ways',
+        'in to ' + zin.toFixed(1) + 'x, out to ' + zout.toFixed(4) + 'x');
+  const empty2 = await page.evaluate(() => { const b = gc.getBoundingClientRect();
+    for (let y = 80; y < gc.clientHeight - 60; y += 37) for (let x = 60; x < gc.clientWidth - 400; x += 41) {
+      const wx = (x - gc.clientWidth / 2) / sc - tx, wy = (y - gc.clientHeight / 2) / sc - ty;
+      if (pick(wx, wy) < 0 && document.elementFromPoint(b.left + x, b.top + y) === gc) return { x: b.left + x, y: b.top + y };
+    }
+    return null; });
+  await page.mouse.dblclick(empty2.x, empty2.y);
+  await page.waitForTimeout(200);
+  const sc2 = await page.evaluate(() => { const s0 = sc; fit(); return { dbl: s0, fit: sc }; });
+  check(Math.abs(sc2.dbl - sc2.fit) < 1e-9, 'a double-click on empty space in the graph fits it',
+        'scale ' + zout.toFixed(4) + ' to ' + sc2.dbl.toFixed(4) + ', Fit gives ' + sc2.fit.toFixed(4));
+
+  // A selected concept's links wear their direction, owner's request of
+  // 23.09.2026: blue arriving, orange leaving, a gradient for a pair linked
+  // both ways. Read from the strokes the 2D graph actually makes, and the card
+  // carries the legend. The concept with the most kinds of link, and each
+  // check asks only for the kinds it has: a small vault may lack one.
+  const dirNode = await page.evaluate(() => { let best = -1, bk = 0;
+    N.forEach(n => { const d = D[n.id], k = [d.out.some(o => !D[o].out.includes(n.id)), d.inb.some(x => !d.out.includes(x)),
+      d.out.some(o => D[o].out.includes(n.id))].filter(Boolean).length; if (k > bk) { bk = k; best = n.i; } });
+    return best; });
+  const kinds = await page.evaluate(i => { if (i < 0) return {}; const n = N[i], d = D[n.id];
+    return { out: d.out.some(o => !D[o].out.includes(n.id)), inn: d.inb.some(x => !d.out.includes(x)), both: d.out.some(o => D[o].out.includes(n.id)) }; }, dirNode);
+  const strokes = await page.evaluate(i => {
+    const P = CanvasRenderingContext2D.prototype, orig = P.stroke, st = new Set();
+    P.stroke = function () { if (this.globalAlpha === .85) st.add(typeof this.strokeStyle === 'string' ? this.strokeStyle : 'gradient'); return orig.apply(this, arguments); };
+    select(i); draw(); P.stroke = orig;
+    const lk = c => { const e = document.querySelector('#gcard .lk.' + c); return e ? getComputedStyle(e).backgroundColor : null; };
+    const hex = v => { const [r, g, b] = v.match(/\d+/g).map(Number); return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join(''); };
+    return { st: [...st], lin: css('--lin'), lout: css('--lout'), legIn: lk('in') && hex(lk('in')), legOut: lk('out') && hex(lk('out')) };
+  }, dirNode);
+  const wantS = [kinds.inn && strokes.lin, kinds.out && strokes.lout, kinds.both && 'gradient'].filter(Boolean);
+  check(dirNode >= 0 && wantS.length > 0 && wantS.every(w => strokes.st.includes(w)) &&
+        !strokes.st.some(x => x !== strokes.lin && x !== strokes.lout && x !== 'gradient'),
+        'the 2D graph draws a selection\'s links blue in, orange out, and a gradient both ways',
+        'strokes ' + strokes.st.join(' '));
+  check((strokes.legIn || strokes.legOut) && (!strokes.legIn || strokes.legIn === strokes.lin) && (!strokes.legOut || strokes.legOut === strokes.lout),
+        'the card\'s list headings carry the link colours as a legend',
+        'in ' + strokes.legIn + ', out ' + strokes.legOut);
+  await page.evaluate(() => clearSel());
+  // Hovering a concept lights its links the same way, without dimming the
+  // rest, as in the 3D view: owner's request of 23.09.2026.
+  const hov2 = await page.evaluate(i => {
+    const P = CanvasRenderingContext2D.prototype, orig = P.stroke, st = new Map();
+    P.stroke = function () { const k = this.globalAlpha + ' ' + (typeof this.strokeStyle === 'string' ? this.strokeStyle : 'gradient'); st.set(k, (st.get(k) || 0) + 1); return orig.apply(this, arguments); };
+    hov = i; draw(); P.stroke = orig; hov = -1;
+    return { st: [...st.keys()], lin: css('--lin'), lout: css('--lout'), mut: css('--mut'),
+             others: L.some(([a, b]) => a !== i && b !== i && !hid(N[a]) && !hid(N[b])) };
+  }, dirNode);
+  const wantH = [kinds.inn && '0.7 ' + hov2.lin, kinds.out && '0.7 ' + hov2.lout, kinds.both && '0.7 gradient',
+                 hov2.others && '0.28 ' + hov2.mut].filter(Boolean);
+  check(wantH.length > 0 && wantH.every(w => hov2.st.includes(w)),
+        'hovering a concept in the graph lights its links in their colours, and dims nothing',
+        hov2.st.join(', '));
+  // The moving light, as in the logo: a faint bead on links everywhere, a
+  // bright one in the link's colour on the focus's links. Owner's requests of
+  // 23.09.2026. Counted over sixty frames at fixed times, not one live frame:
+  // on a small vault a single frame may by chance show no faint bead at all.
+  const beads2 = await page.evaluate(i => {
+    const P = CanvasRenderingContext2D.prototype, orig = P.fill, seen = {};
+    P.fill = function () { if (this.__arc) { const k = typeof this.fillStyle === 'string' ? this.fillStyle : 'x'; seen[k] = (seen[k] || 0) + 1; } return orig.apply(this, arguments); };
+    const oa = P.arc; P.arc = function () { this.__arc = true; return oa.apply(this, arguments); };
+    const ob = P.beginPath; P.beginPath = function () { this.__arc = false; return ob.apply(this, arguments); };
+    const pn = performance.now; let T = 0; performance.now = () => T;
+    const frames = () => { for (let k = 0; k < 60; k++) { T = k * 333; draw(); } };
+    frames(); const none = { ...seen };
+    for (const k in seen) delete seen[k];
+    select(i); frames(); const focus = { ...seen };
+    performance.now = pn; P.fill = orig; P.arc = oa; P.beginPath = ob; clearSel();
+    return { none, focus, fg: css('--fg'), lin: css('--lin'), lout: css('--lout') };
+  }, dirNode);
+  check((beads2.none[beads2.fg] || 0) > 0 && (!(kinds.inn || kinds.both) || (beads2.focus[beads2.lin] || 0) > 0) &&
+        (!(kinds.out || kinds.both) || (beads2.focus[beads2.lout] || 0) > 0),
+        'the graph carries moving light on its links, and brighter beads in the link colours on a selection\'s',
+        (beads2.none[beads2.fg] || 0) + ' faint beads with nothing selected; with a selection ' + (beads2.focus[beads2.lin] || 0) +
+        ' blue and ' + (beads2.focus[beads2.lout] || 0) + ' orange');
+  // and it keeps moving: the graph redraws on its own, but never for a
+  // reader who has asked for less motion
+  const loop2 = async () => page.evaluate(() => new Promise(r => { const o = draw; let n = 0;
+    draw = function () { n++; return o.apply(this, arguments); }; setTimeout(() => { draw = o; r(n); }, 800); }));
+  const moving2 = await loop2();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForTimeout(200);
+  const still2 = await loop2();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  check(moving2 > 10 && still2 === 0, 'the graph\'s light moves on its own, and stands still for reduced motion',
+        moving2 + ' frames in 0.8s, ' + still2 + ' with reduced motion');
+
+  // 8b. The 3D view, 23.09.2026: the same map with depth, in WebGL2 on its own
+  // canvas. Everything here goes through the page as a reader would reach it —
+  // the button, real clicks, real keys — and reads back through G3, the view's
+  // test handle, because a WebGL canvas cannot be read with getImageData.
+  // The header first: the third view button cost 42px, and at 1440px that
+  // wrapped the employer row of categories onto a second line, which no check
+  // saw. The row is one line of 24px chips.
+  const hdr = await page.evaluate(() => Math.round(document.querySelector('#legend .lrow').getBoundingClientRect().height));
+  check(hdr <= 30, 'the employer categories stay on one line at 1440px', 'row height ' + hdr + 'px');
+  await page.click('#b3d');
+  await page.waitForTimeout(2200);
+  // Framed first: the concept page's 3D icon earlier left the camera close to
+  // one concept, and since the bases became spheres, 23.09.2026, a close camera
+  // sits inside the map with a few concepts behind it, rightly not drawn.
+  await page.evaluate(() => G3.fit());
+  await page.waitForTimeout(700);
+  const v3 = await page.evaluate(() => {
+    const box = id => document.getElementById(id).getBoundingClientRect().toJSON();
+    const g = document.getElementById('g3');
+    return { ok: G3.ok, opaque: G3.opaque, v3: document.body.classList.contains('v3'), on: document.getElementById('b3d').classList.contains('on'),
+             pressed: document.getElementById('b3d').getAttribute('aria-pressed'), g3: box('g3'), gc: box('gc'), main: box('main'),
+             top: box('askbar'), win: innerWidth, winH: innerHeight, backing: g.width, css: g.clientWidth,
+             dpr: Math.min(window.devicePixelRatio || 1, 2), drawn: G3.drawn,
+             showing: N.filter(n => !hid(n)).length, zs: G3.cam.zs,
+             zspread: (() => { const z = N.map(n => D[n.id].z); const m = z.reduce((a, b) => a + b, 0) / z.length;
+               return Math.sqrt(z.reduce((a, b) => a + (b - m) ** 2, 0) / z.length); })() };
+  });
+  check(v3.ok && v3.v3 && v3.on && v3.pressed === 'true', 'the 3D button opens the 3D view, on WebGL2',
+        'webgl2=' + v3.ok + ' body.v3=' + v3.v3 + ' pressed=' + v3.pressed);
+  check(v3.g3.left === 0 && Math.abs(v3.g3.width - v3.win) < 1 && Math.abs(v3.g3.top - v3.top.bottom) < 1 &&
+        Math.abs(v3.g3.bottom - v3.winH) < 1 && v3.gc.width === 0 && v3.main.width === 0,
+        'the 3D view takes the whole window below the search bar, and nothing else shows',
+        'canvas ' + Math.round(v3.g3.width) + 'x' + Math.round(v3.g3.height) + ' at top ' + Math.round(v3.g3.top) +
+        ', 2D ' + v3.gc.width + ', page ' + v3.main.width);
+  // The owner saw the links vanish and a coloured square round every mark on
+  // screen, while this check's headless browser drew both correctly. The glow
+  // and the links are colour with no alpha, which a see-through canvas cannot
+  // hold. The canvas must be opaque; what it looks like here proves nothing.
+  check(v3.opaque, 'the 3D canvas is opaque, so its glow and links cannot vanish or box on screen',
+        'alpha=' + !v3.opaque);
+  // A faint square round every mark on the owner's GPU, invisible here: the
+  // shader sampled its shape sheet inside an if, where a GPU may choose any
+  // blur level. No pixel this browser draws can show it, so the source is read.
+  const branchy = await page.evaluate(() => [...document.scripts].map(s => s.textContent).join('')
+    .match(/\bif\s*\([^;{}]*\)\s*[\w.]+\s*=\s*texture\s*\(/g) || []);
+  check(branchy.length === 0, 'no 3D shader samples a texture inside an if', branchy[0]);
+  check(Math.abs(v3.backing - v3.css * v3.dpr) < 2, 'the 3D canvas is drawn at its size times the pixel ratio',
+        'backing ' + v3.backing + ' vs ' + Math.round(v3.css * v3.dpr));
+  check(v3.drawn === v3.showing && v3.zs === 1 && v3.zspread > 0,
+        'the 3D view draws every showing concept, lifted to full depth',
+        v3.drawn + ' drawn of ' + v3.showing + ', depth scale ' + v3.zs + ', depth spread ' + Math.round(v3.zspread));
+  // Each large knowledge base is a ball, not a disc: owner's request of
+  // 23.09.2026. Its spread in depth matches its spread across, within a margin.
+  const balls = await page.evaluate(() => { const out = [];
+    for (const kb of KB_ALL) { const ns = N.filter(n => n.kb === kb); if (ns.length < 100) continue;
+      const sd = f => { const v = ns.map(f), m = v.reduce((a, b) => a + b, 0) / v.length; return Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length); };
+      out.push([kb, sd(n => D[n.id].z) / ((sd(n => n.x) + sd(n => n.y)) / 2)]); }
+    return out; });
+  check(balls.every(([, r]) => r > .75 && r < 1.3),
+        'each large knowledge base is a sphere in 3D, as deep as it is wide' + (balls.length ? '' : ' (none has 100 concepts to measure yet)'),
+        balls.map(([k, r]) => k.replace('_kb', '') + ' ' + r.toFixed(2)).join(', '));
+  // Chroma, for the reason the 2D check gives: links alone are colour too, so
+  // the bar is set on strongly saturated pixels, which only the concepts and
+  // their glow make. Read from a screenshot, the only way to see WebGL output.
+  {
+    const png = await page.screenshot({ clip: { x: v3.g3.left, y: v3.g3.top, width: v3.g3.width, height: v3.g3.height } });
+    const px = pngPixels(png);
+    let chroma = 0;
+    for (let y = 0; y < Math.floor(v3.g3.height); y += 3)
+      for (let x = 0; x < Math.floor(v3.g3.width); x += 3) {
+        const [r, g, b] = px(x, y);
+        if (Math.max(r, g, b) - Math.min(r, g, b) > 90) chroma++;
+      }
+    check(chroma > 50, '3D view paints saturated concepts, not just links and glow', chroma + ' saturated samples');
+  }
+  // Fit frames every showing concept inside the canvas, from any direction.
+  await page.evaluate(() => { G3.orient(1.1, .6); G3.cam.d *= 3; G3.fit(); });
+  await page.waitForTimeout(800);
+  const out3 = await page.evaluate(() => {
+    const g = document.getElementById('g3');
+    return N.filter(n => { if (hid(n)) return false; const p = G3.project(n.i);
+      return !p || p[0] < 0 || p[1] < 0 || p[0] > g.clientWidth || p[1] > g.clientHeight; }).length;
+  });
+  check(out3 === 0, 'Fit in 3D frames every concept inside the canvas, turned and tilted', out3 + ' concepts outside it');
+  // Real clicks, as in the 2D graph: select, move the selection, let go.
+  const two3 = await page.evaluate(() => {
+    const g = document.getElementById('g3'), b = g.getBoundingClientRect(), out = [];
+    for (const n of N) {
+      if (hid(n)) continue;
+      const p = G3.project(n.i); if (!p) continue;
+      const [x, y] = p;
+      if (x < 40 || x > g.clientWidth - 380 || y < 40 || y > g.clientHeight - 90) continue;
+      if (document.elementFromPoint(b.left + x, b.top + y) !== g || G3.pick(x, y) !== n.i) continue;
+      if (out.length && Math.hypot(out[0].x - b.left - x, out[0].y - b.top - y) < 120) continue;
+      out.push({ i: n.i, x: b.left + x, y: b.top + y });
+      if (out.length === 2) break;
+    }
+    return out;
+  });
+  if (two3.length < 2) check(false, 'two concepts in the open to click in 3D', two3.length + ' found');
+  else {
+    const [a, b] = two3, seen = [];
+    for (const p of [a, b, b]) {
+      await page.mouse.click(p.x, p.y);
+      await page.waitForTimeout(150);
+      seen.push(await page.evaluate(() => ({ sel, v3: document.body.classList.contains('v3'),
+        card: getComputedStyle(document.getElementById('gcard')).display })));
+    }
+    const say = s => 'selected ' + s.sel + ', card ' + s.card + ', 3D ' + s.v3;
+    check(seen[0].sel === a.i && seen[0].card !== 'none' && seen[1].sel === b.i && seen[1].card !== 'none',
+          'a click selects a concept in 3D, and a click on another moves the selection',
+          'wanted ' + a.i + ' then ' + b.i + ': ' + say(seen[0]) + '; ' + say(seen[1]));
+    check(seen[2].sel === -1 && seen[2].card === 'none' && seen[2].v3,
+          'a second click on the selected concept in 3D lets it go', say(seen[2]));
+    // A drag turns the map and selects nothing.
+    const q0 = await page.evaluate(() => G3.q());
+    await page.mouse.move(a.x, a.y);
+    await page.mouse.down();
+    for (let k = 1; k <= 10; k++) await page.mouse.move(a.x + k * 20, a.y + k * 4);
+    await page.mouse.up();
+    await page.waitForTimeout(150);
+    const turned = await page.evaluate(q => ({ dy: G3.angle(q), sel }), q0);
+    check(turned.dy > .3 && turned.sel === -1, 'a drag in 3D turns the map and selects nothing',
+          'turned ' + turned.dy.toFixed(2) + ' rad, selected ' + turned.sel);
+    await page.evaluate(() => { G3.orient(.34, -.46); G3.fit(); });
+    await page.waitForTimeout(800);
+    const pa = await page.evaluate(i => { const g = document.getElementById('g3').getBoundingClientRect(), p = G3.project(i);
+      return p ? { x: g.left + p[0], y: g.top + p[1] } : null; }, a.i);
+    await page.mouse.dblclick(pa.x, pa.y);
+    await page.waitForTimeout(300);
+    const dbl3 = await page.evaluate(i => ({ concepts: document.body.classList.contains('vc'),
+      h1: (document.querySelector('#main h1') || {}).textContent, want: D[N[i].id].t, sel }), a.i);
+    check(dbl3.concepts && dbl3.h1 === dbl3.want && dbl3.sel === a.i,
+          'a double-click in 3D opens the concept and keeps it selected',
+          'concept view=' + dbl3.concepts + ' page=' + dbl3.h1 + ' selected ' + dbl3.sel + ' of ' + a.i);
+    // A window resized while the Concept view shows, then back to 3D.
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await page.waitForTimeout(250);
+    await page.click('#b3d');
+    await page.waitForTimeout(400);
+    const bs3 = await page.evaluate(() => { const g = document.getElementById('g3');
+      return { backing: g.width, css: g.clientWidth, dpr: Math.min(window.devicePixelRatio || 1, 2), sel,
+               card: getComputedStyle(document.getElementById('gcard')).display }; });
+    check(bs3.css === 1200 && Math.abs(bs3.backing - bs3.css * bs3.dpr) < 2,
+          'a window resized in the Concept view leaves the 3D view drawn at the new width',
+          'backing ' + bs3.backing + ' vs ' + Math.round(bs3.css * bs3.dpr) + ' at css ' + bs3.css);
+    check(bs3.sel === a.i && bs3.card !== 'none', 'back in 3D the concept is still selected, with its card',
+          'selected ' + bs3.sel + ', card ' + bs3.card);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.waitForTimeout(250);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(150);
+    const esc3 = await page.evaluate(() => ({ sel, card: getComputedStyle(document.getElementById('gcard')).display }));
+    check(esc3.sel === -1 && esc3.card === 'none', 'Escape in 3D lets go of the selection', 'selected ' + esc3.sel + ', card ' + esc3.card);
+  }
+  // Endless in every direction, owner's requests of 23.09.2026. A vertical
+  // drag carries the view over the top until the camera is upside down, which
+  // a yaw and pitch camera cannot reach; the wheel flies on through the map
+  // past where the orbit point was; and zooming out does not stop at a few
+  // map widths.
+  await page.evaluate(() => { clearSel(); G3.orient(0, 0); G3.fit(); });
+  await page.waitForTimeout(700);
+  const c3 = await page.evaluate(() => { const b = document.getElementById('g3').getBoundingClientRect();
+    return { x: b.left + b.width * .3, y: b.top + 60, h: b.height }; });
+  await page.mouse.move(c3.x, c3.y);
+  await page.mouse.down();
+  for (let k = 1; k <= 20; k++) await page.mouse.move(c3.x, c3.y + k * 30);
+  // read before letting go: the turn's momentum carries on after release
+  const over = await page.evaluate(() => G3.up()[1]);
+  await page.mouse.up();
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(600);
+  check(over < 0, 'a drag in 3D turns the map over the top, endlessly', 'camera up y=' + over.toFixed(2) + ' after a 600px drag');
+  await page.evaluate(() => { G3.orient(.34, -.46); G3.fit(); });
+  await page.waitForTimeout(700);
+  const fly = await page.evaluate(() => ({ eye: G3.eye(), d: G3.cam.d }));
+  const mid = await page.evaluate(() => { const b = document.getElementById('g3').getBoundingClientRect();
+    return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; });
+  await page.mouse.move(mid.x, mid.y);
+  for (let k = 0; k < 60; k++) await page.mouse.wheel(0, -400);
+  await page.waitForTimeout(300);
+  const flown = await page.evaluate(e0 => { const e = G3.eye(); return Math.hypot(e[0] - e0[0], e[1] - e0[1], e[2] - e0[2]); }, fly.eye);
+  check(flown > fly.d * 1.2, 'scrolling in 3D flies on through the map instead of stopping',
+        'the eye travelled ' + Math.round(flown) + ', the map was ' + Math.round(fly.d) + ' away');
+  for (let k = 0; k < 60; k++) await page.mouse.wheel(0, 400);
+  await page.waitForTimeout(300);
+  const outD = await page.evaluate(() => ({ d: G3.cam.d, r: (() => { let r = 0; for (const n of N) r = Math.max(r, Math.abs(n.x), Math.abs(n.y)); return r; })() }));
+  check(outD.d > outD.r * 20, 'scrolling out in 3D goes far past the old limit',
+        'distance ' + Math.round(outD.d) + ' against a map radius of about ' + Math.round(outD.r));
+  // A double-click on empty space fits, as the help line says, in 3D.
+  const empty3 = await page.evaluate(() => { const g = document.getElementById('g3'), b = g.getBoundingClientRect();
+    for (let y = 80; y < g.clientHeight - 60; y += 37) for (let x = 60; x < g.clientWidth - 400; x += 41)
+      if (G3.pick(x, y) < 0 && document.elementFromPoint(b.left + x, b.top + y) === g) return { x: b.left + x, y: b.top + y };
+    return null; });
+  const dFar = await page.evaluate(() => G3.cam.d);
+  await page.mouse.dblclick(empty3.x, empty3.y);
+  await page.waitForTimeout(700);
+  const dFit = await page.evaluate(() => ({ d: G3.cam.d, v3: document.body.classList.contains('v3') }));
+  check(dFit.v3 && dFit.d < dFar * .5, 'a double-click on empty space in 3D fits the view',
+        'distance ' + Math.round(dFar) + ' to ' + Math.round(dFit.d));
+  // `f` frames the 3D view, and never while typing.
+  await page.evaluate(() => { G3.cam.d *= 4; document.activeElement && document.activeElement.blur(); });
+  const far3 = await page.evaluate(() => G3.cam.d);
+  await page.keyboard.press('f');
+  await page.waitForTimeout(700);
+  const fit3 = await page.evaluate(() => G3.cam.d);
+  check(fit3 < far3 * .6, 'f frames the 3D view', 'distance ' + Math.round(far3) + ' to ' + Math.round(fit3));
+  await page.evaluate(() => { G3.cam.d = 99999; });
+  await page.click('#q');
+  await page.keyboard.type('f');
+  await page.waitForTimeout(600);
+  const typed3 = await page.evaluate(() => ({ d: G3.cam.d, value: document.getElementById('q').value }));
+  check(typed3.value === 'f' && typed3.d === 99999, 'typing f into the search does not refit the 3D view',
+        'value=' + JSON.stringify(typed3.value) + ' distance=' + typed3.d);
+  await page.evaluate(() => { const q = document.getElementById('q'); q.value = ''; q.dispatchEvent(new Event('input')); q.blur(); G3.fit(); });
+  await page.waitForTimeout(700);
+  // A hidden knowledge base leaves the 3D view as it leaves the 2D one.
+  // The last knowledge base is hidden; with only one there is nothing to hide,
+  // since the last one showing always stays on.
+  const kbOff3 = await page.evaluate(async () => {
+    const kb = KB_ALL.length > 1 ? KB_ALL[KB_ALL.length - 1] : null;
+    if (kb) offKB.add(kb); dirty = true;
+    await new Promise(r => setTimeout(r, 200));
+    const r = { kb, drawn: G3.drawn, showing: N.filter(n => !hid(n)).length, inKb: kb ? N.filter(n => n.kb === kb).length : 0 };
+    if (kb) offKB.delete(kb); dirty = true;
+    await new Promise(r => setTimeout(r, 200));
+    r.back = G3.drawn; r.all = N.filter(n => !hid(n)).length;
+    return r;
+  });
+  check(kbOff3.drawn === kbOff3.showing && kbOff3.drawn === kbOff3.all - kbOff3.inKb && kbOff3.back === kbOff3.all,
+        'a hidden knowledge base leaves the 3D view, and comes back' + (kbOff3.kb ? '' : ' (one knowledge base: nothing to hide)'),
+        kbOff3.drawn + ' drawn with ' + (kbOff3.kb || 'none') + ' hidden, ' + kbOff3.back + ' after, of ' + kbOff3.all);
+  // The same colours in 3D, read from the link colours the view uploads.
+  const cols3 = await page.evaluate(i => {
+    if (i < 0) return {};
+    select(i); dirty = true;
+    return new Promise(r => setTimeout(() => {
+      const d = D[N[i].id], id = N[i].id;
+      const h = x => { x = x.replace('#', ''); return [0, 2, 4].map(k => parseInt(x.substr(k, 2), 16)); };
+      const outOnly = d.out.find(o => !D[o].out.includes(id)), inOnly = d.inb.find(x => !d.out.includes(x)),
+            both = d.out.find(o => D[o].out.includes(id));
+      r({ out: G3.linkCols(idx[outOnly]), inn: G3.linkCols(idx[inOnly]), both: G3.linkCols(idx[both]),
+          lin: h(css('--lin')), lout: h(css('--lout')) });
+    }, 200));
+  }, dirNode);
+  const rgbIs = (a, b) => !!a && a.every((v, k) => Math.abs(v - b[k]) <= 2);
+  check((!kinds.out || (rgbIs(cols3.out.focus, cols3.lout) && rgbIs(cols3.out.other, cols3.lout))) &&
+        (!kinds.inn || (rgbIs(cols3.inn.focus, cols3.lin) && rgbIs(cols3.inn.other, cols3.lin))) &&
+        (!kinds.both || (rgbIs(cols3.both.focus, cols3.lout) && rgbIs(cols3.both.other, cols3.lin))) && dirNode >= 0,
+        'the 3D view colours a selection\'s links blue in, orange out, orange to blue both ways',
+        JSON.stringify({ out: cols3.out, inn: cols3.inn, both: cols3.both }));
+  // The moving light in 3D: the focus's links flow the way they point, and
+  // every other link carries its own faint flow, all read from what the view
+  // uploads. Reduced motion stops all of it.
+  // a wheel tick first, so the idle drift cannot be what keeps it drawing
+  { const b = await page.evaluate(() => { const r = document.getElementById('g3').getBoundingClientRect(); return { x: r.left + 200, y: r.top + 200 }; });
+    await page.mouse.move(b.x, b.y); await page.mouse.wheel(0, 1); await page.mouse.move(5, 5); await page.waitForTimeout(100); }
+  const flow3 = await page.evaluate(i => i < 0 ? {} : new Promise(r => { select(i); dirty = true; setTimeout(() => {
+      const d = D[N[i].id], id = N[i].id;
+      const res = { out: G3.flow(idx[d.out.find(o => !D[o].out.includes(id))]), inn: G3.flow(idx[d.inb.find(x => !d.out.includes(x))]),
+                    both: G3.flow(idx[d.out.find(o => D[o].out.includes(id))]) };
+      clearSel(); dirty = true;
+      res.pairs = new Set(L.filter(([a, b]) => !hid(N[a]) && !hid(N[b])).map(([a, b]) => Math.min(a, b) + '-' + Math.max(a, b))).size;
+      setTimeout(() => { res.ambient = G3.flowing(); res.f0 = G3.frames;
+        setTimeout(() => { res.f1 = G3.frames; r(res); }, 600); }, 150);
+    }, 200); }), dirNode);
+  check((!kinds.out || flow3.out === 'out') && (!kinds.inn || flow3.inn === 'in') && (!kinds.both || flow3.both === 'both'),
+        'the 3D view\'s light runs out along outbound links, in along inbound, both ways on a pair',
+        'outbound ' + flow3.out + ', inbound ' + flow3.inn + ', both ' + flow3.both);
+  check(flow3.ambient > 0 && flow3.ambient === flow3.pairs && flow3.f1 - flow3.f0 > 10, 'the 3D view carries moving light on all its links, and keeps drawing it',
+        flow3.ambient + ' of ' + flow3.pairs + ' links flowing, ' + (flow3.f1 - flow3.f0) + ' frames in 0.6s');
+  // A bead is a round dot, the same on screen in 3D as in 2D: owner's choice
+  // of 23.09.2026, after the 3D beads came out as streaks as long as a share of
+  // their link. With the clock stopped, each white bead core in a screenshot is
+  // measured for how stretched it is — about 1 for a dot, 3 or more for a streak.
+  const shape = await page.evaluate(() => { const i = N.reduce((b, n) => D[n.id].inb.length > D[N[b].id].inb.length ? n.i : b, 0);
+    // brought close first, as the card's links do: on a small vault fitted
+    // whole, a concept's links are a few pixels long and hide their beads
+    // and alone: the fog is measured from the middle of what shows, which with
+    // several bases is empty space between them, and would grey the bead cores
+    window.__hidOthers = KB_ALL.filter(k => k !== N[i].kb && !offKB.has(k)); window.__hidOthers.forEach(k => offKB.add(k));
+    G3.freeze(12.3); select(i); G3.focus(i); dirty = true;
+    return new Promise(r => setTimeout(() => { const g = document.getElementById('g3').getBoundingClientRect(), p = G3.project(i);
+      r({ x: g.left, y: g.top, w: g.width, h: g.height, hx: p ? p[0] : -1e4, hy: p ? p[1] : -1e4 }); }, 1000)); });
+  {
+    // nine stopped moments along the beads' path: on a small vault any one
+    // moment may put every bead under a mark; and only cores of five pixels or
+    // more are measured, since a core half under a mark looks stretched
+    const el = [];
+    for (let k = 0; k < 9; k++) { const t = 12.3 + k * .45;
+    await page.evaluate(t => G3.freeze(t), t);
+    await page.waitForTimeout(150);
+    const png = await page.screenshot({ clip: { x: shape.x, y: shape.y, width: shape.w, height: shape.h } });
+    const px = pngPixels(png), W = Math.floor(shape.w), H = Math.floor(shape.h), seen = new Uint8Array(W * H);
+    const white = (x, y) => { const [r, g, b] = px(x, y); return r > 240 && g > 240 && b > 240; };
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      if (seen[y * W + x] || !white(x, y) || Math.hypot(x - shape.hx, y - shape.hy) < 25) continue;   // the hub's own mark; 90 in the source vault, where hundreds of links pile to white round it
+      const st = [[x, y]], pts = []; seen[y * W + x] = 1;
+      while (st.length) { const [cx, cy] = st.pop(); pts.push([cx, cy]);
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = cx + dx, ny = cy + dy;
+          if (nx >= 0 && ny >= 0 && nx < W && ny < H && !seen[ny * W + nx] && white(nx, ny)) { seen[ny * W + nx] = 1; st.push([nx, ny]); } } }
+      if (pts.length < 5 || pts.length > 60) continue;
+      const mx = pts.reduce((a, p) => a + p[0], 0) / pts.length, my = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+      let sxx = .25, syy = .25, sxy = 0; for (const [a, b] of pts) { sxx += (a - mx) ** 2 / pts.length; syy += (b - my) ** 2 / pts.length; sxy += (a - mx) * (b - my) / pts.length; }
+      const t2 = (sxx + syy) / 2, d = Math.sqrt(((sxx - syy) / 2) ** 2 + sxy * sxy);
+      el.push(Math.sqrt((t2 + d) / (t2 - d)));
+    }
+    }
+    el.sort((a, b) => a - b);
+    const med = el.length ? el[el.length >> 1] : 99;
+    check(el.length >= 1 && med < 1.8, '3D beads are round dots, not streaks', el.length + ' bead cores, median stretch ' + med.toFixed(2));
+    await page.evaluate(() => { (window.__hidOthers || []).forEach(k => offKB.delete(k)); dirty = true; });
+  }
+  await page.evaluate(() => { G3.freeze(null); clearSel(); G3.fit(); });
+  await page.waitForTimeout(500);
+  // The drift runs with a concept selected too: owner's request of 23.09.2026.
+  await page.evaluate(() => { select(N.findIndex(n => !hid(n))); });
+  await page.mouse.move(5, 5);
+  const qSel0 = await page.evaluate(() => G3.q());
+  await page.waitForTimeout(7500);
+  const drift = await page.evaluate(q => ({ dy: G3.angle(q), sel }), qSel0);
+  check(drift.dy > .01 && drift.sel >= 0, 'the 3D view drifts after six idle seconds, with a concept selected',
+        'turned ' + drift.dy.toFixed(3) + ' rad, selected ' + drift.sel);
+  // and it does not stop after a while: owner's request of 23.09.2026, when it
+  // had stopped after two minutes left alone
+  const qLong = await page.evaluate(() => { G3.age(180000); return G3.q(); });
+  await page.waitForTimeout(1000);
+  const long = await page.evaluate(q => G3.angle(q), qLong);
+  check(long > .02, 'the drift goes on after minutes left alone', 'turned ' + long.toFixed(3) + ' rad in 1s, three minutes idle');
+  await page.evaluate(() => clearSel());
+  // Nothing is drawn while nothing changes, for a reader who has asked for
+  // less motion: no drift, no loop burning frames on a still picture.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForTimeout(400);
+  const fr0 = await page.evaluate(() => G3.frames);
+  await page.waitForTimeout(1200);
+  const fr1 = await page.evaluate(() => G3.frames);
+  const flowRM = await page.evaluate(() => G3.flowing());
+  check(fr1 === fr0 && flowRM === 0, 'with reduced motion the 3D view draws nothing while nothing changes, and no light moves',
+        (fr1 - fr0) + ' frames in 1.2s idle, ' + flowRM + ' links flowing');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.click('#bGraph');
+  await page.waitForTimeout(300);
+  check(jsErrors.length === 0, 'no JS errors in the 3D view', jsErrors[0]);
 
   // 9. Settings, 14.09.2026: j4k's Options menu in this viewer's frame, holding
   // the knowledge-base selector that left the sidebar.
@@ -866,8 +1365,12 @@ const pngPixels = buf => {
   check(s1.buttons === kbAll.length, 'Settings offers every knowledge base', s1.buttons + ' of ' + kbAll.length);
 
   // The bundle to hide is the last one by name, whichever that is, so the
-  // test says nothing about which knowledge bases a vault holds.
+  // test says nothing about which knowledge bases a vault holds. With only one
+  // there is nothing to hide: the last one showing always stays on.
+  if (kbAll.length < 2) check(true, 'hiding a knowledge base in Settings (one knowledge base: nothing to hide)');
+  else {
   const victim = kbAll.slice().sort()[kbAll.length - 1];
+
   const before = await page.evaluate(v => ({ items: document.querySelectorAll('.it').length,
     rows: document.querySelectorAll('#legend .lrow').length,
     ked: Object.values(D).filter(c => c.kb === v).length }), victim);
@@ -895,6 +1398,7 @@ const pngPixels = buf => {
     items: document.querySelectorAll('.it').length, dot: (document.querySelector('#bSet .dot') || {}).textContent || '' }), victim);
   check(kept.ked === 0 && kept.items === hid1.items && kept.dot === '1', 'the choice is kept for the next visit',
         'stored ' + hid1.stored + ', after reload ' + kept.items + ' rows, badge ' + JSON.stringify(kept.dot));
+  }
 
   // The last knowledge base showing stays on: hiding it would leave both views
   // empty, which is the dead page a stored choice must never produce. Forced,
@@ -936,19 +1440,23 @@ const pngPixels = buf => {
   const catF = await page.evaluate(() => {
     const chipFor = name => [...document.querySelectorAll('#legend .chip')].find(c => c.querySelector('b').textContent === name);
     const rows = () => [...document.querySelectorAll('.it')];
-    const r = { before: rows().length, people: rows().filter(e => cat(e.dataset.t) === 'people').length };
-    chipFor('people').click();
+    // the category with the most concepts, whichever a vault has, rather than
+    // one this checker's source vault happens to use
+    const cnt = {}; N.forEach(n => { const c = cat(n.id); cnt[c] = (cnt[c] || 0) + 1; });
+    const cc = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a])[0], lab = LBL[cc] || cc;
+    const r = { cat: cc, before: rows().length, people: rows().filter(e => cat(e.dataset.t) === cc).length };
+    chipFor(lab).click();
     r.after = rows().length;
-    r.peopleAfter = rows().filter(e => cat(e.dataset.t) === 'people').length;
-    r.drawn = N.filter(n => cat(n.id) === 'people' && !hid(n)).length;
-    chipFor('people').click();
+    r.peopleAfter = rows().filter(e => cat(e.dataset.t) === cc).length;
+    r.drawn = N.filter(n => cat(n.id) === cc && !hid(n)).length;
+    chipFor(lab).click();
     r.restored = rows().length;
     return r;
   });
   check(catF.people > 0 && catF.peopleAfter === 0 && catF.after === catF.before - catF.people &&
         catF.drawn === 0 && catF.restored === catF.before,
         'a category switched off in the header leaves the list as well as the graph',
-        catF.before + ' rows, ' + catF.people + ' people -> ' + catF.after + ', drawn ' + catF.drawn + ', back to ' + catF.restored);
+        catF.before + ' rows, ' + catF.people + ' ' + catF.cat + ' -> ' + catF.after + ', drawn ' + catF.drawn + ', back to ' + catF.restored);
 
   // 11. A stored state must not reopen as a dead page. Caught by the owner on
   // 14.09.2026: the viewer "is not working under chrome" while Safari showed it

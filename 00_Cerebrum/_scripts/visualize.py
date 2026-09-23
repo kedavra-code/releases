@@ -476,13 +476,76 @@ for g, members in _groups.items():
     for i in members:
         _pos[i] = (float(P[sub[i], 0]) + cx, float(P[sub[i], 1]) + cy)
 
+# Depth, for the 3D view only. Owner's request of 23.09.2026: a 3D graph that
+# is intuitive. The x/y above are the owner's arrangement and stay exactly as
+# they are, so the 3D view is the 2D map with one more dimension rather than a
+# second map to learn. z is solved per group, in the group's own frame:
+#   * a spring toward the mean depth of linked neighbours, so what links
+#     together sits together in depth as well;
+#   * a push apart in depth between concepts that sit close in x/y, which is
+#     what 3D is for here — the dense Alpha core opens up instead of overlapping;
+#   * a weak pull to the group's plane, which keeps the solve from running off.
+# The solved depths then only order the concepts: each is placed within the
+# depth a ball of the group's size has at its x/y, most in the middle and none
+# at the rim, so every knowledge base is a sphere from any side and still the
+# flat map from the front. Owner's request of 23.09.2026; it was a lens a third
+# as thick as it was wide until then.
+# Unlinked concepts carry no structure in x/y (see _layout), so they get none
+# in z either: a golden-ratio spread within a larger ball, which turns their
+# ring into a loose outer shell.
+# Deterministic, like the layout: no random numbers, so a rebuild draws the
+# same picture.
+def _depth(P, Rt, members):
+    m = len(members)
+    if m < 3:
+        return np.zeros(m)
+    sub = {g: j for j, g in enumerate(members)}
+    E = np.array([[sub[a], sub[b]] for a, b in _edges if a in sub and b in sub], int).reshape(-1, 2)
+    deg = np.zeros(m)
+    np.add.at(deg, E[:, 0], 1); np.add.at(deg, E[:, 1], 1)
+    linked = deg > 0
+    z = (((np.arange(m) * 0.6180339887) % 1.0) - 0.5) * Rt * 0.5
+    s = 1.6 * Rt * math.sqrt(math.pi / m)          # about two node spacings
+    d2 = ((P[:, None, :] - P[None, :, :]) ** 2).sum(-1)
+    near = np.exp(-d2 / (2 * s * s))
+    np.fill_diagonal(near, 0.0)
+    for it in range(240):
+        spring = np.zeros(m)
+        if len(E):
+            np.add.at(spring, E[:, 0], z[E[:, 1]] - z[E[:, 0]])
+            np.add.at(spring, E[:, 1], z[E[:, 0]] - z[E[:, 1]])
+            spring /= np.maximum(deg, 1)
+        dz = z[:, None] - z[None, :]
+        rep = (near * np.tanh(dz / s) * np.exp(-(dz * dz) / (2 * (2 * s) ** 2))).sum(1)
+        step = s * 0.12 * (1 - it / 240) + s * 0.01
+        z += np.clip(0.35 * spring + 1.2 * s * rep - 0.015 * z, -step, step)
+    body = np.abs(z[linked]) if linked.any() else np.abs(z)
+    zn = np.clip(z / (float(np.percentile(body, 95)) or 1.0), -1.0, 1.0)
+    r2 = (P ** 2).sum(-1)
+    # 1.10 * Rt is where _layout caps the linked body, 1.55 * Rt clears the
+    # unlinked halo's outer edge at 1.44. The rim keeps a little depth, a
+    # quarter of Rt, or concepts crowded at the edge of a small base would
+    # overlap again there: Epsilon went from one overlapping pair to nine.
+    z = zn * np.sqrt(np.maximum((1.10 * Rt) ** 2 - r2, (0.25 * Rt) ** 2))
+    if (~linked).any():
+        k = np.arange(int((~linked).sum()))
+        z[~linked] = (((k * 0.6180339887) % 1.0) * 2 - 1) * np.sqrt(np.maximum((1.55 * Rt) ** 2 - r2[~linked], 0.0))
+    return z
+
+_depths = {}
+for g, members in _groups.items():
+    P, Rt, _e, sub = _lay[g]
+    Pm = np.array([P[sub[i]] for i in members])
+    for i, zz in zip(members, _depth(Pm, Rt, members)):
+        _depths[i] = float(zz)
+
 # Centre the picture on the middle of the work triangle, not on the mean of
 # every node: the mean is dragged around by whichever knowledge base grew last,
 # and Zeta sitting below would push the career concepts off centre.
 _mx = _my = 0.0
 for i, c in enumerate(_ids):
     x, y = _pos[i]
-    data[c]['x'] = round(x - _mx, 1); data[c]['y'] = round(y - _my, 1)
+    data[c]['x'] = round(x - _mx, 1); data[c]['y'] = round(y - _my, 1); data[c]['z'] = round(_depths[i], 1)
     data[c]['deg'] = _deg[i]
 
 # first appearance, the order the page used to meet them in, so the halos still
@@ -645,6 +708,8 @@ icon_graph = _icon(''.join('<circle cx="%g" cy="%g" r="2.6"/>' % p for p in _nod
 # the Concept view's own shape: the list on the left, the page beside it
 icon_concepts = _icon('<rect x="3" y="4" width="18" height="16" rx="2.5"/>'
                       '<path d="M9 4v16M12.5 9h5M12.5 12.5h5M12.5 16h3"/>')
+# the 3D view's own shape: a cube, the one solid everyone reads as depth
+icon_3d = _icon('<path d="M12 3 20 7.5v9L12 21 4 16.5v-9Z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/>')
 icon_gear = _icon(_gear())
 icon_search = _icon('<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20.5 20.5"/>')
 # Ask Claude and the report list, the pair j4k puts in its own search box: a
@@ -666,6 +731,427 @@ icon_reports = _icon('<rect x="4" y="3" width="16" height="18" rx="2.4"/>'
 # Collapse all and Expand all: two chevrons closing on the middle, or opening away from it
 icon_collapse = _icon('<path d="m7 4 5 5 5-5"/><path d="m7 20 5-5 5 5"/>')
 icon_expand = _icon('<path d="m7 9 5-5 5 5"/><path d="m7 15 5 5 5-5"/>')
+
+# The 3D view, 23.09.2026. Owner's request: "a 3D graph, which is intuitive,
+# fast and efficient. make it look really good." Decided with the owner: a third
+# view beside Graph and Concepts, and WebGL2 written here rather than a library,
+# so the page still fetches nothing and carries no dependency.
+#
+# It is the 2D map with depth, not a second map. x and y are the owner's layout;
+# z comes from _depth above. It shares the selection, the card, the search, the
+# category and knowledge-base filters and fitting with the 2D graph, so every
+# control means what it means there. With motion allowed it draws every frame,
+# for the moving light on the links and for the slow drift that starts after
+# six idle seconds and runs for as long as the view is left alone: until
+# 23.09.2026 the drift stopped after two minutes, to spare a still picture, and
+# the owner asked for it to go on once the light made the picture move anyway.
+# For a reader who has asked for less motion it draws only when something
+# changed — the camera, the selection, a filter.
+#
+# Four draw calls a frame, each one instanced from buffers uploaded once:
+# faint dust for parallax, the knowledge bases' halos, the links as
+# anti-aliased screen-space strips, and the concepts as camera-facing quads.
+# A concept's mark is its legend shape, drawn once by shp() into a texture, so
+# the 3D view cannot drift from the legend. Its glow is added in the same pass
+# with zero alpha, which reads as bloom and costs nothing extra. Concepts are
+# sorted back to front each frame, 1,114 of them, which is what makes a near
+# concept cover a far one.
+#
+# Raw string, spliced into the page as __G3__: the page string is not raw, and
+# a shader's newline escape would not survive it.
+G3_JS = r'''/* ---- The 3D view. See G3_JS in visualize.py for why it is built this way. */
+const g3=document.getElementById('g3'),g3l=document.getElementById('g3lbl');
+let hov3=-1;
+const G3={ok:false,frames:0,drawn:0,enter(){},fit(){},focus(){},project(){return null}};
+(function(){
+/* Opaque, and the ground is painted here rather than by CSS behind a
+   see-through canvas. The glow and the links are added light: colour with no
+   alpha. On a see-through canvas that is not a valid pixel, and Chrome shows
+   it one way in a headless test and another on screen, where the owner saw
+   the links vanish and a coloured square round every mark (23.09.2026). On
+   an opaque canvas the alpha is never read, so neither can happen. */
+const gl=g3.getContext('webgl2',{antialias:true,alpha:false});
+if(!gl){b3.disabled=true;b3.title='3D view: needs WebGL2, which this browser does not offer';
+ document.getElementById('about3d').disabled=true;return}
+G3.ok=true;G3.opaque=gl.getContextAttributes().alpha===false;
+const RM=matchMedia('(prefers-reduced-motion: reduce)');RM.addEventListener('change',()=>{need=true});
+const FOV=38*Math.PI/180,NN=N.length,MARGIN=36;
+const hex=h=>{h=h.trim().replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');
+ const v=parseInt(h.slice(0,6),16);return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
+/* canvas y points down, GL y points up: flipping y here is what makes the
+   front view the 2D map the right way up */
+const PX=new Float32Array(NN),PY=new Float32Array(NN),PZ=new Float32Array(NN),RR=new Float32Array(NN);
+N.forEach((n,i)=>{PX[i]=n.x;PY[i]=-n.y;PZ[i]=D[n.id].z||0;RR[i]=n.r});
+const C3=N.map(n=>hex(COL[n.c]));
+
+function prog(vs,fs){const p=gl.createProgram();
+ for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);
+  gl.shaderSource(sh,'#version 300 es\nprecision highp float;\n'+s);gl.compileShader(sh);
+  if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw new Error('3D shader: '+gl.getShaderInfoLog(sh));gl.attachShader(p,sh)}
+ gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error('3D link: '+gl.getProgramInfoLog(p));
+ const u={};for(let i=0,k=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);i<k;i++){const a=gl.getActiveUniform(p,i);u[a.name]=gl.getUniformLocation(p,a.name)}
+ return{p,u}}
+function buf(data,usage){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,data,usage||gl.STATIC_DRAW);return b}
+function attr(loc,b,size,stride,off,div){gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.enableVertexAttribArray(loc);
+ gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride*4,off*4);gl.vertexAttribDivisor(loc,div)}
+
+/* ---- concepts: one quad each, the legend shape in its core and a glow round it */
+const FOG='uniform float uF0,uF1;float fog(float w){return 1.-.72*smoothstep(uF0,uF1,w);}';
+const PN=prog(FOG+`
+layout(location=0)in vec2 aQ;layout(location=1)in vec4 aP;layout(location=2)in vec4 aC;layout(location=3)in float aS;
+uniform mat4 uM;uniform vec2 uV;uniform float uPx,uZs,uMin;
+out vec2 vQ;out vec3 vC;out float vShape,vS,vF;
+void main(){vec4 c=uM*vec4(aP.x,aP.y,aP.z*uZs,1.);
+ float rp=clamp(aP.w*sqrt(uPx/max(c.w,1e-3)),uMin,30.);
+ const float G=3.2;vQ=aQ*G;vC=aC.rgb;vShape=aC.a;vS=aS;vF=fog(c.w);
+ gl_Position=c+vec4(aQ*G*rp*2./uV*c.w,0.,0.);}`,`
+uniform sampler2D uT;uniform vec3 uBg,uAcc;uniform float uCell;
+in vec2 vQ;in vec3 vC;in float vShape,vS,vF;out vec4 o;
+void main(){float d=length(vQ);
+ vec2 lc=vec2(.5+vQ.x*uCell,.5-vQ.y*uCell),cell=vec2(mod(vShape,4.),floor(vShape/4.));
+ vec4 t=texture(uT,(cell+clamp(lc,0.,1.))/4.)*(1.-smoothstep(1.38,1.56,d));
+ float fill=t.r,edge=max(t.g,fill),ghost=(vS>.5&&vS<1.5)?1.:0.;
+ vec3 rgb=vC*fill+uBg*(edge-fill);float a=edge;
+ if(vS>1.5){float rr=vS>2.5?1.5:1.38,w=vS>2.5?.13:.08;
+  float ring=(1.-smoothstep(w,w+.07,abs(d-rr)))*(1.-edge);rgb+=uAcc*ring;a+=ring;}
+ vec3 glow=vC*exp(-d*d*.6)*(ghost>0.?0.:(vS>2.5?.7:.4));
+ float k=vF*(ghost>0.?.13:1.);o=vec4((rgb+glow)*k,a*k);if(o.a<.003&&dot(o.rgb,o.rgb)<1e-5)discard;}`);
+const NS=9,nodeArr=new Float32Array(NN*NS),quad=buf(new Float32Array([-1,-1,1,-1,-1,1,1,1]));
+const nodeBuf=buf(nodeArr.byteLength,gl.DYNAMIC_DRAW);
+const vaoN=gl.createVertexArray();gl.bindVertexArray(vaoN);
+attr(0,quad,2,2,0,0);attr(1,nodeBuf,4,NS,0,1);attr(2,nodeBuf,4,NS,4,1);attr(3,nodeBuf,1,NS,8,1);
+/* the shapes, drawn by the legend's own shp(): red is the mark, green the mark
+   with the dark rim the 2D graph strokes round every node.
+   The owner saw a faint square round each mark on this Mac's GPU, the size of
+   a mark's cell on this sheet, which no headless browser showed (23.09.2026).
+   The shader read the sheet inside an if, where the GPU cannot tell how large
+   the mark is on screen and may pick a blurred copy that smears the shape over
+   its whole cell. So the sheet is read unconditionally, the copies stop at an
+   eighth of the size, where each shape still sits inside its cell, and what is
+   read is faded out just past the widest shape. */
+const CELL=128,SR_=40,tex=gl.createTexture();
+(function(){const a=document.createElement('canvas');a.width=a.height=CELL*4;const c=a.getContext('2d');
+ const layer=(stroke)=>{c.clearRect(0,0,a.width,a.height);c.fillStyle='#fff';c.strokeStyle='#fff';c.lineWidth=SR_*.34;c.lineJoin='round';
+  SHAPES.forEach((s,k)=>{c.save();c.translate((k%4+.5)*CELL,(Math.floor(k/4)+.5)*CELL);shp(c,SR_,k);c.fill();if(stroke)c.stroke();c.restore()});
+  return c.getImageData(0,0,a.width,a.height).data};
+ const f=layer(false),e=layer(true),px=new Uint8Array(f.length);
+ for(let i=0;i<f.length;i+=4){px[i]=f[i+3];px[i+1]=e[i+3];px[i+3]=255}
+ gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,a.width,a.height,0,gl.RGBA,gl.UNSIGNED_BYTE,px);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAX_LEVEL,3);
+ gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR)})();
+
+/* ---- links: one strip each, cut in screen space so a link is the same width
+   near and far, with a soft edge instead of the GPU's jagged one-pixel line */
+const PE=prog(FOG+`
+layout(location=0)in vec2 aQ;layout(location=1)in vec3 aA;layout(location=2)in vec3 aB;
+layout(location=3)in vec3 aCa;layout(location=4)in vec3 aCb;layout(location=5)in vec4 aW;
+uniform mat4 uM;uniform vec2 uV;uniform float uZs;
+out vec3 vC;out float vA,vD,vH,vF,vS,vSW,vWW,vL,vFg,vAl;
+void main(){vec4 a=uM*vec4(aA.xy,aA.z*uZs,1.),b=uM*vec4(aB.xy,aB.z*uZs,1.);
+ if(aW.x<.001||a.w<=0.||b.w<=0.){gl_Position=vec4(2.,2.,2.,1.);return;}
+ vec2 sa=a.xy/a.w*uV,sb=b.xy/b.w*uV,dd=sb-sa;float l=length(dd);vec2 dir=l>1e-4?dd/l:vec2(1.,0.);
+ vec4 p=mix(a,b,aQ.x);float h=aW.y*.5+1.;if(aW.z!=0.)h=max(h,abs(aW.z)>5.?4.4:2.6);
+ gl_Position=p+vec4(vec2(-dir.y,dir.x)*aQ.y*h*2./uV*p.w,0.,0.);
+ vC=mix(aCa,aCb,aQ.x);vD=aQ.y*h;vH=aW.y*.5;vFg=1.-.85*smoothstep(uF0,uF1,p.w);vA=aW.x*vFg;vF=aW.z;vS=aW.w;vAl=aW.x;
+ /* the distance along the link in screen pixels, interpolated linearly on
+    screen: GLSL ES 3.00 has no noperspective, so it travels multiplied by w
+    and is divided by the interpolated w in the fragment shader */
+ vL=l*.5;vSW=aQ.x*vL*p.w;vWW=p.w;}`,`
+in vec3 vC;in float vA,vD,vH,vF,vS,vSW,vWW,vL,vFg,vAl;uniform float uTime;uniform vec3 uFg;out vec4 o;
+/* A bead is a round dot of a fixed size on screen, whatever the link's length,
+   as the 2D graph draws it: owner's choice of 23.09.2026, after the first cut
+   drew a streak whose length was a share of the link's. */
+float disc(float s,float c,float r){return 1.-smoothstep(r-.6,r+.6,length(vec2(s-c,vD)));}
+void main(){float cov=clamp(vH+.5-abs(vD),0.,1.);vec3 c=vC*vA*cov;
+ if(vF!=0.){bool f=abs(vF)>5.;float d=f?vF/10.:vF,s=vSW/vWW,ph=fract(uTime*(f?.45:.15)+vS)*(f?1.:3.);
+  float ca=ph*vL,cb=(1.-ph)*vL;
+  if(f){float ring=0.,core=0.;
+   if(d>0.){ring=disc(s,ca,3.4);core=disc(s,ca,1.5);}
+   if(d<0.||d>1.5){ring=max(ring,disc(s,cb,3.4));core=max(core,disc(s,cb,1.5));}
+   c+=(vC*ring*(1.-core)+vec3(core))*vFg;}
+  else{float b=d>0.?disc(s,ca,1.6):disc(s,cb,1.6);if(d>1.5)b=max(b,disc(s,ca,1.6));
+   c+=uFg*b*.45*min(1.,vAl/.12)*vFg;}}
+ o=vec4(c,0.);}`);
+const pairs=new Map();L.forEach(([a,b])=>{const k=a<b?a*NN+b:b*NN+a;if(!pairs.has(k))pairs.set(k,[Math.min(a,b),Math.max(a,b)])});
+const E3=[...pairs.values()],NE=E3.length,MUT=hex(css('--mut'));
+const eArr=new Float32Array(NE*12);
+E3.forEach(([a,b],j)=>{const o=j*12,ca=C3[a],cb=C3[b];
+ eArr.set([PX[a],PY[a],PZ[a],PX[b],PY[b],PZ[b]],o);
+ for(let k=0;k<3;k++){eArr[o+6+k]=ca[k]*.6+MUT[k]*.4;eArr[o+9+k]=cb[k]*.6+MUT[k]*.4}});
+const eBase=eArr.slice(),OUTS=N.map(n=>new Set(D[n.id].out.map(o=>idx[o]).filter(j=>j!==undefined)));
+const eBuf=buf(eArr,gl.DYNAMIC_DRAW),wArr=new Float32Array(NE*4),wBuf=buf(wArr.byteLength,gl.DYNAMIC_DRAW);
+/* The focused concept's links in their direction's colour, the selection's or
+   else the hovered one's: see #gcard .lk. A pair linked both ways runs orange
+   from the focus to blue at the other end. */
+let eFocus=-2;
+function dirCols(f,o){const LI=hex(css('--lin')),LO=hex(css('--lout')),out=OUTS[f].has(o),inn=OUTS[o].has(f);
+ return out&&inn?[LO,LI]:out?[LO,LO]:[LI,LI]}
+function recolour(f){if(f===eFocus)return;eFocus=f;eArr.set(eBase);
+ if(f>=0)E3.forEach(([a,b],j)=>{if(a!==f&&b!==f)return;const[cf,co]=dirCols(f,a===f?b:a);
+  eArr.set(a===f?cf:co,j*12+6);eArr.set(a===f?co:cf,j*12+9)});
+ gl.bindBuffer(gl.ARRAY_BUFFER,eBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,eArr)}
+G3.flow=o=>{const f=sel>=0?sel:hov3,j=E3.findIndex(([a,b])=>(a===f&&b===o)||(a===o&&b===f));if(j<0)return null;
+ const fl=wArr[j*4+2]/10,fromFocus=E3[j][0]===f?fl===1:fl===-1;return fl===2?'both':fl===0?'none':fromFocus?'out':'in'};
+/* viewer-check stops the clock to read a bead's shape from a still frame */
+let T3=null;G3.freeze=t=>{T3=t;need=true};
+G3.age=ms=>{idle-=ms};
+G3.flowing=()=>{let n=0;for(let j=0;j<NE;j++)if(wArr[j*4+2])n++;return n};
+G3.linkCols=o=>{const f=eFocus,j=E3.findIndex(([a,b])=>(a===f&&b===o)||(a===o&&b===f));if(j<0)return null;
+ const at=k=>[...eArr.slice(j*12+k,j*12+k+3)].map(v=>Math.round(v*255));
+ return E3[j][0]===f?{focus:at(6),other:at(9)}:{focus:at(9),other:at(6)}};
+const vaoE=gl.createVertexArray();gl.bindVertexArray(vaoE);
+attr(0,buf(new Float32Array([0,-1,1,-1,0,1,1,1])),2,2,0,0);
+attr(1,eBuf,3,12,0,1);attr(2,eBuf,3,12,3,1);attr(3,eBuf,3,12,6,1);attr(4,eBuf,3,12,9,1);attr(5,wBuf,4,4,0,1);
+
+/* ---- halos: each knowledge base in its block hue, as the 2D graph draws it,
+   a soft disc that always faces the camera */
+const PH=prog(`
+layout(location=0)in vec2 aQ;layout(location=1)in vec4 aP;layout(location=2)in vec3 aC;
+uniform mat4 uM;uniform vec3 uR,uU;uniform float uZs,uA;out vec2 vQ;out vec3 vC;
+void main(){vQ=aQ;vC=aC;vec3 c=vec3(aP.xy,aP.z*uZs)+(uR*aQ.x+uU*aQ.y)*aP.w;gl_Position=uM*vec4(c,1.);}`,`
+in vec2 vQ;in vec3 vC;uniform float uA;out vec4 o;
+void main(){float d=dot(vQ,vQ);if(d>1.)discard;o=vec4(vC*uA*(exp(-d*2.6)-.074)*1.08,0.);}`);
+const KBS=Object.keys(KBC).filter(k=>HUE[k]),KBZ={};
+KBS.forEach(k=>{let s=0,c=0;N.forEach((n,i)=>{if(n.kb===k){s+=PZ[i];c++}});KBZ[k]=c?s/c:0});
+const hArr=new Float32Array(KBS.length*7),hBuf=buf(hArr.byteLength,gl.DYNAMIC_DRAW);let nH=0;
+const vaoH=gl.createVertexArray();gl.bindVertexArray(vaoH);attr(0,quad,2,2,0,0);attr(1,hBuf,4,7,0,1);attr(2,hBuf,3,7,4,1);
+
+/* ---- dust: a few hundred faint motes far behind and around the map. They
+   carry nothing; they are there so that turning the view reads as moving
+   through space, which is most of what makes depth legible on a screen */
+const PD=prog(`
+layout(location=0)in vec3 aP;uniform mat4 uM;uniform float uDpr;out float vA;
+void main(){gl_Position=uM*vec4(aP,1.);gl_PointSize=(1.2+fract(aP.x*.013)*1.4)*uDpr;vA=.1+fract(aP.y*.017)*.22;}`,`
+in float vA;uniform vec3 uCol;out vec4 o;
+void main(){vec2 q=gl_PointCoord*2.-1.;float d=dot(q,q);if(d>1.)discard;o=vec4(uCol*vA*(1.-d),0.);}`);
+let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(let i=0;i<NN;i++){x0=Math.min(x0,PX[i]);x1=Math.max(x1,PX[i]);y0=Math.min(y0,PY[i]);y1=Math.max(y1,PY[i])}
+const SCX=(x0+x1)/2,SCY=(y0+y1)/2,SCR=Math.max(x1-x0,y1-y0)/2,ND=900,dArr=new Float32Array(ND*3);
+let seed=20260923;const rnd=()=>(seed=(seed*1664525+1013904223)>>>0)/4294967296;
+for(let i=0;i<ND;i++){const u=rnd()*2-1,t=rnd()*Math.PI*2,r=SCR*(1.5+rnd()*2.2),s=Math.sqrt(1-u*u);
+ dArr.set([SCX+r*s*Math.cos(t),SCY+r*s*Math.sin(t),r*u],i*3)}
+const vaoD=gl.createVertexArray();gl.bindVertexArray(vaoD);attr(0,buf(dArr),3,3,0,0);gl.bindVertexArray(null);
+
+/* ---- the ground: the vignette #g3pane's CSS describes, drawn in the canvas
+   because the canvas is opaque. A triangle over the whole view, and a
+   one-level dither so the dark gradient does not band. */
+const PB=prog(`out vec2 vU;void main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));vU=p;gl_Position=vec4(p*2.-1.,0.,1.);}`,`
+in vec2 vU;uniform vec3 uA,uB,uC;out vec4 o;
+void main(){float t=length(vec2((vU.x-.5)/1.2,(.58-vU.y)/.95));
+ vec3 c=t<.52?mix(uA,uB,t/.52):mix(uB,uC,min(1.,(t-.52)/.48));
+ c+=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-.5)/255.;o=vec4(c,1.);}`);
+const vaoB=gl.createVertexArray();
+
+/* ---- camera: an orbit round a target point. The orientation is a
+   quaternion rather than yaw and pitch, so a turn never meets a pole: the view
+   goes over the top and on round, in any direction, for as long as the reader
+   drags. Owner's request of 23.09.2026, "let me rotate endlessly". Yaw and
+   pitch had to stop short of straight up, where they flip. */
+const qmul=(a,b)=>[a[3]*b[0]+a[0]*b[3]+a[1]*b[2]-a[2]*b[1],a[3]*b[1]-a[0]*b[2]+a[1]*b[3]+a[2]*b[0],
+ a[3]*b[2]+a[0]*b[1]-a[1]*b[0]+a[2]*b[3],a[3]*b[3]-a[0]*b[0]-a[1]*b[1]-a[2]*b[2]];
+const qax=(x,y,z,a)=>{const s=Math.sin(a/2);return[x*s,y*s,z*s,Math.cos(a/2)]};
+const qnorm=q=>{const l=Math.hypot(q[0],q[1],q[2],q[3])||1;return q.map(v=>v/l)};
+function qrot(q,v){const[x,y,z,w]=q,t=[2*(y*v[2]-z*v[1]),2*(z*v[0]-x*v[2]),2*(x*v[1]-y*v[0])];
+ return[v[0]+w*t[0]+y*t[2]-z*t[1],v[1]+w*t[1]+z*t[0]-x*t[2],v[2]+w*t[2]+x*t[1]-y*t[0]]}
+const qYP=(yaw,pitch)=>qmul(qax(0,1,0,yaw),qax(1,0,0,-pitch));
+function slerp(a,b,t){let d=a[0]*b[0]+a[1]*b[1]+a[2]*b[2]+a[3]*b[3];if(d<0){b=b.map(v=>-v);d=-d}
+ if(d>.9995)return qnorm(a.map((v,i)=>v+(b[i]-v)*t));
+ const th=Math.acos(d),s=Math.sin(th);return a.map((v,i)=>(v*Math.sin((1-t)*th)+b[i]*Math.sin(t*th))/s)}
+const cam={t:[SCX,SCY,0],d:SCR*3,q:qYP(0,0),zs:1};
+/* a turn is about the camera's own axes: sideways about its up, up and down
+   about its right, which is what makes it endless both ways */
+function turn(a,b){cam.q=qnorm(qmul(cam.q,qmul(qax(0,1,0,a),qax(1,0,0,-b))))}
+let W=1,H=1,dpr3=1,M=null,pxs=1,right=[1,0,0],up=[0,1,0],back=[0,0,1],anim=null,entered=false,
+ vy=0,vp=0,drag3=null,last=performance.now(),idle=last,need=true,skey='',GH=new Uint8Array(NN),
+ F0=0,F1=1,BR={c:[SCX,SCY,0],r:SCR};
+const SX=new Float32Array(NN),SY=new Float32Array(NN),SW=new Float32Array(NN),SRp=new Float32Array(NN),order=[];
+const basis=q=>[qrot(q,[1,0,0]),qrot(q,[0,1,0]),qrot(q,[0,0,1])];
+function matrix(){[right,up,back]=basis(cam.q);
+ const e=[0,1,2].map(k=>cam.t[k]+cam.d*back[k]),dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+ const V=[right[0],up[0],back[0],0,right[1],up[1],back[1],0,right[2],up[2],back[2],0,-dot(right,e),-dot(up,e),-dot(back,e),1];
+ const n=Math.max(1,cam.d*.02),f=cam.d+SCR*8,t=1/Math.tan(FOV/2),a=W/H,nf=1/(n-f);
+ const P=[t/a,0,0,0,0,t,0,0,0,0,(f+n)*nf,-1,0,0,2*f*n*nf,0];M=new Float32Array(16);
+ for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;for(let k=0;k<4;k++)s+=P[k*4+r]*V[c*4+k];M[c*4+r]=s}
+ pxs=(H/2)*t}
+function resize3(){const w=g3.clientWidth,h=g3.clientHeight;if(!w||!h)return;W=w;H=h;dpr3=Math.min(devicePixelRatio||1,2);
+ for(const c of[g3,g3l]){c.width=Math.round(w*dpr3);c.height=Math.round(h*dpr3)}need=true}
+new ResizeObserver(resize3).observe(g3);
+
+/* What is showing decides the frame: the bounds Fit uses and the fog range. */
+function bounds(zs){let a=[1e9,1e9,1e9],b=[-1e9,-1e9,-1e9],any=false;
+ for(let i=0;i<NN;i++){if(hid(N[i]))continue;any=true;const p=[PX[i],PY[i],PZ[i]*zs];
+  for(let k=0;k<3;k++){a[k]=Math.min(a[k],p[k]);b[k]=Math.max(b[k],p[k])}}
+ if(!any)return null;const c=[0,1,2].map(k=>(a[k]+b[k])/2);
+ return{c,r:Math.max(1,Math.hypot(b[0]-a[0],b[1]-a[1],b[2]-a[2])/2)}}
+/* Fit is solved, not guessed: for the camera's direction, the distance at
+   which every showing concept's centre lands inside the canvas, margins
+   included, with the target moved to the middle of what the camera sees. */
+function fitFor(q,zs){const[r,u,b]=basis(q),bb=bounds(zs);if(!bb)return null;
+ const tx=Math.tan(FOV/2)*(W/H)*(W-2*MARGIN)/W,ty=Math.tan(FOV/2)*(H-2*MARGIN)/H;
+ let xa=1e9,xb=-1e9,ya=1e9,yb=-1e9;const pts=[];
+ for(let i=0;i<NN;i++){if(hid(N[i]))continue;const p=[PX[i]-bb.c[0],PY[i]-bb.c[1],PZ[i]*zs-bb.c[2]];
+  const x=p[0]*r[0]+p[1]*r[1]+p[2]*r[2],y=p[0]*u[0]+p[1]*u[1]+p[2]*u[2],z=p[0]*b[0]+p[1]*b[1]+p[2]*b[2];
+  pts.push([x,y,z]);xa=Math.min(xa,x);xb=Math.max(xb,x);ya=Math.min(ya,y);yb=Math.max(yb,y)}
+ const mx=(xa+xb)/2,my=(ya+yb)/2;let d=1;
+ for(const[x,y,z]of pts)d=Math.max(d,z+Math.abs(x-mx)/tx,z+Math.abs(y-my)/ty);
+ return{t:[0,1,2].map(k=>bb.c[k]+r[k]*mx+u[k]*my),d:d*1.01,q:q.slice(),zs}}
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function tween(g,ms){if(RM.matches||ms<=0){Object.assign(cam,g,{t:g.t?g.t.slice():cam.t,q:g.q?g.q.slice():cam.q});anim=null;need=true;return}
+ anim={f:{t:cam.t.slice(),d:cam.d,q:cam.q.slice(),zs:cam.zs},g:Object.assign({t:cam.t.slice(),d:cam.d,q:cam.q.slice(),zs:cam.zs},g),t0:performance.now(),ms}}
+function step(now){const a=anim,k=ease(Math.min(1,(now-a.t0)/a.ms)),f=a.f,g=a.g;
+ for(let j=0;j<3;j++)cam.t[j]=f.t[j]+(g.t[j]-f.t[j])*k;
+ cam.d=Math.exp(Math.log(f.d)+(Math.log(g.d)-Math.log(f.d))*k);
+ cam.q=slerp(f.q,g.q,k);cam.zs=f.zs+(g.zs-f.zs)*k;
+ if(k>=1)anim=null}
+/* The first visit starts on the flat map, exactly as the Graph view shows it,
+   and lifts it into depth while the camera tips, so the reader sees that this
+   is the same map before being asked to read it in three dimensions. */
+const HOME=qYP(.34,-.46);
+G3.enter=()=>{resize3();if(entered){need=true;return}entered=true;
+ const flat=fitFor(qYP(0,0),0);if(flat)Object.assign(cam,flat);
+ const g=fitFor(HOME,1);if(g)tween(g,1500);idle=performance.now();need=true};
+G3.fit=()=>{const g=fitFor(cam.q,1);if(g)tween(g,450);idle=performance.now()};
+G3.focus=i=>{const bb=bounds(1)||BR;tween({t:[PX[i],PY[i],PZ[i]],d:Math.min(cam.d,Math.max(bb.r*.5,480)),zs:1},650);idle=performance.now()};
+G3.project=i=>{for(const j of order)if(j===i)return[SX[i],SY[i]];return null};
+G3.cam=cam;G3.pick=(x,y)=>pick3(x,y);
+/* for viewer-check: set a direction, read the turn since a saved one, where
+   the camera's up points, and where the eye is */
+G3.orient=(y,p)=>{cam.q=qYP(y,p);need=true};G3.q=()=>cam.q.slice();
+G3.angle=q0=>2*Math.acos(Math.min(1,Math.abs(q0[0]*cam.q[0]+q0[1]*cam.q[1]+q0[2]*cam.q[2]+q0[3]*cam.q[3])));
+G3.up=()=>qrot(cam.q,[0,1,0]);G3.eye=()=>{const b=qrot(cam.q,[0,0,1]);return[0,1,2].map(k=>cam.t[k]+cam.d*b[k])};
+
+/* ---- state: what the search, the selection, hover and the filters decide.
+   Recomputed when any of them changes, never per frame. */
+function restate(){const anySel=sel>=0;
+ for(let i=0;i<NN;i++)GH[i]=ghost(N[i])?1:0;
+ const fo=anySel?sel:hov3;
+ E3.forEach(([a,b],j)=>{let al=0,w=1.1,fl=0;
+  if(!hid(N[a])&&!hid(N[b])){
+   if(anySel&&(a===sel||b===sel)){al=.55;w=2.4}
+   else if(!anySel&&hov3>=0&&(a===hov3||b===hov3)){al=.45;w=2}
+   else if(anySel)al=.02;
+   else if(qv)al=GH[a]||GH[b]?.015:.34;
+   else al=.12;
+   /* the flow, as the logo's light runs along its strands, on every link:
+      which way the bead travels, from the first end to the second (1), back
+      (-1) or both (2); times ten on the focus's links, whose beads run
+      brighter and without pause. Owner's requests of 23.09.2026. */
+   if(!RM.matches){const ab=OUTS[a].has(b),ba=OUTS[b].has(a);fl=(ab&&ba?2:ab?1:-1)*(fo>=0&&(a===fo||b===fo)?10:1)}}
+  wArr[j*4]=al;wArr[j*4+1]=w;wArr[j*4+2]=fl;wArr[j*4+3]=(j*.6180339887)%1});
+ gl.bindBuffer(gl.ARRAY_BUFFER,wBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,wArr);
+ nH=0;KBS.forEach(k=>{if(offKB.has(k))return;const c=KBC[k],h=hex(HUE[k]);
+  hArr.set([c.cx,-c.cy,KBZ[k],c.halo*1.12,h[0],h[1],h[2]],nH*7);nH++});
+ gl.bindBuffer(gl.ARRAY_BUFFER,hBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,hArr);
+ BR=bounds(1)||BR;recolour(sel>=0?sel:hov3)}
+
+function draw3(){G3.frames++;
+ const key=sel+'|'+hov3+'|'+qv+'|'+[...off].join()+'|'+[...offKB].join()+'|'+RM.matches;if(key!==skey){skey=key;restate()}
+ matrix();const anySel=sel>=0;
+ const dc=Math.hypot(cam.t[0]+cam.d*back[0]-BR.c[0],cam.t[1]+cam.d*back[1]-BR.c[1],cam.t[2]+cam.d*back[2]-BR.c[2]);
+ F0=dc-BR.r*.55;F1=dc+BR.r*1.05;
+ order.length=0;const umin=3.2;
+ for(let i=0;i<NN;i++){if(hid(N[i]))continue;const x=PX[i],y=PY[i],z=PZ[i]*cam.zs;
+  const w=M[3]*x+M[7]*y+M[11]*z+M[15];if(w<=cam.d*.03)continue;
+  SX[i]=((M[0]*x+M[4]*y+M[8]*z+M[12])/w*.5+.5)*W;SY[i]=(.5-(M[1]*x+M[5]*y+M[9]*z+M[13])/w*.5)*H;
+  SW[i]=w;SRp[i]=Math.min(30,Math.max(umin,RR[i]*Math.sqrt(pxs/w)));order.push(i)}
+ order.sort((a,b)=>SW[b]-SW[a]);
+ order.forEach((i,k)=>{const o=k*NS,c=C3[i];nodeArr[o]=PX[i];nodeArr[o+1]=PY[i];nodeArr[o+2]=PZ[i];nodeArr[o+3]=RR[i];
+  nodeArr[o+4]=c[0];nodeArr[o+5]=c[1];nodeArr[o+6]=c[2];nodeArr[o+7]=N[i].c;
+  nodeArr[o+8]=i===sel?3:(i===hov3&&!GH[i])?2:GH[i]?1:0});
+ gl.bindBuffer(gl.ARRAY_BUFFER,nodeBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,nodeArr,0,order.length*NS);
+ gl.viewport(0,0,g3.width,g3.height);gl.disable(gl.BLEND);
+ gl.useProgram(PB.p);gl.uniform3fv(PB.u.uA,hex('#2e2d2a'));gl.uniform3fv(PB.u.uB,hex(css('--bg')));gl.uniform3fv(PB.u.uC,hex('#1b1b1b'));
+ gl.bindVertexArray(vaoB);gl.drawArrays(gl.TRIANGLES,0,3);
+ gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);
+ gl.useProgram(PD.p);gl.uniformMatrix4fv(PD.u.uM,false,M);gl.uniform1f(PD.u.uDpr,dpr3);gl.uniform3fv(PD.u.uCol,hex(css('--fg')));
+ gl.bindVertexArray(vaoD);gl.drawArrays(gl.POINTS,0,ND);
+ gl.useProgram(PH.p);gl.uniformMatrix4fv(PH.u.uM,false,M);gl.uniform3fv(PH.u.uR,right);gl.uniform3fv(PH.u.uU,up);
+ gl.uniform1f(PH.u.uZs,cam.zs);gl.uniform1f(PH.u.uA,anySel||qv?.1:.22);gl.bindVertexArray(vaoH);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,nH);
+ gl.useProgram(PE.p);gl.uniformMatrix4fv(PE.u.uM,false,M);gl.uniform2f(PE.u.uV,W,H);gl.uniform1f(PE.u.uZs,cam.zs);
+ gl.uniform1f(PE.u.uF0,F0);gl.uniform1f(PE.u.uF1,F1);gl.uniform1f(PE.u.uTime,T3!==null?T3:performance.now()/1000);gl.uniform3fv(PE.u.uFg,hex(css('--fg')));gl.bindVertexArray(vaoE);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,NE);
+ gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+ gl.useProgram(PN.p);gl.uniformMatrix4fv(PN.u.uM,false,M);gl.uniform2f(PN.u.uV,W,H);gl.uniform1f(PN.u.uPx,pxs);
+ gl.uniform1f(PN.u.uZs,cam.zs);gl.uniform1f(PN.u.uMin,umin);gl.uniform1f(PN.u.uF0,F0);gl.uniform1f(PN.u.uF1,F1);
+ gl.uniform3fv(PN.u.uBg,hex(css('--bg')));gl.uniform3fv(PN.u.uAcc,hex(css('--acc')));gl.uniform1f(PN.u.uCell,SR_/CELL);
+ gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(PN.u.uT,0);
+ gl.bindVertexArray(vaoN);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,order.length);gl.bindVertexArray(null);
+ G3.drawn=order.length;labels(anySel)}
+
+/* Labels on their own canvas, in screen space: the knowledge-base names in
+   their hue, then concept names by the 2D graph's rule — the selection, what
+   it links to, what is hovered, and the most-linked concepts the zoom allows,
+   greedily, so no two overlap. Far labels fade with the fog. */
+function fogAt(w){const t=Math.max(0,Math.min(1,(w-F0)/(F1-F0)));return 1-.72*t*t*(3-2*t)}
+function labels(anySel){const x2=g3l.getContext('2d');x2.setTransform(dpr3,0,0,dpr3,0,0);x2.clearRect(0,0,W,H);
+ x2.textAlign='center';x2.textBaseline='middle';x2.font='700 19px system-ui,-apple-system,sans-serif';x2.lineJoin='round';
+ const bg=css('--bg');
+ for(const k of KBS){if(offKB.has(k))continue;const c=KBC[k],x=c.cx,y=-c.cy,z=KBZ[k]*cam.zs;
+  const w=M[3]*x+M[7]*y+M[11]*z+M[15];if(w<=cam.d*.03)continue;
+  const sx=((M[0]*x+M[4]*y+M[8]*z+M[12])/w*.5+.5)*W,sy=(.5-(M[1]*x+M[5]*y+M[9]*z+M[13])/w*.5)*H;
+  x2.globalAlpha=(anySel||qv?.25:.85)*fogAt(w);x2.lineWidth=5;x2.strokeStyle=bg;x2.strokeText(kbName(k),sx,sy);
+  x2.fillStyle=HUE[k];x2.fillText(kbName(k),sx,sy)}
+ x2.textAlign='start';x2.font='600 12px system-ui,-apple-system,sans-serif';x2.lineWidth=3;
+ const s=pxs/cam.d,thr=s<.28?7:s<.55?4:s<.95?2:0,placed=[];
+ const pri=i=>i===sel?1e6:i===hov3?1e5:(anySel&&NB[sel].has(i))?1e4+D[N[i].id].inb.length:D[N[i].id].inb.length;
+ const cand=order.filter(i=>!GH[i]&&(i===sel||i===hov3||(anySel&&NB[sel].has(i))||D[N[i].id].inb.length>=thr)).sort((a,b)=>pri(b)-pri(a));
+ for(const i of cand){const sx=SX[i],sy=SY[i];if(sx<-40||sy<0||sx>W+40||sy>H)continue;
+  const t=D[N[i].id].t,wd=x2.measureText(t).width,bx=sx+SRp[i]+6,box=[bx-2,sy-9,bx+wd+2,sy+9];
+  if(placed.some(p=>box[0]<p[2]&&box[2]>p[0]&&box[1]<p[3]&&box[3]>p[1]))continue;placed.push(box);
+  x2.globalAlpha=i===sel||i===hov3?1:Math.max(.4,fogAt(SW[i]));
+  x2.strokeStyle=bg;x2.strokeText(t,bx,sy);x2.fillStyle=i===sel?css('--fg'):css('--mut');x2.fillText(t,bx,sy)}
+ x2.globalAlpha=1}
+
+/* ---- input. Drag turns the map, Shift-drag or the right button moves it,
+   the wheel zooms toward the pointer; a click that did not move selects, as
+   in the 2D graph, and a second click lets go. The view keeps a little
+   momentum after a turn, so it feels like an object rather than a slider. */
+function pick3(mx,my){let best=-1,bw=1e18;
+ for(const i of order){const r=SRp[i]+4,dx=SX[i]-mx,dy=SY[i]-my;if(dx*dx+dy*dy<r*r&&SW[i]<bw){bw=SW[i];best=i}}return best}
+function local(e){const b=g3.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]}
+function settle(){if(anim&&anim.ms>1000){Object.assign(cam,anim.g,{t:anim.g.t.slice()})}anim=null}
+g3.addEventListener('contextmenu',e=>e.preventDefault());
+g3.addEventListener('pointerdown',e=>{g3.setPointerCapture(e.pointerId);settle();vy=vp=0;
+ drag3={x:e.clientX,y:e.clientY,m:0,t:performance.now(),pan:e.button!==0||e.shiftKey};idle=performance.now()});
+g3.addEventListener('pointermove',e=>{const[mx,my]=local(e);
+ if(drag3){const dx=e.clientX-drag3.x,dy=e.clientY-drag3.y,now=performance.now(),dt=Math.max(8,now-drag3.t);
+  drag3.x=e.clientX;drag3.y=e.clientY;drag3.t=now;drag3.m+=Math.abs(dx)+Math.abs(dy);idle=now;
+  if(drag3.m<5)return;g3.style.cursor='grabbing';
+  if(drag3.pan){const k=cam.d/pxs;for(let j=0;j<3;j++)cam.t[j]+=(-dx*right[j]+dy*up[j])*k}
+  else{const a=-dx*.0055,b=dy*.0055;turn(a,b);vy=a/dt;vp=b/dt}
+  need=true;return}
+ const h=pick3(mx,my);if(h!==hov3){hov3=h;need=true}g3.style.cursor=h>=0?'pointer':'grab'});
+g3.addEventListener('pointerup',e=>{if(!drag3)return;const d=drag3;drag3=null;g3.style.cursor='grab';
+ if(performance.now()-d.t>70)vy=vp=0;
+ if(d.m<5){vy=vp=0;const[mx,my]=local(e),h=pick3(mx,my);if(h>=0){if(sel===h)clearSel();else select(h)}}});
+g3.addEventListener('pointerleave',()=>{if(hov3>=0&&!drag3){hov3=-1;need=true}});
+g3.addEventListener('dblclick',e=>{const[mx,my]=local(e),h=pick3(mx,my);if(h>=0){select(h);show(N[h].id)}else G3.fit()});
+/* The wheel zooms toward the pointer, and does not stop when it arrives:
+   closer than DMIN it flies on, carrying the orbit point ahead of it along
+   the pointer's ray, through the clusters and out the other side. Owner's
+   requests of 23.09.2026, "move endlessly" and "zoom endlessly". Outward the
+   one bound is a million units, some three hundred times the whole map, there
+   only to keep the arithmetic finite. */
+const DMIN=40;
+g3.addEventListener('wheel',e=>{e.preventDefault();settle();vy=vp=0;idle=performance.now();
+ const[mx,my]=local(e),f=Math.exp(e.deltaY*(e.ctrlKey?.01:.0015));
+ const want=Math.min(1e6,cam.d*f),nd=Math.max(DMIN,want),k=cam.d/pxs,r=nd/cam.d;
+ for(let j=0;j<3;j++){const p=cam.t[j]+right[j]*(mx-W/2)*k+up[j]*(H/2-my)*k;cam.t[j]=p+(cam.t[j]-p)*r}
+ cam.d=nd;
+ if(want<DMIN){const ray=[0,1,2].map(j=>-back[j]+right[j]*(mx-W/2)/pxs+up[j]*(H/2-my)/pxs),l=Math.hypot(...ray),go=(DMIN-want)*3;
+  for(let j=0;j<3;j++)cam.t[j]+=ray[j]/l*go}
+ need=true},{passive:false});
+
+(function loop3(now){requestAnimationFrame(loop3);if(view!=='3d')return;
+ const dt=Math.min(64,now-last);last=now;let moved=false;
+ if(anim){step(now);moved=true}
+ if(!drag3&&(Math.abs(vy)+Math.abs(vp))>1e-6){turn(vy*dt,vp*dt);
+  const k=Math.pow(.9,dt/16);vy*=k;vp*=k;if(Math.abs(vy)+Math.abs(vp)<2e-6)vy=vp=0;moved=true}
+ const still=now-idle;
+ if(!RM.matches&&!drag3&&!anim&&hov3<0&&still>6000){turn(dt*4e-5,0);moved=true}
+ if(!RM.matches)moved=true;   // the flow along the links
+ if(moved||dirty||need){dirty=false;need=false;draw3()}})(last);
+})();
+'''
 
 # The commit the vault sat at when this file was written, and whether the tree
 # was clean. This is the viewer's analogue of j4k's build code: the first thing
@@ -701,7 +1187,7 @@ except ValueError:
 if _git('status', '--porcelain'):
     git_id += ' · uncommitted'
 page = """<!DOCTYPE html><html><head><meta charset="utf-8"><title>00_Cerebrum — OKF viewer</title><style>
-:root{color-scheme:dark;--bg:#242424;--fg:#f9f2d9;--mut:#a49a85;--line:#3a3733;--acc:#f0c755;--h3:#e5d5a1;--side:#191919;--card:#2b2b2b;--item:#bbaf96;--ph:#757575;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--s9:#38b2c3;--s10:#9fae2f;--s11:#c08b52;--s12:#8ecae6;--s13:#b0b7c3;--s14:#7fd1ae;--s15:#cb54d6;--s16:#e0c04d}
+:root{color-scheme:dark;--bg:#242424;--fg:#f9f2d9;--mut:#a49a85;--line:#3a3733;--acc:#f0c755;--h3:#e5d5a1;--side:#191919;--card:#2b2b2b;--item:#bbaf96;--ph:#757575;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--s9:#38b2c3;--s10:#9fae2f;--s11:#c08b52;--s12:#8ecae6;--s13:#b0b7c3;--s14:#7fd1ae;--s15:#cb54d6;--s16:#e0c04d;--lin:#5aa9ff;--lout:#ff9f43}
 *{box-sizing:border-box}[hidden]{display:none!important}
 /* One header over two full-screen views. Owner's instruction of 14.09.2026: the
    mark on the left, the categories to its right, and below that either the
@@ -709,13 +1195,29 @@ page = """<!DOCTYPE html><html><head><meta charset="utf-8"><title>00_Cerebrum �
    column, so the header keeps its own height and the view takes the rest. The
    body never scrolls; each view scrolls inside itself. */
 body{margin:0;font:16px/1.6 -apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;height:100vh;overflow:hidden}
-#top{flex:0 0 auto;position:relative;z-index:20;display:flex;align-items:center;gap:20px;padding:10px 16px 10px 10px;background:var(--side);border-bottom:1px solid var(--line)}
+#top{flex:0 0 auto;position:relative;z-index:20;display:flex;align-items:center;gap:16px;padding:10px 16px 10px 10px;background:var(--side);border-bottom:1px solid var(--line)}
 #stage{flex:1;min-height:0;display:flex;position:relative}
-#gpane,#cpane{flex:1;min-width:0;position:relative;display:flex}
+#gpane,#cpane,#g3pane{flex:1;min-width:0;position:relative;display:flex}
 #gpane{flex-direction:column}
 /* The view is a body class, so one switch decides both panes and nothing can
    leave the two showing together. */
-body.vg #cpane,body.vc #gpane{display:none}
+body.vg #cpane,body.vc #gpane,body.v3 #gpane,body.v3 #cpane,body.vg #g3pane,body.vc #g3pane{display:none}
+/* The card and Fit float over whichever graph is showing, 2D or 3D, so they sit
+   in the stage rather than in one pane, and the Concept view hides them. */
+body.vc #gcard{display:none!important}
+/* The 3D view: a faint vignette of the page's own ground, so the clusters seem
+   to float in a room rather than on a sheet. The canvas is opaque and paints
+   the same vignette itself; this one shows only before its first frame. The
+   labels are a second canvas over it that takes no pointer. */
+#g3pane{background:radial-gradient(120% 95% at 50% 42%,#2e2d2a 0%,var(--bg) 52%,#1b1b1b 100%)}
+#g3,#g3lbl{position:absolute;inset:0;width:100%;height:100%;display:block}
+#g3{cursor:grab;touch-action:none}#g3lbl{pointer-events:none}
+/* One help line per graph, bottom left, in the same words where the control
+   is the same. The 2D one joined on 23.09.2026, on the owner's request, and the
+   same day the Fit button went, on the owner's instruction: a double-click on
+   empty space does what it did, and the line says so. `f` still fits. */
+#g2hint,#g3hint{position:absolute;left:16px;bottom:18px;z-index:2;color:var(--mut);font-size:12px;letter-spacing:.02em;pointer-events:none;opacity:.8}
+#g2hint b,#g3hint b{color:var(--item);font-weight:600}
 /* The list scrolls and the controls above it do not: the search box moved into
    this column, and a search box that scrolls away with the list is gone exactly
    when the list is long enough to need it. Both parts reserve the same scrollbar
@@ -801,8 +1303,8 @@ input{width:100%;padding:8px 10px;margin-bottom:10px;cursor:text}
    icon buttons and the graph's Fit joined it on 14.09.2026, so the switch that
    says which view is showing speaks the same language as the row that says
    which concept is. */
-.ib,#ball,#q,#gfit{background:transparent;border:1px solid transparent;border-radius:5px;color:var(--item);font-size:.95em;padding:4px 7px}
-.ib:hover,#ball:hover,#q:hover,#gfit:hover{background:var(--line);color:var(--fg)}
+.ib,#ball,#q{background:transparent;border:1px solid transparent;border-radius:5px;color:var(--item);font-size:.95em;padding:4px 7px}
+.ib:hover,#ball:hover,#q:hover{background:var(--line);color:var(--fg)}
 .ib.on{border-color:var(--acc);color:var(--fg)}
 #q{margin-bottom:0;min-width:0;padding-right:30px;position:relative}#q::placeholder{color:var(--ph)}
 /* The progress bar. A report takes minutes and the page has to say so, but
@@ -879,14 +1381,14 @@ table{border-collapse:collapse;margin:.9em 0;font-size:.95em}td,th{border:1px so
 code{background:var(--side);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:.9em}
 blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color:var(--mut)}
 .fns{border-top:1px solid var(--line);margin-top:1.8em;padding-top:.7em;font-size:.9em;color:var(--mut);max-width:72ch;line-height:1.55}
-.meta{color:var(--mut);font-size:.92em;margin:.4em 0 1.3em}.gbtn{float:right;margin:6px 0 10px 18px;border-color:var(--acc);color:var(--acc)}.gbtn:hover{background:var(--acc);color:var(--bg)}sup.fn{color:var(--mut)}
+.meta{color:var(--mut);font-size:.92em;margin:.4em 0 1.3em}.gbtns{float:right;display:flex;gap:2px;margin:6px 0 10px 18px}sup.fn{color:var(--mut)}
 .links{font-size:.88em;color:var(--mut);margin:.8em 0}
 /* The header, left to right: the mark, the categories, the controls. */
 /* The brand is the About control. It repeats the dialog's own header — eyebrow
    over the name — so pressing it opens something that looks like what was
    pressed, and the mark carries the identity in both places. The border stays
    declared and transparent so the hover outline costs no layout shift. */
-#aboutBtn{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:6px 16px 6px 8px;border:1px solid transparent;border-radius:8px;background:transparent;cursor:pointer}
+#aboutBtn{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:6px 10px 6px 8px;border:1px solid transparent;border-radius:8px;background:transparent;cursor:pointer}
 /* Hover is the outline alone. Filling the cell put back the surface the row
    had just been relieved of, a moment after it was taken away. */
 #aboutBtn:hover{border-color:var(--acc)}
@@ -906,8 +1408,11 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 /* The controls are icons, as j4k's top bar is: each is named by its tooltip.
    Views first, then Settings, set a little apart because it opens something
    rather than switching something. */
-#tools{flex:0 0 auto;display:flex;align-items:center;gap:12px}
-#views{display:flex;gap:4px}
+/* Three view buttons since 23.09.2026, when 3D joined. The extra 42px made the
+   employer row of categories wrap at 1440px, so the header gave back 22px from
+   its gaps and the brand's right padding; viewer-check holds the row to one line. */
+#tools{flex:0 0 auto;display:flex;align-items:center;gap:8px}
+#views{display:flex;gap:2px}
 .ib{position:relative;display:inline-grid;place-items:center;width:38px;height:38px;padding:0;border-radius:8px}
 .ib svg{width:20px;height:20px}
 /* The count of hidden knowledge bases, on the button that can bring them
@@ -972,7 +1477,7 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
  transition:width .3s ease-out}
 #kbbar{display:flex;flex-direction:column;gap:6px}#kbbar .krow{display:flex;gap:6px}#kbbar .krow button{flex:1;padding:6px;white-space:nowrap;min-width:0}#kbbar button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}/* fallback for a KB no block names; the three known blocks override inline */#kbbar button small{opacity:.7;margin-left:5px;font-size:.85em;color:inherit}#kbbar button[aria-disabled="true"]{cursor:not-allowed}
 #gc{flex:1;cursor:grab;touch-action:none;min-height:0}
-/* The card and the tools float on the graph on one surface. The search box
+/* The card is docked, see below. The search box
    does not: it stands exactly where it stands in the Concept view, in a box
    cut from the top of the list, with the list's width, ground, padding and
    divider, and the list's width follows the splitter in both. Owner's
@@ -980,15 +1485,31 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
    the page's ground and then 2px of line, so the line does not step sideways
    when the view switches. Both are shadows: a border takes its pixel from the
    search box, 412px against the list's 413. */
-#gtools,#gcard{position:absolute;z-index:3;background:var(--bg);border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 26px rgba(0,0,0,.55)}
-#gtools{bottom:16px;right:16px;z-index:2;display:flex;gap:4px;padding:4px}
-#gfit{padding:5px 14px}
-#gcard{top:16px;right:16px;width:320px;max-height:calc(100% - 100px);overflow-y:auto;padding:14px 16px;display:none}
-#gcard h3{margin:.1em 0 .3em;font-size:1.08em}#gcard .desc{font-size:.95em;margin:.5em 0;line-height:1.55}
-#gcard .sec{margin:.9em 0 .2em}
+/* The concept card is a segment of the page, not a window over it. Owner's
+   instruction of 23.09.2026: the floating card, with its radius and shadow,
+   read as a different style from everything else. It now docks to the right
+   edge at full height in the search bar's grammar — the --side ground, a
+   1px --line divider on its open side, and the same divider between its parts.
+   It still lies over the graph rather than narrowing it, so a click does not
+   move the concept under the pointer. Its open
+   action is the header's Concept view icon, as the concept page carries the
+   graph icons. */
+#stage{--cardw:340px}
+#gcard{position:absolute;z-index:3;top:0;right:0;bottom:0;width:var(--cardw);overflow-y:auto;background:var(--side);border-left:1px solid var(--line);display:none}
+#gcard .cs{padding:12px 16px;border-bottom:1px solid var(--line)}
+#gcard .hd{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px}
+#gcard .hd .ib{flex:0 0 auto;width:32px;height:32px}#gcard .hd .ib svg{width:18px;height:18px}
+#gcard h3{flex:1;min-width:0;margin:.25em 0 0;font-size:1.08em;line-height:1.35}#gcard .desc{font-size:.95em;margin:.5em 0 0;line-height:1.55}
+#gcard .sec{margin:0 0 .3em}
+/* The selected concept's links wear their direction in both graphs: blue for
+   a link that arrives, orange for one that leaves, blue to orange for a pair
+   that link both ways. Owner's request of 23.09.2026. The bar before each list
+   heading in the card is the legend. Blue and orange, because the pair stays
+   apart for the commonest colour blindness. */
+#gcard .lk{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin:0 7px 2px 0}
+#gcard .lk.in{background:var(--lin)}#gcard .lk.out{background:var(--lout)}
 #gcard .nb{display:block;font-size:.92em;padding:1px 0;color:var(--acc);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#gcard .open{margin-top:12px;width:100%;border:none;background:var(--acc);color:var(--bg)}
-#gcard .x{position:absolute;top:8px;right:12px;cursor:pointer;color:var(--mut);font-size:1.1em}
+#gcard .x{font-size:1.2em;line-height:1}
 /* A narrow window takes the brand down before it squeezes the categories, the
    way j4k steps its logo down at breakpoints. */
 @media (max-width:1200px){#top{gap:14px}#aboutBtn{gap:10px}#aboutBtn svg{width:58px;height:50px}#aboutBtn .wm{font-size:1.1em}}
@@ -1073,7 +1594,7 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 <header id="top">
 <button id="aboutBtn" title="What this vault is, and the facts to quote when something looks wrong">__LOGO__<span class="tx"><span class="eyebrow">About</span><span class="wm">00_Cerebrum</span></span></button>
 <div id="legend" role="group" aria-label="Categories"></div>
-<div id="tools"><div id="views" role="group" aria-label="View"><button id="bGraph" class="ib on" title="Graph view: the whole vault as one map" aria-label="Graph view" aria-pressed="true">__IGRAPH__</button><button id="bList" class="ib" title="Concept view: the list of concepts, and the concept page beside it" aria-label="Concept view" aria-pressed="false">__ICONCEPTS__</button></div><button id="bSet" class="ib" title="Settings" aria-label="Settings" aria-haspopup="dialog" aria-expanded="false">__IGEAR__</button></div>
+<div id="tools"><div id="views" role="group" aria-label="View"><button id="bGraph" class="ib on" title="Graph view: the whole vault as one map" aria-label="Graph view" aria-pressed="true">__IGRAPH__</button><button id="b3d" class="ib" title="3D view: the same map with depth. Drag to turn it" aria-label="3D view" aria-pressed="false">__I3D__</button><button id="bList" class="ib" title="Concept view: the list of concepts, and the concept page beside it" aria-label="Concept view" aria-pressed="false">__ICONCEPTS__</button></div><button id="bSet" class="ib" title="Settings" aria-label="Settings" aria-haspopup="dialog" aria-expanded="false">__IGEAR__</button></div>
 <div id="setBox" role="dialog" aria-label="Settings" hidden>
 <header><div><p class="eyebrow">Settings</p><h2>00_Cerebrum</h2></div><button class="x" id="setX" title="Close settings (Esc)">&#215;</button></header>
 <div class="sgrp"><span class="sgt">Brain</span><span id="brainN"></span></div>
@@ -1088,7 +1609,9 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 </header>
 <div id="askbar"><div id="qwrap"><button id="mSearch" class="mb on" type="button" title="Search the vault" aria-label="Search the vault" aria-pressed="true">__ISEARCH__</button><button id="mAsk" class="mb" type="button" title="Ask Claude for a report instead of searching" aria-label="Ask Claude" aria-pressed="false">__ISPARK__</button><div id="qbar" hidden><i></i></div><input id="q" placeholder="Search title, description, tags…" aria-label="Search concepts"><button id="qx" type="button" title="Clear the search" aria-label="Clear the search">×</button><button id="bRep" class="mb" type="button" title="The reports in Outputs/" aria-label="Reports" aria-haspopup="dialog" aria-expanded="false">__IREPORTS__</button></div></div>
 <div id="stage">
-<div id="gpane"><canvas id="gc"></canvas><div id="gcard"></div><div id="gtools"><button id="gfit" title="Frame the whole graph (f, or double-click the background)">Fit</button></div></div>
+<div id="gpane"><canvas id="gc"></canvas><div id="g2hint"><b>Drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
+<div id="g3pane"><canvas id="g3"></canvas><canvas id="g3lbl"></canvas><div id="g3hint"><b>Drag</b> to turn · <b>Shift-drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
+<div id="gcard"></div>
 <div id="cpane"><div id="side"><div id="sidetop"><button id="ball" title="Fold or unfold every group in the list">Collapse all</button></div><div id="tree"></div></div><div id="splitter" title="drag to resize"></div><div id="main"><div class="doc"><div class="meta">Pick a concept, or search. Dashed links point at concepts not written yet — legitimate under OKF.</div></div></div></div>
 </div>
 <div id="repWrap"><div id="repBox">
@@ -1105,7 +1628,7 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 <p class="story">A knowledge base that reads its own sources and cites every claim back to the page it came from, and the machinery that keeps it honest. <i>Cerebrum</i> is the Latin for brain. Built by your-account with Claude Code.</p>
 <dl id="aboutFacts"></dl>
 <p class="built">Markdown and YAML in an Obsidian vault, Open Knowledge Format v0.2 for the bundles, Python for the checks, GitHub for the code.</p>
-<div id="aboutActions"><button id="aboutGraph">Graph</button><button id="aboutList">Concepts</button></div>
+<div id="aboutActions"><button id="aboutGraph">Graph</button><button id="about3d">3D</button><button id="aboutList">Concepts</button></div>
 </div></div></div>
 <script>const D=__DATA__;const GIT='__GIT__';const STAMP='__STAMP__';const BUILDNO='__BUILDNO__';const STARTED='__STARTED__';
 /* One pinned order for the whole viewer: the knowledge-base buttons two per
@@ -1214,13 +1737,15 @@ if(!q.value&&collapsed.has(group(id))){collapsed.delete(group(id));saveFold();bu
 markSel();const selEl=tree.querySelector('.it.on');
 if(selEl){const tb=tree.getBoundingClientRect(),rb=selEl.getBoundingClientRect();
 if(rb.top<tb.top||rb.bottom>tb.bottom)selEl.scrollIntoView({block:'center'})}
-let h='<div class="doc">'+(idx[id]===undefined?'':'<button class="gbtn" title="Select this concept in the graph">&#9883; Show in graph</button>')+'<h1>'+E(c.t)+'</h1><div class="meta">'+chip(c.ty)+chip(c.st,c.st==='draft'?'dr':'')+chip(c.tr,c.tr==='human-reviewed'?'hu':'')+chip(c.ns+' sources')+' '+c.tags.map(t=>'#'+E(t)).join(' ')+'<br>'+E(c.d)+'</div>';
+let h='<div class="doc">'+(idx[id]===undefined?'':'<span class="gbtns"><button class="ib g2" title="Show this concept in the Graph view" aria-label="Show in the Graph view">__IGRAPH__</button>'+(G3.ok?'<button class="ib g3" title="Show this concept in the 3D view" aria-label="Show in the 3D view">__I3D__</button>':'')+'</span>')+'<h1>'+E(c.t)+'</h1><div class="meta">'+chip(c.ty)+chip(c.st,c.st==='draft'?'dr':'')+chip(c.tr,c.tr==='human-reviewed'?'hu':'')+chip(c.ns+' sources')+' '+c.tags.map(t=>'#'+E(t)).join(' ')+'<br>'+E(c.d)+'</div>';
 if(c.inb.length)h+='<div class="links">← linked from: '+c.inb.map(x=>'<a class="nav" data-t="'+x+'">'+E(D[x].t)+'</a>').join(' · ')+'</div>';
 h+=c.html;
 if(c.srcs.length){h+='<h2>Sources</h2><table><tr><th>Source</th><th>last_modified</th></tr>'+c.srcs.map(s=>'<tr><td>'+E(s[0])+'</td><td>'+E(s[1])+'</td></tr>').join('')+'</table>'}
 main.innerHTML=h+'</div>';main.scrollTop=0;
 main.querySelectorAll('a.nav').forEach(a=>a.onclick=()=>show(a.dataset.t));
-const b=main.querySelector('.gbtn');if(b)b.onclick=()=>{setView('graph');select(idx[id]);centerOn(idx[id])}}
+/* The two view icons from the header, so each says which graph it opens.
+   Owner's instruction of 23.09.2026, replacing the one "Show in graph". */
+for(const[c,v]of[['.g2','graph'],['.g3','3d']]){const b=main.querySelector(c);if(b)b.onclick=()=>{setView(v);select(idx[id]);centerOn(idx[id])}}}
 const qx=document.getElementById('qx');
 q.addEventListener('input',()=>qwrap.classList.toggle('has',!!q.value));
 qx.onclick=()=>{q.value='';q.dispatchEvent(new Event('input'));q.focus()};
@@ -1385,7 +1910,9 @@ async function loadBrain(){
  let d=null;try{d=await (await fetch(HELPER+'/models',{cache:'no-store'})).json()}
  catch(e){brainWhere.textContent='the helper answered nothing';return}
  MODELS=d.models||[];EFFORTS=d.efforts||[];
- if(!MODELS.some(m=>m.id===picked))picked=d.default;
+ /* A stored model the helper no longer names takes the default effort with it:
+    the effort was chosen for the model that has gone. */
+ if(!MODELS.some(m=>m.id===picked)){picked=d.default;pickedEffort=d.defaultEffort}
  if(EFFORTS.indexOf(pickedEffort)<0)pickedEffort=d.defaultEffort;
  bModel.innerHTML=MODELS.map(m=>'<option value="'+E(m.id)+'"'+
    (m.id===picked?' selected':'')+(m.installed?'':' disabled')+'>'+E(m.label)+
@@ -1531,7 +2058,7 @@ const LBL={'meeting-series':'meeting series','meta':'meta / references'};
 function cat(id){const p=id.split('/');const g=p.length>3?p[2]:'meta';
 return CATS.includes(g)?g:'meta'}
 const gc=document.getElementById('gc'),card=document.getElementById('gcard'),
-bL=document.getElementById('bList'),bG=document.getElementById('bGraph'),legend=document.getElementById('legend');
+bL=document.getElementById('bList'),bG=document.getElementById('bGraph'),b3=document.getElementById('b3d'),legend=document.getElementById('legend');
 const ids=Object.keys(D),idx={};ids.forEach((id,i)=>idx[id]=i);
 const N=ids.map((id,i)=>({id,i,c:CATS.indexOf(cat(id)),kb:D[id].kb,x:D[id].x,y:D[id].y,r:5.5+2.3*Math.sqrt(D[id].inb.length)}));
 const L=[];ids.forEach(id=>D[id].out.forEach(o=>{if(idx[o]!==undefined&&idx[o]!==idx[id])L.push([idx[id],idx[o]])}));
@@ -1554,15 +2081,16 @@ if(sel>=0&&n.i!==sel&&!NB[sel].has(n.i))return true;return false}
    16.09.2026 it is one bar across the window, above both panes, so its text,
    its clear button and its filter are the same in both without anything being
    re-parented on every switch. Owner's instruction. */
-function setView(v){view=v==='graph'?'graph':'concepts';const g=view==='graph';
-document.body.classList.toggle('vg',g);document.body.classList.toggle('vc',!g);
-bG.classList.toggle('on',g);bL.classList.toggle('on',!g);
-bG.setAttribute('aria-pressed',String(g));bL.setAttribute('aria-pressed',String(!g));
+function setView(v){view=v==='graph'||v==='3d'?v:'concepts';const g=view==='graph',t=view==='3d',c=view==='concepts';
+document.body.classList.toggle('vg',g);document.body.classList.toggle('vc',c);document.body.classList.toggle('v3',t);
+bG.classList.toggle('on',g);bL.classList.toggle('on',c);b3.classList.toggle('on',t);
+bG.setAttribute('aria-pressed',String(g));bL.setAttribute('aria-pressed',String(c));b3.setAttribute('aria-pressed',String(t));
+if(t)G3.enter();
 /* The canvas is sized from its client box, and a hidden canvas measures zero:
    a window resized while the Concept view was showing leaves the graph with no
    backing store until this runs. */
 if(g){resize();fit()}}
-bL.onclick=()=>setView('concepts');bG.onclick=()=>setView('graph');
+bL.onclick=()=>setView('concepts');bG.onclick=()=>setView('graph');b3.onclick=()=>setView('3d');
 const kbbarEl=document.getElementById('kbbar');
 /* The selector mirrors the vault's real structure, one block per ontology:
    the three employer archives, the two Alpha documentation bundles, the private
@@ -1649,7 +2177,7 @@ if(!any)return;
 const w=gc.clientWidth-2*FIT_SIDE,h=gc.clientHeight-FIT_TOP-FIT_BOTTOM;
 sc=Math.max(.08,Math.min(2.2,Math.min(w/Math.max(x1-x0,1),h/Math.max(y1-y0,1))));
 tx=-(x0+x1)/2;ty=(FIT_TOP-FIT_BOTTOM)/(2*sc)-(y0+y1)/2;dirty=true}
-function centerOn(i){const n=N[i];sc=Math.max(sc,1.5);tx=-n.x;ty=-n.y;dirty=true}
+function centerOn(i){if(view==='3d'){G3.focus(i);return}const n=N[i];sc=Math.max(sc,1.5);tx=-n.x;ty=-n.y;dirty=true}
 function world(e){const b=gc.getBoundingClientRect();
 return[((e.clientX-b.left)-gc.clientWidth/2)/sc-tx,((e.clientY-b.top)-gc.clientHeight/2)/sc-ty]}
 function pick(wx,wy){let best=-1,bd=1e18;
@@ -1658,18 +2186,17 @@ if(d<rr*rr&&d<bd){bd=d;best=n.i}}return best}
 function select(i){sel=i;renderCard();dirty=true}
 function clearSel(){sel=-1;card.style.display='none';dirty=true}
 function renderCard(){if(sel<0){card.style.display='none';return}
-const id=N[sel].id,c=D[id];let h='<span class="x" title="close (Esc)">✕</span><h3>'+E(c.t)+'</h3>';
+const id=N[sel].id,c=D[id];let h='<div class="cs"><div class="hd"><h3>'+E(c.t)+'</h3><button class="ib open" title="Open concept" aria-label="Open concept">__ICONCEPTS__</button><button class="ib x" title="Close (Esc)" aria-label="Close">&#215;</button></div>';
 h+='<div>'+'<span class="badge">'+E(c.ty)+'</span><span class="badge">'+E(LBL[cat(id)]||cat(id))+'</span><span class="badge">'+c.ns+' sources</span></div>';
-if(c.d)h+='<div class="desc">'+E(c.d)+'</div>';
+if(c.d)h+='<div class="desc">'+E(c.d)+'</div>';h+='</div>';
 const nb=[...NB[sel]];
 const inb=nb.filter(j=>D[N[j].id].out.includes(id)||c.inb.includes(N[j].id));
-if(c.inb.length){h+='<div class="sec">Linked from ('+c.inb.length+')</div>';
+if(c.inb.length){h+='<div class="cs"><div class="sec"><i class="lk in"></i>Linked from ('+c.inb.length+')</div>';
 c.inb.slice(0,9).forEach(x=>{h+='<span class="nb" data-i="'+idx[x]+'">'+E(D[x].t)+'</span>'});
-if(c.inb.length>9)h+='<span class="nb" style="color:var(--mut);cursor:default">… '+(c.inb.length-9)+' more</span>'}
-if(c.out.length){h+='<div class="sec">Links to ('+c.out.length+')</div>';
+if(c.inb.length>9)h+='<span class="nb" style="color:var(--mut);cursor:default">… '+(c.inb.length-9)+' more</span>';h+='</div>'}
+if(c.out.length){h+='<div class="cs"><div class="sec"><i class="lk out"></i>Links to ('+c.out.length+')</div>';
 c.out.slice(0,9).forEach(x=>{h+='<span class="nb" data-i="'+idx[x]+'">'+E(D[x].t)+'</span>'});
-if(c.out.length>9)h+='<span class="nb" style="color:var(--mut);cursor:default">… '+(c.out.length-9)+' more</span>'}
-h+='<button class="open">Open concept →</button>';
+if(c.out.length>9)h+='<span class="nb" style="color:var(--mut);cursor:default">… '+(c.out.length-9)+' more</span>';h+='</div>'}
 card.innerHTML=h;card.style.display='block';
 card.querySelector('.x').onclick=clearSel;
 card.querySelector('.open').onclick=()=>show(id);
@@ -1685,14 +2212,16 @@ addEventListener('mouseup',()=>{if(drag&&(drag._m||0)<6){if(sel===drag.i)clearSe
 gc.addEventListener('dblclick',e=>{const[wx,wy]=world(e);const h=pick(wx,wy);
 if(h>=0){select(h);show(N[h].id)}else fit()});
 gc.addEventListener('wheel',e=>{e.preventDefault();const b=gc.getBoundingClientRect();const[wx,wy]=world(e);
-const ns=Math.max(.08,Math.min(14,sc*Math.exp(-e.deltaY*.0015)));
+/* Zoom has no working limit: the owner asked for endless zoom on
+   23.09.2026. The bounds left are there only to keep the arithmetic finite,
+   1/500 of the fitted scale out to 500 times in. */
+const ns=Math.max(.002,Math.min(500,sc*Math.exp(-e.deltaY*.0015)));
 tx=(e.clientX-b.left-gc.clientWidth/2)/ns-wx;ty=(e.clientY-b.top-gc.clientHeight/2)/ns-wy;sc=ns;dirty=true},{passive:false});
 /* In Ask mode the box is a question, not a filter: typing one must not empty
    the list behind it, and clearing it must not leave the list filtered by half
    a question. `askMode` is the switch; the filter is fed the empty string. */
 q.oninput=()=>{const f=askMode?'':q.value.toLowerCase();build(f);qv=f;dirty=true};
 q.addEventListener('keydown',e=>{if(e.key==='Enter'&&askMode){e.preventDefault();ask()}});
-document.getElementById('gfit').onclick=fit;
 function sxy(n){return[(n.x+tx)*sc+gc.clientWidth/2,(n.y+ty)*sc+gc.clientHeight/2]}
 function draw(){const x2=gc.getContext('2d');x2.setTransform(dpr,0,0,dpr,0,0);
 x2.clearRect(0,0,gc.clientWidth,gc.clientHeight);
@@ -1704,11 +2233,35 @@ g.addColorStop(0,HUE[kb]+'30');g.addColorStop(.7,HUE[kb]+'1c');g.addColorStop(1,
 x2.fillStyle=g;x2.beginPath();x2.arc(c.cx,c.cy,c.halo,0,7);x2.fill();
 }
 x2.lineWidth=1/sc;
+const MUT2=css('--mut'),LIN=css('--lin'),LOUT=css('--lout');
+/* The focus is the selection, or else the concept under the pointer: its
+   links light up in their direction's colours either way, as in the 3D view.
+   Hover does not dim the rest; a selection does. Owner's request of 23.09.2026. */
+const fo=anySel?sel:hov;
 for(const[a,b]of L){const na=N[a],nb2=N[b];if(hid(na)||hid(nb2))continue;
-const strong=anySel&&(a===sel||b===sel);
-x2.strokeStyle=css('--mut');x2.globalAlpha=strong?.85:anySel?.05:qv?.08:.28;x2.lineWidth=(strong?1.6:1)/sc;
+const strong=fo>=0&&(a===fo||b===fo);
+if(strong){const o=a===fo?b:a,s0=N[fo],so=N[o],out=D[s0.id].out.includes(so.id),inn=D[so.id].out.includes(s0.id);
+ if(out&&inn){const g=x2.createLinearGradient(s0.x,s0.y,so.x,so.y);g.addColorStop(0,LOUT);g.addColorStop(1,LIN);x2.strokeStyle=g}
+ else x2.strokeStyle=out?LOUT:LIN}
+else x2.strokeStyle=MUT2;
+x2.globalAlpha=strong?(anySel?.85:.7):anySel?.05:qv?.08:.28;x2.lineWidth=(strong?1.6:1)/sc;
 x2.beginPath();x2.moveTo(na.x,na.y);x2.lineTo(nb2.x,nb2.y);x2.stroke()}
 x2.globalAlpha=1;
+/* The flow, as the logo's light runs along its strands. Every link carries a
+   faint bead now and then, travelling the way it points, a third of them at a
+   time; the selection's links carry a bright one without pause, in the link's
+   colour with a white core. Owner's requests of 23.09.2026. None for less
+   motion. */
+if(!RMQ.matches){const T=performance.now()/1000;x2.fillStyle=css('--fg');x2.globalAlpha=anySel?.06:qv?.12:.45;
+ for(let k=0;k<L.length;k++){const[a,b]=L[k],na=N[a],nb2=N[b];if(hid(na)||hid(nb2))continue;
+  const ph=((T*.15+k*.6180339887)%1)*3;if(ph>1||(fo>=0&&(a===fo||b===fo)))continue;
+  x2.beginPath();x2.arc(na.x+(nb2.x-na.x)*ph,na.y+(nb2.y-na.y)*ph,1.6/sc,0,7);x2.fill()}
+ x2.globalAlpha=1}
+if(fo>=0&&!RMQ.matches){const T=performance.now()/1000,s0=N[fo];
+ const bead=(f,t,ph,col)=>{const x=f.x+(t.x-f.x)*ph,y=f.y+(t.y-f.y)*ph;
+  x2.fillStyle=col;x2.beginPath();x2.arc(x,y,3.4/sc,0,7);x2.fill();x2.fillStyle='#fff';x2.beginPath();x2.arc(x,y,1.5/sc,0,7);x2.fill()};
+ for(const o of NB[fo]){const so=N[o];if(hid(so))continue;const ph=(T*.45+o*.6180339887)%1;
+  if(D[s0.id].out.includes(so.id))bead(s0,so,ph,LOUT);if(D[so.id].out.includes(s0.id))bead(so,s0,ph,LIN)}}
 for(const n of N){if(hid(n))continue;const g=ghost(n);
 x2.save();x2.translate(n.x,n.y);x2.globalAlpha=g?.13:1;
 x2.fillStyle=COL[n.c];x2.strokeStyle=css('--bg');x2.lineWidth=2/sc;
@@ -1744,7 +2297,8 @@ if(placed.some(p=>box[0]<p[2]&&box[2]>p[0]&&box[1]<p[3]&&box[3]>p[1]))continue;p
 x2.lineWidth=3;x2.strokeStyle=css('--bg');x2.strokeText(txt,bx,by);
 x2.fillStyle=n.i===sel?css('--fg'):css('--mut');x2.fillText(txt,bx,by)}
 }
-(function loop(){if(view==='graph'&&(dirty||drag)){dirty=false;draw()}requestAnimationFrame(loop)})();
+const RMQ=matchMedia('(prefers-reduced-motion: reduce)');RMQ.addEventListener('change',()=>{dirty=true});
+(function loop(){if(view==='graph'&&(dirty||drag||!RMQ.matches)){dirty=false;draw()}requestAnimationFrame(loop)})();
 const split=document.getElementById('splitter');
 let sdrag=false;
 split.addEventListener('mousedown',e=>{sdrag=true;split.classList.add('on');document.body.style.userSelect='none';e.preventDefault()});
@@ -1785,6 +2339,7 @@ document.getElementById('aboutX').onclick=aboutClose;
 aboutWrap.onclick=e=>{if(e.target===aboutWrap)aboutClose()};
 document.getElementById('aboutList').onclick=()=>{aboutClose();bL.click()};
 document.getElementById('aboutGraph').onclick=()=>{aboutClose();bG.click()};
+document.getElementById('about3d').onclick=()=>{aboutClose();if(!b3.disabled)b3.click()};
 /* Settings. Opened from the gear, closed by its ×, by Escape, or by a press
    anywhere outside it — j4k's house rule for its menus, and on pointerdown in
    the capture phase for j4k's reason: a press that lands on another control
@@ -1814,16 +2369,17 @@ if(e.key==='Escape'){
 if(repWrap.classList.contains('on'))showReports(false);
 else if(aboutWrap.classList.contains('on'))aboutClose();
 else if(!setBox.hidden)setClose();
-else if(view==='graph')clearSel();
+else if(view==='graph'||view==='3d')clearSel();
 const a=document.activeElement;if(a&&a.tagName==='BUTTON')a.blur();
 return}
 const t=e.target;if(e.metaKey||e.ctrlKey||e.altKey||(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')))return;
-if(view==='graph'&&(e.key==='f'||e.key==='F'))fit()});
+if(e.key==='f'||e.key==='F'){if(view==='graph')fit();else if(view==='3d')G3.fit()}});
+__G3__
 /* The page opens on the graph: the Graph view is the first of the two, and a
    working selection like the view is not kept between visits. */
 build('');kbbar();kbBadge();chips();setView('graph');
 </script></body></html>"""
-page = (page.replace('__LOGO__', _mark('h'), 1).replace('__LOGO__', _mark('a', pulse=True), 1)
+page = (page.replace('__G3__', G3_JS).replace('__I3D__', icon_3d).replace('__LOGO__', _mark('h'), 1).replace('__LOGO__', _mark('a', pulse=True), 1)
         .replace('__KB_BLOCKS__', json.dumps(KB_BLOCKS, ensure_ascii=False)).replace('__GIT__', git_id)
         .replace('__IGRAPH__', icon_graph).replace('__ICONCEPTS__', icon_concepts)
         .replace('__IGEAR__', icon_gear).replace('__ISEARCH__', icon_search)

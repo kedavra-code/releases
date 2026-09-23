@@ -37,6 +37,17 @@ __pycache__/
 # Derived output of _scripts/visualize.py; regenerate rather than track.
 00_Cerebrum_viewer.html
 00_Cerebrum_viewer.html.tmp
+
+# Sync-service conflict copies. When two machines write one file, a file-sync
+# service keeps both and names the loser "<name> 2.<ext>", which no pattern above matches — so a
+# 17 MB duplicate of a generated file turns up as untracked and a `git add -A`
+# would commit it. Found 22.09.2026 beside the viewer: the same page from six
+# minutes and one commit earlier.
+*[0-9].html
+* [0-9].md
+* [0-9].json
+* [0-9].py
+* [0-9].yaml
 # Its name until 14.09.2026. Still ignored, so a stray copy made by an old
 # script or restored by a sync client is never committed as a 15 MB file.
 okf-viewer.html

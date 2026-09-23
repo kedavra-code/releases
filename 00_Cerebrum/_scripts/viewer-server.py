@@ -54,8 +54,14 @@ DE_DIR = 'de'
 # `xhigh` is the effort level of that name, one below `max`. Since the Brain
 # section was added it is the default rather than the only choice, and the page
 # may ask for another — but only one this file names.
-MODEL = 'claude-opus-5'
-EFFORT = 'xhigh'
+#
+# Opus 5.5 at `high` since 23.09.2026, on the owner's instruction, replacing
+# Opus 5 at `xhigh`. Opus 5 left the allowlist with it rather than staying as a
+# second Opus: "instead of" was the instruction. Opus 5.5 needs Claude Code
+# 2.1.280 or newer; 2.1.278 refuses the id with a 400, so a machine with an
+# older `claude` gets an error from Ask Claude until `claude update` has run.
+MODEL = 'claude-opus-5-5'
+EFFORT = 'high'
 TIMEOUT_S = 25 * 60
 # A local model writes a whole report's worth of German or nothing useful.
 # The longest report so far is about 7'000 tokens in, so the ceiling is set
@@ -102,7 +108,7 @@ MODELS = [
     {'id': 'claude-fable-5-1', 'label': 'Fable 5.1', 'provider': 'anthropic',
      'effort': True, 'agentic': True, 'translates': True,
      'note': 'Warmer prose.'},
-    {'id': 'claude-opus-5', 'label': 'Opus 5', 'provider': 'anthropic',
+    {'id': 'claude-opus-5-5', 'label': 'Opus 5.5', 'provider': 'anthropic',
      'effort': True, 'agentic': True, 'translates': True,
      'note': 'The strongest reader.'},
     {'id': 'claude-sonnet-5', 'label': 'Sonnet 5', 'provider': 'anthropic',
