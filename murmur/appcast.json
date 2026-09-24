@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 83,
-  "commit": "b47c8ec",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-83/murmur.dmg",
-  "sha256": "e07ff27e45829f04288a087d0a3763ac0e77081858ec2bd6f3627a1f9dccca9d",
+  "build": 85,
+  "commit": "76bf1cb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-85/murmur.dmg",
+  "sha256": "656efc04d05d0e8a0ba7c01cb3d7705b701fa9d2642b5b38eb076164cc71444f",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings grows a Brain tab"
+  "notes": "build.sh's comment agrees with what build.sh does"
 }
