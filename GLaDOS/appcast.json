@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 198,
-  "commit": "f047a7d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-198/GLaDOS.dmg",
-  "sha256": "5ec5f6fdc87e7b01a0266f82c34d4d61418898f2916499646a18ac223a6ec34f",
+  "build": 199,
+  "commit": "e92f84e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-199/GLaDOS.dmg",
+  "sha256": "b3e282a0333f3bee781ffc1863213f0f125162726884561edc5751b97a55db75",
   "minimumSystemVersion": "26.0",
-  "notes": "Opus 5.5 at high effort replaces Opus 5 as her default brain"
+  "notes": "Opus 5.5's capability table says what the API enforces, and the audit's persona edits are measured and declined"
 }
