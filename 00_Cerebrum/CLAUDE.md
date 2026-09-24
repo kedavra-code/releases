@@ -122,7 +122,7 @@ title: The programme's real name
 description: One sentence saying what this concept is about.
 tags: [topic, programme, workplace]
 status: stable                     # draft | stable | deprecated
-generated: { by: librarian/claude-opus-5, at: 2026-08-08T10:12:00Z }
+generated: { by: librarian/<model-id>, at: 2026-08-08T10:12:00Z }   # the id of the model writing this concept
 verified: { by: human:you, at: 2026-08-09T08:00:00Z }
 sources:
   - id: kickoff

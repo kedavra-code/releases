@@ -1,14 +1,14 @@
 {
   "name": "00_Cerebrum",
   "kind": "template",
-  "build": 13,
-  "commit": "ecbe693",
+  "build": 15,
+  "commit": "5d9ffab",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
-  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-13/00_Cerebrum-template-13.tar.gz",
-  "sha256": "1afa2ff263b017be5ba46a10ba9b1c94b3687000ed2a3ca51f7e0942a0d1c6dd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-15/00_Cerebrum-template-15.tar.gz",
+  "sha256": "7cb338613f8f19cb338107dbf1066bcca9e4388c1474928e4d32dda6eef33c66",
   "zip": {
-    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-13/00_Cerebrum-template-13.zip",
-    "sha256": "24d9c7a882516b073fbfecd84471468da1ba830d217a0e6b285ee48794f1fa24"
+    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-15/00_Cerebrum-template-15.zip",
+    "sha256": "7d49e2387351de453638407eb8dea62fad65eb62caf1bc83ca171744d9b6853b"
   },
   "requires": {
     "python": ">=3.9",
@@ -23,5 +23,5 @@
   },
   "licence": "MIT",
   "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 13 carries a prompt audit of the skills against Claude Opus 5.5: compile agents record the model they run as, the file-tools access note applies only where a session needs it, the health check ends at its summary and names files by path, and sentences describing earlier versions of a rule are gone. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
-  "source_commit": "394dc7b"
+  "source_commit": "c516cf0"
 }
