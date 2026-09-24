@@ -12,10 +12,9 @@ Audits a knowledge base, or every knowledge base in the vault when the request i
 - The user says "run a health check", "audit the [name] KB", "audit my knowledge base", "check the wiki" — one knowledge base, the one named. If a singular request names none and more than one exists, ask which.
 - The user says "run the health checks", "health check all knowledge bases", "audit the vault", "run a health check on everything" — every knowledge base. See *The sweep* below.
 - The user says "action the latest health check" — that is the `knowledge-base-action-skill`, not this one. Hand over to it.
-  This line said to walk the items "using numbered options in chat" until 22.08.2026. The owner's standing instruction is the opposite: clickable options, one item at a time, every answer recorded before anything is implemented.
 - A scheduled task fires it. The monthly task is a sweep and runs it the same way.
 
-**The plural is load-bearing.** A singular request naming no knowledge base is a question to ask; a plural one is an instruction not to. Asking which base to audit after being told to audit all of them is the failure this distinction exists to prevent, and it was the behaviour of this skill until 22.08.2026: the sweep existed only inside the monthly scheduled task, so a request to check everything by hand hit "operates on one knowledge base per invocation" and stalled on a question the owner had already answered.
+**The plural is load-bearing.** A singular request naming no knowledge base is a question to ask; a plural one is an instruction not to. Asking which base to audit after being told to audit all of them is the failure this distinction exists to prevent: it stalls the run on a question the owner has already answered.
 
 ## The sweep: every knowledge base in one invocation
 
@@ -75,7 +74,7 @@ KB: <name> | skipped (no changes since last check)
 
 ### The interview is prepared once, not once per base
 
-An interactive sweep still ends with the monthly interview, and three to five questions is the budget for the whole sweep. Four agents each asking five leaves the owner twenty questions, which is how a mechanism that works gets abandoned. Collect the candidates every agent raised, then choose across the vault by what is actually blocked: a contradiction waiting on a ruling outranks a thin concept a memory could thicken, whichever base each sits in.
+A sweep prepares three to five questions for the owner, and that is the budget for the whole sweep, not per base: four agents each preparing five leaves the owner twenty, which is how a mechanism that works gets abandoned. Collect the candidates every agent raised, then choose across the vault by what is actually blocked: a contradiction waiting on a ruling outranks a thin concept a memory could thicken, whichever base each sits in.
 
 ## Orientation: what this vault looks like
 
@@ -122,11 +121,11 @@ Filenames are lowercase: `questions.md`, `index.md`, `Raw/`. macOS filesystems a
 
 1. **Sync the repository first, if this session can run git.** `git status --short`, then `git pull --rebase --autostash` — unconditionally, because the vault is edited from more than one place. **A session working through the device bridge must not run that command, or any other bare git.** Use `00_Cerebrum/_scripts/git-read.sh status --short` instead, which forces `--no-optional-locks` and refuses anything that is not a read.
 
-   The reason is narrower than "no writes" and was learned the hard way on 15.08.2026: **a bare `git status` is itself a write.** It refreshes the index and takes `.git/index.lock`. The bridge VM cannot delete files, so the lock survives the session, and the owner's next commit fails with *Unable to create '.git/index.lock'* — three and a half hours later, in that case, with no obvious connection to the run that caused it. This step used to say "bridge sessions may read history and nothing more", which named the right danger and then listed the dangerous command as safe. Recovery needs `rm .git/index.lock` from the owner's own machine, so a bridge session cannot even repair what it broke.
+   The reason is narrower than "no writes" and was learned the hard way on 15.08.2026: **a bare `git status` is itself a write.** It refreshes the index and takes `.git/index.lock`. The bridge VM cannot delete files, so the lock survives the session, and the owner's next commit fails with *Unable to create '.git/index.lock'* — three and a half hours later, in that case, with no obvious connection to the run that caused it. Recovery needs `rm .git/index.lock` from the owner's own machine, so a bridge session cannot even repair what it broke.
 2. **Read `<KB>/memory.md`.** It is the cheapest way to load state: counts, compiled scopes, settled facts, hazards, next scope.
 3. **Read the rest of the state files.** `<KB>/CLAUDE.md`, the top block of `<KB>/CHANGELOG.md`, `<KB>/Wiki/questions.md` **including its Action items table, which is the only place a past item's state lives**, `<KB>/Wiki/log.md`, `<KB>/Raw/_INGESTED.md`, `00_Cerebrum/Outputs/_REPORTS.md`. Then `00_Cerebrum/CLAUDE.md` for vault rules and `About me/writing-rules.md` for the banned list.
 4. **Skip-if-no-changes.** If the top CHANGELOG entry is itself a health check, with no compile pass, manual edit or new output since, append `## YYYY-MM-DD — Health check skipped (no changes since last check)` to the top of CHANGELOG and stop.
-5. **Machine-scan every concept, and read in full the set `_scripts/readset.py` derives.** There is one run type; what changed on 15.08.2026 is what a full read means. See *The read rule* below.
+5. **Machine-scan every concept, and read in full the set `_scripts/readset.py` derives.** There is one run type. See *The read rule* below.
 6. **Run `00_Cerebrum/_scripts/verify.py` first.** It is the mechanical half of Audits 1, 2, 4 and 6 in executable form, plus the `assertions.yaml` checks. Then run the audits below, applying auto-fixes as you go, and re-run the script after fixing. When a run finds a new mechanical defect class, extend the script before closing: **a defect class is not fixed until verify.py catches its recurrence.** On its first run, 09.08.2026, it caught two classes the hand-written checks had missed. Since 10.08.2026 findings carry a clock: one standing on three distinct run-days escalates to a DEFECT unless waived with a reason in `assertions.yaml` `finding_waivers`. When the escalation fires during a health check, either fix the finding, or waive it and say why in the CHANGELOG — never waive to make the run green.
 7. **Reconcile the Action items table.** See *Action items* below. Do this before writing anything else, because it decides which of this run's findings are new.
 8. **Rewrite `memory.md`.**
@@ -135,19 +134,13 @@ Filenames are lowercase: `questions.md`, `index.md`, `Raw/`. macOS filesystems a
 11. **Regenerate `00_Cerebrum/_ACTION-ITEMS.md`** if this run touched any action item. In a multi-knowledge-base run, once at the end, after every sub-agent has reported.
 12. **If the run regenerated `00_Cerebrum_viewer.html`** (a compile changed concepts, or `_scripts/visualize.py` changed), run `node 00_Cerebrum/_scripts/viewer-check.js` where node exists and deliver nothing that fails it. The delivery rule lives in `00_Cerebrum/CLAUDE.md`; on a machine without node, say in the summary that the viewer is regenerated but unchecked.
 13. **Commit and push, if this session can run git.** `verify.py` must be green; the message opens with the CHANGELOG entry's heading; the entry and the changes travel together. A bridge session leaves the tree clean and states in its summary that a commit is pending.
-14. **Print the summary**, ending with a `computer://` link. If interactive and pending items exist, follow it with a numbered list and wait.
+14. **Print the summary** and stop. The owner answers pending items in a separate sitting with `knowledge-base-action-skill`, not at the end of the run.
 
 Prefer a script over reading files one by one. Audits 1, 2, 4 and the clustering half of 6 are mechanical and should be done with a single pass that parses frontmatter and bodies, not by eye.
 
 ## The read rule
 
-There is one run type. What a full read means was redefined on 15.08.2026, and the history matters because this is the second correction to the same rule.
-
-**First correction, 09.08.2026.** Earlier versions ran a delta audit most months and a full one quarterly, to save the cost of reading every concept. That was removed for three reasons. It had caused a real defect: the scope was written as though it governed everything, so a delta run would have verified citations only in changed files and a moved source folder could have gone undetected for a quarter. The saving was small and the sampling was weak — "three concepts sampled at random" was a poor substitute for reading and never had a principled basis. And some findings only appear across concepts, since duplication, overlapping coverage and misplacement are invisible when looking at a handful of changed files. The replacement rule was every run reads every concept, with the trigger for revisiting it stated as roughly 500 concepts.
-
-**Second correction, 15.08.2026.** The trigger arrived early, and by size rather than count. `Gamma_kb` passed it at 219 concepts and 1.8 MB of body text, because a compile writes long concepts. The health check of that day read 21 concepts end to end and machine-scanned all 219 — so the run was already truncating, and the only thing making it visible was a CHANGELOG line naming what had been read. That is the honest version of the wrong thing, and it stays wrong until the rule changes.
-
-So:
+There is one run type, and a full read is defined rather than assumed. Why the rule has this shape, and the two runs that corrected it, is in `WHY.md` › *The defined read*.
 
 > Every concept is **machine-scanned**, unconditionally — that is `verify.py`, and it never samples. A concept is **read in full** when it changed since the previous health check, **or** is among the fifteen most-linked in the bundle, **or** sits in a contradiction cluster the run reads.
 
@@ -253,7 +246,7 @@ The check that most reliably says what to write next. Concepts that exist but ar
 
 Scan concept bodies, excluding headings, table rows, footnote definitions and fenced blocks, for capitalised two-word name shapes. Drop any candidate already matching a `people/` filename after transliteration, and drop candidates where either word is a section word — `The`, `Outcome`, `Notes`, `Purpose`, `Participants`, a month name — since those come from sentence boundaries, not names. Report anything appearing in **three or more distinct concepts**.
 
-**Count with `00_Cerebrum/_scripts/namescan.py`, or the counts lie.** The grep procedure this paragraph used to describe was wrong by an order of magnitude twice — Gustav Lindqvist 153 reported against 198 standing (09.08.2026), Paula Ferreira 11 against roughly 200 (10.08.2026) — because each fix taught it one spelling family and each family revealed the next. The script measures instead: every family (full name, `Surname, Firstname`, `F. Surname`, first-name-only, mapped aliases) against the people who already have concepts, so every archive count for an unknown is presented as a floor with the calibrated range attached (10.08.2026: median 2.1x, p90 7.5x). Three rules ride along. **Aliases and Kürzel count only when the `aliases` section of `<KB>/assertions.yaml` maps them** — an unmapped shorthand is an interview question for the owner, never a count and never a silent attribution. **Aliases are chapter-scoped**: "Dori" is Dorian Melis at Beta and Dorothea Vance at Gamma. **First-name-only counts are ceilings, not floors**: unknown people share first names too.
+**Count with `00_Cerebrum/_scripts/namescan.py`, or the counts lie.** A grep procedure was wrong by an order of magnitude twice — Gustav Lindqvist 153 reported against 198 standing (09.08.2026), Paula Ferreira 11 against roughly 200 (10.08.2026) — because each fix taught it one spelling family and each family revealed the next. The script measures instead: every family (full name, `Surname, Firstname`, `F. Surname`, first-name-only, mapped aliases) against the people who already have concepts, so every archive count for an unknown is presented as a floor with the calibrated range attached (10.08.2026: median 2.1x, p90 7.5x). Three rules ride along. **Aliases and Kürzel count only when the `aliases` section of `<KB>/assertions.yaml` maps them** — an unmapped shorthand is an interview question for the owner, never a count and never a silent attribution. **Aliases are chapter-scoped**: "Beni" is Benjamin Mock at Beta and Bernhard Volkart at Gamma. **First-name-only counts are ceilings, not floors**: unknown people share first names too.
 
 Three or more concepts is the threshold that matters. A name in one concept is a passing mention. A name in four, with no page, is a person the corpus keeps needing and cannot link to.
 
@@ -273,7 +266,7 @@ The archive layer is the real corpus. Report, do not modify.
 
 **Clustering is mechanical; the comparison is judgement.**
 
-Before 09.08.2026 the skill said what to do *when* two concepts disagreed and never went looking. Handling without detection finds only the contradictions that happen to be noticed while reading for something else.
+Contradictions are looked for, not only handled when noticed: handling without detection finds only the contradictions that happen to be noticed while reading for something else.
 
 Comparing every concept against every other is not affordable and not necessary. Two concepts can only contradict each other about something they both describe, and shared evidence is the cheap proxy for that.
 
@@ -523,30 +516,18 @@ Health check — <KB name>, <YYYY-MM-DD>
 - Vault roll-up: regenerated / unchanged (by `_scripts/actionitems.py`, never by hand)
 - Git: committed <short-sha> and pushed / commit pending (bridge session)
 - See CHANGELOG: <path>
-
-[View the health check entry](computer:///absolute/path/to/CHANGELOG.md)
+- Report: <path>, when one was written
 ```
 
-The `computer://` link is required by the vault's output presentation rule, and it points at the report when one was written, otherwise at the CHANGELOG. A summary with a bare path is the rule broken.
+**Name each file by its path, relative to the vault root, and nothing more** — the vault's output presentation rule. A health check report and everything else this skill writes is named, never delivered with `SendUserFile`; only a question report is delivered as a page.
 
-**One file, one reference.** Never link a file and also deliver it into the chat with `SendUserFile` in the same message. A `computer://` link renders as its own file card, so doing both shows one file twice, and the second card carries a save-destination prompt unrelated to the vault. A health check report and everything else this skill writes is **link-only**; only a question report is delivered as a page, and when it is, its filename is named in the surrounding sentence rather than linked.
-
-If interactive and pending items exist:
-
-```
-Which action items would you like to walk through?
-1. <category-a> (N items)
-2. <category-b> (N items)
-N+1. None — close out the review
-```
-
-Use `AskUserQuestion` with clickable options. This said the opposite until 22.08.2026 — plain numbered text, on the reasoning that it works reliably everywhere — and the owner's standing instruction replaces it: clickable options, one item at a time.
+The run ends at the summary. Name the two or three items that are genuinely blocked or carry a deadline, as statements rather than questions; the owner walks the queue in the action sitting ("action the latest health check").
 
 ## The monthly interview
 
 The highest-yield mechanism this vault has is the owner answering prepared questions one at a time: on 09.08.2026 it took seventeen open questions to zero and produced corrections no archive page held. So elicitation is scheduled, not incidental.
 
-Every interactive run, and every monthly run's summary, ends by preparing **three to five questions only the owner can answer**, drawn in this order: contradictions waiting on a ruling, open action items, hypotheses in `questions.md`, and thin concepts that a memory could thicken. Ask one at a time with `AskUserQuestion`, clickable options, and room for a free answer. Skip the section only when nothing qualifies, and say so.
+Every run's report ends by preparing **three to five questions only the owner can answer**, drawn in this order: contradictions waiting on a ruling, open action items, hypotheses in `questions.md`, and thin concepts that a memory could thicken. They are written into the report, not asked at the end of the run: the owner answers them in the action sitting, one at a time with clickable options. Skip the section only when nothing qualifies, and say so.
 
 Handling the answers:
 
@@ -556,7 +537,7 @@ Handling the answers:
 
 ## Boundaries
 
-- **One knowledge base per audit.** A sweep runs several audits at once and is still bound by this: an agent auditing one base does not touch another, and the vault-level files stay with the orchestrator. See *The sweep* above. The bullet read "one knowledge base per invocation" until 22.08.2026, which was the right rule stated one level too high, and it blocked the sweep it was never meant to forbid.
+- **One knowledge base per audit.** A sweep runs several audits at once and is still bound by this: an agent auditing one base does not touch another, and the vault-level files stay with the orchestrator. See *The sweep* above.
 - **`CLAUDE.md` is editable, and never without asking first.** Put the exact replacement text to the owner — the wording, the section it lands in, and what it displaces — then write it. An unattended run may not edit one at all, because there is nobody to ask; it raises an action item carrying the proposed text instead. Settled 15.08.2026, after a blanket ban produced three hand-overs in one evening and left the vault's only outstanding defect sitting in a file the librarian was forbidden to fix. `SPEC.md` and `writing-rules.md` stay untouched: they are the format and the house style, not this vault's operating notes.
 - Never write into the archive layer or `Raw/`.
 - Never write a `verified` key.

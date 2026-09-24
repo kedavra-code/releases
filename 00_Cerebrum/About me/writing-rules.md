@@ -146,7 +146,7 @@ Plain, specific, direct. Short sentences carrying facts. Vary sentence length so
 
 Concepts are written in the third person, about their subject and about their own making alike. A coverage note, a caveat or an open question is still the concept speaking, not the librarian: "No page in this scope states the naming rule" rather than "I did not find a page that states the naming rule".
 
-This said the opposite until 22.08.2026, on the reasoning that first person beats passive evasion. The reasoning was right and the inference was wrong. The cure for "the 2023 pages were not read" is not the pronoun — it is "this scope does not cover the 2023 pages", which names an agent and evades nothing. What the old rule could not anticipate is that this corpus is built from one person's own notes, so the pronoun is ambiguous here as it would not be elsewhere: the owner read "I use this table to place people in streams" and asked whether the "I" was his. It was a compile agent's.
+Third person is not passive evasion. The cure for "the 2023 pages were not read" is "this scope does not cover the 2023 pages", which names an agent and evades nothing. And this corpus is built from one person's own notes, so a first-person pronoun is ambiguous here as it would not be elsewhere: the owner read "I use this table to place people in streams" and asked whether the "I" was his. It was a compile agent's.
 
 `verify.py` enforces this. Quotes and their bracketed glosses are exempt, because there the "I" belongs to the person quoted and stays verbatim, as do roman numerals and bare letters used as labels.
 

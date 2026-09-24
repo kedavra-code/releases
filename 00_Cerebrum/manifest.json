@@ -1,14 +1,14 @@
 {
   "name": "00_Cerebrum",
   "kind": "template",
-  "build": 11,
-  "commit": "bbd3b65",
+  "build": 13,
+  "commit": "9352244",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
-  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-11/00_Cerebrum-template-11.tar.gz",
-  "sha256": "4e01dcbb2bb160ee1c950c94aaad3fd98b08477d78614294a00841eff39ebabf",
+  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-13/00_Cerebrum-template-13.tar.gz",
+  "sha256": "1afa2ff263b017be5ba46a10ba9b1c94b3687000ed2a3ca51f7e0942a0d1c6dd",
   "zip": {
-    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-11/00_Cerebrum-template-11.zip",
-    "sha256": "822bd9aae17d232e370472e5b466d5b74b02ddc3221471dd194af50aac31925b"
+    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-13/00_Cerebrum-template-13.zip",
+    "sha256": "24d9c7a882516b073fbfecd84471468da1ba830d217a0e6b285ee48794f1fa24"
   },
   "requires": {
     "python": ">=3.9",
@@ -22,6 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 11 brings the viewer's 3D view: the same map with depth, each knowledge base a sphere, drawn in WebGL2 written in the page with no library, with endless turning, flying and zoom. Links show their direction in both graphs, blue in and orange out, with moving light along them; the concept card docks to the right edge; both graphs carry a help line. viewer-check.js checks all of it and asserts structure, so it passes on a vault of any size. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
-  "source_commit": "db69ddf"
+  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 13 carries a prompt audit of the skills against Claude Opus 5.5: compile agents record the model they run as, the file-tools access note applies only where a session needs it, the health check ends at its summary and names files by path, and sentences describing earlier versions of a rule are gone. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
+  "source_commit": "394dc7b"
 }

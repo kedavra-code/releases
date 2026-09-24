@@ -16,7 +16,7 @@ Reads an archive layer end to end and turns it into cited OKF concepts, and keep
 - **"compile the archives"** or **"compile all kb"**, plural — every live knowledge base in turn, then the question reports. See the next section; this is the routine command.
 - "compile the Alpha archive", "run a compile", "continue the compile", "finish reading the archive" — one named knowledge base.
 - The user asks what share of an archive has actually been read, and the answer is "less than all of it".
-- A live knowledge base's routine ingest, from `Raw/` or from a weekly export delta. **This used to say the opposite** — that the skill was for bulk archive layers only and not for routine ingest. That split made sense while the archives were mostly unread; now that they are all at 100 per cent it left the frequent case with no home, so ingest is in scope and has its own section below.
+- A live knowledge base's routine ingest, from `Raw/` or from a weekly export delta. Ingest has its own section below.
 
 ## "Compile the archives", plural
 
@@ -177,7 +177,7 @@ This is the part that cannot be reconstructed from the scripts. Every clause bel
 
 > You are a compile agent for the **[KB]** knowledge base. You compile ONE batch: **[BATCH-ID]**, [N] pages from `[SCOPE PATH]`. [Seven] other agents are running other batches concurrently right now.
 >
-> **ACCESS NOTE.** [Include only where it applies: in this environment the Read/Write/Edit/Glob/Grep tools return EPERM for the vault path.] **Use bash for ALL vault access.** Vault root: `[VAULT]`. An EPERM is not evidence a file is missing. Never run `git`.
+> **ACCESS NOTE.** Vault root: `[VAULT]`. [ONLY IF THIS SESSION'S FILE TOOLS RETURN EPERM ON THE VAULT: The Read/Write/Edit/Glob/Grep tools return EPERM here, so use bash for all vault access; an EPERM is not evidence a file is missing.] Never run `git`.
 >
 > **Step 1 — the bulk reads, then work.** Read exactly these four and nothing else exploratory:
 > `_extractions/_packed-[BATCH-ID].txt`, `_extractions/_INVENTORY.md` (the [N] concepts that already exist), `[KB]/CLAUDE.md`, `About me/writing-rules.md`.
@@ -198,7 +198,7 @@ This is the part that cannot be reconstructed from the scripts. Every clause bel
 > ) || echo "EXISTS — file an APPEND instead"
 > ```
 > If the guarded write fails the concept already exists: **do not remove it, do not retry without the guard, do not invent a variant filename.** Read the existing file and file an APPEND against it. **If you list such a concept under `## Concepts created`, also list it under `## Collisions`** — the merge preflight uses that to tell a guard working from a lost write.
-> Frontmatter: `type`, `title`, `description`, `tags`, `status: draft`, `generated: { by: librarian/claude-opus-5, at: <now> }`, `sources` with `id` / `resource` / `title` / `author` / `last_modified`.
+> Frontmatter: `type`, `title`, `description`, `tags`, `status: draft`, `generated: { by: librarian/claude-<the model you run as>, at: <now> }`, `sources` with `id` / `resource` / `title` / `author` / `last_modified`.
 > **Quote any `title:` containing `": "` or that is a bare `YYYY-MM-DD`** — both break the concept's YAML.
 > `../../OneNote/…` is right from `Wiki/<group>/x.md`; from `Wiki/systems/vendors/x.md` or `Wiki/references/digests/x.md`, one level deeper, it is `../../../OneNote/…`. Cross-KB links are `../../../Alpha_kb/Wiki/…` from `Wiki/<group>/x.md`, and **`verify.py` fails the run on a cross-KB link that resolves nowhere.** Inside APPEND blocks always write `../../OneNote/…`; the merge script re-resolves the depth.
 > Every claim carries a footnote whose label equals a `sources[].id`. A label defined but never referenced is a defect; so is a reference with no definition. No `verified:` key, ever. No `stale_after` on a frozen archive. English prose, German quotes verbatim, proper nouns never translated.
