@@ -2,7 +2,7 @@
   "name": "00_Cerebrum",
   "kind": "template",
   "build": 15,
-  "commit": "5d9ffab",
+  "commit": "171df6c",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
   "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-15/00_Cerebrum-template-15.tar.gz",
   "sha256": "7cb338613f8f19cb338107dbf1066bcca9e4388c1474928e4d32dda6eef33c66",
@@ -22,6 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 13 carries a prompt audit of the skills against Claude Opus 5.5: compile agents record the model they run as, the file-tools access note applies only where a session needs it, the health check ends at its summary and names files by path, and sentences describing earlier versions of a rule are gone. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
+  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 15 changes one line: the frontmatter example in CLAUDE.md writes generated.by as librarian/<model-id> instead of naming one model. Build 13 carries a prompt audit of the skills against Claude Opus 5.5: compile agents record the model they run as, the file-tools access note applies only where a session needs it, the health check ends at its summary and names files by path, and sentences describing earlier versions of a rule are gone. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
   "source_commit": "c516cf0"
 }
