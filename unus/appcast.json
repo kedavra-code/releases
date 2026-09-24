@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 119,
-  "commit": "4889357",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-119/unus.dmg",
-  "sha256": "3ca59d00bb6a2bd86f2d3fec0796aa5807b53edbb724aca034ea406238ce1885",
+  "build": 121,
+  "commit": "fe28069",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-121/unus.dmg",
+  "sha256": "e9ccfa398c1705b38efc730c0860e406155fcdd521fba8dadac350c529f451ed",
   "minimumSystemVersion": "26.0",
-  "notes": "Disk images are made with diskutil too, and package.sh stops warning"
+  "notes": "CLAUDE.md stops disagreeing with the code it describes"
 }
