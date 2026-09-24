@@ -2,7 +2,7 @@
   "name": "00_Cerebrum",
   "kind": "template",
   "build": 11,
-  "commit": "b2e29dc",
+  "commit": "bbd3b65",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
   "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-11/00_Cerebrum-template-11.tar.gz",
   "sha256": "4e01dcbb2bb160ee1c950c94aaad3fd98b08477d78614294a00841eff39ebabf",
@@ -22,6 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 10 brings the viewer's 3D view: the same map with depth, each knowledge base a sphere, drawn in WebGL2 written in the page with no library, with endless turning, flying and zoom. Links show their direction in both graphs, blue in and orange out, with moving light along them; the concept card docks to the right edge; both graphs carry a help line. viewer-check.js checks all of it and asserts structure, so it passes on a vault of any size. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
+  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 11 brings the viewer's 3D view: the same map with depth, each knowledge base a sphere, drawn in WebGL2 written in the page with no library, with endless turning, flying and zoom. Links show their direction in both graphs, blue in and orange out, with moving light along them; the concept card docks to the right edge; both graphs carry a help line. viewer-check.js checks all of it and asserts structure, so it passes on a vault of any size. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
   "source_commit": "db69ddf"
 }
