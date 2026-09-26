@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 85,
-  "commit": "76bf1cb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-85/murmur.dmg",
-  "sha256": "656efc04d05d0e8a0ba7c01cb3d7705b701fa9d2642b5b38eb076164cc71444f",
+  "build": 88,
+  "commit": "b23c800",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-88/murmur.dmg",
+  "sha256": "d85f04945532794232ff9566ee287200ff357005b75c91d890bba2db99eccb7d",
   "minimumSystemVersion": "26.0",
-  "notes": "build.sh's comment agrees with what build.sh does"
+  "notes": "install.sh says it follows package.sh, which it does"
 }
