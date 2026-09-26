@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 16,
-  "commit": "f2891c0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-16/scripta.dmg",
-  "sha256": "2659dd89cc8ca59af8156f79645db0e37ff9bfc05eb5536ce540e8be4e966976",
+  "build": 18,
+  "commit": "0ef86ad",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-18/scripta.dmg",
+  "sha256": "12d5d0d9c68735a3a8c9cda4ef60c83474ad8e6f53cfce2c1f4cb5f168832013",
   "minimumSystemVersion": "26.0",
-  "notes": "The mark: one colour flow from voice to ink"
+  "notes": "Click a speaker to step through what they said"
 }
