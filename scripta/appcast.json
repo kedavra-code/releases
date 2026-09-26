@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 18,
-  "commit": "0ef86ad",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-18/scripta.dmg",
-  "sha256": "12d5d0d9c68735a3a8c9cda4ef60c83474ad8e6f53cfce2c1f4cb5f168832013",
+  "build": 20,
+  "commit": "ff2d9a2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-20/scripta.dmg",
+  "sha256": "1d2d49f2de8d35b5b084b5b819d99b12a8311816e66fa3cbb07443b607318b31",
   "minimumSystemVersion": "26.0",
-  "notes": "Click a speaker to step through what they said"
+  "notes": "⌃⌥⌘L shows and hides the Meetings window; the Dock icon is gone"
 }
