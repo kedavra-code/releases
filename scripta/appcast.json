@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 33,
-  "commit": "2603871",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-33/scripta.dmg",
-  "sha256": "168a3d294c3007e0d514f5125818e453cf1d2eaed7ac3f14dc04178c25fa79a0",
+  "build": 36,
+  "commit": "f50529c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-36/scripta.dmg",
+  "sha256": "8ace7333376ad7c4e8c3bbec4517671670593875d457b624ce8329d1dac518c3",
   "minimumSystemVersion": "26.0",
-  "notes": "The logo everywhere: the menu bar and the start page show the mark itself"
+  "notes": "⌘H hides scripta: every window out of sight, the keyboard back to the app before"
 }
