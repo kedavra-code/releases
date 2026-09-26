@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 22,
-  "commit": "902725b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-22/scripta.dmg",
-  "sha256": "e2835d991b5f7d545f9e4fe94a308179ae91152983972f135e3efde97a3f41b0",
+  "build": 26,
+  "commit": "7020437",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-26/scripta.dmg",
+  "sha256": "ef3d0f826f0899cea48046a892d66136508074a09e6763b7a6e380b9d72805cf",
   "minimumSystemVersion": "26.0",
-  "notes": "One menu item, Record and Transcribe…, and Pause for a live meeting"
+  "notes": "A live meeting no longer lists the call's voices a second time, as their echo"
 }
