@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 36,
-  "commit": "f50529c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-36/scripta.dmg",
-  "sha256": "8ace7333376ad7c4e8c3bbec4517671670593875d457b624ce8329d1dac518c3",
+  "build": 37,
+  "commit": "87b5a64",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-37/scripta.dmg",
+  "sha256": "dc593332b7faefc99c0cc12f905181422f88764c0591a00bc6ba58a3f17f481f",
   "minimumSystemVersion": "26.0",
-  "notes": "⌘H hides scripta: every window out of sight, the keyboard back to the app before"
+  "notes": "Remembered voices: with a person's consent, later meetings name them by themselves"
 }
