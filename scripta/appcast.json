@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 20,
-  "commit": "ff2d9a2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-20/scripta.dmg",
-  "sha256": "1d2d49f2de8d35b5b084b5b819d99b12a8311816e66fa3cbb07443b607318b31",
+  "build": 22,
+  "commit": "902725b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-22/scripta.dmg",
+  "sha256": "e2835d991b5f7d545f9e4fe94a308179ae91152983972f135e3efde97a3f41b0",
   "minimumSystemVersion": "26.0",
-  "notes": "⌃⌥⌘L shows and hides the Meetings window; the Dock icon is gone"
+  "notes": "One menu item, Record and Transcribe…, and Pause for a live meeting"
 }
