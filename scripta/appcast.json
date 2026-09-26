@@ -1,0 +1,9 @@
+{
+  "app": "scripta",
+  "build": 16,
+  "commit": "f2891c0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-16/scripta.dmg",
+  "sha256": "2659dd89cc8ca59af8156f79645db0e37ff9bfc05eb5536ce540e8be4e966976",
+  "minimumSystemVersion": "26.0",
+  "notes": "The mark: one colour flow from voice to ink"
+}
