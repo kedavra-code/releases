@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 26,
-  "commit": "7020437",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-26/scripta.dmg",
-  "sha256": "ef3d0f826f0899cea48046a892d66136508074a09e6763b7a6e380b9d72805cf",
+  "build": 29,
+  "commit": "38cd4c2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-29/scripta.dmg",
+  "sha256": "754114785d6ee3681763cec3336a4399b023ff4db2600ed2a3a9c73f190db07f",
   "minimumSystemVersion": "26.0",
-  "notes": "A live meeting no longer lists the call's voices a second time, as their echo"
+  "notes": "Cut a segment where the speaker changes, by the time of each word"
 }
