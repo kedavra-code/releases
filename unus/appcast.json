@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 121,
-  "commit": "fe28069",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-121/unus.dmg",
-  "sha256": "e9ccfa398c1705b38efc730c0860e406155fcdd521fba8dadac350c529f451ed",
+  "build": 123,
+  "commit": "b9818a2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-123/unus.dmg",
+  "sha256": "aad6afd970380e3f734766991c78f3c8767a4b301424cb4070b0151e5787c5ef",
   "minimumSystemVersion": "26.0",
-  "notes": "CLAUDE.md stops disagreeing with the code it describes"
+  "notes": "⌘H hides unus: our own menu item, because the system's is dead in a menu bar app"
 }
