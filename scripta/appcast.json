@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 29,
-  "commit": "38cd4c2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-29/scripta.dmg",
-  "sha256": "754114785d6ee3681763cec3336a4399b023ff4db2600ed2a3a9c73f190db07f",
+  "build": 30,
+  "commit": "bbbe31b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-30/scripta.dmg",
+  "sha256": "a6097571673ca042858afa60f9e88bd43efdc02d9256455404134ab1b1fa1449",
   "minimumSystemVersion": "26.0",
-  "notes": "Cut a segment where the speaker changes, by the time of each word"
+  "notes": "The mark in murmur's language: C teal"
 }
