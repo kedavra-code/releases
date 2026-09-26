@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 30,
-  "commit": "bbbe31b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-30/scripta.dmg",
-  "sha256": "a6097571673ca042858afa60f9e88bd43efdc02d9256455404134ab1b1fa1449",
+  "build": 32,
+  "commit": "1407ff4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-32/scripta.dmg",
+  "sha256": "ae0d0bcfe4c66fde938f77daa20e01938143bcd6993032b6fc52d637fe949186",
   "minimumSystemVersion": "26.0",
-  "notes": "The mark in murmur's language: C teal"
+  "notes": "Click the meeting shown to close it and see the start page"
 }
