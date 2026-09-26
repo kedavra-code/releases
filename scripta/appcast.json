@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 32,
-  "commit": "1407ff4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-32/scripta.dmg",
-  "sha256": "ae0d0bcfe4c66fde938f77daa20e01938143bcd6993032b6fc52d637fe949186",
+  "build": 33,
+  "commit": "2603871",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-33/scripta.dmg",
+  "sha256": "168a3d294c3007e0d514f5125818e453cf1d2eaed7ac3f14dc04178c25fa79a0",
   "minimumSystemVersion": "26.0",
-  "notes": "Click the meeting shown to close it and see the start page"
+  "notes": "The logo everywhere: the menu bar and the start page show the mark itself"
 }
