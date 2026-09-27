@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 37,
-  "commit": "87b5a64",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-37/scripta.dmg",
-  "sha256": "dc593332b7faefc99c0cc12f905181422f88764c0591a00bc6ba58a3f17f481f",
+  "build": 40,
+  "commit": "4cfd9ff",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-40/scripta.dmg",
+  "sha256": "13be85b330986693a06d52be4a62aa392b676f3b691a1696e2ce1dc9f29b4285",
   "minimumSystemVersion": "26.0",
-  "notes": "Remembered voices: with a person's consent, later meetings name them by themselves"
+  "notes": "Settings made consistent: every section one row and one line, no titles"
 }
