@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 40,
-  "commit": "4cfd9ff",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-40/scripta.dmg",
-  "sha256": "13be85b330986693a06d52be4a62aa392b676f3b691a1696e2ce1dc9f29b4285",
+  "build": 43,
+  "commit": "ada83fb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-43/scripta.dmg",
+  "sha256": "56375a1ae901d390c72bcad9af125509cc4c494fcbcf967c1aabe30f545b0643",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings made consistent: every section one row and one line, no titles"
+  "notes": "No folder change in the scripta window: the footer only shows where notes go"
 }
