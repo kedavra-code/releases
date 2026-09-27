@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 199,
-  "commit": "e92f84e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-199/GLaDOS.dmg",
-  "sha256": "b3e282a0333f3bee781ffc1863213f0f125162726884561edc5751b97a55db75",
+  "build": 203,
+  "commit": "ea95fc6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-203/GLaDOS.dmg",
+  "sha256": "1f3b81f2a92a60f5c51e5b403287cfdfdc5043b4b97ae5434c11f8f6af41c27c",
   "minimumSystemVersion": "26.0",
-  "notes": "Opus 5.5's capability table says what the API enforces, and the audit's persona edits are measured and declined"
+  "notes": "The eye is a fifth bigger at both sizes, and the listening ring sits close round it"
 }
