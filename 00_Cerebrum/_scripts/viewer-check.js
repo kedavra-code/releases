@@ -50,7 +50,18 @@ const pngPixels = buf => {
 };
 
 (async () => {
-  const browser = await chromium.launch();
+  // The full Chromium, headless, and not Playwright's default headless shell: the
+  // shell draws WebGL in software (SwiftShader), the full browser on the graphics
+  // chip, as the owner's Chrome does. Measured 27.09.2026 on the 3D view: 11 frames
+  // a second in the shell, 60 in the full browser, and the check that the 3D view
+  // "keeps drawing it" — more than 10 frames in 0.6 s — failed on the shell alone,
+  // on the viewer before and after that day's change alike. A check of the page
+  // must not be a check of the test's renderer. Where the full browser is not
+  // installed, the shell is used and says so.
+  const browser = await chromium.launch({ channel: 'chromium' }).catch(e => {
+    console.log('note    the full Chromium is not installed; the headless shell draws WebGL in software  [' + e.message.split('\n')[0] + ']');
+    return chromium.launch();
+  });
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   const jsErrors = [];
   page.on('pageerror', e => jsErrors.push(e.message));
@@ -74,6 +85,33 @@ const pngPixels = buf => {
   // it counts as a click outside the panel and closes it.
   check(boot.setHidden && boot.setExpanded === 'false', 'Settings starts closed',
         'hidden=' + boot.setHidden + ' aria-expanded=' + boot.setExpanded);
+
+  // The build code says `uncommitted` exactly when a file the page is built
+  // from differs from the commit, and never for a file it does not read. It
+  // said so after every commit until 27.09.2026, because verify.py rewrites
+  // its own state file in the pre-commit hook. Asked of the repository the
+  // page sits in, with the inputs `visualize.py` itself declares.
+  {
+    const cp = require('child_process'), fs = require('fs');
+    const src = fs.readFileSync(path.join(__dirname, 'visualize.py'), 'utf8');
+    const inputs = [...(src.match(/^PAGE_INPUTS = \[(.*)\]$/m) || ['', ''])[1].matchAll(/'([^']+)'/g)].map(m => m[1]);
+    const dir = path.dirname(FILE);
+    // A template fresh from its archive is not a git checkout yet, and the
+    // page then says so rather than naming a commit.
+    let dirty = null;
+    try {
+      dirty = inputs.length ? cp.execFileSync('git', ['--no-optional-locks', '-C', dir, 'status', '--porcelain', '--', ...inputs],
+                                              { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim() : '?';
+    } catch (e) { dirty = null; }
+    const stamp = await page.evaluate(() => GIT);
+    if (dirty === null)
+      check(inputs.length > 0 && /^not a git checkout/.test(stamp) && !/uncommitted/.test(stamp),
+            'outside a git checkout the build code says so', 'stamp "' + stamp + '"');
+    else
+      check(inputs.length > 0 && /uncommitted/.test(stamp) === (dirty !== ''),
+            'the build code says uncommitted exactly when a file the page reads is changed',
+            'stamp "' + stamp + '"; changed inputs: ' + (dirty ? dirty.split('\n').length + ', first ' + dirty.split('\n')[0].trim() : 'none'));
+  }
 
   // 2. A concept page renders, and no HTML entity leaks into visible text.
   //    Prefer a title carrying "&": that is the regression of 10.08.2026.
@@ -152,7 +190,7 @@ const pngPixels = buf => {
                    document.querySelector('.it.on').offsetParent !== null;
 
     ball.click();                                         // back to all open
-    localStorage.removeItem('okf.collapsed');
+    localStorage.removeItem('okf.foldKb');
     return r;
   });
   // Only a list that was showing can prove anything by folding to zero: a
@@ -180,6 +218,76 @@ const pngPixels = buf => {
   check(fold.afterShow > 0 && fold.selVisible,
         'opening a concept unfolds its group and reveals the selection',
         fold.afterShow + ' items visible, selection shown: ' + fold.selVisible);
+
+  // 3c. Two levels, owner's instruction of 27.09.2026: a header per knowledge
+  //     base, in the button Settings gives that base (filled with its hue,
+  //     the count after the name), and under it the category groups that
+  //     were the list's only level before. A first version replaced the
+  //     categories instead of adding the level above them; the second check
+  //     is there so that cannot happen again.
+  const kbTree = await page.evaluate(() => {
+    const want = {}, cats = new Set();
+    Object.keys(D).forEach(id => { const k = id.split('/')[0];
+      if (offKB.has(k)) return; want[k] = (want[k] || 0) + 1;
+      const p = id.split('/'); if (p.slice(2, -1).length) cats.add(group(id)); });
+    const probe = document.createElement('i'); document.body.appendChild(probe);
+    const rgb = h => { probe.style.color = h; return getComputedStyle(probe).color; };
+    const rows = [...document.querySelectorAll('#tree .kbh')].map(g => ({ kb: g.dataset.kb,
+      n: +g.querySelector('small').textContent, bg: getComputedStyle(g).backgroundColor,
+      hue: HUE[g.dataset.kb] ? rgb(HUE[g.dataset.kb]) : null,
+      grps: g.nextElementSibling ? g.nextElementSibling.querySelectorAll('.grp').length : 0 }));
+    const setBtn = [...document.querySelectorAll('#kbbar button')][0];
+    const out = { rows, want, cats: cats.size, grps: document.querySelectorAll('#tree .kbbody .grp').length,
+      radius: [getComputedStyle(document.querySelector('#tree .kbh')).borderRadius, setBtn ? getComputedStyle(setBtn).borderRadius : null] };
+    probe.remove(); return out;
+  });
+  const kbKeys = Object.keys(kbTree.want);
+  check(kbTree.rows.length === kbKeys.length && kbTree.rows.every(r => kbTree.want[r.kb] === r.n),
+        'the concept list has one header per knowledge base, counting its concepts',
+        kbTree.rows.map(r => r.kb + ' ' + r.n).join(', ') + ' against ' + kbKeys.map(k => k + ' ' + kbTree.want[k]).join(', '));
+  check(kbTree.grps === kbTree.cats && kbTree.rows.every(r => r.grps > 0 || r.n < 2),
+        'and the category groups stand under their base, every one of them',
+        kbTree.grps + ' category headers for ' + kbTree.cats + ' categories');
+  check(kbTree.rows.length > 0 && kbTree.rows.every(r => r.hue && r.bg === r.hue) && kbTree.radius[0] === kbTree.radius[1],
+        'each base header is the Settings button: filled with its hue, same corners',
+        kbTree.rows.map(r => r.kb + ' ' + r.bg).join(', ') + '; corners ' + kbTree.radius.join(' vs '));
+
+  // 3d. The vault's figures, one line at the top left of each graph in the
+  //     hints' own style, owner's instruction of 27.09.2026. They stood under
+  //     the logo until then. Same font, colour and opacity as the hints, the
+  //     same distance from the left edge, and as far from the top as the hints
+  //     are from the bottom. The logo carries none any more.
+  const stat = id => page.evaluate(([s, h]) => {
+    const e = document.getElementById(s), g = document.getElementById(h);
+    const P = e.parentElement.getBoundingClientRect(), r = e.getBoundingClientRect(), q = g.getBoundingClientRect();
+    const c = getComputedStyle(e), d = getComputedStyle(g);
+    const cs = Object.values(D), sw = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    const inb = cs.reduce((a, x) => a + x.inb.length, 0), out = cs.reduce((a, x) => a + x.out.length, 0);
+    return { shown: r.width > 0, text: e.textContent, oneLine: r.height < 20,
+      want: new Set(cs.map(x => x.kb)).size + ' bases · ' + sw(cs.length) + ' concepts · ' + sw(inb) + ' links · ' +
+        sw(cs.reduce((a, x) => a + (x.ns || 0), 0)) + ' citations', both: inb === out,
+      left: Math.round(r.left - P.left), hintLeft: Math.round(q.left - P.left),
+      top: Math.round(r.top - P.top), hintBottom: Math.round(P.bottom - q.bottom),
+      style: ['fontSize', 'fontFamily', 'color', 'opacity', 'letterSpacing'].every(k => c[k] === d[k]),
+      logo: !!document.querySelector('#aboutBtn .st, #brandStats') };
+  }, id);
+  await page.click('#bGraph');
+  await page.waitForTimeout(300);
+  const st2 = await stat(['g2stat', 'g2hint']);
+  await page.click('#b3d');
+  await page.waitForTimeout(700);
+  const st3 = await stat(['g3stat', 'g3hint']);
+  // A fresh page again: the 3D checks below expect the view's first opening.
+  await page.reload();
+  await page.waitForTimeout(900);
+  for (const [v, x] of [['2D', st2], ['3D', st3]]) {
+    check(x.shown && x.text === x.want && x.both && x.oneLine && !x.logo,
+          'the ' + v + ' graph carries the vault\'s figures in one line, and one links figure is both totals',
+          JSON.stringify(x.text) + (x.both ? '' : ' — outbound and inbound totals differ') + (x.logo ? '; the logo still carries figures' : ''));
+    check(x.style && x.left === x.hintLeft && Math.abs(x.top - x.hintBottom) <= 1,
+          'and in the ' + v + ' hints\' style, top left as the hints are bottom left',
+          'style ' + x.style + ', left ' + x.left + ' vs ' + x.hintLeft + ', ' + x.top + 'px from the top vs ' + x.hintBottom + 'px from the bottom');
+  }
 
   // 4. The graph draws ink: non-background pixels on the canvas, legend
   //    chips present. Radius zero drew nothing and stayed clickable.
@@ -229,6 +337,14 @@ const pngPixels = buf => {
   // Every cluster clears every other cluster's halo. A halo reaches past its
   // cluster's extent, so clearing the extents is not enough: read the halos the
   // page actually draws, which are the ones the generator lays out against.
+  // No knowledge base is drawn as a speck: at 19 concepts one base sat in a
+  // radius of 139 under a name wider than the cluster. visualize.py gives
+  // every base a radius of at least 330, and a halo reaches past the radius;
+  // 330 is what the halo must at least reach.
+  const small = await page.evaluate(() => Object.keys(KBC).filter(k => HUE[k] && !offKB.has(k))
+    .map(k => [k, Math.round(KBC[k].halo)]));
+  check(small.length > 0 && small.every(([, h]) => h >= 330), 'no knowledge base is drawn smaller than the floor',
+        small.map(([k, h]) => k.replace('_kb', '') + ' ' + h).join(', '));
   const corners = await page.evaluate(() => {
     const ks = Object.keys(KBC).sort(), out = [];
     for (let i = 0; i < ks.length; i++) for (let j = i + 1; j < ks.length; j++)
@@ -236,7 +352,9 @@ const pngPixels = buf => {
         Math.round(Math.hypot(KBC[ks[i]].cx - KBC[ks[j]].cx, KBC[ks[i]].cy - KBC[ks[j]].cy) - KBC[ks[i]].halo - KBC[ks[j]].halo)]);
     return out;
   });
-  check(corners.every(c => c[2] >= 0), 'every knowledge base stands clear of the others\' halos',
+  // By the 40 units the layout keeps, not merely clear: a check at zero let
+  // one halo stand 129 units into another's while every pair still passed.
+  check(corners.every(c => c[2] >= 39), 'no two knowledge bases\' halos come closer than the 40-unit gap',
         corners.length ? 'halo gaps: ' + corners.map(c => c[0] + '~' + c[1] + ' ' + c[2]).join(', ')
                        : 'one knowledge base, nothing to separate');
   check(graph.chips >= 1, 'legend chips present', graph.chips + ' chips');
@@ -256,26 +374,27 @@ const pngPixels = buf => {
   // assertion, so the label cannot quietly return.
   check(graph.tags === 0, 'legend rows carry no text tags, only accents', graph.tags + ' tags');
 
-  // The KB selector groups the same way the legend does: one row per block,
-  // holding that block's own bundles.
-  const kbRows = await page.evaluate(() => ({
-    rows: [...document.querySelectorAll('#kbbar .krow')].map(r => r.querySelectorAll('button').length),
-    want: KB_BLOCKS.map(b => b.kbs.length)}));
-  check(kbRows.rows.join('/') === kbRows.want.join('/'),
-        'the kb selector shows one row per block',
-        kbRows.rows.join('/') + ' against ' + kbRows.want.join('/'));
+  // The KB selector is rows of three at one width. Read off the rendered
+  // buttons, so a layout that wraps differently fails: every row full but the
+  // last, and every button the same width.
+  const kbRows = await page.evaluate(() => {
+    document.getElementById('setBox').hidden = false;
+    const b = [...document.querySelectorAll('#kbbar button')].map(e => e.getBoundingClientRect());
+    document.getElementById('setBox').hidden = true;
+    const tops = [...new Set(b.map(r => Math.round(r.top)))];
+    return { rows: tops.map(t => b.filter(r => Math.round(r.top) === t).length),
+             widths: [...new Set(b.map(r => Math.round(r.width)))] };
+  });
+  check(kbRows.rows.length > 0 && kbRows.rows.slice(0, -1).every(n => n === 3) && kbRows.rows[kbRows.rows.length - 1] <= 3
+        && kbRows.widths.length === 1, 'kb selector shows rows of three, every button one width',
+        kbRows.rows.join('/') + ', widths ' + kbRows.widths.join(', '));
   // The concept tree reads the selector's order flat. Both come from
   // KB_BLOCKS now; this asserts the derivation actually reaches the tree.
   const order = await page.evaluate(() => {
     const btn = [...document.querySelectorAll('#kbbar button')]
       .map(b => b.firstChild.textContent.trim());
-    const seen = [], grps = [...document.querySelectorAll('#tree .grp')];
-    for (const g of grps) {
-      // strip the fold caret and the trailing count before comparing
-      const kb = g.textContent.replace(/[\u25b8\u25be]/g, '').trim()
-                  .split(' / ')[0].replace(/\s*\d+$/, '').trim();
-      if (!seen.includes(kb)) seen.push(kb);
-    }
+    // The base headers carry the name alone in .gn since 27.09.2026.
+    const seen = [...document.querySelectorAll('#tree .kbh .gn')].map(g => g.textContent.trim());
     return { btn, tree: seen };
   });
   check(order.btn.join(',') === order.tree.join(','),
@@ -286,8 +405,8 @@ const pngPixels = buf => {
   // fill, the legend row as its accent bar — the pairing is what says they
   // are the same thing.
   const accents = await page.evaluate(() => ({
-    kb: [...document.querySelectorAll('#kbbar .krow')].map(r =>
-      getComputedStyle(r.querySelector('button')).backgroundColor),
+    kb: [...new Set([...document.querySelectorAll('#kbbar button')].map(b => b.dataset.block))].map(bi =>
+      getComputedStyle(document.querySelector('#kbbar button[data-block="' + bi + '"]')).backgroundColor),
     lg: [...document.querySelectorAll('#legend .lrow')].map(r => getComputedStyle(r).borderLeftColor)
   }));
   check(accents.kb.join('|') === accents.lg.join('|'),
@@ -397,9 +516,18 @@ const pngPixels = buf => {
   check(opened.visible && opened.wide, 'About opens and is drawn',
         'width>' + opened.wide);
   check(opened.facts.length >= 6, 'About lists its facts', opened.facts.length + ' rows');
-  check(/Concepts=\d+ in \d+ bases/.test(opened.concepts),
+  check(/Concepts=[\d']+ in \d+ bases/.test(opened.concepts),
         'About counts concepts from the page data', opened.concepts);
   check(opened.logo, 'About draws its logo');
+  // The two link figures carry a visible note saying what they count, owner's
+  // instruction of 27.09.2026: the meaning had lived in a tooltip, and the
+  // owner asked three times what the figures meant. The note stands on the
+  // value's line, because the panel has to fit without scrolling.
+  const notes = await page.evaluate(() => [...document.querySelectorAll('#aboutFacts > div')]
+    .filter(d => /inbound links/i.test(d.querySelector('dt').textContent))
+    .map(d => { const n = d.querySelector('.fn'); return n && n.offsetHeight > 0 ? n.textContent : ''; }));
+  check(notes.length === 2 && notes.every(t => /links/.test(t)),
+        'About explains both link figures in words on the panel', notes.map(t => t.slice(0, 40)).join(' | '));
   // Where the mark stands each knowledge base, and what it connects, compared
   // with the data the graph is drawn from. The mark this replaced carried a
   // comment saying the generator asserted it against the layout; no such
@@ -667,7 +795,7 @@ const pngPixels = buf => {
   const row2 = await foldRow();
   await page.click('#ball');
   await page.waitForTimeout(150);
-  await page.evaluate(() => localStorage.removeItem('okf.collapsed'));
+  await page.evaluate(() => localStorage.removeItem('okf.foldKb'));
   check(row1.iconLeft >= 6 && row1.iconLeft <= 12 && row1.iconSize === row1.searchIconSize,
         'Collapse all carries its icon at the left, the size of the search icon',
         'icon ' + row1.iconLeft + 'px in, ' + row1.iconSize + ' vs ' + row1.searchIconSize);
@@ -684,8 +812,12 @@ const pngPixels = buf => {
   // is the bar above both panes, so the statement is stronger and simpler — the
   // list cannot take it anywhere, and Collapse all, which did stay behind, still
   // has to hold its place.
+  // Only a list long enough to scroll can prove this. Since 27.09.2026 the
+  // groups are the six bases, and folded they no longer fill the column, so
+  // the list is unfolded for the measurement and folded back after it.
   const sticky = await page.evaluate(() => {
-    const tree = document.getElementById('tree');
+    const tree = document.getElementById('tree'), ball0 = document.getElementById('ball');
+    const wasShut = ball0.textContent.includes('Expand'); if (wasShut) ball0.click();
     tree.scrollTop = tree.scrollHeight;
     const q = document.getElementById('q').getBoundingClientRect();
     const ball = document.getElementById('ball').getBoundingClientRect();
@@ -693,7 +825,7 @@ const pngPixels = buf => {
     const out = { scrolled: tree.scrollTop > 0, top: Math.round(q.top),
       above: q.bottom <= s.top + 0.5, inTree: !!document.getElementById('tree').contains(document.getElementById('q')),
       ballShown: ball.top >= s.top - 0.5 && ball.bottom <= s.bottom };
-    tree.scrollTop = 0;
+    tree.scrollTop = 0; if (wasShut) ball0.click();
     return out;
   });
   // A list shorter than its pane has nothing to scroll, which is a property of
@@ -1048,6 +1180,16 @@ const pngPixels = buf => {
   const branchy = await page.evaluate(() => [...document.scripts].map(s => s.textContent).join('')
     .match(/\bif\s*\([^;{}]*\)\s*[\w.]+\s*=\s*texture\s*\(/g) || []);
   check(branchy.length === 0, 'no 3D shader samples a texture inside an if', branchy[0]);
+  // The shape sheet grew from four rows to five on 27.09.2026, when a
+  // seventeenth category arrived. The sheet's rows, the shader's divisor and
+  // the number of shapes have to agree, or every mark below the first row
+  // reads another shape's cell; no drawn pixel here says which shape is right.
+  const sheet = await page.evaluate(() => { const src = [...document.scripts].map(s => s.textContent).join('');
+    const rows = (src.match(/a\.height=CELL\*(\d+)/) || [])[1], div = (src.match(/\/vec2\(4\.,(\d+)\.\)/) || [])[1];
+    return { rows: +rows, div: +div, shapes: SHAPES.length, cats: CATS.length }; });
+  check(sheet.rows === sheet.div && sheet.shapes <= 4 * sheet.rows && sheet.shapes >= sheet.cats,
+        'the 3D shape sheet, its shader and the categories agree',
+        sheet.rows + ' rows, shader divides by ' + sheet.div + ', ' + sheet.shapes + ' shapes for ' + sheet.cats + ' categories');
   check(Math.abs(v3.backing - v3.css * v3.dpr) < 2, 'the 3D canvas is drawn at its size times the pixel ratio',
         'backing ' + v3.backing + ' vs ' + Math.round(v3.css * v3.dpr));
   check(v3.drawn === v3.showing && v3.zs === 1 && v3.zspread > 0,
@@ -1066,16 +1208,31 @@ const pngPixels = buf => {
   // Chroma, for the reason the 2D check gives: links alone are colour too, so
   // the bar is set on strongly saturated pixels, which only the concepts and
   // their glow make. Read from a screenshot, the only way to see WebGL output.
+  // Read where the concepts are, not counted over the whole canvas: with a
+  // handful of concepts the links and glow alone came within a few samples of
+  // the count with the concepts drawn, so no fixed bar could tell the two
+  // apart. Most showing concepts must carry bright colour at their centre.
+  // Calibrated on two bases of four: drawn, every concept read 158 or more
+  // at its brightest; with the concepts left out, one of eight did, where a
+  // base's name lay over it.
   {
+    const pts = await page.evaluate(() => N.filter(n => !hid(n)).map(n => G3.project(n.i)).filter(Boolean));
     const png = await page.screenshot({ clip: { x: v3.g3.left, y: v3.g3.top, width: v3.g3.width, height: v3.g3.height } });
     const px = pngPixels(png);
-    let chroma = 0;
-    for (let y = 0; y < Math.floor(v3.g3.height); y += 3)
-      for (let x = 0; x < Math.floor(v3.g3.width); x += 3) {
-        const [r, g, b] = px(x, y);
-        if (Math.max(r, g, b) - Math.min(r, g, b) > 90) chroma++;
-      }
-    check(chroma > 50, '3D view paints saturated concepts, not just links and glow', chroma + ' saturated samples');
+    let lit = 0;
+    for (const [cx, cy] of pts) {
+      let hit = false;
+      for (let dy = -2; dy <= 2 && !hit; dy++)
+        for (let dx = -2; dx <= 2 && !hit; dx++) {
+          const x = Math.round(cx) + dx, y = Math.round(cy) + dy;
+          if (x < 0 || y < 0 || x >= Math.floor(v3.g3.width) || y >= Math.floor(v3.g3.height)) continue;
+          const [r, g, b] = px(x, y);
+          if (Math.max(r, g, b) > 150 && Math.max(r, g, b) - Math.min(r, g, b) > 40) hit = true;
+        }
+      if (hit) lit++;
+    }
+    check(pts.length > 0 && lit >= pts.length / 2, '3D view paints saturated concepts, not just links and glow',
+          lit + ' of ' + pts.length + ' concepts carry bright colour at their centre');
   }
   // Fit frames every showing concept inside the canvas, from any direction.
   await page.evaluate(() => { G3.orient(1.1, .6); G3.cam.d *= 3; G3.fit(); });
@@ -1128,15 +1285,22 @@ const pngPixels = buf => {
           'turned ' + turned.dy.toFixed(2) + ' rad, selected ' + turned.sel);
     await page.evaluate(() => { G3.orient(.34, -.46); G3.fit(); });
     await page.waitForTimeout(800);
-    const pa = await page.evaluate(i => { const g = document.getElementById('g3').getBoundingClientRect(), p = G3.project(i);
-      return p ? { x: g.left + p[0], y: g.top + p[1] } : null; }, a.i);
+    // Turned and refitted, the first concept can sit behind another at its own
+    // point: the week's links of 27.09.2026 put ID CxS in front of it. So the
+    // double-click goes to a concept that is on top where it is drawn, the
+    // first one clicked if it still is.
+    const pa = await page.evaluate(i => { const g = document.getElementById('g3'), b = g.getBoundingClientRect();
+      for (const j of [i, ...N.map(n => n.i)]) { if (hid(N[j])) continue; const p = G3.project(j); if (!p) continue;
+        if (p[0] < 40 || p[0] > g.clientWidth - 380 || p[1] < 40 || p[1] > g.clientHeight - 90) continue;
+        if (G3.pick(p[0], p[1]) === j && document.elementFromPoint(b.left + p[0], b.top + p[1]) === g) return { x: b.left + p[0], y: b.top + p[1], i: j }; }
+      return null; }, a.i);
     await page.mouse.dblclick(pa.x, pa.y);
     await page.waitForTimeout(300);
     const dbl3 = await page.evaluate(i => ({ concepts: document.body.classList.contains('vc'),
-      h1: (document.querySelector('#main h1') || {}).textContent, want: D[N[i].id].t, sel }), a.i);
-    check(dbl3.concepts && dbl3.h1 === dbl3.want && dbl3.sel === a.i,
+      h1: (document.querySelector('#main h1') || {}).textContent, want: D[N[i].id].t, sel }), pa.i);
+    check(dbl3.concepts && dbl3.h1 === dbl3.want && dbl3.sel === pa.i,
           'a double-click in 3D opens the concept and keeps it selected',
-          'concept view=' + dbl3.concepts + ' page=' + dbl3.h1 + ' selected ' + dbl3.sel + ' of ' + a.i);
+          'concept view=' + dbl3.concepts + ' page=' + dbl3.h1 + ' selected ' + dbl3.sel + ' of ' + pa.i);
     // A window resized while the Concept view shows, then back to 3D.
     await page.setViewportSize({ width: 1200, height: 800 });
     await page.waitForTimeout(250);
@@ -1148,7 +1312,7 @@ const pngPixels = buf => {
     check(bs3.css === 1200 && Math.abs(bs3.backing - bs3.css * bs3.dpr) < 2,
           'a window resized in the Concept view leaves the 3D view drawn at the new width',
           'backing ' + bs3.backing + ' vs ' + Math.round(bs3.css * bs3.dpr) + ' at css ' + bs3.css);
-    check(bs3.sel === a.i && bs3.card !== 'none', 'back in 3D the concept is still selected, with its card',
+    check(bs3.sel === pa.i && bs3.card !== 'none', 'back in 3D the concept is still selected, with its card',
           'selected ' + bs3.sel + ', card ' + bs3.card);
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.waitForTimeout(250);
@@ -1371,8 +1535,21 @@ const pngPixels = buf => {
   else {
   const victim = kbAll.slice().sort()[kbAll.length - 1];
 
+  // The geometry stays fixed when a knowledge base is hidden: the header, the
+  // search bar, the views, the gear, Settings itself and every category chip
+  // keep their place and size. An emptied row or chip goes blank rather than
+  // away.
+  const geo = () => page.evaluate(() => {
+    const r = e => { const b = e.getBoundingClientRect(); return [b.left, b.top, b.width, b.height].map(v => Math.round(v * 2) / 2).join(','); };
+    const out = {};
+    ['top', 'askbar', 'stage', 'bSet', 'setBox', 'gc'].forEach(id => out['#' + id] = r(document.getElementById(id)));
+    document.querySelectorAll('#legend .chip').forEach((c, i) => out['chip ' + i + ' ' + c.querySelector('b').textContent] = r(c));
+    return out;
+  });
+  const moved = (a, b) => Object.keys(a).filter(k => a[k] !== b[k]).map(k => k + ' ' + a[k] + ' -> ' + (b[k] || 'gone'));
+  const geo0 = await geo();
   const before = await page.evaluate(v => ({ items: document.querySelectorAll('.it').length,
-    rows: document.querySelectorAll('#legend .lrow').length,
+    rows: document.querySelectorAll('#legend .lrow:not(.void)').length,
     ked: Object.values(D).filter(c => c.kb === v).length }), victim);
   await page.locator('#kbbar button', { hasText: victim.replace(/_kb$/, '') }).click();
   await page.waitForTimeout(200);
@@ -1380,7 +1557,7 @@ const pngPixels = buf => {
     items: document.querySelectorAll('.it').length,
     kedRows: document.querySelectorAll('.it[data-t^="' + v + '/"]').length,
     kedNodes: N.filter(n => n.kb === v && !hid(n)).length,
-    rows: document.querySelectorAll('#legend .lrow').length,
+    rows: document.querySelectorAll('#legend .lrow:not(.void)').length,
     dot: (document.querySelector('#bSet .dot') || {}).textContent || '',
     open: !document.getElementById('setBox').hidden,
     stored: localStorage.getItem('okf.kbOff') }), victim);
@@ -1388,8 +1565,10 @@ const pngPixels = buf => {
         'hiding a knowledge base in Settings takes it out of the list and the graph',
         before.items + ' -> ' + hid1.items + ' rows, ' + victim + ' rows ' + hid1.kedRows +
         ', nodes drawn ' + hid1.kedNodes);
-  check(hid1.rows === before.rows - 1, 'the categories count only what is showing, and an empty row leaves',
-        before.rows + ' -> ' + hid1.rows + ' category rows');
+  check(hid1.rows === before.rows - 1, 'the categories count only what is showing, and an empty row goes blank',
+        before.rows + ' -> ' + hid1.rows + ' category rows showing');
+  const geo1 = await geo(), mv1 = moved(geo0, geo1);
+  check(mv1.length === 0, 'hiding a knowledge base moves nothing on the screen', mv1.slice(0, 4).join('; ') || Object.keys(geo0).length + ' boxes in place');
   check(hid1.dot === '1', 'the gear says how many knowledge bases are hidden', 'badge=' + JSON.stringify(hid1.dot));
   check(hid1.open, 'a click inside Settings keeps it open');
   await page.reload();
@@ -1429,6 +1608,120 @@ const pngPixels = buf => {
   check(g1 === 'bSet' && g2.hidden && g2.focused !== 'bSet', 'Escape closes Settings and leaves no ring on the gear',
         'focused before=' + (g1 || 'body') + ' closed=' + g2.hidden + ' focused after=' + (g2.focused || 'body'));
   await page.evaluate(() => localStorage.removeItem('okf.kbOff'));
+  await page.reload();
+  await page.waitForTimeout(900);
+
+  // 9b. Settings in j4k's shape, owner's instruction of 27.09.2026, and the
+  // scheduled tasks inside it. The shape is read off the rendered panel: every
+  // control 32px high, every group under an 11px capital title with a rule
+  // above it, About in the first of two columns with the × at the far edge.
+  //
+  // The tasks are fed from a fake Claude app folder through the helper's own
+  // `scheduled()`, so the whole path is exercised — the reading of the app's
+  // files, the missed-run arithmetic and the card — without depending on which
+  // tasks this Mac has or on the helper the owner happens to be running. The
+  // fixture holds a task that ran, one that missed its Monday, and one paused.
+  const os = require('os'), fs = require('fs'), cp = require('child_process');
+  const fake = fs.mkdtempSync(path.join(os.tmpdir(), 'cerebrum-tasks-'));
+  fs.mkdirSync(path.join(fake, 'acct', 'dev'), { recursive: true });
+  fs.writeFileSync(path.join(fake, 'acct', 'dev', 'scheduled-tasks.json'), JSON.stringify({ scheduledTasks: [
+    { id: 'ran', displayName: 'Weekly ran fine', cronExpression: '0 9 * * 0', enabled: true,
+      createdAt: Date.parse('2026-09-01T00:00:00Z'), lastRunAt: '2026-09-27T07:05:00Z' },
+    { id: 'miss', displayName: 'Monday report', cronExpression: '0 7 * * 1', enabled: true,
+      createdAt: Date.parse('2026-09-01T00:00:00Z'), lastRunAt: '2026-09-21T05:03:00Z' },
+    { id: 'off', displayName: 'Paused one', cronExpression: '0 7 * * 1', enabled: false,
+      createdAt: Date.parse('2026-09-01T00:00:00Z') } ] }));
+  fs.writeFileSync(path.join(fake, 'acct', 'dev', 'local_1.json'), JSON.stringify({ scheduledTaskId: 'ran',
+    createdAt: Date.parse('2026-09-27T07:05:00Z'), lastActivityAt: Date.parse('2026-09-27T07:20:00Z'),
+    postTurnSummary: { status_category: 'completed', status_detail: '4 pages changed', needs_action: '' } }));
+  const fixture = cp.execFileSync('python3', ['-c',
+    'import importlib.util,json,sys,datetime\n' +
+    's=importlib.util.spec_from_file_location("vs",sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\n' +
+    'print(json.dumps(m.scheduled(root=sys.argv[2],now=datetime.datetime(2026,9,28,12,0))))',
+    path.join(__dirname, 'viewer-server.py'), fake]).toString();
+  fs.rmSync(fake, { recursive: true, force: true });
+  const cors = { 'Access-Control-Allow-Origin': 'null', 'content-type': 'application/json' };
+  let tasksAnswer = { status: 200, body: fixture };
+  await page.route('http://127.0.0.1:8760/health', r => r.fulfill({ status: 200, headers: cors,
+    body: JSON.stringify({ ok: true, busy: false, login: { state: 'ok' }, reports: 0 }) }));
+  await page.route('http://127.0.0.1:8760/tasks', r => r.fulfill({ status: tasksAnswer.status, headers: cors, body: tasksAnswer.body }));
+  await page.route('http://127.0.0.1:8760/models', r => r.fulfill({ status: 200, headers: cors, body: JSON.stringify({
+    models: [{ id: 'claude-opus-5-5', label: 'Opus 5.5', provider: 'anthropic', effort: true, agentic: true, installed: true, note: '' },
+             { id: 'local:q', label: 'Qwen3 30B (local)', provider: 'local', effort: false, installed: true, onDisk: 17e9, bytes: 17e9, fits: true },
+             { id: 'local:g', label: 'Gemma 3 27B (local)', provider: 'local', effort: false, installed: false, bytes: 15e9, fits: true }],
+    efforts: ['low', 'medium', 'high', 'xhigh', 'max'], default: 'claude-opus-5-5', defaultEffort: 'high', free: 9e10, mlx: true }) }));
+  await page.click('#bSet');
+  await page.waitForTimeout(700);
+  const j4k = await page.evaluate(() => {
+    const box = document.getElementById('setBox'), br = box.getBoundingClientRect();
+    const ctl = [...box.querySelectorAll('button,select')].filter(e => e.getBoundingClientRect().height > 0);
+    const titles = [...box.querySelectorAll('.stt')].map(t => { const cs = getComputedStyle(t);
+      return { t: t.firstChild.textContent, px: cs.fontSize, up: cs.textTransform, rule: cs.borderTopStyle }; });
+    const a = document.getElementById('setAbout').getBoundingClientRect(), x = document.getElementById('setX').getBoundingClientRect();
+    const cards = [...document.querySelectorAll('#tasks .tr')].map(c => ({ id: c.dataset.t, cls: c.className,
+      st: c.querySelector('.st').textContent, tn: c.querySelector('.tn').textContent }));
+    // One width: every row starts at the panel's left padding and ends at its
+    // right, the About row by its two ends. One surface: every control and
+    // card that is not a knowledge-base button wears the same background. One
+    // title: room under its hairline and room above it.
+    const pad = parseFloat(getComputedStyle(box).paddingLeft), L = br.left + 1 + pad, R = br.right - 1 - pad;
+    const rows = [...box.querySelectorAll(':scope > :not(#setAbout):not(#setX), #bModel, #bWeights .wr, #tasks .tr, #kbbar')]
+      .filter(e => e.getBoundingClientRect().height > 0);
+    const off = rows.filter(e => { const r = e.getBoundingClientRect(); return Math.abs(r.left - L) > 1 || Math.abs(r.right - R) > 1; })
+      .map(e => (e.id || e.className) + ' ' + Math.round(e.getBoundingClientRect().left - L) + '/' + Math.round(R - e.getBoundingClientRect().right));
+    if (Math.abs(a.left - L) > 1) off.push('setAbout left'); if (Math.abs(x.right - R) > 1) off.push('setX right');
+    const bgs = [...box.querySelectorAll('button, select, #bWeights .wr, #tasks .tr')].filter(e => !e.closest('#kbbar'))
+      .map(e => getComputedStyle(e).backgroundColor);
+    const gaps = [...box.querySelectorAll('.stt')].map(t => { const prev = t.previousElementSibling.getBoundingClientRect();
+      return { above: Math.round(t.getBoundingClientRect().top - prev.bottom), below: parseFloat(getComputedStyle(t).paddingTop) }; });
+    return { heights: [...new Set(ctl.map(e => Math.round(e.getBoundingClientRect().height)))], n: ctl.length, titles,
+      rowsN: rows.length, off, bgs: [...new Set(bgs)], bgN: bgs.length, gaps,
+      aboutLeft: Math.abs(a.left - L) <= 1 && a.right < x.left, xRight: Math.abs(x.right - R) <= 1,
+      build: document.getElementById('setBuild').textContent, cards,
+      hint: document.getElementById('tasksHint').textContent };
+  });
+  check(j4k.n > 4 && j4k.heights.length === 1 && j4k.heights[0] === 32,
+        'every control in Settings is 32px high, as in j4k\'s menu', j4k.n + ' controls, heights ' + j4k.heights.join(', '));
+  check(j4k.titles.length === 3 && j4k.titles.every(t => t.px === '11px' && t.up === 'uppercase' && t.rule === 'solid'),
+        'each group sits under an 11px capital title with a rule above it',
+        j4k.titles.map(t => t.t + ' ' + t.px + ' ' + t.up + ' ' + t.rule).join('; '));
+  check(j4k.rowsN > 12 && j4k.off.length === 0, 'every row in Settings runs from the same left edge to the same right edge',
+        j4k.rowsN + ' rows; off the edges: ' + (j4k.off.join(', ') || 'none'));
+  check(j4k.bgN > 8 && j4k.bgs.length === 1, 'every control and card in Settings wears one background',
+        j4k.bgN + ' elements, backgrounds ' + j4k.bgs.join(' | '));
+  check(j4k.gaps.length === 3 && j4k.gaps.every(g => g.above >= 12 && g.below >= 10),
+        'each title has room above its hairline and below it', j4k.gaps.map(g => g.above + 'px above, ' + g.below + 'px below').join('; '));
+  check(j4k.aboutLeft && j4k.xRight && /^Build (\d+|\?) · /.test(j4k.build),
+        'About starts the first row, the × ends it, and the build line closes the panel',
+        'about left=' + j4k.aboutLeft + ' × right=' + j4k.xRight + ' "' + j4k.build + '"');
+  const card = id => j4k.cards.find(c => c.id === id) || { cls: '', st: '', tn: '' };
+  check(j4k.cards.length === 3 && /\bok\b/.test(card('ran').cls) && /^Done/.test(card('ran').st) &&
+        /Sundays 09:00/.test(card('ran').tn) && !/Weekly/.test(card('ran').tn),
+        'Settings shows each scheduled task, with its schedule and how its last run ended',
+        j4k.cards.map(c => c.id + ': ' + c.cls + ' "' + c.st + '"').join('; '));
+  check(/\bbad\b/.test(card('miss').cls) && /^Missed .*07:00 · last ran .*07:03/.test(card('miss').st) && /last ran/.test(card('miss').st),
+        'a run that never came is shown as missed, in red, with the last one that did',
+        '"' + card('miss').st + '" ' + card('miss').cls);
+  check(/^Paused/.test(card('off').st) && /Claude app/.test(j4k.hint),
+        'a paused task says so, and the hint names where the status comes from', '"' + card('off').st + '"; "' + j4k.hint + '"');
+  // A helper started before /tasks existed answers 404. That must read as
+  // "restart the helper", never as a vault with no tasks.
+  tasksAnswer = { status: 404, body: JSON.stringify({ error: 'no such endpoint' }) };
+  await page.evaluate(() => loadTasks());
+  await page.waitForTimeout(300);
+  const old = await page.evaluate(() => ({ n: document.querySelectorAll('#tasks .tr').length,
+    hint: document.getElementById('tasksHint').textContent }));
+  check(old.n === 0 && /older than this page\. Restart it/.test(old.hint),
+        'an old helper is named as the reason, not shown as an empty list', old.n + ' cards; "' + old.hint + '"');
+  await page.click('#setAbout');
+  await page.waitForTimeout(200);
+  const ab = await page.evaluate(() => ({ about: document.getElementById('aboutWrap').classList.contains('on'),
+    set: document.getElementById('setBox').hidden }));
+  check(ab.about && ab.set, 'About in Settings closes Settings and opens About', 'about=' + ab.about + ' settings hidden=' + ab.set);
+  await page.keyboard.press('Escape');
+  await page.unroute('http://127.0.0.1:8760/health');
+  await page.unroute('http://127.0.0.1:8760/tasks');
+  await page.unroute('http://127.0.0.1:8760/models');
   await page.reload();
   await page.waitForTimeout(900);
 
@@ -1619,23 +1912,24 @@ const pngPixels = buf => {
         models: opts.length,
         locals: opts.filter(o => o.value.startsWith('local:')).length,
         picked: g('bModel').value,
-        efforts: [...g('bEffort').options].map(o => o.value).join(','),
-        effortDisabled: g('bEffort').disabled,
+        effortControl: !!document.querySelector('#setBox select:not(#bModel)'),
         where: g('brainWhere').textContent.trim(),
-        badge: g('brainN').textContent.trim(),
         rows: document.querySelectorAll('#bWeights .wr').length
       };
     });
+    // The effort selector left on 27.09.2026, on the owner's instruction:
+    // the helper's own level, high, answers every question.
     check(brain.models >= 5 && brain.locals === 3 &&
-          brain.efforts === 'low,medium,high,xhigh,max' &&
-          brain.picked.startsWith('claude-') && !brain.effortDisabled,
-          'Settings carries a Brain with every model and every effort level',
-          brain.models + ' model(s), ' + brain.locals + ' local; efforts ' +
-          brain.efforts + '; picked ' + brain.picked);
-    check(brain.rows === 3 && !!brain.badge && /Anthropic/.test(brain.where),
-          'and a weights row per local model, with the badge and the where-line',
-          brain.rows + ' row(s), badge "' + brain.badge + '", "' +
-          brain.where.slice(0, 60) + '…"');
+          brain.picked.startsWith('claude-') && !brain.effortControl,
+          'Settings carries a Brain with every model, and no effort control',
+          brain.models + ' model(s), ' + brain.locals + ' local; picked ' +
+          brain.picked + '; effort control ' + brain.effortControl);
+    // The badge naming the model beside the Brain title left on 27.09.2026
+    // with j4k's shape: the select already names it, and j4k removed its own
+    // twin of that for the same reason — two controls reporting one fact.
+    check(brain.rows === 3 && /Anthropic/.test(brain.where),
+          'and a weights row per local model, and the where-line',
+          brain.rows + ' row(s), "' + brain.where.slice(0, 60) + '…"');
 
     // **Proving this one by removing the confirmation deletes the model.** Done
     // on 16.09.2026 and it cost seventeen gigabytes of Qwen weights and the
@@ -1720,19 +2014,19 @@ const pngPixels = buf => {
           Math.round(statvfs / 1e9) + ' GB, with ' + snaps + ' purgeable ' +
           'snapshot(s); hint "' + disk.hint.slice(0, 60) + '…"');
 
-    // Haiku takes no effort level at all — the API rejects the flag — so the
-    // row greys rather than staying live and sending something that fails.
-    const haiku = await page.evaluate(async () => {
-      const m = document.getElementById('bModel');
-      m.value = 'claude-haiku-4-5';
-      m.dispatchEvent(new Event('change'));
-      await new Promise(r => setTimeout(r, 700));
-      return {disabled: document.getElementById('bEffort').disabled,
-              title: document.getElementById('bEffort').title};
+    // No request carries an effort level since 27.09.2026, so the helper's
+    // own, high, applies. A level the old selector stored must not ride along
+    // unseen: it is cleared on load and never sent.
+    const eff = await page.evaluate(async () => {
+      localStorage.setItem('okf.effort', 'max');
+      localStorage.setItem('okf.model', 'claude-opus-5-5');
+      loadPick();
+      return {stored: localStorage.getItem('okf.effort'), sent: JSON.stringify(brainBody()),
+              where: document.getElementById('brainWhere').textContent};
     });
-    check(haiku.disabled && /no effort/i.test(haiku.title),
-          'picking Haiku greys the effort level, which it does not take',
-          'disabled=' + haiku.disabled + ' title="' + haiku.title + '"');
+    check(eff.stored === null && /claude-opus-5-5/.test(eff.sent) && !/effort/.test(eff.sent) && /at high effort/.test(eff.where),
+          'no question carries an effort level, and the where-line says the helper answers at high',
+          'stored ' + eff.stored + ', body ' + eff.sent + ', "' + eff.where.slice(0, 70) + '"');
 
     // The one thing this window must say out loud: a local model is a
     // completion and Ask Claude is an agent. Picking one here means the Ask
@@ -1863,6 +2157,54 @@ const pngPixels = buf => {
     check(st.fs === null, 'and the retired full-screen flag is cleared from the store', 'okf.fs=' + st.fs);
   }
   await page.evaluate(() => localStorage.removeItem('okf.kbOff'));
+
+  // The address names a view and a search, 27.09.2026, for GLaDOS, the owner's
+  // voice assistant: "switch to concepts, 2D view and 3D view", "search for
+  // something using the search bar (not ask for Claude)", "this should work in all
+  // views". `#view=…&q=…` applies on load and on every change of the fragment, which
+  // is how she steers the viewer's tab without reloading it; a part the fragment
+  // does not name is left as it is, an empty q clears the search, and the search is
+  // always Search, never Ask. She looks for the meta tag before telling anyone the
+  // page followed her.
+  // A word from a title that some concept does not carry, so the search it
+  // makes narrows the list rather than leaving it whole.
+  const word = await page.evaluate(() => {
+    const hay = Object.keys(D).map(id => (D[id].t + ' ' + D[id].d + ' ' + D[id].tags.join(' ') + ' ' + id).toLowerCase());
+    return Object.values(D).flatMap(c => c.t.split(/\s+/)).filter(w => /^[A-Za-z]{3,}$/.test(w))
+      .find(w => hay.some(h => !h.includes(w.toLowerCase())));
+  });
+  const addr = async hash => {
+    await page.evaluate(h => { location.hash = h; }, hash);
+    await page.waitForTimeout(400);
+    return page.evaluate(() => ({
+      view: ['vg', 'vc', 'v3'].filter(c => document.body.classList.contains(c)).join(','),
+      q: document.getElementById('q').value,
+      search: document.getElementById('mSearch').getAttribute('aria-pressed'),
+      rows: document.querySelectorAll('#tree .it').length, total: Object.keys(D).length,
+    }));
+  };
+  await page.goto('about:blank');
+  await page.goto('file://' + FILE + '#view=3d&q=' + encodeURIComponent(word) + '&n=1');
+  await page.waitForTimeout(900);
+  const onLoad = await page.evaluate(() => ({
+    view: ['vg', 'vc', 'v3'].filter(c => document.body.classList.contains(c)).join(','),
+    q: document.getElementById('q').value, search: document.getElementById('mSearch').getAttribute('aria-pressed'),
+    rows: document.querySelectorAll('#tree .it').length, total: Object.keys(D).length,
+    meta: document.querySelector('meta[name="cerebrum-address"]')?.content ?? null,
+  }));
+  check(onLoad.meta === 'view q', 'the page says it reads its address', String(onLoad.meta));
+  check(onLoad.view === 'v3' && onLoad.q === word && onLoad.search === 'true' && onLoad.rows > 0 && onLoad.rows < onLoad.total,
+        'an address opens the page on its view, searching for its q',
+        'view=' + onLoad.view + ' q=' + JSON.stringify(onLoad.q) + ' search=' + onLoad.search + ' ' + onLoad.rows + ' of ' + onLoad.total);
+  const toConcepts = await addr('view=concepts&n=2');
+  check(toConcepts.view === 'vc' && toConcepts.q === word && toConcepts.rows === onLoad.rows,
+        'a changed address switches the view and leaves the search it does not name',
+        'view=' + toConcepts.view + ' q=' + JSON.stringify(toConcepts.q) + ' ' + toConcepts.rows + ' rows');
+  const toGraph = await addr('view=2d&q=&n=3');
+  check(toGraph.view === 'vg' && toGraph.q === '' && toGraph.rows === toGraph.total,
+        '2d is the Graph view, and an empty q clears the search',
+        'view=' + toGraph.view + ' q=' + JSON.stringify(toGraph.q) + ' ' + toGraph.rows + ' of ' + toGraph.total);
+  check(jsErrors.length === 0, 'and no JS error on the way', jsErrors[0]);
 
   await browser.close();
   console.log(failures ? 'viewer-check: ' + failures + ' FAILURE(S)' : 'viewer-check: green');

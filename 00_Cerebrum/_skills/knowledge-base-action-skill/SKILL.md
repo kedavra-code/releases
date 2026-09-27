@@ -1,6 +1,6 @@
 ---
 name: knowledge-base-action-skill
-description: "Walks the open action items across every knowledge base in the 00_Cerebrum vault and turns them into applied changes. Gathers and reconciles the item tables, groups items into decisions, interviews the owner one decision at a time using clickable options, records every answer verbatim as testimony, and only then implements everything in one pass, closing with the full regeneration and a green verify.py. Use whenever the user says \"action the health checks\", \"action the latest health check\", \"action the action items\", \"walk me through the open items\", or asks what is still open across the vault."
+description: "Walks the open action items across every live knowledge base in the 00_Cerebrum vault and turns them into applied changes. Gathers and reconciles the item tables, groups items into decisions, interviews the owner one decision at a time using clickable options, records every answer verbatim as testimony, and only then implements everything in one pass, closing with the full regeneration and a green verify.py. Use whenever the user says \"action the health checks\", \"action the latest health check\", \"action the action items\", \"walk me through the open items\", or asks what is still open across the vault."
 ---
 
 # Action the health checks
@@ -22,7 +22,9 @@ These are standing instructions, not defaults to re-derive each time.
 
 ### 1. Gather, and reconcile before you count
 
-Read the `# Action items` table in every `<KB>/Wiki/questions.md`. That table is the only place an item's state lives; `_ACTION-ITEMS.md` is generated and must never be read as a source.
+Read the `# Action items` table in every live `<KB>/Wiki/questions.md`. That table is the only place an item's state lives; `_ACTION-ITEMS.md` is generated and must never be read as a source.
+
+**Frozen knowledge bases are left out**, owner's instruction of 27.09.2026: a base whose `memory.md` declares it frozen is walked only when the owner names it. Its items stay `deferred` until then, with that as the reopening condition.
 
 Before deciding what is open, check each item against reality rather than against its own row. **Items go stale in both directions**: on 22.08.2026 two were still marked `open` after the same session had implemented them, and one marked `open` had been fixed by an unrelated repair earlier the same evening. Verify, then count.
 

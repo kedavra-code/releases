@@ -1154,7 +1154,11 @@ def audit(kb):
                 if '__' in x and not os.path.basename(x).startswith('de__'))
             if cats:
                 cat = cats.most_common(1)[0][0]
-                real = len(glob.glob(os.path.join(root, 'Raw', cat + '__*.md')))
+                # A later version of a page, `<name>--YYYY-MM-DD.md` from the
+                # weekly mirror, is the same page and not another one. Counted
+                # in, the first run of 27.09.2026 put nine categories out.
+                real = len([f for f in glob.glob(os.path.join(root, 'Raw', cat + '__*.md'))
+                            if not re.search(r'--\d{4}-\d{2}-\d{2}\.md$', f)])
                 for pm in re.finditer(
                         r'(?i)(?:`/en/help/[a-z0-9-]+` is |\bat )?\b(%s) pages'
                         r'(?= carry an article|,| and|\b)' % PAGENUM, body):
@@ -1766,6 +1770,101 @@ def audit(kb):
                          'disproved; read them first: python3 '
                          '_scripts/stale-claims.py %s' % (sc, kb)))
 
+    # Body content stranded after the footnote definitions, or a section
+    # filed under `# Related`, which is meant to be the last thing before
+    # them. A compile that appends at the bottom of a concept lands below the
+    # footnotes; AI-2026-09-20-1 moved 594 such lines on 21.09.2026 and the
+    # class was back by 27.09.2026 in a shape nothing saw (Alpha_kb
+    # AI-2026-09-27-2). A gauge, owner's decision 2 of 27.09.2026: the repair
+    # is a reading, since the stranded text may belong in any section.
+    _strand = []
+    for _f, (_fm, _body) in concepts.items():
+        if os.path.basename(_f) == 'questions.md':
+            continue
+        _L = _body.split('\n')
+        _defs = [i for i, l in enumerate(_L) if re.match(r'^\[\^[^\]]+\]:', l)]
+        _hit = bool(_defs) and any(re.match(r'^(#|\||- |\* )', l)
+                                   for l in _L[_defs[-1] + 1:])
+        _rel = [i for i, l in enumerate(_L) if re.match(r'^#+\s+Related\s*$', l)]
+        if _rel:
+            _stop = _defs[0] if _defs else len(_L)
+            # Headings that belong after it by the house shape: the footnotes,
+            # the pending-attachments table, open questions, and a note on the
+            # concept's own provenance or dating. Any other heading there is a
+            # body section filed in the wrong place. Calibrated 27.09.2026
+            # across all six bundles: without these the gauge counted 143,
+            # every hit read was one of them, and 8 real sections remained.
+            _hit = _hit or any(re.match(r'^#', l) and not re.match(
+                r'^#+\s+(Footnotes|Pending attachments|Open questions|Sources '
+                r'note|Provenance|Notes on dating)\b', l)
+                for l in _L[_rel[-1] + 1:_stop])
+        if _hit:
+            _strand.append(os.path.relpath(_f, root))
+    if _strand:
+        findings.append(('(bundle)',
+                         '%d concept(s) carry body content after their '
+                         'footnote definitions or a section under # Related; '
+                         'first: %s' % (len(_strand), ', '.join(sorted(_strand)[:3]))))
+
+    # A description whose newest year is two or more years behind the newest
+    # source the concept cites: written in an early pass and never widened as
+    # the body grew. 57 were rewritten on 16.09.2026 and about 40 had drifted
+    # again by 20.09.2026 (Alpha_kb AI-2026-09-20-3). A gauge, owner's decision
+    # 2 of 27.09.2026: a description may rightly name only its subject's own
+    # years, so a reading decides.
+    _narrow = []
+    for _f, (_fm, _body) in concepts.items():
+        _fm = _fm or {}
+        # A Decision is dated by the choice it records; its later sources
+        # are the aftermath, so its description rightly names the earlier
+        # year. Calibrated 27.09.2026: every Decision hit read was of that kind.
+        if str(_fm.get('status')) == 'deprecated' or _fm.get('type') == 'Decision':
+            continue
+        _dy = [int(y) for y in re.findall(r'\b(20[0-3]\d)\b', str(_fm.get('description') or ''))]
+        _sy = []
+        for _s in (_fm.get('sources') or []):
+            if isinstance(_s, dict):
+                _m = re.match(r'(20[0-3]\d)-', str(_s.get('last_modified') or ''))
+                if _m:
+                    _sy.append(int(_m.group(1)))
+        if _dy and _sy and max(_sy) - max(_dy) >= 2:
+            _narrow.append(os.path.relpath(_f, root))
+    if _narrow:
+        findings.append(('(bundle)',
+                         '%d description(s) name a newest year two or more '
+                         'behind the newest source; first: %s'
+                         % (len(_narrow), ', '.join(sorted(_narrow)[:3]))))
+
+    # A source stamp older than the last commit of the vault file it names.
+    # Archive layers and Raw/ are left out: they are not the vault's own files
+    # and their dates follow the house rule for pages. What remains is a
+    # script, a skill, a CLAUDE.md or a report the concept describes, where a
+    # later commit means the concept may describe an older version. It came
+    # back within seven days in Zeta_kb (AI-2026-09-27-1). A gauge, owner's
+    # decision 2 of 27.09.2026: a later commit need not change what the
+    # concept cites it for.
+    _behind = []
+    for _f, (_fm, _body) in concepts.items():
+        for _s in ((_fm or {}).get('sources') or []):
+            if not isinstance(_s, dict) or not _s.get('resource'):
+                continue
+            _r = str(_s['resource'])
+            if '/OneNote/' in _r or '/Raw/' in _r or _r.startswith('Raw/'):
+                continue
+            _lm = re.match(r'(\d{4}-\d{2}-\d{2})$', str(_s.get('last_modified') or ''))
+            if not _lm:
+                continue
+            _t = os.path.normpath(os.path.join(os.path.dirname(_f), _r))
+            _c = _commit_date(_t)
+            if _c and _c > _lm.group(1):
+                _behind.append('%s -> %s' % (os.path.relpath(_f, root),
+                                             os.path.relpath(_t, VAULT)))
+    if _behind:
+        findings.append(('(bundle)',
+                         '%d source stamp(s) name a date older than the last '
+                         'commit of the vault file they cite; re-read the file '
+                         'and restamp; first: %s' % (len(_behind), _behind[0])))
+
     if absent_cites:
         findings.append(('(bundle)',
                          'archive layer absent: %d citations into OneNote/ '
@@ -1774,6 +1873,28 @@ def audit(kb):
                          'they are unverifiable until it is back'
                          % absent_cites))
     return len(concepts), citations, defects, findings
+
+
+_COMMIT_DATES = {}
+
+
+def _commit_date(path):
+    """The date of the last commit touching a tracked file, or None.
+
+    Cached per path: a bundle names the same few vault files many times."""
+    if path in _COMMIT_DATES:
+        return _COMMIT_DATES[path]
+    d = None
+    if os.path.isfile(path) and path.startswith(VAULT):
+        try:
+            out = subprocess.run(['git', '--no-optional-locks', 'log', '-1',
+                                  '--format=%cs', '--', path], cwd=VAULT,
+                                 capture_output=True, text=True, timeout=20)
+            d = out.stdout.strip() or None
+        except Exception:                                  # noqa: BLE001
+            d = None
+    _COMMIT_DATES[path] = d
+    return d
 
 
 def vault_assertions():
@@ -1935,6 +2056,15 @@ def repo_hygiene():
             defects.append((rel, 'a snapshot file is git-tracked; snapshots '
                                  'are derived from the gitignored archive '
                                  'layers and must not enter the repository'))
+    # Meeting notes. scripta began writing `Meetings/` at the vault root on
+    # 26.09.2026, each note carrying a full transcript of named colleagues,
+    # and the folder sat unignored until the session that found it: one
+    # `sync.sh` from GitHub. Source material, the same class as `Raw/`.
+    for rel in tracked:
+        if rel.startswith('Meetings/'):
+            defects.append((rel, 'a meeting note is git-tracked; Meetings/ is '
+                                 'source material with full transcripts and '
+                                 'must not enter the repository'))
     # Teams join codes. The concept guard of 14.09.2026 kept them out of the
     # bundles; six tracked compile handbacks still carried them until the
     # owner's ruling of 15.09.2026 (Alpha_kb AI-2026-09-14-1), because a concept
@@ -2177,6 +2307,10 @@ def dead_kb_paths():
 AUDIT_DIR = 'HealthChecks'
 # A report's German version, same file name one folder deeper.
 DE_DIR = 'de'
+# The knowledge base that holds the vault's own reports, such as 'Tools_kb':
+# a question report scoped `vault` is compiled into it and may be cited from
+# it. None until you name one, and then no concept may cite a report.
+VAULT_REPORT_KB = None
 
 
 def reports_register():
@@ -2273,6 +2407,121 @@ def reports_register():
         if not os.path.isfile(os.path.join(ddir, name)):
             out.append((os.path.join('Outputs', name),
                         'no German version at Outputs/%s/%s' % (DE_DIR, name)))
+
+    # A report scoped `vault` is about the vault itself: its tools, a model or
+    # program tested for it, a measurement of its own corpus. Such a report
+    # had no home: it concerned no knowledge base, a concept could not cite
+    # it, and the tests it recorded were the only record once their bench
+    # files were deleted. Of seven on file one day, one was promoted, three
+    # partly, one set aside as `none` and two stood at `pending review` for
+    # four days. So where VAULT_REPORT_KB names a home, a `vault` question row
+    # is decided only when its Promotion names a concept there, and `none` is
+    # not an outcome it can have.
+    vault_rows = set()
+    for row in re.finditer(r'^\|\s*20\d\d-\d\d-\d\d\s*\|([^\n]*)$', text, re.M):
+        cells = [c.strip() for c in row.group(1).split('|')]
+        if len(cells) < 5 or 'vault' not in cells[0].lower():
+            continue
+        link = re.search(r'\]\(([^)]+\.md)\)', cells[2])
+        if not link or cells[1].lower().startswith('audit'):
+            continue
+        vault_rows.add(link.group(1))
+        if not VAULT_REPORT_KB:
+            continue
+        promo = cells[4].lstrip('*').lower()
+        if promo.startswith('none'):
+            out.append(('Outputs/_REPORTS.md', '%s is scoped vault and set to '
+                        'none; a vault report is compiled into %s'
+                        % (link.group(1), VAULT_REPORT_KB)))
+        elif promo.startswith(('promoted', 'partial')) \
+                and VAULT_REPORT_KB + '/' not in cells[4]:
+            out.append(('Outputs/_REPORTS.md', '%s is scoped vault and its '
+                        'Promotion names no %s concept'
+                        % (link.group(1), VAULT_REPORT_KB)))
+    # A frozen knowledge base is left alone by "compile all kb", owner's
+    # instruction of 27.09.2026, so a report whose scope names nothing but
+    # frozen bases has no step that would ever decide it. `pending review` on
+    # such a row is a question nobody will answer; it is `none — frozen base`.
+    # Which bases are frozen is read from the Current state table of the vault
+    # CLAUDE.md, so freezing a third one needs no change here.
+    frozen = set()
+    try:
+        for m in re.finditer(r'^\|\s*`(\w+)_kb`\s*\|[^|\n]*\|\s*frozen\s*\|',
+                             open(os.path.join(VAULT, 'CLAUDE.md'),
+                                  encoding='utf-8').read(), re.M):
+            frozen.add(m.group(1).upper())
+    except OSError:
+        pass
+    for row in re.finditer(r'^\|\s*20\d\d-\d\d-\d\d\s*\|([^\n]*)$', text, re.M):
+        cells = [c.strip() for c in row.group(1).split('|')]
+        if len(cells) < 5 or not frozen:
+            continue
+        scope = {t.replace(' ', '').upper()
+                 for t in cells[0].split(',') if t.strip()}
+        link = re.search(r'\]\(([^)]+\.md)\)', cells[2])
+        if link and scope and scope <= frozen \
+                and cells[4].lstrip('*').lower().startswith('pending review'):
+            out.append(('Outputs/_REPORTS.md', '%s concerns only frozen bases '
+                        'and waits at pending review; no run will decide it. '
+                        'Set it to none — frozen base' % link.group(1)))
+    # And only VAULT_REPORT_KB may cite a report, and only a `vault` one:
+    # every other bundle cites the pages a report read, never the report.
+    for kb in sorted(os.listdir(VAULT)):
+        wiki = os.path.join(VAULT, kb, 'Wiki')
+        if not kb.endswith('_kb') or not os.path.isdir(wiki):
+            continue
+        for root, dirs, files in os.walk(wiki):
+            dirs[:] = [x for x in dirs if not x.startswith('_')]
+            for f in files:
+                if not f.endswith('.md'):
+                    continue
+                p = os.path.join(root, f)
+                for m in re.finditer(r'^\s*resource:\s*(\S*Outputs/(\S+\.md))\s*$',
+                                     open(p, encoding='utf-8').read(), re.M):
+                    rel = os.path.relpath(p, VAULT)
+                    if kb != VAULT_REPORT_KB:
+                        out.append((rel, 'cites the report %s; %s' % (
+                            m.group(2), 'only %s may cite a report' % VAULT_REPORT_KB
+                            if VAULT_REPORT_KB else 'a concept cites the pages a '
+                            'report read, never the report')))
+                    elif m.group(2) not in vault_rows:
+                        out.append((rel, 'cites %s, which is not a vault '
+                                         'question report' % m.group(2)))
+    return out
+
+
+def raw_register():
+    """Every file a `Raw/_INGESTED.md` row names is where the row says.
+
+    A row's first cell is the file, read relative to that `Raw/`. Found
+    27.09.2026: seventeen rows across four bases named testimony files as if
+    they sat in `Raw/`, when every one lives in `_testimony/` at the vault
+    root, where the split of 15.08.2026 put them. A reader following the
+    register found nothing, and nothing said so. A row may name a file
+    elsewhere by giving the path, `../../_testimony/<file>`.
+
+    Skipped where the sources are not on this machine at all, which is what a
+    fresh clone looks like: `Raw/` and `_testimony/` are both gitignored, and
+    every row would then fail for a reason that is not a fault in the
+    register. A `Raw/` holding only its register is not that case: two frozen
+    bases have exactly that, with every row naming testimony.
+    """
+    out = []
+    for kb in sorted(os.listdir(VAULT)):
+        raw = os.path.join(VAULT, kb, 'Raw')
+        reg = os.path.join(raw, '_INGESTED.md')
+        if not kb.endswith('_kb') or not os.path.isfile(reg):
+            continue
+        if not os.path.isdir(os.path.join(VAULT, '_testimony')) and not [
+                n for n in os.listdir(raw) if n not in ('_INGESTED.md', '.DS_Store')]:
+            continue
+        text = open(reg, encoding='utf-8').read()
+        m = re.search(r'^## Raw/?.*?$(.*?)(?=^## |\Z)', text, re.M | re.S)
+        for row in re.finditer(r'^\| `([^`]+)`', m.group(1) if m else text, re.M):
+            if not os.path.exists(os.path.normpath(os.path.join(raw, row.group(1)))):
+                out.append((os.path.join(kb, 'Raw', '_INGESTED.md'),
+                            'row names %s, which is not in Raw/ or at the '
+                            'path given' % row.group(1)))
     return out
 
 
@@ -2291,7 +2540,7 @@ def main():
     today = datetime.date.today().isoformat()
     if not sys.argv[1:]:
         vd = (vault_audit() + repo_hygiene() + reports_register()
-              + packer_dedup())
+              + raw_register() + packer_dedup())
         print('== 00_Cerebrum (vault): %d defects' % len(vd))
         for rel, msg in vd:
             print('  DEFECT  %s: %s' % (rel, msg))

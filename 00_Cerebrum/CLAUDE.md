@@ -20,7 +20,7 @@ The vault is a folder of plain files, and is usually opened as an Obsidian vault
 
 **A frozen knowledge base is a different object from a live one**, and each `memory.md` says which kind it is in its first screen.
 
-- **Frozen**: the archive is complete, there is no ingest cadence and no compile queue, `stale_after` is meaningless, and **a run that changes anything under it is a mistake rather than an update**. The legitimate work is correcting a concept, confirming one so it can leave `draft`, re-reading a thin scope, answering questions, and writing in a checked report finding.
+- **Frozen**: the archive is complete, there is no ingest cadence and no compile queue, `stale_after` is meaningless, and **a run that changes anything under it is a mistake rather than an update**. **The plural runs leave it alone**: "compile all kb", "run the health checks" and the action skill skip it. It is still answered from, `verify.py` still scans it on every commit, and a DEFECT there is fixed where it stands. Anything more, such as correcting a concept, confirming one or auditing it, happens only when the owner names the base.
 - **Live**: new material arrives, **the coverage table is a queue rather than a record**, and concepts can go out of date while their sources stay correct.
 
 **Knowledge bases are independent.** Each has its own focus, sources, and rules, and **they don't share data unless you explicitly cross-reference them**.
@@ -315,9 +315,11 @@ Naming: `YYYY-MM-DD_query-slug.md`, kebab-case slug, lowercase. Where a report c
 
 **Skip the report only** when the owner says "don't file this" or "just answer in chat". The default is always file.
 
-**Promotion: a question report's findings are written into the Wiki without asking, as the last step of "compile all kb".** Promotion means rewriting the findings as proper OKF concepts or sections, with full frontmatter and with `sources` naming the pages the report read — **never the report itself**. It is not copying the file across.
+**Promotion: a question report's findings are written into the Wiki without asking, as the last step of "compile all kb".** Promotion means rewriting the findings as proper OKF concepts or sections, with full frontmatter and with `sources` naming the pages the report read — **never the report itself**, with one exception: a `vault` report cited from the knowledge base that holds the vault's own reports, as below. It is not copying the file across.
 
 **A report is a secondary account and can be wrong.** Each finding is checked against its pages first, and one they do not support stays out of the Wiki. **A concept carrying a `verified` key loses it when a finding is written into it**, as `_REPAIR-LEDGER.md` rules for any change to a claim, and the compile's closing summary names each one. The procedure is *Question reports into the Wiki* in `knowledge-base-compile-skill`.
+
+**A report scoped `vault` can be given a home.** It is about the vault itself: its tools, a model or program tested for it, or a measurement of its own corpus. Such a report is often the only record of a test the vault ran, because the bench files are gone and no page holds the numbers. **Name one knowledge base in `VAULT_REPORT_KB` in `_scripts/verify.py`, and a concept there may cite a `vault` report for what the vault itself measured or built**, with `author: process:librarian`. Every other claim, such as what a vendor's page says or what a script does today, is still checked against its own page, and an external page is saved into that base's `Raw/` before it is cited. `verify.py` then fails a concept anywhere else that cites a report, and a `vault` question row whose Promotion is `none`, or is `promoted` or `partial` without naming a concept in that base. Until a base is named, no concept cites a report.
 
 The outcome is recorded in the report's `_REPORTS.md` row. The session that files a report writes `pending review` when the report holds something the Wiki lacks, and `none` when it does not. The compile leaves every `pending review` row at `promoted`, `partial` (with what was left out and why), or `none` (with the reason).
 
@@ -341,11 +343,11 @@ Question-answering offers web search. Concept drafting is the opposite where the
 
 Invoke it by saying "compile the [name] archive" or "continue the compile". **One knowledge base per invocation.** Roughly 200k agent tokens per batch, near enough independent of pack size, so a wave of eight is about 1.6M and a whole archive scales from there. **A full re-read of any archive is a decision to put to the owner, not an assumption to act on.** *(`WHY.md` — The compile skill's numbers)*
 
-**"Compile all kb" ends by writing question reports into the Wiki**, and runs that step even when no archive has anything new. **Every report at `pending review` in `Outputs/_REPORTS.md` is read**, each finding is checked against the pages the report cites, and what holds is written into the knowledge base it concerns. That includes a frozen knowledge base: a report's findings are not archive material, and nothing under its `OneNote/` is touched.
+**"Compile all kb" ends by writing question reports into the Wiki**, and runs that step even when no archive has anything new. **Every report at `pending review` in `Outputs/_REPORTS.md` is read**, each finding is checked against the pages the report cites, and what holds is written into the knowledge base it concerns. A frozen knowledge base is skipped: a report whose findings concern only a frozen base is set to `none — frozen base`, and one that also concerns a live base is written into the live base only.
 
 ## Health check skill
 
-`knowledge-base-health-check-skill` audits each knowledge base, one at a time. It runs on request — "run a health check", **"run the health checks"** for every base in turn, "audit the Alpha KB", "check the wiki". It auto-fixes routine drift and raises judgement calls as action items.
+`knowledge-base-health-check-skill` audits each knowledge base, one at a time. It runs on request — "run a health check", **"run the health checks"** for every live base in turn, a frozen one only when named, "audit the Alpha KB", "check the wiki". It auto-fixes routine drift and raises judgement calls as action items.
 
 **There is one run type, and the full read is defined rather than assumed:**
 
@@ -434,7 +436,7 @@ The vault is a git repository, with a remote as the offsite copy. Use SSH rather
 
 **A bare `git status` is a write.** It refreshes the index and takes `.git/index.lock`, and a bridge VM cannot delete the lock it leaves behind: the next real commit then fails with *Unable to create '.git/index.lock'*. The recovery is `rm .git/index.lock` from the machine itself. `_scripts/git-read.sh` exists so the rule is enforced rather than remembered: it passes `--no-optional-locks` and refuses anything that is not a read.
 
-Ignored by `.gitignore`, by decision: archive layers (read-only bulk exports that never change), `_testimony/`, `Raw/` in every knowledge base (source material — except `Raw/_INGESTED.md`, which stays tracked so the repo records what Raw holds without holding it), `_to_delete/`, `.obsidian/`, `.DS_Store`, and the derived files (`okf-viewer.html`, caches, bytecode). Everything else — bundles, Outputs, docs, scripts, the skill sources — is tracked.
+Ignored by `.gitignore`, by decision: archive layers (read-only bulk exports that never change), `_testimony/`, `Meetings/`, `Raw/` in every knowledge base (source material — except `Raw/_INGESTED.md`, which stays tracked so the repo records what Raw holds without holding it), `_to_delete/`, `.obsidian/`, `.DS_Store`, and the derived files (`00_Cerebrum_viewer.html`, caches, bytecode). Everything else — bundles, Outputs, docs, scripts, the skill sources — is tracked.
 
 **Git therefore does not back Raw up.** A Raw file deleted from disk is gone. Whatever holds your vault — a sync folder, a backup disk — is the only home of the sources, exactly as it is for the archive layers.
 
@@ -468,6 +470,7 @@ Ignored by `.gitignore`, by decision: archive layers (read-only bulk exports tha
 | **`archive-fingerprint.py`** | Fingerprints an archive layer by content and records every citation into it, so a replacement export can be remapped. Answers "which page in the new export is this old page". |
 | **`attachment-register.py`** | Generates `<KB>/_ATTACHMENT-PASS.md` from the `# Pending attachments` tables in the concepts. Generated; never edited by hand. |
 | **`readset.py`** | Derives the health check's read set. See *Health check skill*. |
+| **`meetings.py`** | The queue and the reader for `Meetings/`, where scripta, a meeting transcription program, writes one note per meeting. `python3 _scripts/meetings.py <KB>` lists the notes no concept cites yet; `--read <note>` prints Summary, Decisions, Tasks and Open points and stops before the transcript, **which is never compiled**. |
 | **`check-login.py`** | Reads the command-line login's expiry from the keychain — two numbers, never a token — and says how many days are left. The launcher runs it on every start and offers the sign-in when it is dead. **macOS notifications do not reach this Mac**; the launcher and the viewer's Ask button are the reminders that work. |
 | **`set-icon.sh`** | Puts the vault's mark on the launcher's Finder icon. **Run it again after a fresh clone** — a custom icon lives in the resource fork, which git does not track. |
 | **`sync.sh`** | Commits everything and pushes, **from the Mac only**. Runs `verify.py`, pulls with rebase, then adds, commits and pushes. `sh _scripts/sync.sh "subject" "body"` for a written message, or bare for a generated one. |

@@ -231,7 +231,7 @@ for _i, _k in enumerate(_corners_all):
     ANCHOR[_k] = (0.0, 0.0) if len(_corners_all) == 1 else (math.cos(_a),
                                                             math.sin(_a))
 
-def _layout(members):
+def _layout(members, floor=0.0):
     """Fruchterman-Reingold over one group's own edges. Returns positions and radius."""
     m = len(members)
     sub = {g: j for j, g in enumerate(members)}
@@ -274,6 +274,12 @@ def _layout(members):
     # cluster moves outward on its own and the separations hold by
     # construction rather than by a number kept in step by hand.
     Rt = 26.0 * m ** 0.57 if m > 1 else 26.0
+    # A floor under the rule, for the small bases: at 19 concepts the rule
+    # gave Zeta a radius of 139, its name at the fixed label size covered
+    # the whole cluster, and the owner found it cramped and unimportant
+    # (27.09.2026). The floor is the same for every knowledge base, so no base
+    # is a special case; the centre group passes none.
+    Rt = max(Rt, floor)
 
     # A node with no intra-group edge is placed by repulsion alone, so its
     # position carries no structure: it is simply as far from everything as it
@@ -330,7 +336,8 @@ def _layout(members):
         P[far] *= (cap / rad[far])[:, None]
     return P, Rt, float(np.sqrt((P ** 2).sum(-1)).max()), sub
 
-_lay = {g: _layout(mem) for g, mem in _groups.items()}
+RT_MIN = 330.0
+_lay = {g: _layout(mem, 0.0 if g == '_centre' else RT_MIN) for g, mem in _groups.items()}
 
 # Concepts held at the inner edge of their own group — the side facing the
 # centre of the triangle. Owner's instruction of 22.08.2026, for two Alpha
@@ -451,24 +458,6 @@ for _ in range(400):
 else:
     print('warning: the corners\' halos did not clear in 400 steps', file=sys.stderr)
 
-# The two Alpha knowledge bases hang off Alpha's corner rather than being given
-# corners of their own: they are that side's own bundles, not a fourth and
-# fifth employer, and a corner would claim otherwise. Both stay out of the
-# triangle's separation solve for the reason Zeta does — an extra anchor
-# would inflate the triangle to clear something that is not one of its corners.
-#
-# **They are stacked vertically, one above the other.** Epsilon sits up and to
-# the right of Alpha, on the mirror of Gamma's own offset; Delta sits directly
-# below it, level with Alpha. Owner's instruction of 31.08.2026.
-#
-# That leaves exactly one free number — how far out along its ray Epsilon goes —
-# because Delta's x is then Epsilon's x and its y is Alpha's. So the placement is a
-# single walk on that number, pushed out until all three pairs clear each other
-# by their extents plus the gap. Solving it as one quantity is the point: an
-# earlier version placed Delta first and Epsilon second, and aligning them
-# afterwards put the pair 5 units inside their own clearance with nothing to
-# notice it.
-#
 _pos = {}
 for g, members in _groups.items():
     P, Rt, _e, sub = _lay[g]
@@ -809,7 +798,7 @@ uniform sampler2D uT;uniform vec3 uBg,uAcc;uniform float uCell;
 in vec2 vQ;in vec3 vC;in float vShape,vS,vF;out vec4 o;
 void main(){float d=length(vQ);
  vec2 lc=vec2(.5+vQ.x*uCell,.5-vQ.y*uCell),cell=vec2(mod(vShape,4.),floor(vShape/4.));
- vec4 t=texture(uT,(cell+clamp(lc,0.,1.))/4.)*(1.-smoothstep(1.38,1.56,d));
+ vec4 t=texture(uT,(cell+clamp(lc,0.,1.))/vec2(4.,5.))*(1.-smoothstep(1.38,1.56,d));
  float fill=t.r,edge=max(t.g,fill),ghost=(vS>.5&&vS<1.5)?1.:0.;
  vec3 rgb=vC*fill+uBg*(edge-fill);float a=edge;
  if(vS>1.5){float rr=vS>2.5?1.5:1.38,w=vS>2.5?.13:.08;
@@ -830,7 +819,7 @@ attr(0,quad,2,2,0,0);attr(1,nodeBuf,4,NS,0,1);attr(2,nodeBuf,4,NS,4,1);attr(3,no
    eighth of the size, where each shape still sits inside its cell, and what is
    read is faded out just past the widest shape. */
 const CELL=128,SR_=40,tex=gl.createTexture();
-(function(){const a=document.createElement('canvas');a.width=a.height=CELL*4;const c=a.getContext('2d');
+(function(){const a=document.createElement('canvas');a.width=CELL*4;a.height=CELL*5;const c=a.getContext('2d');
  const layer=(stroke)=>{c.clearRect(0,0,a.width,a.height);c.fillStyle='#fff';c.strokeStyle='#fff';c.lineWidth=SR_*.34;c.lineJoin='round';
   SHAPES.forEach((s,k)=>{c.save();c.translate((k%4+.5)*CELL,(Math.floor(k/4)+.5)*CELL);shp(c,SR_,k);c.fill();if(stroke)c.stroke();c.restore()});
   return c.getImageData(0,0,a.width,a.height).data};
@@ -1184,10 +1173,19 @@ except ValueError:
 # a reader knows. It said `dirty` for an hour on 29.08.2026 and the owner had
 # to ask what that meant: fixing a layout by reaching for jargon moves the cost
 # from the grid to the reader.
-if _git('status', '--porcelain'):
+#
+# **Only the page's own inputs count**: every bundle's Wiki, which is the whole
+# of its data, and this script, which is the whole of its code. The test was
+# the whole tree until 27.09.2026, and the page said `uncommitted` after every
+# commit: the pre-commit hook runs verify.py, verify.py writes its memory to
+# _scripts/verify-state.json, and the post-commit rebuild then found the tree
+# changed. A file the page never reads cannot make it match no commit.
+# viewer-check.js reads this list and holds the stamp to it.
+PAGE_INPUTS = [':(glob)*/Wiki/**', '_scripts/visualize.py']
+if _git('status', '--porcelain', '--', *PAGE_INPUTS):
     git_id += ' · uncommitted'
-page = """<!DOCTYPE html><html><head><meta charset="utf-8"><title>00_Cerebrum — OKF viewer</title><style>
-:root{color-scheme:dark;--bg:#242424;--fg:#f9f2d9;--mut:#a49a85;--line:#3a3733;--acc:#f0c755;--h3:#e5d5a1;--side:#191919;--card:#2b2b2b;--item:#bbaf96;--ph:#757575;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--s9:#38b2c3;--s10:#9fae2f;--s11:#c08b52;--s12:#8ecae6;--s13:#b0b7c3;--s14:#7fd1ae;--s15:#cb54d6;--s16:#e0c04d;--lin:#5aa9ff;--lout:#ff9f43}
+page = """<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="cerebrum-address" content="view q"><title>00_Cerebrum — OKF viewer</title><style>
+:root{color-scheme:dark;--bg:#242424;--fg:#f9f2d9;--mut:#a49a85;--line:#3a3733;--acc:#f0c755;--h3:#e5d5a1;--side:#191919;--card:#2b2b2b;--item:#bbaf96;--ph:#757575;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--s9:#38b2c3;--s10:#9fae2f;--s11:#c08b52;--s12:#8ecae6;--s13:#b0b7c3;--s14:#7fd1ae;--s15:#cb54d6;--s16:#e0c04d;--s17:#5ec8f2;--lin:#5aa9ff;--lout:#ff9f43;--edge:#4a4640}
 *{box-sizing:border-box}[hidden]{display:none!important}
 /* One header over two full-screen views. Owner's instruction of 14.09.2026: the
    mark on the left, the categories to its right, and below that either the
@@ -1216,8 +1214,13 @@ body.vc #gcard{display:none!important}
    is the same. The 2D one joined on 23.09.2026, on the owner's request, and the
    same day the Fit button went, on the owner's instruction: a double-click on
    empty space does what it did, and the line says so. `f` still fits. */
-#g2hint,#g3hint{position:absolute;left:16px;bottom:18px;z-index:2;color:var(--mut);font-size:12px;letter-spacing:.02em;pointer-events:none;opacity:.8}
-#g2hint b,#g3hint b{color:var(--item);font-weight:600}
+#g2hint,#g3hint,.gstat{position:absolute;left:16px;bottom:18px;z-index:2;color:var(--mut);font-size:12px;letter-spacing:.02em;pointer-events:none;opacity:.8}
+#g2hint b,#g3hint b,.gstat b{color:var(--item);font-weight:600}
+/* The vault's figures, top left of each graph in the hints' own style: the
+   hints say how to drive the map at its foot, the figures say what is on it
+   at its head, the same distance from the edge. Owner's instruction of
+   27.09.2026; they stood under the logo that morning. */
+.gstat{top:18px;bottom:auto;font-variant-numeric:tabular-nums}
 /* The list scrolls and the controls above it do not: the search box moved into
    this column, and a search box that scrolls away with the list is gone exactly
    when the list is long enough to need it. Both parts reserve the same scrollbar
@@ -1249,13 +1252,18 @@ input{width:100%;padding:8px 10px;margin-bottom:10px;cursor:text}
    these five properties, and one of the six carried them wrong — `#gcard .sec`
    had no font-weight, so the graph card's headings rendered lighter than the
    identical-looking headers a few hundred pixels to their left. */
-.grp,#gcard .sec,#aboutBtn .eyebrow,#aboutBox .eyebrow,#setBox .eyebrow,.sgt,#aboutFacts dt,.aboutLogo .tl{color:var(--mut);font-size:.78em;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.grp,#gcard .sec,#aboutBtn .eyebrow,#aboutBox .eyebrow,#aboutFacts dt,.aboutLogo .tl{color:var(--mut);font-size:.78em;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
 .grp{margin:12px 0 2px;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;padding:2px 4px;border-radius:5px}
 .grp:hover{color:var(--fg);background:var(--line)}.grp .gn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .grp .cv{display:inline-block;width:9px;transition:transform .12s;font-size:.9em}.grp.shut .cv{transform:rotate(-90deg)}
 .gitems{padding-left:15px;border-left:1px solid var(--line);margin-left:8px}
 .grp small{font-weight:400;opacity:.75;font-size:.95em}.grp.flat{cursor:default}.grp.flat:hover{background:none;color:var(--mut)}.grp.flat .cv{visibility:hidden}
-#tree .grp:first-child{margin-top:0}
+#tree .kbh:first-child{margin-top:0}
+.kbh{display:flex;align-items:center;gap:6px;width:100%;margin:10px 0 4px;padding:6px 8px;text-align:left;font-size:13px;font-weight:700}
+.kbh small{font-weight:400}
+.kbh .gn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.kbh small{opacity:.7;font-size:.85em;color:inherit;margin-left:-1px}
+.kbh .cv{display:inline-block;width:9px;transition:transform .12s;font-size:.9em}.kbh.shut .cv{transform:rotate(-90deg)}.kbh.flat{cursor:default}.kbh.flat .cv{visibility:hidden}
+.kbbody .grp:first-child{margin-top:6px}
 /* The search bar spans the window. Until 16.09.2026 it sat in a 450px column
    above the list and was re-parented on every view switch; the owner asked for
    the full width, and Ask Claude needs the room. The shape is j4k's
@@ -1403,7 +1411,11 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 #legend .lrow i{font-style:normal;opacity:.7;font-size:.92em;margin-right:2px}
 .chip{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px 0 6px;border:1px solid var(--line);border-radius:12px;cursor:pointer;user-select:none;white-space:nowrap}
 .chip:hover{background:var(--line)}
-.chip.off{opacity:.32}.chip b{font-weight:600;color:var(--fg)}.chip small{color:var(--mut)}
+.chip.off{opacity:.32}.chip b{font-weight:600;color:var(--fg)}.chip small{color:var(--mut);font-variant-numeric:tabular-nums}
+/* A row or a chip with nothing showing keeps its place, invisible: the header
+   does not change height and no chip slides sideways when a knowledge base is
+   hidden. Owner's instruction of 27.09.2026. */
+#legend .void{visibility:hidden}
 .kbchip{border-width:2px;border-color:var(--fg)}.ldiv{width:1px;align-self:stretch;background:var(--line);margin:0 4px}
 /* The controls are icons, as j4k's top bar is: each is named by its tooltip.
    Views first, then Settings, set a little apart because it opens something
@@ -1422,60 +1434,65 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 #bSet .dot{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border:2px solid var(--side);border-radius:9px;background:var(--acc);color:var(--bg);font-size:10px;font-weight:700;line-height:13px;text-align:center}
 /* Settings, in the shape of j4k's Options menu: a panel hanging under the
    header rather than a dialog over a dimmed page, closed by its ×, by Escape or
-   by a click anywhere else. The frame is About's, border, radius, background
-   and shadow alike, so the two read as one family. */
-#setBox{position:absolute;top:calc(100% + 8px);right:12px;z-index:40;display:grid;gap:12px;width:min(430px,calc(100vw - 24px));padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--bg);box-shadow:0 24px 80px rgba(0,0,0,.55);cursor:default}
-.sgrp{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-#kbN{color:var(--mut);font-size:.8em}
-#setBox .hint{color:var(--mut);font-size:.82em;line-height:1.5}
-/* Brain. The Settings tab of the owner's GLaDOS is the shape: the model first,
-   then what it costs to run, then — because this is where the network rule
-   stops being abstract — one line saying what leaves this Mac. Two selects on
-   one row, the effort one greying out for a model that takes none rather than
-   disappearing, so the row does not jump when the choice changes. */
-/* The effort column was `auto`, so it shrank to the widest word in it and
-   the model select took everything else. The owner asked for the balance
-   the other way on 16.09.2026: a fixed effort column, which also stops the
-   row twitching when the label changes from `low` to `medium`. */
-#brain{display:grid;grid-template-columns:minmax(0,1fr) 104px;gap:6px}
-#brain select{font:inherit;font-size:.95em;padding:5px 7px;border-radius:5px;
- border:1px solid var(--line);background:var(--side);color:var(--fg)}
-#brain select:disabled{opacity:.42}
-#brainWhere{margin:0}
-#brainWhere b{color:var(--s2);font-weight:600}
-/* A weights row per local model, in the shape of GLaDOS's `LocalModelRow`:
-   a name over one quiet line of detail, and the action on the right. Installed
-   reads as a tick, its size on disk and Delete; missing reads as where the
-   bytes come from and Download with the cost in the button. The rows sit on
-   the panel's own card so three of them read as a list rather than as text. */
-#bWeights{display:flex;flex-direction:column;gap:1px;border:1px solid var(--line);
- border-radius:7px;overflow:hidden}
-#bWeights .wr{display:flex;align-items:center;gap:10px;padding:8px 10px;
- background:var(--side)}
-#bWeights .wl{flex:1;min-width:0}
-#bWeights .wt{display:block;color:var(--fg);font-size:.92em}
-#bWeights .wt .tick{color:var(--s3);margin-right:5px;font-weight:700}
-#bWeights .ws{display:block;color:var(--mut);font-size:.8em;margin-top:1px;
- overflow-wrap:anywhere}
-#bWeights .ws .no{color:var(--s2)}
-#bWeights .wr button{flex:0 0 auto;font:inherit;font-size:.82em;padding:4px 10px;
- border-radius:5px;border:1px solid var(--line);background:transparent;
- color:var(--item);white-space:nowrap}
-#bWeights .wr button:hover:not(:disabled){background:var(--line);color:var(--fg)}
-#bWeights .wr button:disabled{opacity:.4}
-/* Delete asks first, because it takes an instant and costs the whole download
-   to undo — GLaDOS puts the way out before the action rather than during it.
-   The confirmation replaces the row's own detail line, so the cost of saying
-   yes is read in the place the row was just describing. */
-#bWeights .wr.arm{background:var(--card)}
+   by a click anywhere else. Owner's instructions of 27.09.2026: as close to
+   j4k's menu as this page allows, and then consistent throughout. So there is
+   one of everything. One width: every row runs from the panel's left edge to
+   its right, the About row included, with the × as its last square. One
+   surface: every control and every card wears --card with an --edge line, the
+   model list as much as the buttons. One height for a control, 32px in 13px
+   bold. One title: 11px bold capitals under a hairline, with as much room
+   under the line as above it. One card: the local models and the scheduled
+   tasks are both a name on the left and its state on the right. */
+#setBox{position:absolute;top:calc(100% + 8px);right:12px;z-index:40;display:grid;grid-template-columns:minmax(0,1fr) 32px;align-items:center;gap:8px;width:min(480px,calc(100vw - 24px));max-height:calc(100vh - 120px);overflow:auto;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);box-shadow:0 24px 80px rgba(0,0,0,.55);cursor:default;font-size:13px;line-height:1.35}
+#setBox>*{grid-column:1/-1;margin:0}
+#setBox>#setAbout{grid-column:1}
+#setBox>#setX{grid-column:2;width:32px;padding:0;font-size:16px;font-weight:400;color:var(--mut)}
+#setBox button,#setBox select{min-height:32px;min-width:0;border:1px solid var(--edge);border-radius:6px;background:var(--card);color:var(--fg);font:inherit;font-weight:700}
+#setBox button{padding:0 12px}
+#setBox select{padding:0 10px}
+#setBox button:hover:not(:disabled):not([aria-disabled="true"]),#setBox select:hover{border-color:var(--acc)}
+#setBox select:focus{border-color:var(--acc);outline:none}
+#setBox button:disabled{opacity:.42;cursor:default}
+#setBox .stt{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:6px;padding-top:12px;border-top:1px solid var(--line);color:var(--fg);font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+#kbN{color:var(--mut);font-weight:400;letter-spacing:0;text-transform:none}
+#setBox .hint{color:var(--mut);font-size:11px;line-height:1.4}
+#setBox .hint b{color:var(--s2);font-weight:600}
+#setBuild{margin-top:4px;color:var(--ph);font-size:11px}
+/* Brain. The model, then one line saying what leaves this Mac. No effort
+   control since 27.09.2026, on the owner's instruction: the helper's own
+   level, high, applies to every question. */
+#brain{display:grid}
+/* The card, shared by the local models and the scheduled tasks: a name over
+   one quiet line on the left, the state or the action on the right. */
+#bWeights,#tasks{display:grid;gap:8px}
+#bWeights .wr,#tasks .tr{display:grid;align-items:center;gap:4px 12px;padding:8px 10px;border:1px solid var(--edge);border-radius:6px;background:var(--card)}
+#bWeights .wr{grid-template-columns:minmax(0,1fr) auto}
+#tasks .tr{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+#bWeights .wt,#tasks .tn b{display:block;font-weight:700}
+#bWeights .ws,#tasks .tn span,#tasks .sd{display:block;color:var(--mut);font-size:11px}
+/* Installed reads as a tick and its size on disk; missing as where the bytes
+   come from. Delete asks first, because it takes an instant and costs the whole
+   download to undo: the confirmation replaces the status line, so the price is
+   read where the row was just describing it. */
+#bWeights .tick{color:var(--s3);margin-right:4px;font-weight:700}
+#bWeights .no{color:var(--s2)}
 #bWeights .wr.arm .ws{color:var(--s2)}
-#bWeights .wr button.del:hover:not(:disabled){border-color:var(--s2);color:var(--s2);
- background:transparent}
-#bWeights .pb{height:3px;border-radius:2px;background:var(--line);overflow:hidden;
- margin-top:5px}
-#bWeights .pb i{display:block;height:100%;width:0;background:#c8901d;
- transition:width .3s ease-out}
-#kbbar{display:flex;flex-direction:column;gap:6px}#kbbar .krow{display:flex;gap:6px}#kbbar .krow button{flex:1;padding:6px;white-space:nowrap;min-width:0}#kbbar button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}/* fallback for a KB no block names; the three known blocks override inline */#kbbar button small{opacity:.7;margin-left:5px;font-size:.85em;color:inherit}#kbbar button[aria-disabled="true"]{cursor:not-allowed}
+#bWeights .wr button.del:hover:not(:disabled){border-color:var(--s2);color:var(--s2)}
+#bWeights .pb{grid-column:1/-1;height:3px;border-radius:2px;background:var(--line);overflow:hidden}
+#bWeights .pb i{display:block;height:100%;width:0;background:#c8901d;transition:width .3s ease-out}
+/* Two rows of three, every button the same width: owner's instruction of
+   27.09.2026, replacing the 3 / 2 / 1 rows of 01.09.2026. The hue still says
+   which block a base belongs to. */
+#kbbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}#kbbar button{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#kbbar button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}/* fallback for a KB no block names; the three known blocks override inline */#kbbar button small{opacity:.7;margin-left:5px;font-size:.9em;font-weight:400;color:inherit}#kbbar button[aria-disabled="true"]{cursor:not-allowed}
+/* The scheduled tasks, owner's request of 27.09.2026: how each one's last run
+   ended, with a dot a colour for the state. Read from the Claude app through
+   the helper, so it is live when Settings opens, not when the page was built. */
+#tasks .tr.bad{border-color:var(--s8)}
+#tasks .st{display:flex;align-items:center;gap:6px;font-weight:700}
+#tasks .st i{flex:0 0 8px;height:8px;border-radius:50%;background:var(--ph)}
+#tasks .ok .st i{background:var(--s3)}#tasks .warn .st i{background:var(--acc)}#tasks .bad .st i{background:var(--s8)}
+#tasks .bad .st{color:var(--s8)}
+#tasks .sd{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:1px}
 #gc{flex:1;cursor:grab;touch-action:none;min-height:0}
 /* The card is docked, see below. The search box
    does not: it stands exactly where it stands in the Concept view, in a box
@@ -1564,11 +1581,11 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 #repBox .hint{color:var(--mut);font-size:.82em;line-height:1.5;margin:0}
 #aboutWrap.on{display:grid}
 #aboutBox{display:grid;gap:14px;width:min(460px,100%);max-height:min(830px,calc(100vh - 36px));overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:18px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
-#aboutBox header,#setBox header,#repBox header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px}
-#aboutBox h2,#aboutBox p,#setBox h2,#setBox p,#repBox h2,#repBox p{margin:0}
-#aboutBox h2,#setBox h2,#repBox h2{font-size:1.35em;color:var(--fg);font-weight:700;border:none;padding:0;margin:0}
-#aboutBox .x,#setBox .x,#repBox .x{background:none;border:none;color:var(--mut);cursor:pointer;font-size:1.1em;line-height:1;padding:0 6px;border-radius:5px}
-#aboutBox .x:hover,#setBox .x:hover,#repBox .x:hover{color:var(--fg);background:var(--line)}
+#aboutBox header,#repBox header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px}
+#aboutBox h2,#aboutBox p,#repBox h2,#repBox p{margin:0}
+#aboutBox h2,#repBox h2{font-size:1.35em;color:var(--fg);font-weight:700;border:none;padding:0;margin:0}
+#aboutBox .x,#repBox .x{background:none;border:none;color:var(--mut);cursor:pointer;font-size:1.1em;line-height:1;padding:0 6px;border-radius:5px}
+#aboutBox .x:hover,#repBox .x:hover{color:var(--fg);background:var(--line)}
 #aboutContent{display:grid;gap:10px;justify-items:center;text-align:center}
 .aboutLogo{display:grid;justify-items:center;gap:7px;margin-top:4px}
 .aboutLogo svg{width:145px;height:126px;display:block}
@@ -1581,8 +1598,8 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 .aboutLogo .wm{font-size:1.35em;font-weight:700;color:var(--acc);line-height:1}
 #aboutBox .story{max-width:42ch;color:var(--item);font-size:.92em}
 #aboutFacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;width:100%;margin:4px 0 0;text-align:left}
-#aboutFacts>div{display:grid;gap:2px;min-width:0;border:1px solid var(--line);border-radius:6px;padding:6px 9px;background:var(--card)}
-#aboutFacts dd{margin:0;color:var(--fg);font-size:.9em;font-weight:600;overflow-wrap:anywhere}
+#aboutFacts>div{display:grid;align-content:start;gap:2px;min-width:0;border:1px solid var(--line);border-radius:6px;padding:6px 9px;background:var(--card)}
+#aboutFacts dd{margin:0;color:var(--fg);font-size:.9em;font-weight:600;overflow-wrap:anywhere}#aboutFacts .fn{color:var(--mut);font-size:.82em;font-weight:400;margin-left:7px}
 #aboutBox .built{max-width:42ch;color:var(--mut);font-size:.82em}
 #aboutActions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%}
 /* the dialog's controls follow the same grammar as the header's, which is the
@@ -1596,21 +1613,25 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 <div id="legend" role="group" aria-label="Categories"></div>
 <div id="tools"><div id="views" role="group" aria-label="View"><button id="bGraph" class="ib on" title="Graph view: the whole vault as one map" aria-label="Graph view" aria-pressed="true">__IGRAPH__</button><button id="b3d" class="ib" title="3D view: the same map with depth. Drag to turn it" aria-label="3D view" aria-pressed="false">__I3D__</button><button id="bList" class="ib" title="Concept view: the list of concepts, and the concept page beside it" aria-label="Concept view" aria-pressed="false">__ICONCEPTS__</button></div><button id="bSet" class="ib" title="Settings" aria-label="Settings" aria-haspopup="dialog" aria-expanded="false">__IGEAR__</button></div>
 <div id="setBox" role="dialog" aria-label="Settings" hidden>
-<header><div><p class="eyebrow">Settings</p><h2>00_Cerebrum</h2></div><button class="x" id="setX" title="Close settings (Esc)">&#215;</button></header>
-<div class="sgrp"><span class="sgt">Brain</span><span id="brainN"></span></div>
-<div id="brain"><select id="bModel" aria-label="Which model answers"></select><select id="bEffort" aria-label="Effort level"></select></div>
+<button id="setAbout" type="button" title="What this vault is, and the facts to quote when something looks wrong">About 00_Cerebrum</button><button id="setX" type="button" title="Close settings (Esc)" aria-label="Close settings">&#215;</button>
+<div class="stt">Brain</div>
+<div id="brain"><select id="bModel" aria-label="Which model answers"></select></div>
 <p class="hint" id="brainWhere"></p>
 <div id="bWeights"></div>
 <p class="hint" id="brainDisk"></p>
-<div class="sgrp"><span class="sgt">Knowledge bases</span><span id="kbN"></span></div>
+<div class="stt">Knowledge bases<span id="kbN"></span></div>
 <div id="kbbar"></div>
 <p class="hint">A hidden knowledge base leaves the graph, the concept list and the category counts. The choice is kept for the next visit.</p>
+<div class="stt">Scheduled tasks</div>
+<div id="tasks"></div>
+<p class="hint" id="tasksHint"></p>
+<p id="setBuild"></p>
 </div>
 </header>
 <div id="askbar"><div id="qwrap"><button id="mSearch" class="mb on" type="button" title="Search the vault" aria-label="Search the vault" aria-pressed="true">__ISEARCH__</button><button id="mAsk" class="mb" type="button" title="Ask Claude for a report instead of searching" aria-label="Ask Claude" aria-pressed="false">__ISPARK__</button><div id="qbar" hidden><i></i></div><input id="q" placeholder="Search title, description, tags…" aria-label="Search concepts"><button id="qx" type="button" title="Clear the search" aria-label="Clear the search">×</button><button id="bRep" class="mb" type="button" title="The reports in Outputs/" aria-label="Reports" aria-haspopup="dialog" aria-expanded="false">__IREPORTS__</button></div></div>
 <div id="stage">
-<div id="gpane"><canvas id="gc"></canvas><div id="g2hint"><b>Drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
-<div id="g3pane"><canvas id="g3"></canvas><canvas id="g3lbl"></canvas><div id="g3hint"><b>Drag</b> to turn · <b>Shift-drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
+<div id="gpane"><canvas id="gc"></canvas><div class="gstat" id="g2stat"></div><div id="g2hint"><b>Drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
+<div id="g3pane"><canvas id="g3"></canvas><canvas id="g3lbl"></canvas><div class="gstat" id="g3stat"></div><div id="g3hint"><b>Drag</b> to turn · <b>Shift-drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
 <div id="gcard"></div>
 <div id="cpane"><div id="side"><div id="sidetop"><button id="ball" title="Fold or unfold every group in the list">Collapse all</button></div><div id="tree"></div></div><div id="splitter" title="drag to resize"></div><div id="main"><div class="doc"><div class="meta">Pick a concept, or search. Dashed links point at concepts not written yet — legitimate under OKF.</div></div></div></div>
 </div>
@@ -1628,7 +1649,7 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 <p class="story">A knowledge base that reads its own sources and cites every claim back to the page it came from, and the machinery that keeps it honest. <i>Cerebrum</i> is the Latin for brain. Built by your-account with Claude Code.</p>
 <dl id="aboutFacts"></dl>
 <p class="built">Markdown and YAML in an Obsidian vault, Open Knowledge Format v0.2 for the bundles, Python for the checks, GitHub for the code.</p>
-<div id="aboutActions"><button id="aboutGraph">Graph</button><button id="about3d">3D</button><button id="aboutList">Concepts</button></div>
+<div id="aboutActions"><button id="aboutGraph" title="the Graph view, the vault as one flat map">2D</button><button id="about3d">3D</button><button id="aboutList">Concepts</button></div>
 </div></div></div>
 <script>const D=__DATA__;const GIT='__GIT__';const STAMP='__STAMP__';const BUILDNO='__BUILDNO__';const STARTED='__STARTED__';
 /* One pinned order for the whole viewer: the knowledge-base buttons two per
@@ -1637,10 +1658,10 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
    either, and so the two never disagree. Anything not listed sorts after. */
 /* The blocks are the vault's real structure — the three employer archives,
    the two Alpha documentation bundles, the private base — and they are the one
-   source of the ordering. The selector in Settings draws them 3 / 2 / 1 across
-   its width, each block symmetric on its own line, and the concept tree reads
-   them flat in the same sequence. A knowledge base no block names lands in a
-   fourth selector row and sorts last in the tree.
+   source of the ordering. The selector in Settings draws them in that order,
+   three to a row at one width, each wearing its block's hue, and the concept
+   tree reads them flat in the same sequence. A knowledge base no block names
+   comes last in both.
 
    `KB_ORDER` is derived rather than written out. It was a second hand-kept
    list until 01.09.2026 and it had already drifted: it still carried the
@@ -1696,32 +1717,58 @@ let view='graph';
    viewer-check's "sidebar lists every concept" stays a true statement and
    show() can still highlight into a folded group. */
 const ball=document.getElementById('ball');
-var collapsed=new Set(),curGroups=[],cur=null;
+var collapsed=new Set(),foldKb=new Set(),curGroups=[],curKbs=[],cur=null;
+/* Two levels since 27.09.2026, owner's instruction: a knowledge base above its
+   categories, so the list can fold down to one line per base without losing
+   the categories inside it. Each level keeps its own folds. */
 try{collapsed=new Set(JSON.parse(localStorage.getItem('okf.collapsed')||'[]'))}catch(e){}
-function saveFold(){try{localStorage.setItem('okf.collapsed',JSON.stringify([...collapsed]))}catch(e){}}
+try{foldKb=new Set(JSON.parse(localStorage.getItem('okf.foldKb')||'[]'))}catch(e){}
+function saveFold(){try{localStorage.setItem('okf.collapsed',JSON.stringify([...collapsed]));localStorage.setItem('okf.foldKb',JSON.stringify([...foldKb]))}catch(e){}}
 function markSel(){if(!cur)return;document.querySelectorAll('.it').forEach(e=>e.classList.toggle('on',e.dataset.t===cur))}
-function build(filter){tree.innerHTML='';const gs=new Map();
+function item(id){const c=D[id];const e=document.createElement('a');e.className='it';e.dataset.t=id;e.textContent=c.t;e.title=c.d;e.onclick=()=>show(id);return e}
+function build(filter){tree.innerHTML='';const kbs=new Map();
 Object.keys(D).sort((a,b)=>{const ra=kbRank(a),rb=kbRank(b);if(ra!==rb)return ra-rb;
 const ga=group(a),gb=group(b);return ga===gb?D[a].t.localeCompare(D[b].t):ga.localeCompare(gb)}).forEach(id=>{const c=D[id];if(offKB.has(c.kb)||off.has(CATS.indexOf(cat(id))))return;
 if(filter){const hay=(c.t+' '+c.d+' '+c.tags.join(' ')+' '+id).toLowerCase();if(!hay.includes(filter))return}
-const g=group(id);if(!gs.has(g))gs.set(g,[]);gs.get(g).push(id)});
-curGroups=[...gs.keys()];
-gs.forEach((ids,g)=>{const open=!!filter||!collapsed.has(g);
+const kb=kbOf(id),g=group(id);if(!kbs.has(kb))kbs.set(kb,new Map());const gm=kbs.get(kb);if(!gm.has(g))gm.set(g,[]);gm.get(g).push(id)});
+curGroups=[];curKbs=[...kbs.keys()];
+kbs.forEach((gm,kb)=>{const kopen=!!filter||!foldKb.has(kb);
+/* The base wears the button Settings gives it: filled with the block hue,
+   the count in small type after the name. */
+const kh=document.createElement('button');kh.type='button';kh.className='kbh'+(kopen?'':' shut')+(filter?' flat':'');kh.dataset.kb=kb;
+if(HUE[kb]){kh.style.background=HUE[kb];kh.style.borderColor=HUE[kb];kh.style.color='var(--bg)'}
+kh.setAttribute('aria-expanded',String(kopen));
+const kc=document.createElement('span');kc.className='cv';kc.textContent='▾';kh.appendChild(kc);
+const kn=document.createElement('span');kn.className='gn';kn.textContent=kbName(kb);kh.appendChild(kn);
+const ks=document.createElement('small');ks.textContent=[...gm.values()].reduce((a,x)=>a+x.length,0);kh.appendChild(ks);
+kh.title=filter?'showing search results':(kopen?'click to fold this knowledge base':'click to unfold this knowledge base');
+const kbox=document.createElement('div');kbox.className='kbbody';if(!kopen)kbox.style.display='none';
+gm.forEach((ids,g)=>{
+/* A concept at the bundle root, questions.md, has no category: it sits
+   directly under its base. */
+if(g===kbName(kb)){const rb=document.createElement('div');rb.className='gitems';ids.forEach(id=>rb.appendChild(item(id)));kbox.appendChild(rb);return}
+curGroups.push(g);const open=!!filter||!collapsed.has(g);
 const h=document.createElement('div');h.className='grp'+(open?'':' shut')+(filter?' flat':'');
 const cv=document.createElement('span');cv.className='cv';cv.textContent='▾';h.appendChild(cv);
-const gn=document.createElement('span');gn.className='gn';gn.textContent=g;h.appendChild(gn);
+const gn=document.createElement('span');gn.className='gn';gn.textContent=g.slice(kbName(kb).length+3);h.appendChild(gn);
 const ct=document.createElement('small');ct.textContent=ids.length;h.appendChild(ct);
 h.title=filter?'showing search results':(open?'click to fold this group':'click to unfold this group');
 const box=document.createElement('div');box.className='gitems';if(!open)box.style.display='none';
-ids.forEach(id=>{const c=D[id];const e=document.createElement('a');e.className='it';e.dataset.t=id;e.textContent=c.t;e.title=c.d;e.onclick=()=>show(id);box.appendChild(e)});
+ids.forEach(id=>box.appendChild(item(id)));
 if(!filter)h.onclick=()=>{collapsed.has(g)?collapsed.delete(g):collapsed.add(g);saveFold();build(q.value.toLowerCase())};
-tree.appendChild(h);tree.appendChild(box)});
-const anyOpen=curGroups.some(g=>!collapsed.has(g));
-ball.innerHTML='<span class="qi" aria-hidden="true">'+(anyOpen?'__ICOLLAPSE__':'__IEXPAND__')+'</span>'+(anyOpen?'Collapse all':'Expand all');ball.disabled=!!filter||!curGroups.length;
-ball.title=filter?'the list is showing search results':'Fold or unfold every group in the list';
+kbox.appendChild(h);kbox.appendChild(box)});
+if(!filter)kh.onclick=()=>{foldKb.has(kb)?foldKb.delete(kb):foldKb.add(kb);saveFold();build(q.value.toLowerCase())};
+tree.appendChild(kh);tree.appendChild(kbox)});
+/* Collapse all folds the bases and every category inside them, so a base
+   opened afterwards shows its categories closed (owner's instruction of
+   27.09.2026); Expand all opens bases and categories alike. */
+const anyOpen=curKbs.some(k=>!foldKb.has(k));
+ball.innerHTML='<span class="qi" aria-hidden="true">'+(anyOpen?'__ICOLLAPSE__':'__IEXPAND__')+'</span>'+(anyOpen?'Collapse all':'Expand all');ball.disabled=!!filter||!curKbs.length;
+ball.title=filter?'the list is showing search results':'Fold or unfold every knowledge base in the list';
 markSel()}
-ball.onclick=()=>{const anyOpen=curGroups.some(g=>!collapsed.has(g));
-curGroups.forEach(g=>anyOpen?collapsed.add(g):collapsed.delete(g));saveFold();build(q.value.toLowerCase())};
+ball.onclick=()=>{const anyOpen=curKbs.some(k=>!foldKb.has(k));
+if(anyOpen){curKbs.forEach(k=>foldKb.add(k));curGroups.forEach(g=>collapsed.add(g))}else{curKbs.forEach(k=>foldKb.delete(k));curGroups.forEach(g=>collapsed.delete(g))}
+saveFold();build(q.value.toLowerCase())};
 function E(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function chip(txt,cls){return '<span class="badge '+(cls||'')+'">'+E(txt)+'</span>'}
 /* Opening a concept is what the Concept view is for, so it switches there from
@@ -1729,7 +1776,7 @@ function chip(txt,cls){return '<span class="badge '+(cls||'')+'">'+E(txt)+'</spa
 function show(id){const c=D[id];if(!c)return;cur=id;setView('concepts');
 /* A concept reached from a body link may sit in a folded group; leaving it
    folded loses the highlight and the reader's place in the tree. */
-if(!q.value&&collapsed.has(group(id))){collapsed.delete(group(id));saveFold();build('')}
+if(!q.value&&(collapsed.has(group(id))||foldKb.has(kbOf(id)))){collapsed.delete(group(id));foldKb.delete(kbOf(id));saveFold();build('')}
 /* Out of sight, the row comes to the middle of the list; in sight, it stays
    put. 'nearest' left a concept opened from the graph on the list's bottom
    edge, and centring every time would jump the list under the pointer that
@@ -1879,58 +1926,50 @@ async function loadReports(){
  repList.querySelectorAll('.rr').forEach(el=>{if(el.classList.contains('gone'))return;
   el.onclick=()=>openReport(el.dataset.p)})}
 
-/* ---- Brain: which model answers, and at what effort ----------------------
+/* ---- Brain: which model answers -------------------------------------------
    The page holds the choice and sends it with every request; the helper keeps
    the allowlist and refuses anything it does not name, because an id reaches a
-   command line and names a folder on disk. Two stores, because the two answer
-   different questions and a model that takes no effort must not lose the level
-   the last one used. Both survive a reload, like the knowledge-base toggles. */
+   command line and names a folder on disk. The choice survives a reload, like
+   the knowledge-base toggles. The effort level is not the page's to choose
+   since 27.09.2026, on the owner's instruction: no request carries one, so the
+   helper's own, high, applies. A level stored by the old selector is cleared,
+   so it cannot ride along unseen. */
 const brainEl=document.getElementById('brain'),bModel=document.getElementById('bModel'),
- bEffort=document.getElementById('bEffort'),bWeights=document.getElementById('bWeights'),
- brainWhere=document.getElementById('brainWhere'),brainN=document.getElementById('brainN'),
+ bWeights=document.getElementById('bWeights'),
+ brainWhere=document.getElementById('brainWhere'),
  brainDisk=document.getElementById('brainDisk');
-let MODELS=[],EFFORTS=[],picked=null,pickedEffort=null;
+let MODELS=[],picked=null,defEffort='';
 function loadPick(){try{picked=localStorage.getItem('okf.model')||null;
-  pickedEffort=localStorage.getItem('okf.effort')||null}catch(e){}}
-function savePick(){try{if(picked)localStorage.setItem('okf.model',picked);
-  if(pickedEffort)localStorage.setItem('okf.effort',pickedEffort)}catch(e){}}
+  localStorage.removeItem('okf.effort')}catch(e){}}
+function savePick(){try{if(picked)localStorage.setItem('okf.model',picked)}catch(e){}}
 loadPick();
 /* What every request carries. A model the helper has since stopped naming —
    a registry edited between two visits — falls back to its default rather than
    being sent and refused. */
 function brainBody(){const m=MODELS.find(x=>x.id===picked);
- return m?{model:m.id,effort:pickedEffort||undefined}:{}}
+ return m?{model:m.id}:{}}
 function curModel(){return MODELS.find(x=>x.id===picked)||MODELS[0]||null}
 
 async function loadBrain(){
  if(!helper){brainEl.hidden=true;bWeights.innerHTML='';
-  brainWhere.textContent='Start the helper to choose a model.';
-  brainN.textContent='';return}
+  brainWhere.textContent='Start the helper to choose a model.';return}
  brainEl.hidden=false;
  let d=null;try{d=await (await fetch(HELPER+'/models',{cache:'no-store'})).json()}
  catch(e){brainWhere.textContent='the helper answered nothing';return}
- MODELS=d.models||[];EFFORTS=d.efforts||[];
- /* A stored model the helper no longer names takes the default effort with it:
-    the effort was chosen for the model that has gone. */
- if(!MODELS.some(m=>m.id===picked)){picked=d.default;pickedEffort=d.defaultEffort}
- if(EFFORTS.indexOf(pickedEffort)<0)pickedEffort=d.defaultEffort;
+ MODELS=d.models||[];defEffort=d.defaultEffort||'';
+ if(!MODELS.some(m=>m.id===picked))picked=d.default;
  bModel.innerHTML=MODELS.map(m=>'<option value="'+E(m.id)+'"'+
    (m.id===picked?' selected':'')+(m.installed?'':' disabled')+'>'+E(m.label)+
    (m.installed?'':' — not installed')+'</option>').join('');
- bEffort.innerHTML=EFFORTS.map(x=>'<option value="'+E(x)+'"'+
-   (x===pickedEffort?' selected':'')+'>'+E(x)+'</option>').join('');
  paintBrain(d)}
 
 /* The line that says what leaves this Mac, and the one warning worth carrying
    into the window: a local model is a completion and Ask Claude is an agent, so
    picking one here means the Ask button will say so rather than run. */
 function paintBrain(d){const m=curModel();if(!m)return;
- bEffort.disabled=!m.effort;
- bEffort.title=m.effort?'How hard the model thinks':m.label+' takes no effort level';
- brainN.textContent=m.label;
  brainWhere.innerHTML=(m.provider==='local'
    ? 'Runs here. <b>Nothing leaves this Mac.</b> Translates only; Ask needs a Claude model.'
-   : 'Reads the vault at Anthropic.')+' '+E(m.note||'');
+   : 'Reads the vault at Anthropic'+(m.effort&&defEffort?', at '+E(defEffort)+' effort':'')+'.')+' '+E(m.note||'');
  const local=MODELS.filter(x=>x.provider==='local');
  bWeights.innerHTML=local.map(row).join('');
  /* "free" alone read as memory, and the owner asked on 16.09.2026 why three
@@ -1943,24 +1982,21 @@ function paintBrain(d){const m=curModel();if(!m)return;
    : '';
  wireWeights()}
 
-/* One row, in GLaDOS's two-line shape: the name, one quiet line of detail, and
-   the action on the right. */
+/* One card per local model: the name over its status, the action on the right. */
 function row(x){
  const gb=n=>(n/1e9).toFixed(1)+' GB';
  const on=x.installed;
  return '<div class="wr" data-m="'+E(x.id)+'" data-gb="'+E(gb(x.bytes||0))+
    '" data-disk="'+E(gb(x.onDisk||0))+'">'+
-  '<span class="wl"><span class="wt">'+(on?'<span class="tick">&#10003;</span>':'')+
-    /* Every row here is local, so the label's own "(local)" says nothing.
-       It stays in the dropdown, where Claude models sit beside these. */
-    E(x.label.replace(' (local)',''))+'</span><span class="ws">'+
-    (on?gb(x.onDisk||0)+' on disk'
+  /* Every row here is local, so the label's own "(local)" says nothing.
+     It stays in the dropdown, where Claude models sit beside these. */
+  '<span class="wl"><span class="wt">'+E(x.label.replace(' (local)',''))+'</span><span class="ws">'+
+    (on?'<span class="tick">&#10003;</span>Installed, '+gb(x.onDisk||0)+' on disk'
       :'One-time download from Hugging Face'+(x.fits?''
         :' &middot; <span class="no">not enough free disk</span>'))+
   '</span></span>'+
   (on?'<button type="button" class="del">Delete</button>'
-     :'<button type="button" class="get"'+(x.fits?'':' disabled')+'>Download '+
-       gb(x.bytes||0)+'</button>')+
+     :'<button type="button" class="get"'+(x.fits?'':' disabled')+'>Download '+gb(x.bytes||0)+'</button>')+
   '</div>'}
 
 function wireWeights(){
@@ -1995,7 +2031,6 @@ async function delModel(id,r){
   if(row)row.innerHTML='<span class="no">'+E(err)+'</span>'}}
 
 bModel.onchange=()=>{picked=bModel.value;savePick();paintBrain({free:0,dir:'',mlx:true});loadBrain()};
-bEffort.onchange=()=>{pickedEffort=bEffort.value;savePick()};
 
 /* The download. Seventeen gigabytes is minutes of silence otherwise, so the
    helper streams what it has and the row carries a bar. Same event shape as a
@@ -2021,6 +2056,43 @@ async function pullModel(id,btn){const row=btn.closest('.wr');
       ' <span class="no">'+E(ev.error)+'</span>'}}}
  }catch(e){row.querySelector('.wl').innerHTML+=' <span class="no">'+E(e.message)+'</span>'}
  loadBrain()}
+
+/* ---- Scheduled tasks: the state of each, read live ----------------------
+   The page cannot see the Claude app; the helper reads its schedule and answers
+   /tasks. A helper started before this section existed answers 404, and the
+   hint says to restart it rather than showing an empty list, because an empty
+   list would read as "no tasks". */
+const tasksEl=document.getElementById('tasks'),tasksHint=document.getElementById('tasksHint');
+function when(s){const d=new Date(s),n=new Date(),hm=d.toTimeString().slice(0,5),
+ off=Math.round((new Date(d.toDateString())-new Date(n.toDateString()))/864e5);
+ if(off===0)return 'today '+hm;if(off===1)return 'tomorrow '+hm;if(off===-1)return 'yesterday '+hm;
+ return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'.'+
+  String(d.getMonth()+1).padStart(2,'0')+'., '+hm}
+function taskRow(t){let c,w;
+ if(!t.enabled){c='off';w='Paused'}
+ else if(t.missed){c='bad';w='Missed '+when(t.missed)}
+ else if(!t.last){c='off';w='Not run yet'}
+ else if(t.needs){c='warn';w='Needs you'}
+ else if(t.state==='completed'){c='ok';w='Done'}
+ else if(t.state==='review_ready'){c='warn';w='Ready for review'}
+ /* The app clears a session's summary while a turn is in progress, so no
+    summary and activity in the last quarter hour is a run still working. */
+ else if(!t.state&&t.active&&Date.now()-new Date(t.active)<9e5){c='warn';w='Working'}
+ else{c='off';w=t.state?t.state.replace(/_/g,' '):'Ran'}
+ if(t.last)w+=(t.missed?' · last ran ':' · ')+when(t.last);
+ const nm=t.name.replace(/^Weekly\\s+/i,''),d=t.needs||t.detail;
+ return '<div class="tr '+c+'" data-t="'+E(t.id)+'"><div class="tn"><b>'+E(nm.charAt(0).toUpperCase()+nm.slice(1))+
+  '</b><span>'+E(t.when)+(t.next?' · next '+when(t.next):'')+'</span></div><div class="ts"><span class="st"><i></i>'+
+  E(w)+'</span>'+(d?'<span class="sd" title="'+E(d)+'">'+E(d)+'</span>':'')+'</div></div>'}
+async function loadTasks(){
+ if(!helper){tasksEl.innerHTML='';tasksHint.textContent='Start the helper to see the scheduled tasks.';return}
+ let d=null;try{const r=await fetch(HELPER+'/tasks',{cache:'no-store'});d=await r.json();
+  if(r.status===404)d={error:'The helper running is older than this page. Restart it to see the scheduled tasks.'}}
+ catch(e){d={error:'the helper answered nothing'}}
+ if(!d.tasks){tasksEl.innerHTML='';tasksHint.textContent=d.error||'no answer';return}
+ tasksEl.innerHTML=d.tasks.map(taskRow).join('');
+ tasksHint.textContent=d.tasks.length?'Read from the Claude app on this Mac. A task runs only while the app is open; a missed run starts at the next launch.'
+  :'The Claude app has no scheduled tasks.'}
 
 function showReports(on){repWrap.classList.toggle('on',on);
  bRep.setAttribute('aria-expanded',String(on));if(on)loadReports()}
@@ -2105,13 +2177,12 @@ const blocks=[...KB_BLOCKS.map(b=>({kbs:b.kbs.filter(k=>KB_ALL.includes(k)),hue:
 /* the buttons wear the block hue directly — filled when on, a tinted
    outline when off — so the row needs no accent bar. Owner's instruction
    of 01.09.2026, replacing the vertical line of the same morning. */
-blocks.forEach(block=>{if(!block.kbs.length)return;
-const row=document.createElement('div');row.className='krow';
+blocks.forEach((block,bi)=>{if(!block.kbs.length)return;
 block.kbs.forEach(kb=>{const on=!offKB.has(kb);
 /* The last knowledge base showing stays on. Hiding it would leave both
    views empty, which is the dead page the stored choice is guarded against. */
 const last=on&&offKB.size===KB_ALL.length-1;
-const s=document.createElement('button');s.className=on?'on':'';
+const s=document.createElement('button');s.className=on?'on':'';s.dataset.block=bi;
 if(block.hue){if(!on){s.style.borderColor=block.hue+'66';s.style.color=block.hue}
 else{s.style.background=block.hue;s.style.borderColor=block.hue;s.style.color='var(--bg)'}}
 s.textContent=kbName(kb);
@@ -2119,34 +2190,38 @@ const sm=document.createElement('small');sm.textContent=Object.values(D).filter(
 s.title=last?'the last knowledge base showing stays on':'show / hide this knowledge base — graph, list and counts alike';
 if(last)s.setAttribute('aria-disabled','true');
 s.onclick=()=>{if(last)return;on?offKB.add(kb):offKB.delete(kb);saveKb();kbbar();kbBadge();chips();build(q.value.toLowerCase());if(sel>=0&&hid(N[sel]))clearSel();dirty=true};
-row.appendChild(s)});
-kbbarEl.appendChild(row)})}
-/* One legend row per block, counting that block's own concepts. The counts
-   follow what is showing: with a knowledge base hidden in Settings its
-   concepts leave the counts, and a row with nothing left in it leaves the
-   header, so no chip offers a filter that would change nothing. */
+kbbarEl.appendChild(s)})})}
+/* One legend row per block, counting that block's own concepts, and the
+   counts follow what is showing. With a knowledge base hidden in Settings,
+   its concepts leave the counts, and a chip or a whole row with nothing left
+   in it goes blank, so no chip offers a filter that would change nothing.
+   Blank, not gone: the geometry stays fixed. A removed row made the header
+   shorter and moved the search bar, the views and Settings with it; a removed
+   chip slid the ones after it. Each count also keeps the width of its largest
+   value, in figures of one width, so a count going from 120 to 98 moves
+   nothing either. */
 function chips(){legend.innerHTML='';
 KB_BLOCKS.forEach(blk=>{
 const inBlk=new Set(blk.kbs);
-const cnt=CATS.map(()=>0);N.forEach(n=>{if(inBlk.has(n.kb)&&!offKB.has(n.kb))cnt[n.c]++});
+const cnt=CATS.map(()=>0),all=CATS.map(()=>0);N.forEach(n=>{if(inBlk.has(n.kb)){all[n.c]++;if(!offKB.has(n.kb))cnt[n.c]++}});
 const row=document.createElement('div');row.className='lrow';
 /* the accent bar alone names the block — a text tag repeated the sidebar
    and pushed each row's chips right by a different width, so the category
    columns never aligned. Owner's instruction of 01.09.2026. */
 row.style.borderLeft='3px solid '+blk.hue;row.style.paddingLeft='8px';
 let any=false;
-for(let i=0;i<CATS.length;i++){const c=CATS[i];if(!cnt[i])continue;any=true;
-const s=document.createElement('span');s.className='chip'+(off.has(i)?' off':'');
+for(let i=0;i<CATS.length;i++){const c=CATS[i];if(!all[i])continue;if(cnt[i])any=true;
+const s=document.createElement('span');s.className='chip'+(off.has(i)?' off':'')+(cnt[i]?'':' void');
 /* drawn at the screen's pixel density: a 16px bitmap blurs on a Retina display,
    and the header is where every category mark is seen first */
 const cv=document.createElement('canvas');cv.width=cv.height=Math.round(16*dpr);cv.style.width=cv.style.height='16px';const x2=cv.getContext('2d');
 x2.scale(dpr,dpr);x2.translate(8,8);x2.fillStyle=COL[i];shp(x2,5.5,i);x2.fill();
 s.appendChild(cv);const bb=document.createElement('b');bb.textContent=LBL[c]||c;s.appendChild(bb);
-const sm=document.createElement('small');sm.textContent=cnt[i];s.appendChild(sm);
+const sm=document.createElement('small');sm.textContent=cnt[i];sm.style.minWidth=String(all[i]).length+'ch';s.appendChild(sm);
 s.title='click to hide / show this category — graph and list alike';
 s.onclick=()=>{off.has(i)?off.delete(i):off.add(i);if(sel>=0&&hid(N[sel]))clearSel();chips();build(q.value.toLowerCase());dirty=true};
 row.appendChild(s)}
-if(any)legend.appendChild(row)})}
+if(!any)row.classList.add('void');legend.appendChild(row)})}
 function shp(x2,r,k){x2.beginPath();const s=SHAPES[k];
 if(s==='circle')x2.arc(0,0,r,0,7);
 else if(s==='square')x2.rect(-r*.9,-r*.9,r*1.8,r*1.8);
@@ -2161,7 +2236,7 @@ else if(s==='chip'){x2.rect(-r*.75,-r*.75,r*1.5,r*1.5);for(let j=-1;j<2;j++){x2.
 else if(s==='gear'){for(let j=0;j<16;j++){const rr=j%2?r*.78:r*1.15;const a=-Math.PI/2+j*Math.PI/8;x2[j?'lineTo':'moveTo'](rr*Math.cos(a),rr*Math.sin(a))}x2.closePath()}
 else if(s==='card'){x2.rect(-r*.75,-r*1.05,r*1.5,r*2.1)}
 else if(s==='stack'){x2.ellipse(0,-r*.55,r*1.05,r*.5,0,0,7);x2.moveTo(r*1.05,r*.55);x2.ellipse(0,r*.55,r*1.05,r*.5,0,0,7)}
-else{const m=s==='pentagon'?5:s==='hexagon'?6:10;for(let j=0;j<m;j++){const rr=s==='star'?(j%2?r*.5:r*1.15):r*1.05;
+else{const m=s==='pentagon'?5:s==='hexagon'?6:s==='octagon'?8:10;for(let j=0;j<m;j++){const rr=s==='star'?(j%2?r*.5:r*1.15):r*1.05;
 const a=-Math.PI/2+j*2*Math.PI/m;x2[j?'lineTo':'moveTo'](rr*Math.cos(a),rr*Math.sin(a))}x2.closePath()}}
 function resize(){gc.width=gc.clientWidth*dpr;gc.height=gc.clientHeight*dpr;dirty=true}
 addEventListener('resize',resize);
@@ -2311,13 +2386,19 @@ addEventListener('mouseup',()=>{if(sdrag){sdrag=false;split.classList.remove('on
 // recurring fault.
 const aboutWrap=document.getElementById('aboutWrap');
 const REPO='';   /* your repository URL, or '' to hide the link */
-function fact(dlEl,k,v,ttl,href){const w=document.createElement('div');
+function fact(dlEl,k,v,ttl,href,note){const w=document.createElement('div');
 const dt=document.createElement('dt');dt.textContent=k;
 const dd=document.createElement('dd');
 if(href){const a=document.createElement('a');a.href=href;a.target='_blank';a.rel='noopener';
  a.className='nav';a.textContent=v;dd.appendChild(a);}else{dd.textContent=v;}
 if(ttl)w.title=ttl;
-w.appendChild(dt);w.appendChild(dd);dlEl.appendChild(w)}
+w.appendChild(dt);w.appendChild(dd);
+/* A note shows beside the value, for a figure whose name does not explain
+   itself, on the value's line so the panel does not grow; the full sentence
+   is the tooltip: the owner asked three times what the two link figures mean, and
+   the answer sat in a tooltip. Owner's instruction of 27.09.2026. */
+if(note){const n=document.createElement('small');n.className='fn';n.textContent=note;dd.appendChild(n)}
+dlEl.appendChild(w)}
 function aboutFill(){
  const cs=Object.values(D),f=document.getElementById('aboutFacts');f.innerHTML='';
  // The four build facts lead, as they do in j4k's About: what this page is,
@@ -2327,10 +2408,12 @@ function aboutFill(){
  fact(f,'Build number',BUILDNO,'Commits on main when this page was generated');
  fact(f,'Build date',STAMP,'When _scripts/visualize.py last ran, in this machine’s timezone');
  fact(f,'Started',STARTED,'The vault’s first commit, and which day of building this is');
- fact(f,'Concepts',cs.length+' in '+new Set(cs.map(c=>c.kb)).size+' bases');
- fact(f,'Citations',cs.reduce((a,c)=>a+(c.ns||0),0));
- fact(f,'Inbound links',cs.reduce((a,c)=>a+(c.inb||[]).length,0),'Concept-to-concept links across the whole vault, counted where they land. A bundle that is a list rather than a graph shows up here before it shows up anywhere else.');
- fact(f,'No inbound links',cs.filter(c=>!(c.inb||[]).length).length,'Nothing else in the vault points at these');
+ fact(f,'Concepts',sw(cs.length)+' in '+new Set(cs.map(c=>c.kb)).size+' bases');
+ fact(f,'Citations',sw(cs.reduce((a,c)=>a+(c.ns||0),0)));
+ fact(f,'Inbound links',sw(cs.reduce((a,c)=>a+(c.inb||[]).length,0)),'A link is one concept pointing at another. Every link arrives somewhere, so this counts all links between concepts, where they land. Higher means better connected; a bundle that is a list rather than a graph shows up here first.',null,
+  'links between concepts');
+ fact(f,'No inbound links',sw(cs.filter(c=>!(c.inb||[]).length).length),'Concepts that no other concept links to. Only search or the list reaches them. Not an error, but usually a link is missing.',null,
+  'concepts nothing links to');
 }
 function aboutOpen(){aboutFill();aboutWrap.classList.add('on')}
 function aboutClose(){aboutWrap.classList.remove('on')}
@@ -2347,7 +2430,10 @@ document.getElementById('about3d').onclick=()=>{aboutClose();if(!b3.disabled)b3.
 const setBox=document.getElementById('setBox'),bSet=document.getElementById('bSet');
 function setOpen(){setBox.hidden=false;bSet.classList.add('on');bSet.setAttribute('aria-expanded','true')}
 function setClose(){setBox.hidden=true;bSet.classList.remove('on');bSet.setAttribute('aria-expanded','false')}
-bSet.onclick=async()=>{if(setBox.hidden){setOpen();await pingHelper();loadBrain()}else setClose()};
+bSet.onclick=async()=>{if(setBox.hidden){setOpen();await pingHelper();loadBrain();loadTasks()}else setClose()};
+/* About sits first in Settings, as About j4k sits first in j4k's menu. */
+document.getElementById('setAbout').onclick=()=>{setClose();aboutOpen()};
+document.getElementById('setBuild').textContent='Build '+BUILDNO+' · '+GIT;
 document.getElementById('setX').onclick=setClose;
 document.addEventListener('pointerdown',e=>{if(setBox.hidden||setBox.contains(e.target)||bSet.contains(e.target))return;setClose()},true);
 function kbBadge(){const n=offKB.size;let d=bSet.querySelector('.dot');
@@ -2377,7 +2463,32 @@ if(e.key==='f'||e.key==='F'){if(view==='graph')fit();else if(view==='3d')G3.fit(
 __G3__
 /* The page opens on the graph: the Graph view is the first of the two, and a
    working selection like the view is not kept between visits. */
-build('');kbbar();kbBadge();chips();setView('graph');
+/* The vault's figures, owner's request of 27.09.2026, in one line at the top
+   left of each graph. The whole vault, as the About box counts it, whatever
+   the Settings hide. A link runs from one concept to another, so the vault's
+   outbound and inbound totals are one number, counted from either end, and
+   the line gives it once. */
+function sw(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,"'")}
+(()=>{const cs=Object.values(D);
+const html='<b>'+new Set(cs.map(c=>c.kb)).size+'</b> bases · <b>'+sw(cs.length)+'</b> concepts · <b>'+
+ sw(cs.reduce((a,c)=>a+c.inb.length,0))+'</b> links · <b>'+sw(cs.reduce((a,c)=>a+(c.ns||0),0))+'</b> citations';
+document.querySelectorAll('.gstat').forEach(el=>el.innerHTML=html)})();
+/* The address can name a view and a search, 27.09.2026, for GLaDOS, the owner's
+   voice assistant: "switch to concepts, 2D view and 3D view", "search for
+   something using the search bar (not ask for Claude)", "this should work in all
+   views". `#view=concepts|graph|2d|3d&q=…` is read on load and on every change of
+   the fragment, which is how she steers this tab without reloading 16 MB. A part
+   the fragment does not name is left as it is, an empty `q` clears the search, and
+   the search is always Search, never Ask: it goes through the box's own `input`
+   event, as typing does, so it filters every view alike. `n` is hers, to make
+   each address new, and means nothing here. The meta tag in the head says the
+   page does this; she looks for it before telling anyone the page followed her.
+   viewer-check.js holds it. */
+function fromAddress(){const a=new URLSearchParams(location.hash.slice(1)),v=a.get('view');
+ if(v==='concepts'||v==='graph'||v==='3d'||v==='2d')setView(v==='2d'?'graph':v);
+ if(a.has('q')){if(askMode)setMode(false);q.value=a.get('q');q.dispatchEvent(new Event('input'))}}
+addEventListener('hashchange',fromAddress);
+build('');kbbar();kbBadge();chips();setView('graph');fromAddress();
 </script></body></html>"""
 page = (page.replace('__G3__', G3_JS).replace('__I3D__', icon_3d).replace('__LOGO__', _mark('h'), 1).replace('__LOGO__', _mark('a', pulse=True), 1)
         .replace('__KB_BLOCKS__', json.dumps(KB_BLOCKS, ensure_ascii=False)).replace('__GIT__', git_id)

@@ -1,14 +1,14 @@
 {
   "name": "00_Cerebrum",
   "kind": "template",
-  "build": 15,
-  "commit": "171df6c",
+  "build": 17,
+  "commit": "2e14c8f",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
-  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-15/00_Cerebrum-template-15.tar.gz",
-  "sha256": "7cb338613f8f19cb338107dbf1066bcca9e4388c1474928e4d32dda6eef33c66",
+  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-17/00_Cerebrum-template-17.tar.gz",
+  "sha256": "1e755de7b44e862f06876532c23cfda8e2399baa7bf2b89c90c7c72097c943bd",
   "zip": {
-    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-15/00_Cerebrum-template-15.zip",
-    "sha256": "7d49e2387351de453638407eb8dea62fad65eb62caf1bc83ca171744d9b6853b"
+    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-17/00_Cerebrum-template-17.zip",
+    "sha256": "3c9a30b6c170b370f51b89fe96d5290181612045ed68f9abf19d84fed582631e"
   },
   "requires": {
     "python": ">=3.9",
@@ -22,6 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 36 scripts. Build 15 changes one line: the frontmatter example in CLAUDE.md writes generated.by as librarian/<model-id> instead of naming one model. Build 13 carries a prompt audit of the skills against Claude Opus 5.5: compile agents record the model they run as, the file-tools access note applies only where a session needs it, the health check ends at its summary and names files by path, and sentences describing earlier versions of a rule are gone. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
-  "source_commit": "c516cf0"
+  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 37 scripts. Build 17: the concept list groups by knowledge base; Settings shows the Claude app's scheduled tasks; the viewer takes its view and search from its address; a small knowledge base gets a minimum radius on the map; verify.py gains three gauges (content stranded after the footnotes, descriptions behind their sources, source stamps older than the file they cite) and a check of each Raw register; meetings.py reads meeting notes without their transcripts; frozen knowledge bases are left out of the plural runs; and a vault-scoped report can be given a home with VAULT_REPORT_KB. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
+  "source_commit": "4f1bbac"
 }

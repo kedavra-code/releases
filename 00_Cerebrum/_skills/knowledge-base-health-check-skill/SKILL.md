@@ -1,28 +1,28 @@
 ---
 name: knowledge-base-health-check-skill
-description: "Audits knowledge bases in the 00_Cerebrum vault, where each Wiki folder is an Open Knowledge Format (OKF) v0.2 bundle. Checks conformance (frontmatter, type, sources, footnote labels resolving to source ids, index accuracy, stale_after), verifies every citation resolves, applies writing-rules fixes, rewrites memory.md, reports archive coverage, and flags promotion candidates from Outputs. Auto-drafts up to three new concepts where evidence supports them, and files an Outputs report when a run raises action items or applies fixes. Use whenever the user says \"run a health check\", \"audit the [name] KB\", \"audit my knowledge base\", \"check the wiki\", or whenever a scheduled task fires it. A plural request — \"run the health checks\", \"health check all knowledge bases\", \"audit the vault\" — sweeps every knowledge base in the vault, one concurrent audit each, and asks nothing first. Singular audits the one named."
+description: "Audits knowledge bases in the 00_Cerebrum vault, where each Wiki folder is an Open Knowledge Format (OKF) v0.2 bundle. Checks conformance (frontmatter, type, sources, footnote labels resolving to source ids, index accuracy, stale_after), verifies every citation resolves, applies writing-rules fixes, rewrites memory.md, reports archive coverage, and flags promotion candidates from Outputs. Auto-drafts up to three new concepts where evidence supports them, and files an Outputs report when a run raises action items or applies fixes. Use whenever the user says \"run a health check\", \"audit the [name] KB\", \"audit my knowledge base\", \"check the wiki\", or whenever a scheduled task fires it. A plural request — \"run the health checks\", \"health check all knowledge bases\", \"audit the vault\" — sweeps every live knowledge base in the vault, one concurrent audit each, and asks nothing first; a frozen one is audited only when named. Singular audits the one named."
 ---
 
 # Knowledge base health check
 
-Audits a knowledge base, or every knowledge base in the vault when the request is plural. Auto-fixes routine drift, verifies OKF conformance, rewrites the cold-start state file, drafts the strongest new concept candidates, and flags only judgement calls. Same procedure every run, on demand or scheduled.
+Audits a knowledge base, or every live knowledge base in the vault when the request is plural. Auto-fixes routine drift, verifies OKF conformance, rewrites the cold-start state file, drafts the strongest new concept candidates, and flags only judgement calls. Same procedure every run, on demand or scheduled.
 
 ## When to invoke
 
 - The user says "run a health check", "audit the [name] KB", "audit my knowledge base", "check the wiki" — one knowledge base, the one named. If a singular request names none and more than one exists, ask which.
-- The user says "run the health checks", "health check all knowledge bases", "audit the vault", "run a health check on everything" — every knowledge base. See *The sweep* below.
+- The user says "run the health checks", "health check all knowledge bases", "audit the vault", "run a health check on everything" — every live knowledge base. See *The sweep* below.
 - The user says "action the latest health check" — that is the `knowledge-base-action-skill`, not this one. Hand over to it.
 - A scheduled task fires it. The monthly task is a sweep and runs it the same way.
 
 **The plural is load-bearing.** A singular request naming no knowledge base is a question to ask; a plural one is an instruction not to. Asking which base to audit after being told to audit all of them is the failure this distinction exists to prevent: it stalls the run on a question the owner has already answered.
 
-## The sweep: every knowledge base in one invocation
+## The sweep: every live knowledge base in one invocation
 
-**Discover the list; never carry one.** Every immediate subfolder of `00_Cerebrum/` holding a `CLAUDE.md` is a knowledge base. Reading that off disk on each run is what makes a base added later get audited without anyone remembering to update this file, and it is why the monthly task discovers rather than enumerates.
+**Discover the list; never carry one.** Every immediate subfolder of `00_Cerebrum/` holding a `CLAUDE.md` is a knowledge base. Reading that off disk on each run is what makes a base added later get audited without anyone remembering to update this file, and it is why the monthly task discovers rather than enumerates. **Then drop every base whose `memory.md` declares it frozen**, and say in the summary which were skipped.
 
-**Frozen bases are swept too, and this is where the health check parts company with the compile skill.** "Compile the archives" deliberately skips a frozen base: there is no new material to read, and a run that changes one is a mistake. Freezing has the opposite bearing on an audit. What drifts in a closed bundle is not the corpus but the machinery around it — an index a regenerated script now writes differently, a citation broken by a source folder moving in another base, a finding that has stood long enough to escalate. That drift is caused from outside the base, and the archive being closed prevents none of it.
+**Frozen bases are not swept**, owner's instruction of 27.09.2026. Nothing arrives in them, so a sweep mostly re-finds what the last one found. What can still drift is caused from outside, such as a citation broken by a source folder moving in another base, an index a regenerated script now writes differently, or a finding old enough to escalate, and `verify.py` scans every base on every commit whether or not a sweep runs. A DEFECT it reports in a frozen base is fixed where it stands. A full audit of a frozen base runs only when the owner names it: "audit the Beta KB".
 
-What freezing does change is what counts as a finding. There is no ingest cadence, so the coverage table is a record rather than a queue, `stale_after` is meaningless, and a scope that has grown is itself the defect. Say that in the entry rather than reporting an empty queue as progress.
+When one is named, freezing changes what counts as a finding. There is no ingest cadence, so the coverage table is a record rather than a queue, `stale_after` is meaningless, and a scope that has grown is itself the defect. Say that in the entry rather than reporting an empty queue as progress.
 
 **One sub-agent per knowledge base, all dispatched in a single message so they run concurrently.** The procedure below is unchanged and each agent runs the whole of it against its own base. The boundary that holds is one knowledge base per *audit*, not one per invocation.
 
@@ -589,7 +589,7 @@ First, confirm you can reach it: list the folder and check that 00_Cerebrum/CLAU
 
 Once you have confirmed it, read 00_Cerebrum/CLAUDE.md so you understand how the knowledge base system works, and 00_Cerebrum/SPEC.md for the Open Knowledge Format the Wiki folders use. Scheduled runs open a fresh session with no folder context, so this re-anchoring matters.
 
-Then run the knowledge-base-health-check-skill as a sweep across every active knowledge base, following its section "The sweep: every knowledge base in one invocation". That section carries the discovery rule, the sub-agent prompt, the files an agent must not write, and the closing sequence.
+Then run the knowledge-base-health-check-skill as a sweep across every live knowledge base, following its section "The sweep: every live knowledge base in one invocation". That section carries the discovery rule, the sub-agent prompt, the files an agent must not write, and the closing sequence.
 
 This is an unattended run, so two things differ from an interactive sweep: do not pause for input at any point, and edit no CLAUDE.md — raise an action item carrying the proposed text instead, because there is nobody to ask.
 

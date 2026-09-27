@@ -888,6 +888,141 @@ def translate(rel, emit, mid=None, effort=None):
         emit({'type': 'error', 'error': err})
 
 
+# **The scheduled tasks, as the Claude app on this Mac records them.** Owner's
+# request of 27.09.2026: Settings shows the state of the weekly tasks. The app
+# keeps its schedule in `scheduled-tasks.json` and one file per run session, in
+# a folder named by account ids. Neither is a published format, so this reads
+# them defensively and says so when it cannot: the coupling is the path, and a
+# path into another application's folder breaks the day that application
+# reorganises it. A missing file is reported as missing, never as "no tasks".
+CLAUDE_APP = os.path.expanduser('~/Library/Application Support/Claude/claude-code-sessions')
+DAYS = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays']
+
+
+def _cron_field(spec, lo, hi):
+    """The set of values one cron field allows: `*`, `n`, `a-b`, lists, `/step`."""
+    out = set()
+    for part in spec.split(','):
+        rng, _, step = part.partition('/')
+        a, b = (lo, hi) if rng == '*' else (
+            [int(x) for x in rng.split('-')] if '-' in rng else [int(rng)] * 2)
+        out.update(range(a, b + 1, int(step or 1)))
+    return out
+
+
+def _cron_times(expr, start, forward):
+    """The fire times of `expr` in local time, from `start` onward or backward.
+
+    Walks minute by minute inside a matching day and skips a day that cannot
+    match, so a weekly schedule costs a few thousand steps rather than ten."""
+    import datetime as _dt
+    m, h, dom, mon, dow = expr.split()
+    M, H = _cron_field(m, 0, 59), _cron_field(h, 0, 23)
+    DOM, MON = _cron_field(dom, 1, 31), _cron_field(mon, 1, 12)
+    DOW = {d % 7 for d in _cron_field(dow, 0, 7)}
+
+    def day_ok(t):
+        wd = (t.weekday() + 1) % 7
+        if dom != '*' and dow != '*':
+            return t.month in MON and (t.day in DOM or wd in DOW)
+        return t.month in MON and t.day in DOM and wd in DOW
+
+    step = _dt.timedelta(minutes=1 if forward else -1)
+    t = start.replace(second=0, microsecond=0)
+    for _ in range(60 * 24 * 400):
+        if not day_ok(t):
+            t = (t.replace(hour=0, minute=0) + _dt.timedelta(days=1)) if forward \
+                else (t.replace(hour=23, minute=59) - _dt.timedelta(days=1))
+            continue
+        if t.hour in H and t.minute in M:
+            return t
+        t += step
+    return None
+
+
+def _when(expr):
+    """`0 9 * * 0` as "Sundays 09:00"; anything less plain as the expression."""
+    p = expr.split()
+    if len(p) == 5 and p[2] == p[3] == '*' and p[0].isdigit() and p[1].isdigit():
+        if p[4] == '*':
+            return 'Daily %02d:%02d' % (int(p[1]), int(p[0]))
+        if p[4].isdigit():
+            return '%s %02d:%02d' % (DAYS[int(p[4]) % 7], int(p[1]), int(p[0]))
+    return 'cron ' + expr
+
+
+def scheduled(root=CLAUDE_APP, now=None):
+    """Each scheduled task: its schedule, its last run and how it ended, the
+    next run, and whether a run it should have had never came."""
+    import datetime as _dt
+    import glob
+    now = now or _dt.datetime.now()
+    files = sorted(glob.glob(os.path.join(root, '*', '*', 'scheduled-tasks.json')),
+                   key=os.path.getmtime, reverse=True)
+    if not files:
+        return {'error': 'The Claude app keeps no schedule file on this Mac, '
+                         'or has moved it. The status cannot be read.'}
+    try:
+        tasks = json.load(open(files[0], encoding='utf-8')).get('scheduledTasks') or []
+    except Exception as e:                                    # noqa: BLE001
+        return {'error': 'The Claude app\'s schedule file did not parse: %s' % e}
+    # The newest run session of each task, by when it started.
+    runs = {}
+    for f in glob.glob(os.path.join(os.path.dirname(files[0]), 'local_*.json')):
+        try:
+            d = json.load(open(f, encoding='utf-8'))
+        except Exception:                                     # noqa: BLE001
+            continue
+        tid = d.get('scheduledTaskId')
+        if tid and (tid not in runs or d.get('createdAt', 0) > runs[tid].get('createdAt', 0)):
+            runs[tid] = d
+
+    def iso(ms_or_iso):
+        if not ms_or_iso:
+            return None
+        if isinstance(ms_or_iso, (int, float)):
+            t = _dt.datetime.fromtimestamp(ms_or_iso / 1000)
+        else:
+            t = _dt.datetime.fromisoformat(ms_or_iso.replace('Z', '+00:00')) \
+                .astimezone().replace(tzinfo=None)
+        return t.isoformat(timespec='minutes')
+
+    out = []
+    for t in tasks:
+        expr = t.get('cronExpression') or ''
+        try:
+            nxt = _cron_times(expr, now + _dt.timedelta(minutes=1), True)
+            prev = _cron_times(expr, now, False)
+        except Exception:                                     # noqa: BLE001
+            nxt = prev = None
+        last = iso(t.get('lastRunAt'))
+        made = iso(t.get('createdAt'))
+        # Missed: a fire time has passed since the task was made, and no run
+        # started at or after it. Twenty minutes of grace, because the app
+        # starts a run up to a few minutes late on purpose.
+        missed = None
+        p = prev.isoformat(timespec='minutes') if prev else None
+        if p and t.get('enabled', True) and (not made or p > made) \
+                and now - prev > _dt.timedelta(minutes=20) and (not last or last < p):
+            missed = p
+        r = runs.get(t.get('id')) or {}
+        s = r.get('postTurnSummary') or {}
+        out.append({
+            'id': t.get('id'),
+            'name': t.get('displayName') or t.get('id'),
+            'when': _when(expr) if expr else 'one-time',
+            'enabled': bool(t.get('enabled', True)),
+            'last': last,
+            'next': nxt.isoformat(timespec='minutes') if nxt and t.get('enabled', True) else None,
+            'missed': missed,
+            'state': s.get('status_category'),
+            'detail': s.get('status_detail') or '',
+            'needs': s.get('needs_action') or '',
+            'active': iso(r.get('lastActivityAt')),
+        })
+    return {'tasks': out}
+
+
 def model_rows():
     """The registry as the page needs it: labels, capabilities, and whether the
     weights are actually here. Capability is read from the registry; presence is
@@ -1065,6 +1200,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(model_rows())
         if path == '/reports':
             return self._json({'reports': reports()})
+        if path == '/tasks':
+            return self._json(scheduled())
         if path.startswith('/report/'):
             page = render(path[len('/report/'):])
             if page is None:

@@ -19,6 +19,12 @@ OneNote/
 # all three employers and is cited from all three bundles.
 _testimony/
 
+# Meeting notes written by scripta, the owner's transcription program, from
+# 26.09.2026. Same class as Raw and _testimony: source material, with a full
+# transcript of what named colleagues said. It sits at the root because scripta
+# writes it there; Alpha_kb cites into it by default.
+Meetings/
+
 # Retirement bins. Files here await manual deletion (the session VM cannot
 # delete); they are not knowledge and must not reach GitHub. Git history is
 # the real archive of retired concepts once this repo exists.

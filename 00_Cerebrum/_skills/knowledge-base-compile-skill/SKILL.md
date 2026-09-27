@@ -1,6 +1,6 @@
 ---
 name: knowledge-base-compile-skill
-description: "Compiles an archive layer of a 00_Cerebrum knowledge base into OKF concepts by dispatching batches of ~55 archive pages to parallel sub-agents, then merging what they hand back. Plans batches, packs them, runs up to eight agents concurrently, merges append-requests, writes the compile ledger, and measures coverage as the share of archive pages actually cited rather than asserted. Use whenever the user says \"compile the archives\", \"compile all kb\", \"compile the [name] archive\", \"run a compile\", \"continue the compile\", \"read the rest of the archive\", or asks how much of an archive has actually been read. Also covers the routine ingest of new material into a live knowledge base, from its Raw/ folder and from a weekly OneNote export delta. \"Compile the archives\" or \"compile all kb\", plural, means every live knowledge base in turn and never a frozen one's archive, and it ends by writing the checked findings of question reports in Outputs/ into the Wiki, frozen knowledge bases included."
+description: "Compiles an archive layer of a 00_Cerebrum knowledge base into OKF concepts by dispatching batches of ~55 archive pages to parallel sub-agents, then merging what they hand back. Plans batches, packs them, runs up to eight agents concurrently, merges append-requests, writes the compile ledger, and measures coverage as the share of archive pages actually cited rather than asserted. Use whenever the user says \"compile the archives\", \"compile all kb\", \"compile the [name] archive\", \"run a compile\", \"continue the compile\", \"read the rest of the archive\", or asks how much of an archive has actually been read. Also covers the routine ingest of new material into a live knowledge base, from its Raw/ folder, from a weekly OneNote export delta, and from the meeting notes scripta writes into Meetings/. \"Compile the archives\" or \"compile all kb\", plural, means every live knowledge base in turn and never a frozen one, and it ends by writing the checked findings of question reports in Outputs/ into the live knowledge bases."
 ---
 
 # Knowledge base compile
@@ -29,7 +29,7 @@ Liveness is not hardcoded here, and must not be. Each `<KB>/memory.md` declares 
 | _(read each `memory.md`)_ | live | yes |
 | | frozen | **no** |
 
-**A frozen archive is complete and closed.** There is no ingest cadence, no queue, and nothing arrives. A run that changes anything under one is a mistake rather than an update — so a plural invocation must not compile them, and must not report them as "compiled, 0 pages" either, which invites the next run to check again. The one thing it writes into a frozen knowledge base is a question report's checked findings, in the last step; the archive stays untouched.
+**A frozen archive is complete and closed.** There is no ingest cadence, no queue, and nothing arrives. A run that changes anything under one is a mistake rather than an update — so a plural invocation must not compile them, and must not report them as "compiled, 0 pages" either, which invites the next run to check again. **It writes nothing into a frozen knowledge base, question reports included**, owner's instruction of 27.09.2026. A frozen base is worked on only when the owner names it.
 
 Plural is a sequence, not a merge. The scripts take one knowledge base per invocation and the concept namespaces are separate; run one to completion, close it out, then start the next.
 
@@ -41,7 +41,7 @@ Each live knowledge base has its own sources, and they are not interchangeable.
 
 | Knowledge base | Sources |
 |---|---|
-| `Alpha_kb` | `Alpha_kb/Raw/`, **and** the weekly OneNote export delta under `Alpha_kb/OneNote/Work Alpha/` |
+| `Alpha_kb` | `Alpha_kb/Raw/`, the weekly OneNote export delta under `Alpha_kb/OneNote/Work Alpha/`, **and** the meeting notes in `Meetings/` at the vault root |
 | `Zeta_kb` | `Zeta_kb/Raw/` **only** |
 
 **`Zeta_kb/OneNote/Personal/` is not a compile queue.** It is 19 static pages, cited across from `Beta_kb` and `Alpha_kb` for the career record, and it is not fed by any exporter. It reads as 0 per cent covered in `COVERAGE.md` and that is not a backlog to clear — do not plan batches over it without asking the owner.
@@ -96,6 +96,18 @@ So a `modified` page with `contentChanged` needs a judgement the bulk pass never
 3. **Do not reach for the batch machinery.** A handful of files is a direct read and a concept written or appended to. The eight-agent pipeline earns its overhead somewhere above fifty pages; below that it costs more to orchestrate than to do.
 4. Owner testimony is a source like any other — `author: human:owner`, cited normally, and **it never licenses a `verified:` key**.
 
+### Meeting notes
+
+scripta, the owner's transcription program, writes one note per meeting into `Meetings/<year>/YYYYMMDD_HHMM.md` at the vault root. **They belong to `Alpha_kb` by default**, owner's instruction of 26.09.2026. A note that is plainly about something else goes to the owner before it is compiled anywhere.
+
+**Only four sections are compiled: Summary, Decisions, Tasks and Open points.** Never the Transcript, never the "As heard" block after it. So a note is never opened directly: `python3 _scripts/meetings.py --read <note>` prints the four sections and nothing after them, and that is the only way a note enters the context that writes a concept. Pass the same instruction to any sub-agent.
+
+1. `python3 _scripts/meetings.py Alpha_kb` lists the notes no concept cites and the ledger does not record. It is the queue, found without bookkeeping, as the planner finds new archive pages.
+2. Treat them like Raw: a direct read, not the batch machinery. They arrive a few a week.
+3. Cite the note by path, `../../../Meetings/2026/20260915_1251.md` from a concept in a group directory. `title` is the note's `title`, `last_modified` its `date`, and `author` is `process:scripta`: the four sections are the program's summary of a recording, not anyone's minutes.
+4. **Names in a note come from speech recognition.** The speaker list repeats names and can put one person's words under another's. A name, a role or an attribution that matters is checked against the archive before it goes into a `Person` concept.
+5. A note carrying nothing citable goes into `_COMPILE-LEDGER.md` like an archive page, so it leaves the queue.
+
 ### The short loop
 
 ```bash
@@ -103,22 +115,23 @@ V=/path/to/00_Cerebrum; cd "$V"
 tail -5 "<KB>/OneNote/<layer>/_CHANGELOG.md"   # did the sync run? did it find anything?
 python3 _scripts/plan-batches.py <KB> --dry-run # new pages, found without being told
 ls <KB>/Raw/                                    # anything dropped by hand
+python3 _scripts/meetings.py Alpha_kb             # meeting notes not yet compiled
 ```
 
-Zero unread, a changelog line of all zeros, and nothing new in `Raw/` means there is nothing to compile. **Say that and stop** — a plural run still goes on to the question reports. Manufacturing a pass over a bundle that has not changed is how a corpus acquires concepts nobody needed.
+Zero unread, a changelog line of all zeros, nothing new in `Raw/` and no meeting note in the queue means there is nothing to compile. **Say that and stop** — a plural run still goes on to the question reports. Manufacturing a pass over a bundle that has not changed is how a corpus acquires concepts nobody needed.
 
 ## Question reports into the Wiki
 
 **The last step of "compile all kb", run every time, even when no knowledge base had anything to compile.** Owner's decision of 15.09.2026. Until then no compile read `Outputs/`. A report's findings reached the Wiki only through a promotion the owner had to approve, nothing asked the owner, and that day five reports had stood at `pending review` for 12 to 29 days.
 
-**Which reports.** Every row in `Outputs/_REPORTS.md` whose Promotion cell starts with `pending review`, whatever its Scope names — `Gamma_kb` and `Beta_kb` included, because a report's findings are not archive material. Nothing under `OneNote/` or `Raw/` is touched. Audit rows are never promoted, and a row at `promoted`, `partial` or `none` is already decided.
+**Which reports.** Every row in `Outputs/_REPORTS.md` whose Promotion cell starts with `pending review`, except that a frozen knowledge base is left alone: a report whose findings concern only `Gamma_kb` or `Beta_kb` is set to `none — frozen base`, and one that also concerns a live base is written into the live base only. Nothing under `OneNote/` or `Raw/` is touched. Audit rows are never promoted, and a row at `promoted`, `partial` or `none` is already decided.
 
 **One report at a time, in this order:**
 
 1. Read the report whole, including *Corpus sufficiency*, which names the concepts that should have existed.
 2. List its findings — each fact or synthesis it states about the subject — and check the Wiki for each. One the Wiki already carries is done.
 3. **Check every other finding against the pages the report cites**, opened and read, never against the report's own wording. A report is a secondary account and can be wrong: the Glenfis report of 14.09.2026 carried two statements its own source contradicted. A finding the pages do not support stays out.
-4. Write what holds into the knowledge base whose subject it is, following that base's `CLAUDE.md`: into the concept that covers the subject, as a section or table rows, or as a new concept where none does. `sources` name the pages, never the report. Every claim footnoted, no `verified` key written, `generated.at` restamped on every concept changed. A report spanning two knowledge bases writes each finding where its subject lives and links across rather than copying. **A concept that carried a `verified` key loses it**: the owner confirmed the text as it stood, and `_REPAIR-LEDGER.md` rules that a change to a claim clears the key.
+4. Write what holds into the knowledge base whose subject it is, following that base's `CLAUDE.md`. **A report scoped `vault` goes into the knowledge base `VAULT_REPORT_KB` names in `_scripts/verify.py`**, where one is named, and may be cited there for what the vault itself measured or built, with `author: process:librarian`, because a test's report is often its only record; an external claim in it still needs its page saved into that base's `Raw/` and read first. `verify.py` then fails a `vault` row left at `none`. Write it into the concept that covers the subject, as a section or table rows, or as a new concept where none does. `sources` name the pages, never the report, outside that `vault` case. Every claim footnoted, no `verified` key written, `generated.at` restamped on every concept changed. A report spanning two knowledge bases writes each finding where its subject lives and links across rather than copying. **A concept that carried a `verified` key loses it**: the owner confirmed the text as it stood, and `_REPAIR-LEDGER.md` rules that a change to a claim clears the key.
 5. **Where a finding disagrees with a concept, do not write over it.** If the concept misreads a page it cites, correct it from that page by attribution, as a health check does. If two pages disagree, record both positions in the Contradictions table of `questions.md`.
 6. Update the register row: `promoted`, naming the concepts; `partial`, naming what was left out and why; or `none`, with the reason. An open action item that asked whether to promote the report is set to `actioned`, with the same note.
 
