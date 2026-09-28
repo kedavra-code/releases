@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 203,
-  "commit": "ea95fc6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-203/GLaDOS.dmg",
-  "sha256": "1f3b81f2a92a60f5c51e5b403287cfdfdc5043b4b97ae5434c11f8f6af41c27c",
+  "build": 228,
+  "commit": "9c3ce0d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-228/GLaDOS.dmg",
+  "sha256": "837737448baa7218b45f66feb71f194562fd3de0bcd594233c23b06817ab8518",
   "minimumSystemVersion": "26.0",
-  "notes": "The eye is a fifth bigger at both sizes, and the listening ring sits close round it"
+  "notes": "The eyes come and go with effects of their own, and the big pair rearranges itself"
 }
