@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 43,
-  "commit": "ada83fb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-43/scripta.dmg",
-  "sha256": "56375a1ae901d390c72bcad9af125509cc4c494fcbcf967c1aabe30f545b0643",
+  "build": 44,
+  "commit": "6cf57f8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-44/scripta.dmg",
+  "sha256": "40957166ea1568cb15a16cb88cf0e37bcf460d297d2aa32941080df358f6f1c2",
   "minimumSystemVersion": "26.0",
-  "notes": "No folder change in the scripta window: the footer only shows where notes go"
+  "notes": "Copy the whole minutes: a button beside Minutes/Transcript (⇧⌘C), plain text"
 }
