@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 235,
-  "commit": "d9d5e9e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-235/GLaDOS.dmg",
-  "sha256": "a8cf12e714027d46db4c80b27a0a9c02fc34738f6e79b6e6f191e9af633ae833",
+  "build": 238,
+  "commit": "df63b35",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-238/GLaDOS.dmg",
+  "sha256": "e9b6f42547eb760006577f48f1cd1ec645ff0668bd605c8b1b7b1da1b0d1eaa8",
   "minimumSystemVersion": "26.0",
-  "notes": "Earbuds that have just connected keep their microphone for five seconds, because taking it crashed the Mac's audio"
+  "notes": "The menu has no Power Down or Start Up row; the GLaDOS and J.A.R.V.I.S. rows are the power switch"
 }
