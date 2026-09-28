@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 228,
-  "commit": "9c3ce0d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-228/GLaDOS.dmg",
-  "sha256": "837737448baa7218b45f66feb71f194562fd3de0bcd594233c23b06817ab8518",
+  "build": 232,
+  "commit": "7e1669f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-232/GLaDOS.dmg",
+  "sha256": "cd88a71f4c8eaea6c91395b9734ac3d12eb8dec33c307e3fdc43644e77241523",
   "minimumSystemVersion": "26.0",
-  "notes": "The eyes come and go with effects of their own, and the big pair rearranges itself"
+  "notes": "Every start begins with the MacBook Pro Microphone, and she keeps the one chosen"
 }
