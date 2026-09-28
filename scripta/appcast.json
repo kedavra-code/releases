@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 53,
-  "commit": "05f177b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-53/scripta.dmg",
-  "sha256": "3ec2fe19bbe07fb3f96eca4f773577f62dee3a8de88575874a4141a75d4e52e9",
+  "build": 54,
+  "commit": "fecc949",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-54/scripta.dmg",
+  "sha256": "1f56c946a23c73629ec4c727cdfe3d674efe02ece7dc5ba3db0c039c68730836",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings: the window moves by its top strip after a drag on the tabs too"
+  "notes": "A speaker's name field takes the keyboard only from a click or Tab"
 }
