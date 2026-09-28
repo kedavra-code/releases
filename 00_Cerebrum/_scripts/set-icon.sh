@@ -7,8 +7,9 @@
 # resource fork, and git tracks a file's bytes and not its forks, so the icon
 # does not survive a clone or a copy through anything that drops extended
 # attributes. The picture it draws from does survive: `_assets/cerebrum-icon.png`
-# is the viewer's own mark, rendered at 1024px on the page's ground in the
-# rounded square macOS expects, and it is tracked.
+# is the viewer's mark as drawn for a demo vault of four knowledge bases,
+# rendered at 1024px on the page's ground in the rounded square macOS expects,
+# and it is tracked. Swap in a render of your own vault's mark if you like.
 #
 # Owner's instruction of 16.09.2026. Uses only what macOS and the Xcode command
 # line tools already provide: `sips`, `iconutil`, `Rez` and `SetFile`.
