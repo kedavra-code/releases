@@ -1513,6 +1513,17 @@ const pngPixels = buf => {
 
   // 9. Settings, 14.09.2026: j4k's Options menu in this viewer's frame, holding
   // the knowledge-base selector that left the sidebar.
+  //
+  // The helper is kept out of this section, and the page reloaded without it.
+  // Opening Settings asks the helper for the scheduled tasks, and a running
+  // helper's answer can land between two of the geometry measurements below:
+  // on 28.09.2026 it made Settings 157px taller while a knowledge base was
+  // hidden, and "hiding moves nothing" failed for a reason that was not the
+  // page. 9b feeds Settings a fixed helper answer; this section needs none.
+  const noHelper = r => r.abort();
+  await page.route('http://127.0.0.1:8760/**', noHelper);
+  await page.reload();
+  await page.waitForTimeout(900);
   const kbAll = await page.evaluate(() => [...new Set(Object.values(D).map(c => c.kb))]);
   await page.click('#bSet');
   await page.waitForTimeout(200);
@@ -1608,6 +1619,7 @@ const pngPixels = buf => {
   check(g1 === 'bSet' && g2.hidden && g2.focused !== 'bSet', 'Escape closes Settings and leaves no ring on the gear',
         'focused before=' + (g1 || 'body') + ' closed=' + g2.hidden + ' focused after=' + (g2.focused || 'body'));
   await page.evaluate(() => localStorage.removeItem('okf.kbOff'));
+  await page.unroute('http://127.0.0.1:8760/**', noHelper);
   await page.reload();
   await page.waitForTimeout(900);
 

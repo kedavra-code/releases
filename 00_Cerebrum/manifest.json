@@ -1,14 +1,14 @@
 {
   "name": "00_Cerebrum",
   "kind": "template",
-  "build": 19,
-  "commit": "4d64771",
+  "build": 21,
+  "commit": "4206349",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
-  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-19/00_Cerebrum-template-19.tar.gz",
-  "sha256": "ca6106c08845fab495d80aabb8fd43216941410b65c36dcf89ab4a1abb87ddd4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-21/00_Cerebrum-template-21.tar.gz",
+  "sha256": "cd925a900590418850420c7853dc18218b61fd96103788b4ee3a835ed652ca1c",
   "zip": {
-    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-19/00_Cerebrum-template-19.zip",
-    "sha256": "fb76b9172f56b4757a9af1d6b3fc62d833741bee71c37cec14fb3ec9c7e2a1e9"
+    "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-21/00_Cerebrum-template-21.zip",
+    "sha256": "405f754c83b49952268e93a0e73efd49180f8198da671c372467ff0ff080e9a5"
   },
   "requires": {
     "python": ">=3.9",
@@ -22,6 +22,6 @@
     ]
   },
   "licence": "MIT",
-  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 37 scripts. Build 19 ships the launcher, Open 00_Cerebrum.command, which the viewer already pointed to, and an icon for it drawn from the viewer's mark on a demo vault, so _scripts/set-icon.sh works; build 17 shipped the script without either. Build 17: the concept list groups by knowledge base; Settings shows the Claude app's scheduled tasks; the viewer takes its view and search from its address; a small knowledge base gets a minimum radius on the map; verify.py gains three gauges (content stranded after the footnotes, descriptions behind their sources, source stamps older than the file they cite) and a check of each Raw register; meetings.py reads meeting notes without their transcripts; frozen knowledge bases are left out of the plural runs; and a vault-scoped report can be given a home with VAULT_REPORT_KB. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
-  "source_commit": "b440997"
+  "notes": "The vault machinery with no corpus: the operating manual, WHY.md, the OKF v0.2 spec, the knowledge-base template, three skills and 37 scripts. Build 21: the viewer's helper offers Claude Sonnet 5.5, and viewer-check.js keeps a running helper out of its Settings geometry checks, which a late answer from it could fail. Build 19 ships the launcher, Open 00_Cerebrum.command, which the viewer already pointed to, and an icon for it drawn from the viewer's mark on a demo vault, so _scripts/set-icon.sh works; build 17 shipped the script without either. Build 17: the concept list groups by knowledge base; Settings shows the Claude app's scheduled tasks; the viewer takes its view and search from its address; a small knowledge base gets a minimum radius on the map; verify.py gains three gauges (content stranded after the footnotes, descriptions behind their sources, source stamps older than the file they cite) and a check of each Raw register; meetings.py reads meeting notes without their transcripts; frozen knowledge bases are left out of the plural runs; and a vault-scoped report can be given a home with VAULT_REPORT_KB. Build 11 brought the 3D view. Unpack it, run python3 _scripts/verify.py, and add a knowledge base from _KB_CLAUDE_TEMPLATE.md.",
+  "source_commit": "cf5be30"
 }

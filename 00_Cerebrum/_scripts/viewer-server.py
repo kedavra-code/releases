@@ -111,6 +111,12 @@ MODELS = [
     {'id': 'claude-opus-5-5', 'label': 'Opus 5.5', 'provider': 'anthropic',
      'effort': True, 'agentic': True, 'translates': True,
      'note': 'The strongest reader.'},
+    # Added 28.09.2026, its release day, on the owner's instruction. Claude
+    # Code 2.1.280 runs it but prints `unrecognized_model` first, a line that
+    # is not JSON, so run_claude() skips it.
+    {'id': 'claude-sonnet-5-5', 'label': 'Sonnet 5.5', 'provider': 'anthropic',
+     'effort': True, 'agentic': True, 'translates': True,
+     'note': 'Faster than Sonnet 5, same price per token.'},
     {'id': 'claude-sonnet-5', 'label': 'Sonnet 5', 'provider': 'anthropic',
      'effort': True, 'agentic': True, 'translates': True,
      'note': 'Faster and cheaper than Opus.'},
