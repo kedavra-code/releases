@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 44,
-  "commit": "6cf57f8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-44/scripta.dmg",
-  "sha256": "40957166ea1568cb15a16cb88cf0e37bcf460d297d2aa32941080df358f6f1c2",
+  "build": 46,
+  "commit": "3d830df",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-46/scripta.dmg",
+  "sha256": "5fc6dcabf49933fbf3b73c1750919c0ae0e0c6664acac6301256210d21946578",
   "minimumSystemVersion": "26.0",
-  "notes": "Copy the whole minutes: a button beside Minutes/Transcript (⇧⌘C), plain text"
+  "notes": "The meeting list lives beside the notes (.scripta), so iCloud keeps it the same on every Mac"
 }
