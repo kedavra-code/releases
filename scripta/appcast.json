@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 46,
-  "commit": "3d830df",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-46/scripta.dmg",
-  "sha256": "5fc6dcabf49933fbf3b73c1750919c0ae0e0c6664acac6301256210d21946578",
+  "build": 48,
+  "commit": "d7c4e2c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-48/scripta.dmg",
+  "sha256": "5feefefed2698ddb1df2b858895d253d437fdcac7d4e05540bdf74084f9e628c",
   "minimumSystemVersion": "26.0",
-  "notes": "The meeting list lives beside the notes (.scripta), so iCloud keeps it the same on every Mac"
+  "notes": "The meeting list follows its folder live: a meeting made or changed on another Mac shows up by itself"
 }
