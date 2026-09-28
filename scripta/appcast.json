@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 48,
-  "commit": "d7c4e2c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-48/scripta.dmg",
-  "sha256": "5feefefed2698ddb1df2b858895d253d437fdcac7d4e05540bdf74084f9e628c",
+  "build": 51,
+  "commit": "6204eb7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-51/scripta.dmg",
+  "sha256": "630ff8e3525dcff95d2de8077a725bcdc4cf209d70fb4dbac4334c8fd68adc26",
   "minimumSystemVersion": "26.0",
-  "notes": "The meeting list follows its folder live: a meeting made or changed on another Mac shows up by itself"
+  "notes": "About: minutes by Claude or, if chosen, by Qwen3 30B on this Mac, and nothing sent"
 }
