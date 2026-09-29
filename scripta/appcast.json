@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 54,
-  "commit": "fecc949",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-54/scripta.dmg",
-  "sha256": "1f56c946a23c73629ec4c727cdfe3d674efe02ece7dc5ba3db0c039c68730836",
+  "build": 57,
+  "commit": "26cba2f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-57/scripta.dmg",
+  "sha256": "821fd70b6f30e92e795c63906b0cdb60634a5c7ffaf32ca255856052889cd4cc",
   "minimumSystemVersion": "26.0",
-  "notes": "A speaker's name field takes the keyboard only from a click or Tab"
+  "notes": "kit-3: notarize.sh reads the signing authority correctly"
 }
