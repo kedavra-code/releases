@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 239,
-  "commit": "b926d47",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-239/GLaDOS.dmg",
-  "sha256": "c9596fd2ddf16f03d786388566282f4c30cc18b3e9e57bb74f6365a6c98c52ac",
+  "build": 240,
+  "commit": "318eaf6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-240/GLaDOS.dmg",
+  "sha256": "9297449a0c6d116c290d53606d54da3ca0e307f9f9067d3e195c862d774bf0f2",
   "minimumSystemVersion": "26.0",
-  "notes": "The menu-bar glyph is one eye glancing, drawn thick enough to read at its real size"
+  "notes": "A failed build now stops build.sh and package.sh, and package.sh refuses an app that is not this commit's"
 }
