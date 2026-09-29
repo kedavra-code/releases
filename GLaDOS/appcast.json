@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 240,
-  "commit": "318eaf6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-240/GLaDOS.dmg",
-  "sha256": "9297449a0c6d116c290d53606d54da3ca0e307f9f9067d3e195c862d774bf0f2",
+  "build": 244,
+  "commit": "744bd7e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-244/GLaDOS.dmg",
+  "sha256": "27d704f9e52a8f06fb2c57aee7da3352b8dd07bfae3dccd5e2084d648ce33d3d",
   "minimumSystemVersion": "26.0",
-  "notes": "A failed build now stops build.sh and package.sh, and package.sh refuses an app that is not this commit's"
+  "notes": "kit-3: notarize.sh reads the signing authority correctly"
 }
