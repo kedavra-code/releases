@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 90,
-  "commit": "35e9079",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-90/murmur.dmg",
-  "sha256": "455fee7484c225ab6fea52300f784e0a9de590e3f4f8cc52e73f7bd23424f802",
+  "build": 94,
+  "commit": "7714d07",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-94/murmur.dmg",
+  "sha256": "8209f958b2b2418ea685ccb9f397e10426a17b07b010fbcdf9d222a1c6b832b1",
   "minimumSystemVersion": "26.0",
-  "notes": "A failed build now stops build.sh and package.sh, and the warning filter sees real warnings"
+  "notes": "kit-3: notarize.sh reads the signing authority correctly"
 }
