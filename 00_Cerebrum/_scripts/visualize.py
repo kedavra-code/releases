@@ -231,6 +231,8 @@ for _i, _k in enumerate(_corners_all):
     ANCHOR[_k] = (0.0, 0.0) if len(_corners_all) == 1 else (math.cos(_a),
                                                             math.sin(_a))
 
+ROUND = 1.35   # the longest a group may be against its width before its gravity rises
+
 def _layout(members, floor=0.0):
     """Fruchterman-Reingold over one group's own edges. Returns positions and radius."""
     m = len(members)
@@ -238,26 +240,56 @@ def _layout(members, floor=0.0):
     E = np.array([[sub[a], sub[b]] for a, b in _edges if a in sub and b in sub] or [[0, 0]], int)
     has_e = any(a in sub and b in sub for a, b in _edges)
     ang = np.arange(m) * 2.399963
-    P = np.stack([np.cos(ang), np.sin(ang)], 1) * (14 * np.sqrt(np.arange(m) + 1))[:, None]
+    P0 = np.stack([np.cos(ang), np.sin(ang)], 1) * (14 * np.sqrt(np.arange(m) + 1))[:, None]
     K = 46.0
-    for it in range(420):
-        tmp = 60.0 * (1 - it / 420) + 2.0
-        d = P[:, None, :] - P[None, :, :]
-        dist = np.sqrt((d ** 2).sum(-1)) + 1e-6
-        F = (d / dist[..., None]) * (K * K / dist)[..., None]
-        disp = F.sum(1)
-        if has_e:
-            ev = P[E[:, 1]] - P[E[:, 0]]
-            el = np.sqrt((ev ** 2).sum(-1)) + 1e-6
-            fa = (ev / el[:, None]) * (el * el / K)[:, None]
-            np.add.at(disp, E[:, 0], fa); np.add.at(disp, E[:, 1], -fa)
-        # Gravity toward the group's own middle. Stronger for small groups:
-        # with a dozen nodes and few edges the simulation settles into two or
-        # three sub-clumps with nothing pulling them together, which is what
-        # made Zeta read as scattered rather than as one knowledge base.
-        disp -= P * (0.03 + 0.22 / math.sqrt(m))
-        ln = np.sqrt((disp ** 2).sum(-1)) + 1e-6
-        P += (disp / ln[:, None]) * np.minimum(ln, tmp)[:, None]
+
+    def relax(grav):
+        P = P0.copy()
+        for it in range(420):
+            tmp = 60.0 * (1 - it / 420) + 2.0
+            d = P[:, None, :] - P[None, :, :]
+            dist = np.sqrt((d ** 2).sum(-1)) + 1e-6
+            F = (d / dist[..., None]) * (K * K / dist)[..., None]
+            disp = F.sum(1)
+            if has_e:
+                ev = P[E[:, 1]] - P[E[:, 0]]
+                el = np.sqrt((ev ** 2).sum(-1)) + 1e-6
+                fa = (ev / el[:, None]) * (el * el / K)[:, None]
+                np.add.at(disp, E[:, 0], fa); np.add.at(disp, E[:, 1], -fa)
+            disp -= P * grav
+            ln = np.sqrt((disp ** 2).sum(-1)) + 1e-6
+            P += (disp / ln[:, None]) * np.minimum(ln, tmp)[:, None]
+        return P
+
+    def aspect(P):
+        """How much longer the cluster is than it is wide, from its covariance."""
+        if m < 3:
+            return 1.0
+        ev = np.linalg.eigvalsh(np.cov((P - P.mean(0)).T))
+        return float(np.sqrt(ev[-1] / max(ev[0], 1e-9)))
+
+    # Gravity toward the group's own middle. Stronger for small groups:
+    # with a dozen nodes and few edges the simulation settles into two or
+    # three sub-clumps with nothing pulling them together, which is what
+    # made Zeta read as scattered rather than as one knowledge base.
+    #
+    # And stronger again where the result comes out stretched. A group whose
+    # sub-clumps link to one another in a chain, as Zeta's shelves do, is
+    # drawn by the forces as a line: on 29.09.2026 Zeta, 35 concepts in five
+    # shelves, came out 3.3 times as long as it was wide, where every other
+    # knowledge base measured 1.1 to 1.4, and the owner asked for it to be
+    # circle-shaped. So the layout is measured, and while it is longer than
+    # ROUND times its width the gravity doubles and the simulation runs again
+    # from the same start. Strong gravity folds a chain into a ball without
+    # breaking its links apart. A group that is already round runs once and is
+    # untouched, so no knowledge base is a special case.
+    grav = 0.03 + 0.22 / math.sqrt(m)
+    P = relax(grav)
+    for _ in range(6):
+        if aspect(P) <= ROUND:
+            break
+        grav *= 2
+        P = relax(grav)
     P -= P.mean(0)
     # The exponent, not the constant, is what sets a cluster's density: it
     # decides how much more room 435 concepts get than 25. It was 0.55 until

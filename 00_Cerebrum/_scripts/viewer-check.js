@@ -345,6 +345,19 @@ const pngPixels = buf => {
     .map(k => [k, Math.round(KBC[k].halo)]));
   check(small.length > 0 && small.every(([, h]) => h >= 330), 'no knowledge base is drawn smaller than the floor',
         small.map(([k, h]) => k.replace('_kb', '') + ' ' + h).join(', '));
+  // Every knowledge base is drawn round, not as a line. Owner's instruction of
+  // 29.09.2026: one base, whose shelves link to one another in a chain, came out
+  // 3.3 times as long as it was wide. visualize.py raises a group's gravity
+  // until its layout is round; this measures the positions actually drawn, as
+  // the ratio of the long axis of each base's spread to its short axis.
+  const roundness = await page.evaluate(() => KB_ALL.map(kb => { const ns = N.filter(n => n.kb === kb);
+    const mx = ns.reduce((a, n) => a + n.x, 0) / ns.length, my = ns.reduce((a, n) => a + n.y, 0) / ns.length;
+    let sxx = 0, syy = 0, sxy = 0;
+    ns.forEach(n => { sxx += (n.x - mx) ** 2; syy += (n.y - my) ** 2; sxy += (n.x - mx) * (n.y - my); });
+    const tr = (sxx + syy) / ns.length, det = (sxx * syy - sxy * sxy) / ns.length ** 2, q = Math.sqrt(Math.max(tr * tr / 4 - det, 0));
+    return [kb, Math.sqrt((tr / 2 + q) / Math.max(tr / 2 - q, 1e-9))]; }));
+  check(roundness.length > 0 && roundness.every(([, r]) => r <= 1.5), 'every knowledge base is drawn round, not as a line',
+        roundness.map(([k, r]) => k.replace('_kb', '') + ' ' + r.toFixed(2)).join(', '));
   const corners = await page.evaluate(() => {
     const ks = Object.keys(KBC).sort(), out = [];
     for (let i = 0; i < ks.length; i++) for (let j = i + 1; j < ks.length; j++)
@@ -935,16 +948,26 @@ const pngPixels = buf => {
   // missed its concept fails at the first step instead of passing as a
   // deselect. Two concepts in the open, clear of the search box, the card and
   // Fit, and far enough apart that neither click can pick the other.
+  // A vault of a few concepts has most of them on the frame's edge after Fit,
+  // outside the band this search allows, so the view steps out around its
+  // middle until two are in the open. A large vault finds them at once.
   const two = await page.evaluate(() => {
-    const g = gc.getBoundingClientRect(), out = [];
-    for (const n of N) {
-      if (hid(n)) continue;
-      const [x, y] = sxy(n), px = g.left + x, py = g.top + y;
-      if (x < 40 || x > gc.clientWidth - 380 || y < 90 || y > gc.clientHeight - 90) continue;
-      if (document.elementFromPoint(px, py) !== gc || pick(n.x, n.y) !== n.i) continue;
-      if (out.length && Math.hypot(out[0].x - px, out[0].y - py) < 120) continue;
-      out.push({ i: n.i, x: px, y: py });
-      if (out.length === 2) break;
+    const g = gc.getBoundingClientRect();
+    const find = () => { const out = [];
+      for (const n of N) {
+        if (hid(n)) continue;
+        const [x, y] = sxy(n), px = g.left + x, py = g.top + y;
+        if (x < 40 || x > gc.clientWidth - 380 || y < 90 || y > gc.clientHeight - 90) continue;
+        if (document.elementFromPoint(px, py) !== gc || pick(n.x, n.y) !== n.i) continue;
+        if (out.length && Math.hypot(out[0].x - px, out[0].y - py) < 120) continue;
+        out.push({ i: n.i, x: px, y: py });
+        if (out.length === 2) break;
+      }
+      return out; };
+    let out = find();
+    for (let k = 0; out.length < 2 && k < 4; k++) {
+      sc *= 0.7; dirty = true; draw();
+      out = find();
     }
     return out;
   });
