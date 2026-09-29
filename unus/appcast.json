@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 123,
-  "commit": "b9818a2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-123/unus.dmg",
-  "sha256": "aad6afd970380e3f734766991c78f3c8767a4b301424cb4070b0151e5787c5ef",
+  "build": 124,
+  "commit": "e3d93ef",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-124/unus.dmg",
+  "sha256": "f269b608534bb1386685a09086a8c6d252b45c07079de6b113bb0091c950fcfb",
   "minimumSystemVersion": "26.0",
-  "notes": "⌘H hides unus: our own menu item, because the system's is dead in a menu bar app"
+  "notes": "A failed build now stops build.sh and package.sh, and Swift warnings show"
 }
