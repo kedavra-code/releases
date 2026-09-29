@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 238,
-  "commit": "df63b35",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-238/GLaDOS.dmg",
-  "sha256": "e9b6f42547eb760006577f48f1cd1ec645ff0668bd605c8b1b7b1da1b0d1eaa8",
+  "build": 239,
+  "commit": "b926d47",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-239/GLaDOS.dmg",
+  "sha256": "c9596fd2ddf16f03d786388566282f4c30cc18b3e9e57bb74f6365a6c98c52ac",
   "minimumSystemVersion": "26.0",
-  "notes": "The menu has no Power Down or Start Up row; the GLaDOS and J.A.R.V.I.S. rows are the power switch"
+  "notes": "The menu-bar glyph is one eye glancing, drawn thick enough to read at its real size"
 }
