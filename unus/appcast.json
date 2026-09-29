@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 124,
-  "commit": "e3d93ef",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-124/unus.dmg",
-  "sha256": "f269b608534bb1386685a09086a8c6d252b45c07079de6b113bb0091c950fcfb",
+  "build": 127,
+  "commit": "0be3e35",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-127/unus.dmg",
+  "sha256": "3d3c8670b0ea29b9ea8017a3d2c948cb91450ff578a32ccfec952b4e2143ce84",
   "minimumSystemVersion": "26.0",
-  "notes": "A failed build now stops build.sh and package.sh, and Swift warnings show"
+  "notes": "kit-3: notarize.sh reads the signing authority correctly"
 }
