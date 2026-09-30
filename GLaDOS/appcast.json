@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 249,
-  "commit": "c5257ca",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-249/GLaDOS.dmg",
-  "sha256": "0bbfe096e2cfcfe2e3f1a7278689112293ac84d83b9ab14362ca8eae1ad139a5",
+  "build": 250,
+  "commit": "a33f82b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-250/GLaDOS.dmg",
+  "sha256": "556d389d79db69c90f41fdf41d89ffc823742eaf21a3db43a3ec9e40d4bccfc0",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-8: the menu bar menu brings its windows to the front"
+  "notes": "kit-9: the updater unmounts its download before it quits"
 }
