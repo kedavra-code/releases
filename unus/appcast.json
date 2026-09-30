@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 135,
-  "commit": "60583ac",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-135/unus.dmg",
-  "sha256": "54be451689ec2af4d8c1dd0f5650bda2dd787d7d6af5a0b70e6d25e28cd50d2f",
+  "build": 136,
+  "commit": "7aa78df",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-136/unus.dmg",
+  "sha256": "de974c2c91c1b48b0b55664da383f0b7afd1e8a07068ea213c22bb4b83a2081e",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-9: the updater unmounts its download before it quits"
+  "notes": "kit-10: the model store and downloader come from the kit"
 }
