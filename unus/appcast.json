@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 134,
-  "commit": "af8a1e9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-134/unus.dmg",
-  "sha256": "62cde07feebedfe547617d4e30983e59be832d222b2bf1f08333ed9f95ef8b9e",
+  "build": 135,
+  "commit": "60583ac",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-135/unus.dmg",
+  "sha256": "54be451689ec2af4d8c1dd0f5650bda2dd787d7d6af5a0b70e6d25e28cd50d2f",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings: the shortcut's recorder sits on its label's line"
+  "notes": "kit-9: the updater unmounts its download before it quits"
 }
