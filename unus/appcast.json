@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 127,
-  "commit": "0be3e35",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-127/unus.dmg",
-  "sha256": "3d3c8670b0ea29b9ea8017a3d2c948cb91450ff578a32ccfec952b4e2143ce84",
+  "build": 134,
+  "commit": "af8a1e9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-134/unus.dmg",
+  "sha256": "62cde07feebedfe547617d4e30983e59be832d222b2bf1f08333ed9f95ef8b9e",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-3: notarize.sh reads the signing authority correctly"
+  "notes": "Settings: the shortcut's recorder sits on its label's line"
 }
