@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 250,
-  "commit": "a33f82b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-250/GLaDOS.dmg",
-  "sha256": "556d389d79db69c90f41fdf41d89ffc823742eaf21a3db43a3ec9e40d4bccfc0",
+  "build": 251,
+  "commit": "bb44513",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-251/GLaDOS.dmg",
+  "sha256": "c034ea1ae6b0282f253230293bbeee0ba14c7a962f40a49e2f0cedb6bec32920",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-9: the updater unmounts its download before it quits"
+  "notes": "kit-10: the model store and downloader, the spoken language and four small pieces come from the kit"
 }
