@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 57,
-  "commit": "26cba2f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-57/scripta.dmg",
-  "sha256": "821fd70b6f30e92e795c63906b0cdb60634a5c7ffaf32ca255856052889cd4cc",
+  "build": 62,
+  "commit": "f8800ab",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-62/scripta.dmg",
+  "sha256": "1202d73f02c14ae29f6fd105764a5314363f807d40a1692d0809eaf46c1dd0af",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-3: notarize.sh reads the signing authority correctly"
+  "notes": "kit-8: the menu bar menu brings its windows to the front"
 }
