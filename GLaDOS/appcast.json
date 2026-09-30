@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 244,
-  "commit": "744bd7e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-244/GLaDOS.dmg",
-  "sha256": "27d704f9e52a8f06fb2c57aee7da3352b8dd07bfae3dccd5e2084d648ce33d3d",
+  "build": 249,
+  "commit": "c5257ca",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-249/GLaDOS.dmg",
+  "sha256": "0bbfe096e2cfcfe2e3f1a7278689112293ac84d83b9ab14362ca8eae1ad139a5",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-3: notarize.sh reads the signing authority correctly"
+  "notes": "kit-8: the menu bar menu brings its windows to the front"
 }
