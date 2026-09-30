@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 94,
-  "commit": "7714d07",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-94/murmur.dmg",
-  "sha256": "8209f958b2b2418ea685ccb9f397e10426a17b07b010fbcdf9d222a1c6b832b1",
+  "build": 99,
+  "commit": "b50bf92",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-99/murmur.dmg",
+  "sha256": "b1d87b8a10977f55b9616f4edf701b512ca296c4c50f82d35fc2e46aa083f6ac",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-3: notarize.sh reads the signing authority correctly"
+  "notes": "kit-8: the menu bar menu brings its windows to the front"
 }
