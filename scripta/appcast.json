@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 63,
-  "commit": "dc27a58",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-63/scripta.dmg",
-  "sha256": "a86a293cc498c8e49553489564c7f37079a7eaf5f9f026dc6c27ef28819fdf55",
+  "build": 64,
+  "commit": "4073f3d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-64/scripta.dmg",
+  "sha256": "be21e4a245afbc7891bcaddf88b51c5068cf05a4752772e090a99cca30bd8d2a",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-9: the updater unmounts its download before it quits"
+  "notes": "kit-10: the model store and downloader and the spoken language come from the kit"
 }
