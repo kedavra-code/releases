@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 100,
-  "commit": "338a200",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-100/murmur.dmg",
-  "sha256": "06c1bb02924df2f957781bb98a1d126f025f65a83b679f7f8c3006af7e0fb057",
+  "build": 101,
+  "commit": "0d5a12e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-101/murmur.dmg",
+  "sha256": "6ba2a9b18a22415df9d7b18f7ccd4cffd30253e6b6cecd0226981ebae2572ec8",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-9: the updater unmounts its download before it quits"
+  "notes": "kit-10: the Setup row, microphone permission, relaunch and pill panel come from the kit"
 }
