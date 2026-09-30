@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 99,
-  "commit": "b50bf92",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-99/murmur.dmg",
-  "sha256": "b1d87b8a10977f55b9616f4edf701b512ca296c4c50f82d35fc2e46aa083f6ac",
+  "build": 100,
+  "commit": "338a200",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-100/murmur.dmg",
+  "sha256": "06c1bb02924df2f957781bb98a1d126f025f65a83b679f7f8c3006af7e0fb057",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-8: the menu bar menu brings its windows to the front"
+  "notes": "kit-9: the updater unmounts its download before it quits"
 }
