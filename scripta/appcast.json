@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 64,
-  "commit": "4073f3d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-64/scripta.dmg",
-  "sha256": "be21e4a245afbc7891bcaddf88b51c5068cf05a4752772e090a99cca30bd8d2a",
+  "build": 66,
+  "commit": "26eb4a6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-66/scripta.dmg",
+  "sha256": "648d371f06accc93714a7ed60869ef8a598ab26a626875b50a80ca7890281a6e",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-10: the model store and downloader and the spoken language come from the kit"
+  "notes": "kit-11: package.sh makes the image with hdiutil when diskutil fails"
 }
