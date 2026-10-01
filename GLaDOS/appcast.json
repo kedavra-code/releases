@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 251,
-  "commit": "bb44513",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-251/GLaDOS.dmg",
-  "sha256": "c034ea1ae6b0282f253230293bbeee0ba14c7a962f40a49e2f0cedb6bec32920",
+  "build": 255,
+  "commit": "42c36f1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-255/GLaDOS.dmg",
+  "sha256": "53b337a621713c15cbac49dc4257b40815c559696f0b534202e33a99924ac055",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-10: the model store and downloader, the spoken language and four small pieces come from the kit"
+  "notes": "She listens for a voice, not for loudness"
 }
