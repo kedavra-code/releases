@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 67,
-  "commit": "f52146d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-67/scripta.dmg",
-  "sha256": "e296f1340c96577d1708a344da69d22f28577c1b11939ba49ed0f2adf8af4d02",
+  "build": 68,
+  "commit": "de330bc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-68/scripta.dmg",
+  "sha256": "29b8885354664db2a0a0608abafa824647a3377313017e3582296f513a7a6e1c",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-12: the updater installs without administrator rights, and says so when it cannot"
+  "notes": "Write Again is a named button with the minutes' own sign, not a bare reload arrow"
 }
