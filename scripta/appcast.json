@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 66,
-  "commit": "26eb4a6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-66/scripta.dmg",
-  "sha256": "648d371f06accc93714a7ed60869ef8a598ab26a626875b50a80ca7890281a6e",
+  "build": 67,
+  "commit": "f52146d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-67/scripta.dmg",
+  "sha256": "e296f1340c96577d1708a344da69d22f28577c1b11939ba49ed0f2adf8af4d02",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-11: package.sh makes the image with hdiutil when diskutil fails"
+  "notes": "kit-12: the updater installs without administrator rights, and says so when it cannot"
 }
