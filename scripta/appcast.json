@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 76,
-  "commit": "fe34010",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-76/scripta.dmg",
-  "sha256": "d051b82a6c4e1209d75f8a36b4e2cda0a0791795dd9cc8de5ce79d45137c67b0",
+  "build": 77,
+  "commit": "4d6ced0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-77/scripta.dmg",
+  "sha256": "b87276c706f3c4ccc18982f0fc25d9c8631bb18ef99318484f158a80078e61f0",
   "minimumSystemVersion": "26.0",
-  "notes": "CLAUDE.md: what a 10-minute window pass draws at 87 minutes (about +5 W, like the 10 % limit)"
+  "notes": "Click a meeting's title to change it"
 }
