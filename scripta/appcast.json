@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 77,
-  "commit": "4d6ced0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-77/scripta.dmg",
-  "sha256": "b87276c706f3c4ccc18982f0fc25d9c8631bb18ef99318484f158a80078e61f0",
+  "build": 78,
+  "commit": "c8c3cca",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-78/scripta.dmg",
+  "sha256": "beaa2b7b364567c06126d2a77610df91151867aa5ecbc8e64550b9c1a93af795",
   "minimumSystemVersion": "26.0",
-  "notes": "Click a meeting's title to change it"
+  "notes": "The title's text field lies on a hidden copy of the title: its own height was too low while typing"
 }
