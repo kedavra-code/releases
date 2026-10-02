@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 78,
-  "commit": "c8c3cca",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-78/scripta.dmg",
-  "sha256": "beaa2b7b364567c06126d2a77610df91151867aa5ecbc8e64550b9c1a93af795",
+  "build": 79,
+  "commit": "f59e5ce",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-79/scripta.dmg",
+  "sha256": "bcdbb9da09e2b29f6ef3366d76aba5c5d250d370928eaa846000efd8b79b6772",
   "minimumSystemVersion": "26.0",
-  "notes": "The title's text field lies on a hidden copy of the title: its own height was too low while typing"
+  "notes": "A progress bar for the minutes: Claude's and the local model's, also when written again"
 }
