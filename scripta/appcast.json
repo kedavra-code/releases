@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 71,
-  "commit": "e38c98d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-71/scripta.dmg",
-  "sha256": "f880ef0c92f28397fe2f79c45ea22473b80b5f28fe20a39b0801a717eb491e4f",
+  "build": 72,
+  "commit": "bfb6288",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-72/scripta.dmg",
+  "sha256": "e48dc114be599f9d16bc4f92c185ad60a4a1390894e031c13e403d9eeaeddb0d",
   "minimumSystemVersion": "26.0",
-  "notes": "Buttons in two places: the toolbar records, one bar under the title does the page"
+  "notes": "Copy is the copy sign in the text's top right corner, in a margin the text keeps free"
 }
