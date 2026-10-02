@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 68,
-  "commit": "de330bc",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-68/scripta.dmg",
-  "sha256": "29b8885354664db2a0a0608abafa824647a3377313017e3582296f513a7a6e1c",
+  "build": 71,
+  "commit": "e38c98d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-71/scripta.dmg",
+  "sha256": "f880ef0c92f28397fe2f79c45ea22473b80b5f28fe20a39b0801a717eb491e4f",
   "minimumSystemVersion": "26.0",
-  "notes": "Write Again is a named button with the minutes' own sign, not a bare reload arrow"
+  "notes": "Buttons in two places: the toolbar records, one bar under the title does the page"
 }
