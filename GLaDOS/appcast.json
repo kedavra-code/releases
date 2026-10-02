@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 259,
-  "commit": "81618ca",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-259/GLaDOS.dmg",
-  "sha256": "a6f9d471ed9001ad55ff01e97d8876b2cfe530e1bd3167eb2f32fedc84e1bdb5",
+  "build": 262,
+  "commit": "c6188e7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-262/GLaDOS.dmg",
+  "sha256": "a9c192062219f58807c76b571769027fe7a65af3ee79dae18b537e7818bae507",
   "minimumSystemVersion": "26.0",
-  "notes": "The strip goes under the eyes, grows to twenty-seven rows, and the pair stands as he arranged it"
+  "notes": "The sound goes to the screensaver view started last"
 }
