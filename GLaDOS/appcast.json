@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 255,
-  "commit": "42c36f1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-255/GLaDOS.dmg",
-  "sha256": "53b337a621713c15cbac49dc4257b40815c559696f0b534202e33a99924ac055",
+  "build": 259,
+  "commit": "81618ca",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-259/GLaDOS.dmg",
+  "sha256": "a6f9d471ed9001ad55ff01e97d8876b2cfe530e1bd3167eb2f32fedc84e1bdb5",
   "minimumSystemVersion": "26.0",
-  "notes": "She listens for a voice, not for loudness"
+  "notes": "The strip goes under the eyes, grows to twenty-seven rows, and the pair stands as he arranged it"
 }
