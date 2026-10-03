@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 268,
-  "commit": "db7a49b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-268/GLaDOS.dmg",
-  "sha256": "adac117f157b3ec7a3c31c9b69886e4bfb757e0d1165d7b8ac5113dddc832b39",
+  "build": 269,
+  "commit": "a957e0b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-269/GLaDOS.dmg",
+  "sha256": "d5af1880cb909ee3b1130735ed9ea037f6cdd679499721296f06078d907a4bec",
   "minimumSystemVersion": "26.0",
-  "notes": "The chapters ran in the app on the fake brain"
+  "notes": "She can obey her owner's voice alone, told apart by scripta's speaker separator"
 }
