@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 79,
-  "commit": "f59e5ce",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-79/scripta.dmg",
-  "sha256": "bcdbb9da09e2b29f6ef3366d76aba5c5d250d370928eaa846000efd8b79b6772",
+  "build": 83,
+  "commit": "8821b92",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-83/scripta.dmg",
+  "sha256": "19426723544093899bd704c4c21acd98e9ec801f09d8abc8917edbf82f1b109c",
   "minimumSystemVersion": "26.0",
-  "notes": "A progress bar for the minutes: Claude's and the local model's, also when written again"
+  "notes": "Undo the in-parts minutes for Qwen: back to one request over the whole meeting"
 }
