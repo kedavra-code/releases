@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 269,
-  "commit": "a957e0b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-269/GLaDOS.dmg",
-  "sha256": "d5af1880cb909ee3b1130735ed9ea037f6cdd679499721296f06078d907a4bec",
+  "build": 270,
+  "commit": "2f5487a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-270/GLaDOS.dmg",
+  "sha256": "2898817b44acc79feeb9b6fe3ac2e43a378369aacd332b20c50f82a1347c67ec",
   "minimumSystemVersion": "26.0",
-  "notes": "She can obey her owner's voice alone, told apart by scripta's speaker separator"
+  "notes": "The transcript's hotkey row is called Film transcript"
 }
