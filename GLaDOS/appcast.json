@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 270,
-  "commit": "2f5487a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-270/GLaDOS.dmg",
-  "sha256": "2898817b44acc79feeb9b6fe3ac2e43a378369aacd332b20c50f82a1347c67ec",
+  "build": 271,
+  "commit": "87f8ada",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-271/GLaDOS.dmg",
+  "sha256": "19fc302f499f1048fd8e08253e9f2df6c060cc72487037a1885dd172699747e6",
   "minimumSystemVersion": "26.0",
-  "notes": "The transcript's hotkey row is called Film transcript"
+  "notes": "The two present a page one after the other, and no line is laid over another"
 }
