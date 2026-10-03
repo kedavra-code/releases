@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 264,
-  "commit": "dfc19e4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-264/GLaDOS.dmg",
-  "sha256": "d2e5957692634da6352f2cdfdc6923ccc2d336910f7d877c99cc24014d2617f8",
+  "build": 268,
+  "commit": "db7a49b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-268/GLaDOS.dmg",
+  "sha256": "adac117f157b3ec7a3c31c9b69886e4bfb757e0d1165d7b8ac5113dddc832b39",
   "minimumSystemVersion": "26.0",
-  "notes": "The screensaver's films and the preview pictures each have a folder in build/"
+  "notes": "The chapters ran in the app on the fake brain"
 }
