@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 136,
-  "commit": "7aa78df",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-136/unus.dmg",
-  "sha256": "de974c2c91c1b48b0b55664da383f0b7afd1e8a07068ea213c22bb4b83a2081e",
+  "build": 138,
+  "commit": "f15d993",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-138/unus.dmg",
+  "sha256": "1c107461a8a1b17b35d31e24a3c98c3f71fc2ceb0cbb3589590444dc061f6229",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-10: the model store and downloader come from the kit"
+  "notes": "Settings has a Brain tab, as murmur, scripta and GLaDOS have"
 }
