@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 262,
-  "commit": "c6188e7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-262/GLaDOS.dmg",
-  "sha256": "a9c192062219f58807c76b571769027fe7a65af3ee79dae18b537e7818bae507",
+  "build": 264,
+  "commit": "dfc19e4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-264/GLaDOS.dmg",
+  "sha256": "d2e5957692634da6352f2cdfdc6923ccc2d336910f7d877c99cc24014d2617f8",
   "minimumSystemVersion": "26.0",
-  "notes": "The sound goes to the screensaver view started last"
+  "notes": "The screensaver's films and the preview pictures each have a folder in build/"
 }
