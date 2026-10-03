@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 83,
-  "commit": "8821b92",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-83/scripta.dmg",
-  "sha256": "19426723544093899bd704c4c21acd98e9ec801f09d8abc8917edbf82f1b109c",
+  "build": 85,
+  "commit": "da466a6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-85/scripta.dmg",
+  "sha256": "50ba604b6f9c28ed903e7132ecf01ced330aaeb28936537e1aa04d0a18232520",
   "minimumSystemVersion": "26.0",
-  "notes": "Undo the in-parts minutes for Qwen: back to one request over the whole meeting"
+  "notes": "A remembered voice shows as remembered after a relaunch too"
 }
