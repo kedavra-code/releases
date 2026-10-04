@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 103,
-  "commit": "56148c6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-103/murmur.dmg",
-  "sha256": "0e154b445ebbf0d08d00ee2e289de33f1ac6fd999093287ea063fafe0ae344ac",
+  "build": 104,
+  "commit": "9e7df39",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-104/murmur.dmg",
+  "sha256": "8701fbe88dbe5bc5dc6c7d1c83e54bb07696252d857741cc84fedcdbbd6e9702",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings is as tall as the tab that is showing"
+  "notes": "What's New: a window, opened from About"
 }
