@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 138,
-  "commit": "f15d993",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-138/unus.dmg",
-  "sha256": "1c107461a8a1b17b35d31e24a3c98c3f71fc2ceb0cbb3589590444dc061f6229",
+  "build": 139,
+  "commit": "62a44f4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-139/unus.dmg",
+  "sha256": "5ae2d2f6ca0db31e37f92b4a0e0ccbdee2d26bfa3648dceb5630dea1cdadc641",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings has a Brain tab, as murmur, scripta and GLaDOS have"
+  "notes": "About has a Settings button, as scripta's has"
 }
