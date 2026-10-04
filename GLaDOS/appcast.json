@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 284,
-  "commit": "2a3442a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-284/GLaDOS.dmg",
-  "sha256": "dd9ca34bdabee98a3b6d2a7eb13ac63ec64b5bc71760eb740818764a3dc87752",
+  "build": 287,
+  "commit": "83d2610",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-287/GLaDOS.dmg",
+  "sha256": "0502306e3f9c738c360ca532de561418b86e35533d80e95f7daae1550780642b",
   "minimumSystemVersion": "26.0",
-  "notes": "The Settings tabs fit their content, as scripta's do"
+  "notes": "About counts her voices from the catalog, not from two old folder names"
 }
