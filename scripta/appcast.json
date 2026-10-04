@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 89,
-  "commit": "a1ddc3e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-89/scripta.dmg",
-  "sha256": "92d3e454c502c5489bfc910350200ae7049ff76f8e33f9cc9a804298f9e65fb3",
+  "build": 100,
+  "commit": "2a714a2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-100/scripta.dmg",
+  "sha256": "094cebe4852391e2d90be43bbc54bc4f6a6ef7bbaa33d44ee249834cc2fb8ed0",
   "minimumSystemVersion": "26.0",
-  "notes": "What's New shows its scroll bar"
+  "notes": "Stop asks for no interim minutes; a number goes with its noun"
 }
