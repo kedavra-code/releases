@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 288,
-  "commit": "1ed0f10",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-288/GLaDOS.dmg",
-  "sha256": "19f0c4da046d0535185255b2367b5623769edf52757398bb94fdd516895dd5ab",
+  "build": 295,
+  "commit": "59b8a3f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-295/GLaDOS.dmg",
+  "sha256": "6d8cd67f65c25bc3681637d89b0d4d71e4626e36325456614f72da23a495c82d",
   "minimumSystemVersion": "26.0",
-  "notes": "J.A.R.V.I.S. is as loud as GLaDOS at the speakers, language by language"
+  "notes": "The mute code and other dead code are gone, and five copied blocks are one"
 }
