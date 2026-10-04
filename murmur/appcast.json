@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 104,
-  "commit": "9e7df39",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-104/murmur.dmg",
-  "sha256": "8701fbe88dbe5bc5dc6c7d1c83e54bb07696252d857741cc84fedcdbbd6e9702",
+  "build": 116,
+  "commit": "addb62f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-116/murmur.dmg",
+  "sha256": "8c8fc3098303e2ebfe8b8f03cdc5ceb84e698de5cb77d30a04bff0b50d9d201a",
   "minimumSystemVersion": "26.0",
-  "notes": "What's New: a window, opened from About"
+  "notes": "The Parakeet download is the kit's, pinned; two texts name the right tab"
 }
