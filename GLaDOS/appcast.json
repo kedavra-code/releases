@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 278,
-  "commit": "e91ef45",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-278/GLaDOS.dmg",
-  "sha256": "7baa1b296cd9a02206b66caccf94d7b6bce25ae12324a17a9ad9763d827b8950",
+  "build": 284,
+  "commit": "2a3442a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-284/GLaDOS.dmg",
+  "sha256": "dd9ca34bdabee98a3b6d2a7eb13ac63ec64b5bc71760eb740818764a3dc87752",
   "minimumSystemVersion": "26.0",
-  "notes": "The Clone plays two semitones lower, with a light comb filter"
+  "notes": "The Settings tabs fit their content, as scripta's do"
 }
