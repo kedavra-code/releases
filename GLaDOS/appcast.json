@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 274,
-  "commit": "fceef91",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-274/GLaDOS.dmg",
-  "sha256": "ee4b1d25cf9a184810cf269e97cd4ffa748a84cec63f1f73fa524eaee3ffb8fd",
+  "build": 278,
+  "commit": "e91ef45",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-278/GLaDOS.dmg",
+  "sha256": "7baa1b296cd9a02206b66caccf94d7b6bce25ae12324a17a9ad9763d827b8950",
   "minimumSystemVersion": "26.0",
-  "notes": "The clone voice is the model from batch 6,000 of the night's run, at its own pace"
+  "notes": "The Clone plays two semitones lower, with a light comb filter"
 }
