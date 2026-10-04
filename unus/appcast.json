@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 139,
-  "commit": "62a44f4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-139/unus.dmg",
-  "sha256": "5ae2d2f6ca0db31e37f92b4a0e0ccbdee2d26bfa3648dceb5630dea1cdadc641",
+  "build": 140,
+  "commit": "87fdc39",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-140/unus.dmg",
+  "sha256": "463409c1438fa1abcc95f1ba314906fc218c5e2fee851434cb0090b144a9fff6",
   "minimumSystemVersion": "26.0",
-  "notes": "About has a Settings button, as scripta's has"
+  "notes": "What's New: a window, opened from About, as GLaDOS has"
 }
