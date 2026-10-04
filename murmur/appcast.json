@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 102,
-  "commit": "9b150e0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-102/murmur.dmg",
-  "sha256": "c488a36b85ea715d43e6bb797a5363024d9cfc45c435c418ca67582e49409f4f",
+  "build": 103,
+  "commit": "56148c6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-103/murmur.dmg",
+  "sha256": "0e154b445ebbf0d08d00ee2e289de33f1ac6fd999093287ea063fafe0ae344ac",
   "minimumSystemVersion": "26.0",
-  "notes": "Model clean-up: the guard knows the language, repairs the full stop, skips long texts"
+  "notes": "Settings is as tall as the tab that is showing"
 }
