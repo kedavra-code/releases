@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 85,
-  "commit": "da466a6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-85/scripta.dmg",
-  "sha256": "50ba604b6f9c28ed903e7132ecf01ced330aaeb28936537e1aa04d0a18232520",
+  "build": 89,
+  "commit": "a1ddc3e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-89/scripta.dmg",
+  "sha256": "92d3e454c502c5489bfc910350200ae7049ff76f8e33f9cc9a804298f9e65fb3",
   "minimumSystemVersion": "26.0",
-  "notes": "A remembered voice shows as remembered after a relaunch too"
+  "notes": "What's New shows its scroll bar"
 }
