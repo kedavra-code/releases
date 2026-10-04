@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 140,
-  "commit": "87fdc39",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-140/unus.dmg",
-  "sha256": "463409c1438fa1abcc95f1ba314906fc218c5e2fee851434cb0090b144a9fff6",
+  "build": 147,
+  "commit": "f4700ed",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-147/unus.dmg",
+  "sha256": "d6bd1a824d553d0939e5db248cbca7a82fac0b35f46c3be7198bfd49f6543d72",
   "minimumSystemVersion": "26.0",
-  "notes": "What's New: a window, opened from About, as GLaDOS has"
+  "notes": "kit-16: the kit's clean-up (dead code, repeated tests, one test stub)"
 }
