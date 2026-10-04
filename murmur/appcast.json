@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 101,
-  "commit": "0d5a12e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-101/murmur.dmg",
-  "sha256": "6ba2a9b18a22415df9d7b18f7ccd4cffd30253e6b6cecd0226981ebae2572ec8",
+  "build": 102,
+  "commit": "9b150e0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-102/murmur.dmg",
+  "sha256": "c488a36b85ea715d43e6bb797a5363024d9cfc45c435c418ca67582e49409f4f",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-10: the Setup row, microphone permission, relaunch and pill panel come from the kit"
+  "notes": "Model clean-up: the guard knows the language, repairs the full stop, skips long texts"
 }
