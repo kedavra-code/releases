@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 287,
-  "commit": "83d2610",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-287/GLaDOS.dmg",
-  "sha256": "0502306e3f9c738c360ca532de561418b86e35533d80e95f7daae1550780642b",
+  "build": 288,
+  "commit": "1ed0f10",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-288/GLaDOS.dmg",
+  "sha256": "19f0c4da046d0535185255b2367b5623769edf52757398bb94fdd516895dd5ab",
   "minimumSystemVersion": "26.0",
-  "notes": "About counts her voices from the catalog, not from two old folder names"
+  "notes": "J.A.R.V.I.S. is as loud as GLaDOS at the speakers, language by language"
 }
