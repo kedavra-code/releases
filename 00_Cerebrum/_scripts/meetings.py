@@ -24,7 +24,8 @@ import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from bundle import VAULT
+
 MEETINGS = os.path.join(VAULT, 'Meetings')
 KEEP = ('Summary', 'Decisions', 'Tasks', 'Open points')
 ANCHOR = re.compile(r'\[\[#\^p\d+\|([^\]]+)\]\]')     # [[#^p37|40:38]] -> 40:38

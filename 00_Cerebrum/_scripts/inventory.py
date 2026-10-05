@@ -19,14 +19,12 @@ Usage:  python3 _scripts/inventory.py <KB> [more KBs...]
         python3 _scripts/inventory.py --all
         python3 _scripts/inventory.py <KB> --check    (exit 1 if stale)
 """
-import glob
 import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FM = re.compile(r'^---\n(.*?)\n---\n', re.S)
-RESERVED = ('index.md', 'log.md')
+from bundle import VAULT, FM, discover, concept_files
+
 # A description is one line in a table cell. Long ones are cut rather than
 # wrapped: the agent needs to recognise the concept, not read it.
 DESC_MAX = 140
@@ -53,10 +51,7 @@ def field(fm, key):
 def build(kb):
     root = os.path.join(VAULT, kb)
     rows = []
-    for f in sorted(glob.glob(os.path.join(root, 'Wiki', '**', '*.md'),
-                              recursive=True)):
-        if os.path.basename(f) in RESERVED or '_to_delete' in f:
-            continue
+    for f in concept_files(kb):
         m = FM.match(open(f, encoding='utf-8').read())
         if not m:
             continue
@@ -66,12 +61,6 @@ def build(kb):
             desc = desc[:DESC_MAX].rstrip() + '…'
         rows.append('| `%s` | %s | %s |' % (rel, field(m.group(1), 'type'), desc))
     return (HEADER % kb) + '\n'.join(rows) + '\n', len(rows)
-
-
-def discover():
-    return sorted(d for d in os.listdir(VAULT)
-                  if os.path.isdir(os.path.join(VAULT, d, 'Wiki'))
-                  and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
 
 
 def main():

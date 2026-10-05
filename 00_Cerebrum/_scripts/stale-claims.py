@@ -41,17 +41,16 @@ Usage:  python3 _scripts/stale-claims.py [KB ...] [--tsv] [--all]
         python3 _scripts/stale-claims.py [KB ...] --mark-read
 """
 import datetime
-import glob
 import hashlib
 import json
 import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import bundle
+from bundle import VAULT, FM, FENCE, discover, concept_files  # noqa: F401
+
 READ = os.path.join(VAULT, '_scripts', 'stale-claims-read.json')
-FM = re.compile(r'^---\n(.*?)\n---\n', re.S)
-FENCE = re.compile(r'```.*?```', re.S)
 MONTHS = ('january february march april may june july august september '
           'october november december').split()
 DATE = re.compile(
@@ -68,12 +67,6 @@ ABSENCE = re.compile(
     r"|\bnowhere in (?:this|the) (?:material|scope|corpus|archive)\b"
     r"|\bthe pages read for this concept (?:do|does) not\b"
     r"|\bdoes not record a formal close\b", re.I)
-
-
-def discover():
-    return sorted(d for d in os.listdir(VAULT)
-                  if os.path.isdir(os.path.join(VAULT, d, 'Wiki'))
-                  and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
 
 
 def _period_end(m):
@@ -103,32 +96,28 @@ def scan(kb, include_read=False):
 
     Sentences recorded as read against the concept's current body are left out
     unless include_read is set."""
-    import yaml
+    # `bundle.frontmatter` hands back the parse `verify.py` already made of a
+    # block, where it made one, and asks for PyYAML only when it parses.
     done = {} if include_read else _read_state()
     today = datetime.date.today().isoformat()
     out = []
-    root = os.path.join(VAULT, kb, 'Wiki')
-    for f in sorted(glob.glob(os.path.join(root, '**', '*.md'),
-                              recursive=True)):
-        base = os.path.basename(f)
-        if '_to_delete' in f or base in ('index.md', 'log.md',
-                                         'questions.md'):
+    for f in concept_files(kb):
+        if os.path.basename(f) == 'questions.md':
             continue
         raw = open(f, encoding='utf-8').read()
         m = FM.match(raw)
         if not m:
             continue
         try:
-            fm = yaml.safe_load(m.group(1)) or {}
+            bundle.frontmatter(m.group(1))
         except Exception:
             continue
         body = raw[m.end():]
         offset = raw[:m.end()].count('\n')
         text = FENCE.sub(lambda x: '\n' * x.group(0).count('\n'), body)
         lms = [str(s.get('last_modified'))[:10]
-               for s in fm.get('sources') or []
-               if isinstance(s, dict)
-               and re.match(r'\d{4}-\d\d-\d\d', str(s.get('last_modified')))]
+               for s in bundle.entries(m.group(1))
+               if re.match(r'\d{4}-\d\d-\d\d', str(s.get('last_modified')))]
         past = [x for x in lms if x <= today]
         newest = max(past) if past else ''
         rel = os.path.relpath(f, os.path.join(VAULT, kb))

@@ -44,7 +44,7 @@ Each live knowledge base has its own sources, and they are not interchangeable.
 | `Alpha_kb` | `Alpha_kb/Raw/`, the weekly OneNote export delta under `Alpha_kb/OneNote/Work Alpha/`, **and** the meeting notes in `Meetings/` at the vault root |
 | `Zeta_kb` | `Zeta_kb/Raw/` **only** |
 
-**`Zeta_kb/OneNote/Personal/` is not a compile queue.** It is 19 static pages, cited across from `Beta_kb` and `Alpha_kb` for the career record, and it is not fed by any exporter. It reads as 0 per cent covered in `COVERAGE.md` and that is not a backlog to clear — do not plan batches over it without asking the owner.
+**`Zeta_kb/OneNote/Personal/` is never compiled.** Standing instruction of the owner, 22.08.2026. Its pages are cited across from `Beta_kb` and `Alpha_kb` for the career record, and no exporter feeds it. It reads as 0 per cent covered in `COVERAGE.md`; that figure is the instruction, not a backlog. Do not plan batches over it, and do not offer to.
 
 ## Before anything else
 
@@ -74,6 +74,8 @@ remove         status == archived
 investigate    status == moved-or-deleted
 ignore         everything else
 ```
+
+**`python3 _scripts/changed-pages.py <KB>` makes the join since 05.10.2026**: it reads every change list in the archive and prints each concept whose `generated.at` is older than the newest export that changed a page it cites. `verify.py` shows the count as a gauge. Read the page against the concept, then restamp.
 
 **Key off `contentChanged`, not `status`.** OneNote bumps a timestamp for edits that leave the text identical; `contentChanged` hashes the prose alone, with frontmatter and asset names excluded.
 
@@ -114,11 +116,12 @@ scripta, the owner's transcription program, writes one note per meeting into `Me
 V=/path/to/00_Cerebrum; cd "$V"
 tail -5 "<KB>/OneNote/<layer>/_CHANGELOG.md"   # did the sync run? did it find anything?
 python3 _scripts/plan-batches.py <KB> --dry-run # new pages, found without being told
+python3 _scripts/changed-pages.py <KB>          # concepts written before a page they cite changed
 ls <KB>/Raw/                                    # anything dropped by hand
 python3 _scripts/meetings.py Alpha_kb             # meeting notes not yet compiled
 ```
 
-Zero unread, a changelog line of all zeros, nothing new in `Raw/` and no meeting note in the queue means there is nothing to compile. **Say that and stop** — a plural run still goes on to the question reports. Manufacturing a pass over a bundle that has not changed is how a corpus acquires concepts nobody needed.
+Zero unread, no concept behind a changed page, a changelog line of all zeros, nothing new in `Raw/` and no meeting note in the queue means there is nothing to compile. **Say that and stop** — a plural run still goes on to the question reports. Manufacturing a pass over a bundle that has not changed is how a corpus acquires concepts nobody needed.
 
 ## Question reports into the Wiki
 

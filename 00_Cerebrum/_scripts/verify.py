@@ -22,10 +22,10 @@ are backlog meters, drained by the health check's sweep cursor.
 """
 import collections
 import datetime
-import importlib.util as _ilu
 import fnmatch
+import functools
 import glob
-import itertools
+import json
 import os
 import re
 import subprocess
@@ -42,13 +42,17 @@ except ImportError:
              'pip 23.0+, and the Command Line Tools pip on the owner Mac predates\n'
              'it and fails with "no such option". Learned 15.08.2026.')
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# What a bundle is lives in `bundle.py` since 04.10.2026. The names are kept
+# here because other scripts and the manuals reach them as `verify.<name>`.
+import bundle
+from bundle import (VAULT, FM, FENCE, discover, assertions,  # noqa: F401
+                    concept_files)
+
 # A link whose path names a sibling knowledge base. Used to separate a
 # broken cross-bundle path (a defect) from an unwritten in-bundle concept
 # (a legitimate OKF placeholder). Added 15.08.2026.
 CROSS_KB = re.compile(r'(?:^|/)[A-Za-z0-9_]+_kb/')
-FM = re.compile(r'^---\n(.*?)\n---\n', re.S)
-FENCE = re.compile(r'```.*?```', re.S)
+MEMORY_LINES = 70               # see the `memory.md` gauges at the end of audit()
 INLINE_CODE = re.compile(r'`[^`\n]+`')
 FOOTNOTE = re.compile(r'\[\^([^\]]+)\]')
 FIRST_PERSON = re.compile(
@@ -95,6 +99,9 @@ FP_CONNECTORS = {
     'if', 'as', 'then', 'why', 'how', 'before', 'after', 'until', 'unless',
 }
 FP_TAIL_WORD = re.compile(r'([A-Za-z]+)$')
+# Footnote markers at the end of what stands before an `I`. A marker is no
+# word of the sentence: `clause_open` reads what stands before it.
+FP_MARKERS = re.compile(r'(?:\[\^[^\]]+\]\s*)+$')
 # A bare capital letter used as a label, in a list with other bare capital
 # letters: the ToT rounds lettered C, L and I, and the spreadsheet columns
 # G, I and K. Same class as the roman numerals — a letter naming something
@@ -124,7 +131,11 @@ def letter_list(body, start, end):
 def clause_open(body, start):
     """True when the `I` at *start* opens a clause, and so is a pronoun."""
     ls = body.rfind('\n', 0, start) + 1
-    before = body[ls:start].rstrip()
+    # Until 05.10.2026 a marker straight before the `I` was read as the end
+    # of the clause: its `]` opens nothing and no word stands under it, so
+    # "The lamp is new.[^a] I read the page twice." passed, and the same
+    # sentence after a plain full stop was a defect.
+    before = FP_MARKERS.sub('', body[ls:start].rstrip()).rstrip()
     if not before:
         return True
     if before[-1] in '.,;:!?\u2014\u2013("*|>[':
@@ -159,7 +170,6 @@ FP_NUMBERED = {
 # across three knowledge bases while the check reported none (found
 # 15.08.2026, Gamma_kb). References are counted separately from definitions.
 FOOTREF = re.compile(r'\[\^([^\]]+)\](?!:)')
-MDLINK = re.compile(r'\]\(([^)#\s]+\.md)\)')
 PRESENT = re.compile(
     r'\b(currently|at present|as of today|still in use|remains in place)\b', re.I)
 # A concept saying that somebody "has no concept yet" is a claim about the
@@ -167,7 +177,16 @@ PRESENT = re.compile(
 # written on 09.08.2026 and five sentences elsewhere went on saying those
 # people had no page (found 15.08.2026, Beta_kb). The claim is mechanically
 # decidable, so it is checked rather than trusted.
-NOCONCEPT = re.compile(r'[^.\n]*?\bno\s+concepts?\b[^.\n]*', re.I)
+#
+# Anchored at a sentence start since the review of 04.10.2026. Unanchored, the
+# search began again at every character of every sentence, so its cost grew
+# with the square of a line's length: 16 seconds over the vault's 1'138
+# concept bodies, a third of a whole run, for 25 that match. Anchored it takes
+# 0.4. The anchor changes no match. The lazy prefix cannot cross a full stop
+# or a newline, so a match could only ever begin at a line start or after a
+# full stop; `findall` was equal on every concept body in the vault that day.
+NOCONCEPT = re.compile(r'(?:^|(?<=\.))[^.\n]*?\bno\s+concepts?\b[^.\n]*',
+                       re.I | re.M)
 NAME2 = re.compile(r'\b([A-Z\u00c4\u00d6\u00dc][a-z\u00e4\u00f6\u00fc]+)'
                    r'\s+([A-Z\u00c4\u00d6\u00dc][a-z\u00e4\u00f6\u00fc]+)\b')
 
@@ -181,41 +200,22 @@ def translit(s):
     return s.lower()
 
 
-def discover():
-    return sorted(d for d in os.listdir(VAULT)
-                  if os.path.isdir(os.path.join(VAULT, d, 'Wiki'))
-                  and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
-
-
-def _load_coverage():
-    """`coverage.py` as a module, so `archive_layer` has one definition.
-
-    Copying the key's default would give this vault two places that decide
-    where a bundle's archive lives, and the next edit would land in one of
-    them. That is the failure this import exists to make impossible.
-    """
-    spec = _ilu.spec_from_file_location(
-        'cerebrum_coverage', os.path.join(VAULT, '_scripts', 'coverage.py'))
-    m = _ilu.module_from_spec(spec)
-    spec.loader.exec_module(m)
-    return m
-
-
-_coverage = _load_coverage()
-
-
-def _load_script(name, filename):
-    spec = _ilu.spec_from_file_location(
-        name, os.path.join(VAULT, '_scripts', filename))
-    m = _ilu.module_from_spec(spec)
-    spec.loader.exec_module(m)
-    return m
-
-
+# `coverage.py` as a module, so `archive_layer` has one definition. Copying
+# the key's default would give this vault two places that decide where a
+# bundle's archive lives, and the next edit would land in one of them. That is
+# the failure this import exists to make impossible.
+#
+# It had a loader of its own here, `_load_coverage()`, until the review of
+# 04.10.2026. Every script loaded by path comes through `bundle.script()` now.
+_coverage = bundle.script('coverage.py')
 # One definition each, shared with the scripts that repair what they find.
-_tableorder = _load_script('cerebrum_tableorder', 'tableorder.py')
-_staleclaims = _load_script('cerebrum_staleclaims', 'stale-claims.py')
-_packer = _load_script('cerebrum_preparebatch', 'prepare-batch.py')
+_tableorder = bundle.script('tableorder.py')
+_blanklines = bundle.script('blanklines.py')
+_staleclaims = bundle.script('stale-claims.py')
+_pairs = bundle.script('pairs.py')
+_changed = bundle.script('changed-pages.py')
+_quotes = bundle.script('quotes.py')
+_packer = bundle.script('prepare-batch.py')
 
 # Compile vocabulary in a concept. "Batch" is the pack of pages one compile
 # agent was given: a unit that does not exist in the bundle, that no reader can
@@ -239,12 +239,37 @@ NUMWORDS = {w: i for i, w in enumerate(
 NUM = r'(\d+|' + '|'.join(sorted(NUMWORDS, key=len, reverse=True)) + r')'
 
 
-# The wall-clock minute this run started, in UTC. Held in a constant so
-# every concept in one audit is judged against the same instant: a run that
-# takes twenty minutes must not fail a concept for a stamp written while it
-# was reading.
-RUN_MINUTES_UTC = (datetime.datetime.utcnow().hour * 60
-                   + datetime.datetime.utcnow().minute)
+# The minute this run started, in UTC. Held in a constant so every concept
+# in one audit is judged against the same instant: a run that takes twenty
+# minutes must not fail a concept for a stamp written while it was reading.
+#
+# It was the minute of the day with no date until 05.10.2026, which is half
+# of why the clock check could not see past midnight; see `minutes_ahead`.
+RUN_UTC = datetime.datetime.utcnow().replace(second=0, microsecond=0)
+STAMP = re.compile(r'^(\d{4})-(\d\d)-(\d\d)[T ](\d\d):(\d\d)(?::\d\d(?:\.\d+)?)?'
+                   r'\s*(?:Z|([+-])(\d\d):?(\d\d))?')
+
+
+def minutes_ahead(at, now):
+    """The whole minutes a `generated.at` lies after `now`, a UTC time, or
+    None where the stamp carries no time of day.
+
+    The stamp is read as UTC, date and time together, and an offset of its
+    own is taken off first. `at` is taken as text, so a stamp PyYAML parsed
+    and one written in quotes are read by one rule.
+    """
+    m = STAMP.match(str(at))
+    if not m:
+        return None
+    try:
+        t = datetime.datetime(*(int(x) for x in m.group(1, 2, 3, 4, 5)))
+    except ValueError:
+        return None
+    if m.group(6):
+        off = datetime.timedelta(hours=int(m.group(7)), minutes=int(m.group(8)))
+        t = t - off if m.group(6) == '+' else t + off
+    return int((t - now).total_seconds() // 60)
+
 
 # A claim that the export lost something, matched by SHAPE rather than by a
 # list of phrasings. The list is what this was until 20.09.2026: eight exact
@@ -282,9 +307,27 @@ NO_CONCEPT = re.compile(
 CURRENCY_COMMA = re.compile(r'\b(?:CHF|EUR|USD|GBP|kCHF|kEUR)\s?\d{1,3}(?:,\d{3})+'
                             r'(?!,?\d)')
 TITLE_DATE = re.compile(r'(20\d\d)[-\s]?(\d\d)[-\s]?(\d\d)')
+# A vault file whose name starts with its date, as a report in `Outputs/`
+# does. The dating check holds such a source to that date and the stale-stamp
+# gauge leaves it out for the same reason, so both match with this.
+NAME_DATE = re.compile(r'(\d{4})-(\d{2})-(\d{2})')
 ID_DATE = re.compile(r'(?<!\d)(20[0-3]\d)-?(0[1-9]|1[0-2])-?(0[1-9]|[12]\d|3[01])'
                      r'(?!\d)')
 ID_DMY = re.compile(r'(?<!\d)(\d\d)\.(\d\d)\.(20\d\d)(?!\d)')
+# An image's name where it carries the day the image was made. Confluence
+# names a pasted image `image2019-9-16_15-41-31.png` or `image-2024-3-5_…`,
+# macOS a screenshot `Screenshot 2024-05-06 at 15.25.04.png` or
+# `Bildschirmfoto 2021-10-11 um 10.14.56.png`, and one file is
+# `17-08-_2021_14-14-42.jpg`. These are the four shapes the Epsilon_kb audit of
+# 04.10.2026 dated 29 image sources by (AI-2026-10-04-4). The number an export
+# stores an attachment under, `79234575.jpg`, matches none of them.
+IMAGE_FILE = re.compile(r'\.(?:png|jpe?g|gif)$', re.I)
+IMAGE_DATED = re.compile(
+    r'image-?\d{4}-\d{1,2}-\d{1,2}_'
+    r'|(?:[Ss]creenshot|Bildschirmfoto)[ _]\d{4}-\d{2}-\d{2}'
+    r'|^\d{2}-\d{2}-_?\d{4}_')
+# One entry of a page's Attachments list: `- [name](path)`.
+ATTACHMENT = re.compile(r'^- \[([^\]]+)\]\(([^)]+)\)', re.M)
 
 
 def _dates_in(txt):
@@ -352,25 +395,39 @@ def _first_table_rows(sec):
             rows.append(ln)
         elif started:
             break
-    return [r for r in rows[2:] if not re.match(r'^\s*\|[\s:|-]+\|\s*$', r)]
+    return [r for r in rows[2:] if not _tableorder.SEP.match(r)]
 
 
-def assertions(kb):
-    p = os.path.join(VAULT, kb, 'assertions.yaml')
-    if not os.path.exists(p):
-        return {}
-    return yaml.safe_load(open(p, encoding='utf-8')) or {}
+def description_of(path):
+    """A concept's `description`, whitespace folded, or None.
+
+    One reader for the truncated-gloss check and for `fix-glosses.py`, the
+    repair it names, joined here on 04.10.2026: the check read it inline and
+    the repair had a function of its own, and the two agreed on all 450 gloss
+    bullets in the six bases. None too where the file is missing, carries no
+    frontmatter or does not parse. The repair used to stop on a concept that
+    does not parse; it skips that bullet now, as the check always did. None
+    as well where the block is a list: read with `or {}` until 05.10.2026,
+    it stopped the audit at the first bullet that glossed such a concept.
+    """
+    if not os.path.exists(path):
+        return None
+    m = FM.match(FENCE.sub('', open(path, encoding='utf-8',
+                                    errors='replace').read()))
+    if not m:
+        return None
+    try:
+        fm = bundle.mapping(m.group(1))
+    except Exception:
+        return None
+    return ' '.join(str(fm.get('description') or '').split()) or None
 
 
-_CHANGELOG_CACHE = {}
-
-
+@functools.lru_cache(maxsize=None)
 def changelog(kb):
-    if kb not in _CHANGELOG_CACHE:
-        f = os.path.join(VAULT, kb, 'CHANGELOG.md')
-        _CHANGELOG_CACHE[kb] = (open(f, encoding='utf-8').read()
-                                if os.path.exists(f) else '')
-    return _CHANGELOG_CACHE[kb]
+    """A knowledge base's CHANGELOG.md, read once per run, or '' without one."""
+    f = os.path.join(VAULT, kb, 'CHANGELOG.md')
+    return open(f, encoding='utf-8').read() if os.path.exists(f) else ''
 
 
 def source_real_date(concept_dir, src):
@@ -415,20 +472,20 @@ def audit(kb):
     # awaiting replacement" rather than "this knowledge base never had one".
     # See the note at the citation check below for why that distinction earns
     # its keep.
-    _arch = os.path.join(root, 'OneNote')
-    archive_absent = os.path.isdir(_arch) and not any(
-        fn.endswith('.md') for _, _, fns in os.walk(_arch) for fn in fns)
+    # Asked of `coverage.py` since 04.10.2026. Until then the folder was a
+    # literal `OneNote/` here, so this could only ever be true of a OneNote
+    # base, and never of one whose corpus lives in `Raw/`.
+    _layer = _coverage.archive_layer(kb)
+    _arch = os.path.join(root, _layer)
+    archive_absent = _coverage.archive_empty(kb)
     absent_cites = 0
+    # `**` also matches no directory at all, so `Wiki/people/` is in this glob.
     person_pages = {os.path.basename(p)[:-3] for p in
                     glob.glob(os.path.join(root, 'Wiki', '**', 'people',
                                            '*.md'), recursive=True)
-                    + glob.glob(os.path.join(root, 'Wiki', 'people', '*.md'))
                     if os.path.basename(p) != 'index.md'}
 
-    for f in sorted(glob.glob(os.path.join(root, 'Wiki', '**', '*.md'),
-                              recursive=True)):
-        if '_to_delete' in f or os.path.basename(f) in ('index.md', 'log.md'):
-            continue
+    for f in concept_files(kb):
         rel = os.path.relpath(f, root)
         raw = open(f, encoding='utf-8').read()
         text = FENCE.sub('', raw)
@@ -437,10 +494,23 @@ def audit(kb):
             defects.append((rel, 'frontmatter missing'))
             continue
         try:
-            fm = yaml.safe_load(m.group(1))
+            fm = bundle.frontmatter(m.group(1))
         except Exception as e:
             defects.append((rel, 'frontmatter unparseable: '
                             + str(e).split('\n')[0]))
+            continue
+        # A block that parses, and to something that holds no keys: an empty
+        # block gives None, a block of `- ` lines a list. Until 05.10.2026
+        # the check of `type` below asked it for a key and the whole audit
+        # stopped with an AttributeError, so one such concept hid every
+        # defect of its base and of each base after it. The same held for a
+        # `verified` or a `generated` written as a bare actor; both are
+        # reported where they are read. Seen by the agent that wrote the kept
+        # cases; no concept of the vault had any of the three that day.
+        if not isinstance(fm, dict):
+            defects.append((rel, 'frontmatter is not keys and values: it is '
+                            + ('empty' if fm is None
+                               else 'a ' + type(fm).__name__)))
             continue
         body = text[m.end():]
         concepts[f] = (fm, body)
@@ -448,7 +518,21 @@ def audit(kb):
         if not fm.get('type'):
             defects.append((rel, 'type missing'))
         srcs = fm.get('sources') or []
-        if not srcs and not rel.endswith(os.path.join('Wiki', 'questions.md')):
+        # `sources` that is no list. A number stopped the whole audit at the
+        # first loop over it, and a sentence went on as one "malformed sources
+        # entry" for each of its letters. It is the first of three shapes the
+        # fix above left on 05.10.2026; the others are a source `id` and a
+        # `resource` that are no text, reported where they are read. One
+        # report here, and the concept is read on as one with no sources: by
+        # this loop through `srcs`, and by the loops after it through a copy
+        # of its keys, because the parse is shared and no caller may change it.
+        if not isinstance(srcs, list):
+            defects.append((rel, 'sources is %r, not a list of entries'
+                            % (srcs,)))
+            srcs = []
+            fm = dict(fm, sources=srcs)
+            concepts[f] = (fm, body)
+        elif not srcs and not rel.endswith(os.path.join('Wiki', 'questions.md')):
             defects.append((rel, 'sources missing'))
 
         # One page cited twice under two ids, so it reads as two independent
@@ -477,8 +561,13 @@ def audit(kb):
             if not res:
                 continue
             key = os.path.normpath(res)
-            seen_res.setdefault(key, []).append(str(s.get('id') or '(no id)'))
-        for key, ids in seen_res.items():
+            # Held by the page's canonical path since 04.10.2026, so one page
+            # written in two spellings is still one page. The message names
+            # it as the concept first wrote it.
+            seen_res.setdefault(
+                bundle.canon(os.path.join(os.path.dirname(f), res)),
+                (key, []))[1].append(str(s.get('id') or '(no id)'))
+        for key, ids in seen_res.values():
             if len(ids) > 1:
                 findings.append((rel, 'one page cited under %d ids (%s): %s'
                                       % (len(ids), ', '.join(ids), key)))
@@ -515,7 +604,10 @@ def audit(kb):
         # The rule it now encodes is the skill's own — no verified key unless
         # a prior CHANGELOG entry records the human confirmation behind it.
         v = fm.get('verified')
-        if v:
+        if v and not isinstance(v, dict):
+            defects.append((rel, 'verified is %r, not a mapping of by and at'
+                            % (v,)))
+        elif v:
             by = str((v or {}).get('by', ''))
             if not by.startswith('human:'):
                 defects.append((rel, 'verified.by is not a human actor: ' + by))
@@ -554,13 +646,26 @@ def audit(kb):
             if not isinstance(s, dict):
                 defects.append((rel, 'malformed sources entry'))
                 continue
-            if s.get('id'):
-                ids.add(s['id'])
+            # An `id` or a `resource` that is no text. An `id` that is a list
+            # stopped the whole audit here, one that is a number further
+            # down where the uncited ids are joined, and a `resource` that is
+            # a number where its path is joined, below. A footnote label is text, so
+            # no other `id` can bind one; a bare `5` or `2026-01-05` is a
+            # number or a date to the parser, and has to stand in quotes.
+            sid = s.get('id')
+            if sid is not None and not isinstance(sid, str):
+                defects.append((rel, 'source id is %r, not text' % (sid,)))
+            elif sid:
+                ids.add(sid)
             r = s.get('resource')
+            if r is not None and not isinstance(r, str):
+                defects.append((rel, 'source resource is %r, not a path'
+                                % (r,)))
+                r = None
             if r:
                 citations += 1
                 tgt = os.path.normpath(os.path.join(d, r))
-                res.add(tgt)
+                res.add(bundle.canon(tgt))
                 if not os.path.exists(tgt):
                     # An archive that is not on disk is a different thing
                     # from a wrong path, and conflating them is how a
@@ -650,7 +755,7 @@ def audit(kb):
                 if '/OneNote/' not in r and '/Raw/' not in r:
                     _fn = os.path.basename(os.path.normpath(
                         os.path.join(d, r)))
-                    _fd = re.match(r'(\d{4})-(\d{2})-(\d{2})', _fn)
+                    _fd = NAME_DATE.match(_fn)
                     _lm = str(s.get('last_modified'))[:10]
                     if _fd and _lm not in ('unknown', 'None', ''):
                         _want = '-'.join(_fd.groups())
@@ -829,7 +934,13 @@ def audit(kb):
                              % (sid, yr, os.path.basename(str(
                                  s2.get('resource', ''))))))
 
-        g = str((fm.get('generated') or {}).get('at', ''))[:10]
+        gen = fm.get('generated')
+        if gen and not isinstance(gen, dict):
+            defects.append((rel, 'generated is %r, not a mapping of by and at'
+                            % (gen,)))
+            gen = None
+        gat = str((gen or {}).get('at', ''))
+        g = gat[:10]
         lms = [str(s.get('last_modified'))[:10] for s in srcs
                if isinstance(s, dict) and s.get('last_modified')
                and str(s.get('last_modified')) != 'unknown']
@@ -873,7 +984,12 @@ def audit(kb):
         # it, and the vault's own arithmetic runs on run-days. A stamp that
         # has not happened yet is never right, so this is a defect rather
         # than a finding.
-        if g and g > datetime.date.today().isoformat():
+        #
+        # Since 05.10.2026 this holds a stamp that is a bare date. A stamp
+        # with a time of day is held to the clock, below, and to nothing
+        # else, so one stamp is reported once.
+        ahead_by = minutes_ahead(gat, RUN_UTC)
+        if ahead_by is None and g and g > datetime.date.today().isoformat():
             defects.append((rel, 'generated.at %s is in the future' % g))
 
         # The same defect inside one day, which the date-only compare above
@@ -887,28 +1003,30 @@ def audit(kb):
         # cannot fail a concept a sibling agent legitimately stamped while it
         # was reading. One hour of slack absorbs a timezone-naive writer.
         # (`Alpha_kb` AI-2026-09-20-10.)
-        gat = str((fm.get('generated') or {}).get('at', ''))
-        if gat and gat[:10] == datetime.date.today().isoformat():
-            gm = re.match(r'^\d{4}-\d{2}-\d{2}[T ](\d{2}):(\d{2})', gat)
-            if gm:
-                mins = int(gm.group(1)) * 60 + int(gm.group(2))
-                if mins > RUN_MINUTES_UTC + 60:
-                    defects.append((rel, 'generated.at %s is %d minutes ahead '
-                                         'of the clock' % (gat,
-                                                           mins - RUN_MINUTES_UTC)))
+        #
+        # Until 05.10.2026 the stamp's date was held to the local day and its
+        # minutes to the UTC clock. No stamp could fail from 22:59 UTC to
+        # midnight, and one that crossed UTC midnight passed this check and
+        # the one above: at 00:30 in Zurich a stamp of 03:00Z was today's by
+        # its date and behind the clock by its minutes. The whole stamp is
+        # held to the UTC clock now, on whatever day it falls.
+        if ahead_by is not None and ahead_by > 60:
+            defects.append((rel, 'generated.at %s is %d minutes ahead '
+                                 'of the clock' % (gat, ahead_by)))
 
         # A concept speaking in the first person. Settled 15.08.2026, after
         # the owner read "I use this table to place people in streams" and
         # asked whether the "I" was his. It was the librarian's. In a corpus
         # built from one person's own notes that ambiguity is not stylistic:
-        # a reader cannot tell whether "I use Meyer" records the owner's
+        # a reader cannot tell whether "I use Lindqvist" records the owner's
         # naming preference or a compile agent's tie-break. 96 instances were
         # rewritten into the concept's own voice that day. Quotes and the
         # bracketed glosses that translate them are exempt, because there the
         # "I" belongs to the person quoted and must stay verbatim.
         # Inline code is blanked first, same length, so a path such as
         # `About me/writing-rules.md` or a locale `en-us` is not a pronoun.
-        fp_body = INLINE_CODE.sub(lambda x: ' ' * len(x.group(0)), body)
+        # That is the body the footnote check above already blanked.
+        fp_body = foot_body
         for m in FIRST_PERSON.finditer(fp_body):
             if m.group(0)[0] == 'I' and (
                     not clause_open(fp_body, m.start())
@@ -985,21 +1103,18 @@ def audit(kb):
         # renders inside the bullet. The run-on check above exempts a list
         # item on the left, so this shape was invisible: two in Beta_kb on
         # 31.08.2026 (arm d), five across the vault on 15.09.2026.
-        lz = 0
-        infence = False
+        #
+        # The body's lines as the blank-line rules read them, split once for
+        # the checks from here down. Each rule is in `blanklines.py` since
+        # 05.10.2026, and the repair a finding names reads the same one.
         bl = body.split('\n')
-        for i in range(len(bl) - 1):
-            a, b = bl[i], bl[i + 1]
-            if a.lstrip().startswith('```'):
-                infence = not infence
-            if infence:
-                continue
-            if (re.match(r'^\s*(?:[-*+]|\d+\.)\s+\S', a) and b.strip()
-                    and b == b.lstrip()
-                    and not re.match(r'^(?:[-*+]|\d+\.)\s', b)
-                    and not b.startswith(('|', '#', '>', '[^', '```'))
-                    and (b[:1].isupper() or b[:2] == '**' or b[:1] == '"')):
-                lz += 1
+        # A fence that never closes blanks the rest of the body for every
+        # check from here down, and none of them can say so.
+        if sum(map(_blanklines.fence, bl)) % 2:
+            findings.append((rel, 'a fenced block never closes, so no line '
+                                  'check reads below its opening fence'))
+        bl = _blanklines.unfenced(bl)
+        lz = len(_blanklines.gaps(bl, _blanklines.under_item))
         if lz:
             findings.append((rel, '%d paragraph(s) glued under a list item '
                                   'render inside the bullet; add a blank '
@@ -1013,19 +1128,7 @@ def audit(kb):
         # (Gamma_kb AI-2026-09-14-10). A list marker closes a footnote, and
         # renderers disagree about a prose line directly above a definition,
         # so neither of those neighbouring shapes is flagged.
-        fz = 0
-        infence = False
-        for i in range(len(bl) - 1):
-            a2, b2 = bl[i], bl[i + 1]
-            if a2.lstrip().startswith('```'):
-                infence = not infence
-            if infence:
-                continue
-            if (a2.startswith('[^') and ']:' in a2 and b2.strip()
-                    and b2 == b2.lstrip()
-                    and not re.match(r'^(?:[-*+]|\d+\.)\s', b2)
-                    and not b2.startswith(('|', '#', '>', '[^', '```'))):
-                fz += 1
+        fz = len(_blanklines.gaps(bl, _blanklines.under_note))
         if fz:
             findings.append((rel, '%d paragraph(s) glued under a footnote '
                                   'definition render inside the note; add a '
@@ -1066,10 +1169,12 @@ def audit(kb):
         # on 22.09.2026, against the row that had closed it two days earlier.
         # A guard that cannot tell a defect from the note saying the defect was
         # repaired is a guard that punishes writing things down.
+        no_concept_told = set()
         for pm in ([] if rel.endswith('questions.md')
                    else NO_CONCEPT.finditer(prose_c)):
             cand = re.sub(r'[^a-z0-9]+', '-', translit(pm.group(1))).strip('-')
             if cand in person_pages:
+                no_concept_told.add(cand)
                 findings.append((rel, 'says %r has no concept, but %s.md '
                                       'exists now' % (pm.group(1), cand)))
 
@@ -1157,8 +1262,18 @@ def audit(kb):
                 # A later version of a page, `<name>--YYYY-MM-DD.md` from the
                 # weekly mirror, is the same page and not another one. Counted
                 # in, the first run of 27.09.2026 put nine categories out.
+                #
+                # Nor is a file whose address the site has retired. The mirror
+                # cannot see a rename: it files the new address as a new page
+                # and keeps the old file, Raw/ being verbatim. Four renames
+                # stood on 04.10.2026 and the server category read 16
+                # filenames for fourteen pages. `retired_pages` names the old
+                # files, owner's decision 1 of 04.10.2026 (Delta_kb
+                # AI-2026-10-04-2).
+                retired = set(A.get('retired_pages') or [])
                 real = len([f for f in glob.glob(os.path.join(root, 'Raw', cat + '__*.md'))
-                            if not re.search(r'--\d{4}-\d{2}-\d{2}\.md$', f)])
+                            if not re.search(r'--\d{4}-\d{2}-\d{2}\.md$', f)
+                            and os.path.basename(f) not in retired])
                 for pm in re.finditer(
                         r'(?i)(?:`/en/help/[a-z0-9-]+` is |\bat )?\b(%s) pages'
                         r'(?= carry an article|,| and|\b)' % PAGENUM, body):
@@ -1186,14 +1301,22 @@ def audit(kb):
         if rel.endswith(os.path.join('Wiki', 'questions.md')):
             flat = '\n'.join(ln for ln in body.split('\n')
                               if not ln.lstrip().startswith('|'))
-            ai = _section(body, '# Action items')
-            if ai is not None:
-                n_open = 0
-                for r in re.findall(r'^\|\s*AI-[^|\n]+\|[^|\n]*\|[^|\n]*\|'
-                                    r'([^|\n]*)\|', ai, re.M):
-                    w = re.sub(r'[*~]', '', r).strip().split()
-                    if w and w[0].strip(' ,.;:()[]').lower() == 'open':
-                        n_open += 1
+            # Counted by `actionitems.items()`, the reader the vault roll-up
+            # uses, since 04.10.2026. Until then the rows were counted here by
+            # a pattern of this check's own, four cells where the roll-up asks
+            # five, so the two could have counted one table differently; they
+            # gave the same number in all six bases that day. A table the
+            # reader cannot parse is a DEFECT of its own, raised further down,
+            # and this check then has no number to hold the prose to.
+            n_open = None
+            if _section(body, '# Action items') is not None:
+                try:
+                    import actionitems
+                    n_open = sum(1 for it in actionitems.items(kb)
+                                 if it['state'] == 'open')
+                except (ImportError, ValueError):
+                    pass
+            if n_open is not None:
                 for cm in re.finditer(r'(?i)\b%s (?:action )?items? (?:are|is)'
                                       r' open\b' % NUM, flat):
                     if _num(cm.group(1)) != n_open:
@@ -1235,9 +1358,23 @@ def audit(kb):
                                   'say why; a draft with no stated reason is '
                                   'a field nobody can act on'))
 
+        # A `stale_after` that is no day, such as `soon`, was compared as
+        # text until 05.10.2026: `soon` sorts after every date, so it never
+        # stood past, and being there at all it switched the present-tense
+        # check below off. A defect, because it is never right and two checks
+        # are silent while it stands. Seen by the agent that wrote the kept
+        # cases; all 131 in the vault were days that day.
         sa = fm.get('stale_after')
-        if sa and str(sa)[:10] < datetime.date.today().isoformat():
-            findings.append((rel, 'past stale_after ' + str(sa)[:10]))
+        try:
+            sa_day = datetime.datetime.strptime(str(sa)[:10],
+                                                '%Y-%m-%d').date().isoformat()
+        except ValueError:
+            sa_day = None
+        if sa and sa_day != str(sa)[:10]:
+            defects.append((rel, 'stale_after is not a YYYY-MM-DD date: %r'
+                            % (sa,)))
+        elif sa and sa_day < datetime.date.today().isoformat():
+            findings.append((rel, 'past stale_after ' + sa_day))
         # Quoted spans and bracketed glosses are verbatim or near-verbatim
         # source material, exempt from the tense rule by policy. Both false
         # positives of 10.08.2026 were this: "currently" inside an English
@@ -1256,26 +1393,7 @@ def audit(kb):
         # together. 222 occurrences across 98 concepts in Beta_kb that day, all
         # invisible to every check the audit had, because nothing was missing
         # and nothing failed to resolve.
-        blines = body.split('\n')
-        glued = 0
-        infence = False
-        for i in range(len(blines) - 1):
-            a, b = blines[i], blines[i + 1]
-            if a.strip().startswith('```'):
-                infence = not infence
-                continue
-            if infence or not re.search(r'\[\^[^\]\s]+\]\s*$', a):
-                continue
-            if a.lstrip() != a or a.lstrip().startswith(('|', '*', '-', '#',
-                                                         '>', '[^')):
-                continue
-            if not b.strip() or b.lstrip() != b:
-                continue
-            if b.startswith(('|', '*', '-', '#', '>', '[^', '```')):
-                continue
-            if b[:1].isupper() or b[:1] == '"' or re.match(r'\[[^\^\]]+\]\(',
-                                                          b):
-                glued += 1
+        glued = len(_blanklines.gaps(bl, _blanklines.runon))
         if glued:
             findings.append((rel, '%d paragraph(s) run on: a line ending in a '
                                   'footnote reference is followed by a new '
@@ -1292,39 +1410,32 @@ def audit(kb):
         # fault is invisible to a checker that only asks whether things
         # resolve. Repairs live in _scripts/fix-tablebreaks.py and
         # _scripts/fix-glosses.py; this is what stops the class returning.
-        lines = body.split('\n')
-        pipes = headerless = 0
-        infence = False
-        for i, ln in enumerate(lines):
-            if ln.lstrip().startswith('```'):
-                infence = not infence
-                continue
-            if infence:
-                continue
-            row = ln.lstrip().startswith('|') and ln.rstrip().endswith('|')
-            if not row:
-                continue
-            prev = lines[i - 1] if i else ''
-            # A table row directly under prose: GFM swallows it into the
-            # paragraph and the reader sees literal pipe characters.
-            if prev.strip() and not prev.lstrip().startswith(('|', '#', '>')):
-                pipes += 1
-            # A table whose first row is data rather than a header, because
-            # the header stayed behind with the table it was split from. The
-            # separator row is what distinguishes the two.
-            elif not prev.strip() and i + 1 < len(lines):
-                nxt = lines[i + 1].strip()
-                if nxt.startswith('|') and not re.match(r'^\|[\s:|-]+\|$', nxt):
-                    headerless += 1
-        if pipes:
+        #
+        # A table row directly under prose: GFM swallows it into the
+        # paragraph and the reader sees literal pipe characters. And a table
+        # whose first row is data rather than a header, because the header
+        # stayed behind with the table it was split from.
+        #
+        # Until 05.10.2026 every one of these was sent to fix-tablebreaks.py,
+        # which mends a row only under an ordinary paragraph and holds the
+        # rest. A finding names the script for what it mends and no script
+        # for what a reader has to place.
+        tb = _blanklines.table_breaks(bl)
+        if tb['blank'] + tb['hoist']:
             findings.append((rel, '%d table row(s) sit directly under prose '
                                   'and render as literal pipes; run python3 '
-                                  '_scripts/fix-tablebreaks.py' % pipes))
-        if headerless:
+                                  '_scripts/fix-tablebreaks.py'
+                             % (tb['blank'] + tb['hoist'])))
+        if tb['held']:
+            findings.append((rel, '%d table row(s) sit directly under prose '
+                                  'and render as literal pipes; a reader '
+                                  'must place the row, no script does'
+                             % tb['held']))
+        if tb['headerless']:
             findings.append((rel, '%d table(s) start on a data row, so the '
-                                  'first row is lost to header styling; run '
-                                  'python3 _scripts/fix-tablebreaks.py'
-                             % headerless))
+                                  'first row is lost to header styling; a '
+                                  'reader must place the row or head the '
+                                  'table, no script does' % tb['headerless']))
 
         # A run of rows whose width differs from the table it sits in. This
         # is the shape the other two checks cannot see, because both sides
@@ -1338,26 +1449,19 @@ def audit(kb):
         # Escaped pipes are neutralised first. `IK-Session 02\|23` is one
         # cell containing a pipe, not two cells, and counting it as two makes
         # every table holding an escaped pipe look broken.
-        widths = 0
-        run_w = None
-        for ln in FENCE.sub('', body).split('\n'):
-            if not ln.lstrip().startswith('|'):
-                run_w = None
-                continue
-            bare = ln.replace('\\|', '')
-            if re.match(r'^\s*\|[\s:|-]+\|\s*$', bare):
-                continue
-            n = bare.count('|')
-            if run_w is None:
-                run_w = n
-            elif n != run_w:
-                widths += 1
-                run_w = n
+        #
+        # `--widths` folds a stray footnote column and nothing else, so the
+        # count is split by whether its fold leaves the run standing.
+        widths, wheld = _blanklines.width_breaks(bl)
         if widths:
             findings.append((rel, '%d row run(s) differ in column count from '
                                   'the table they sit in; run python3 '
                                   '_scripts/fix-tablebreaks.py --widths'
                              % widths))
+        if wheld:
+            findings.append((rel, '%d row run(s) differ in column count from '
+                                  'the table they sit in; a reader must '
+                                  'place the rows, no script does' % wheld))
 
         # A link description cut mid-word. The orphan sweep of 15.08.2026
         # glossed each bullet from the target concept's own `description` and
@@ -1371,19 +1475,8 @@ def audit(kb):
             g = m.group(2).rstrip()
             if not (100 <= len(g) <= 115) or g.endswith(('.', '!', '?')):
                 continue
-            tgt = os.path.normpath(os.path.join(d, m.group(1)))
-            if not os.path.exists(tgt):
-                continue
-            t2 = FENCE.sub('', open(tgt, encoding='utf-8',
-                                    errors='replace').read())
-            m2 = FM.match(t2)
-            if not m2:
-                continue
-            try:
-                desc = ' '.join(str((yaml.safe_load(m2.group(1)) or {})
-                                    .get('description') or '').split())
-            except Exception:
-                continue
+            desc = description_of(os.path.normpath(os.path.join(d,
+                                                                m.group(1))))
             if desc and desc != g and desc.startswith(g):
                 cut += 1
         if cut:
@@ -1393,11 +1486,19 @@ def audit(kb):
         # Stale "has no concept" claims. Exempt questions.md: its action
         # items table quotes the raising text of closed items verbatim, and
         # that quotation is history rather than a live claim.
+        #
+        # This check is of 15.08.2026 and reads a whole sentence; the one of
+        # 20.09.2026 above reads a name and the phrase after it. Until
+        # 05.10.2026 "Ada Lovelace has no concept." raised a finding from
+        # each, in two wordings. Both stay: over the six bases that day the
+        # older read three names the newer did not and the newer two the
+        # older did not. A person the check above has reported for this
+        # concept is left out here, so the two cannot report one sentence.
         if not rel.endswith('questions.md'):
             for sent in NOCONCEPT.findall(body):
                 for first, last in NAME2.findall(sent):
                     slug = translit(first + '-' + last)
-                    if slug in person_pages:
+                    if slug in person_pages and slug not in no_concept_told:
                         findings.append(
                             (rel, 'says %s has no concept, but Wiki/people/'
                                   '%s.md exists' % (first + ' ' + last, slug)))
@@ -1463,14 +1564,14 @@ def audit(kb):
             if _id > _today:
                 defects.append(('Wiki/questions.md', 'action item id dated in '
                                 'the future: AI-%s-n' % _id))
-    _cl = os.path.join(root, 'CHANGELOG.md')
-    if os.path.exists(_cl):
-        for _h in sorted(set(re.findall(r'^## (\d{4}-\d{2}-\d{2})',
-                                        open(_cl, encoding='utf-8').read(),
-                                        re.M))):
-            if _h > _today:
-                defects.append(('CHANGELOG.md', 'entry dated in the future: '
-                                + _h))
+    # `changelog()` holds the file for the run and gives '' where there is
+    # none, which has no heading. This opened it a second time until the
+    # review of 04.10.2026.
+    for _h in sorted(set(re.findall(r'^## (\d{4}-\d{2}-\d{2})',
+                                    changelog(kb), re.M))):
+        if _h > _today:
+            defects.append(('CHANGELOG.md', 'entry dated in the future: '
+                            + _h))
 
     # Index accuracy, against the generator. reindex.py is the definition of
     # a correct index, so the check is simply whether it would change one.
@@ -1490,6 +1591,36 @@ def audit(kb):
                                  'run python3 _scripts/reindex.py'))
     except ImportError:
         pass
+
+    # The bundle-root index against the directories it lists. reindex.py adds
+    # a missing concept to a root index only where its entries are written
+    # `[title](path) - description`. Delta_kb's are written by hand with an em
+    # dash, so the generator leaves them alone and the check above, which asks
+    # the generator, had nothing to say: the root index listed four of six
+    # procedures from 27.09. to 04.10.2026 (Delta_kb AI-2026-10-04-4).
+    #
+    # The rule: where the root index links one concept of a directory, it
+    # links every concept of that directory. It cannot fire on a root index
+    # that links only its group indexes. Opt in with `root_index_complete`,
+    # because a root index may be a map that names a few concepts on purpose.
+    # Measured 04.10.2026 over all six bundles: Alpha_kb's links 1 of 113
+    # people, 1 of 48 systems and 1 of 2 timelines by design, and the other
+    # five link every concept of each directory they link into. One finding
+    # for each concept, so each stands on its own clock.
+    _wiki = os.path.join(root, 'Wiki')
+    _ri = os.path.join(_wiki, 'index.md')
+    if A.get('root_index_complete') and os.path.exists(_ri):
+        _linked = {os.path.normpath(os.path.join(_wiki, t)) for t in
+                   MDLINK.findall(open(_ri, encoding='utf-8').read())}
+        _dirs = {os.path.dirname(c) for c in concepts if c in _linked}
+        for _f in concepts:
+            _d = os.path.dirname(_f)
+            if _d in _dirs and _f not in _linked:
+                findings.append(('Wiki/index.md',
+                                 'the root index links concepts of %s/ and '
+                                 'not %s; it is written by hand, so add the '
+                                 'entry' % (os.path.relpath(_d, _wiki),
+                                            os.path.basename(_f))))
 
     # The Action items table must be readable by the generator of the vault
     # roll-up. `actionitems.py` raises when a questions.md carries AI- ids and
@@ -1531,10 +1662,9 @@ def audit(kb):
             defects.append(('COVERAGE.md', 'archive coverage never measured; '
                             'run python3 _scripts/coverage.py'))
         else:
-            import json as _json
             want = _coverage.state_key(kb)
             try:
-                got = _json.load(open(cst, encoding='utf-8'))
+                got = json.load(open(cst, encoding='utf-8'))
             except Exception:
                 got = None
             if got != want:
@@ -1584,10 +1714,7 @@ def audit(kb):
                     _m = CROSS_KB.search(tgt)
                     _kbroot = os.path.join(
                         VAULT, tgt[_m.start():].lstrip('/').split('/')[0])
-                    _oth = os.path.join(_kbroot, 'OneNote')
-                    if os.path.isdir(_oth) and not any(
-                            fn.endswith('.md')
-                            for _, _, fns in os.walk(_oth) for fn in fns):
+                    if _coverage.archive_empty(os.path.basename(_kbroot)):
                         findings.append((
                             os.path.relpath(f, root),
                             'link into a knowledge base that is cleared and '
@@ -1621,10 +1748,13 @@ def audit(kb):
     # and every contradiction it ever found came from a pair sharing seven or
     # more, so the owner set seven there (Beta_kb AI-2026-08-31-3). The others
     # keep three until their own runs measure where findings come from.
-    thr = int(A.get('contradiction_threshold') or 3)
-    pairs = [(len(resources[a] & resources[b]), a, b)
-             for a, b in itertools.combinations(sorted(resources), 2)
-             if len(resources[a] & resources[b]) >= thr]
+    #
+    # Counted unread since 05.10.2026. Every candidate was counted until
+    # then, read or not, so the gauge could only rise: 611 to 1'585 in Alpha_kb
+    # in a month. `pairs.py` holds what a pair is and which readings stand.
+    thr = _pairs.threshold(kb)
+    pairs = _pairs.candidates(resources, thr)
+    unread = _pairs.unread(kb, pairs)
     # Archive pages cited with two or more different `author` values. The
     # exact mirror of the `last_modified` split this vault already gauges —
     # a page has one author as it has one date, so two concepts giving two
@@ -1645,7 +1775,8 @@ def audit(kb):
                 continue
             r = str(s.get('resource') or '')
             if '/OneNote/' in r:
-                auth[r.split('OneNote/')[-1]].add(str(s.get('author')))
+                auth[bundle.canon(os.path.join(os.path.dirname(f), r))].add(
+                    str(s.get('author')))
     nsplit = sum(1 for v in auth.values() if len(v) > 1)
     if nsplit:
         worst = max(auth.items(), key=lambda kv: len(kv[1]))
@@ -1655,13 +1786,16 @@ def audit(kb):
                          % (nsplit, os.path.basename(worst[0]),
                             ', '.join(sorted(worst[1])))))
 
-    if pairs:
-        n, a, b = max(pairs)
+    if unread:
+        n, a, b = max(unread)
         findings.append(('(bundle)',
-                         '%d contradiction-candidate pairs share %d+ sources; '
-                         'largest overlap %d: %s <-> %s'
-                         % (len(pairs), thr, n, os.path.relpath(a, root),
-                            os.path.relpath(b, root))))
+                         '%d of %d contradiction-candidate pairs (%d+ shared '
+                         'sources) are unread since either side changed; '
+                         'largest unread overlap %d: %s <-> %s; list them: '
+                         'python3 _scripts/pairs.py %s'
+                         % (len(unread), len(pairs), thr, n,
+                            os.path.relpath(a, root),
+                            os.path.relpath(b, root), kb)))
 
     # A footnote definition written on the line directly under a paragraph,
     # with no blank line between. This is the mirror of the check built for
@@ -1674,26 +1808,15 @@ def audit(kb):
     # over a hundred cases between them, and wedging the pre-commit hook on
     # a rendering fault nobody has been given a chance to repair would stop
     # unrelated work. `_scripts/fix-footnote-gaps.py` repairs them.
-    _glued = []
-    for _f, (_fm, _body) in concepts.items():
-        _lines = _body.split('\n')
-        _fence = False
-        for _i, _l in enumerate(_lines):
-            if _l.lstrip().startswith('```'):
-                _fence = not _fence
-                continue
-            if _fence or _i == 0:
-                continue
-            if re.match(r'^\[\^[^\]]+\]:', _l):
-                _p = _lines[_i - 1]
-                if _p.strip() and not re.match(r'^\[\^[^\]]+\]:', _p):
-                    _glued.append(os.path.relpath(_f, root))
-    if _glued:
+    _glued = [len(_blanklines.gaps(_blanklines.unfenced(_body.split('\n')),
+                                   _blanklines.note_under))
+              for _fm, _body in concepts.values()]
+    if any(_glued):
         findings.append(('(bundle)',
                          '%d footnote definition(s) in %d concept(s) sit on '
                          'the line under a paragraph and are swallowed by it; '
                          'repair with python3 _scripts/fix-footnote-gaps.py %s'
-                         % (len(_glued), len(set(_glued)), kb)))
+                         % (sum(_glued), sum(map(bool, _glued)), kb)))
 
     # One archive page given two different `last_modified` values by two
     # concepts. `last_modified` is a semantic date, not the exporter's stamp
@@ -1706,17 +1829,17 @@ def audit(kb):
     # had left open. A gauge, because which side is right needs the page
     # opened, and because the house rule genuinely allows a date the
     # exporter's stamp does not carry.
-    _lm = {}
+    _stamps = {}
     for _f, (_fm, _body) in concepts.items():
         for _s in (_fm.get('sources') or []):
             if not isinstance(_s, dict) or not _s.get('resource'):
                 continue
-            _t = os.path.normpath(os.path.join(os.path.dirname(_f),
-                                               str(_s['resource'])))
-            _lm.setdefault(_t, {}).setdefault(
+            _t = bundle.canon(os.path.join(os.path.dirname(_f),
+                                           str(_s['resource'])))
+            _stamps.setdefault(_t, {}).setdefault(
                 str(_s.get('last_modified', 'unknown')), []).append(
                     os.path.relpath(_f, root))
-    _split = {t: v for t, v in _lm.items() if len(v) > 1}
+    _split = {t: v for t, v in _stamps.items() if len(v) > 1}
     if _split:
         _t, _v = sorted(_split.items())[0]
         findings.append(('(bundle)',
@@ -1769,6 +1892,33 @@ def audit(kb):
                          '%d sentence(s) that later content may have '
                          'disproved; read them first: python3 '
                          '_scripts/stale-claims.py %s' % (sc, kb)))
+
+    # A quotation that is in no page its footnotes cite. Sixteen were
+    # corrected by readers in eleven Delta_kb concepts on 04.10.2026 and no
+    # check had seen one (AI-2026-10-04-5); `quotes.py` holds how a quotation
+    # is read and what it cannot see. Opted into per knowledge base, because
+    # the rule was calibrated on one: 514 quotations compared in Delta_kb on
+    # 05.10.2026 and 5 flagged, where the trial of 04.10.2026 flagged 63 of
+    # 601. A finding names the words and not the line, so that an edit above
+    # it does not restart its clock.
+    if A.get('quotes_in_page'):
+        for _f, _line, _q, _ids in _quotes.scan(kb)[0]:
+            findings.append((os.path.relpath(_f, root),
+                             'quotes words that are in no page its footnotes '
+                             'cite (%s): "%s"'
+                             % (', '.join(dict.fromkeys(_ids)), _q[:120])))
+
+    # Concepts written before a page they cite was rewritten. The planner
+    # counts a cited page as covered whatever it now says, and until
+    # 05.10.2026 only a reader of the exporter's change lists knew. A gauge:
+    # whether the new text extends the concept or contradicts it is a reading.
+    cb = {c for _page, _when, c, _at in _changed.scan(kb)}
+    if cb:
+        findings.append(('(bundle)',
+                         '%d concept(s) were written before a page they cite '
+                         'changed in an export; read the page again, then '
+                         'restamp: python3 _scripts/changed-pages.py %s'
+                         % (len(cb), kb)))
 
     # Body content stranded after the footnote definitions, or a section
     # filed under `# Related`, which is meant to be the last thing before
@@ -1843,6 +1993,13 @@ def audit(kb):
     # back within seven days in Zeta_kb (AI-2026-09-27-1). A gauge, owner's
     # decision 2 of 27.09.2026: a later commit need not change what the
     # concept cites it for.
+    #
+    # A file whose name starts with a date is left out since 04.10.2026. The
+    # dating check holds its `last_modified` to the date in the name, so a
+    # later commit cannot be answered by restamping and the gauge could not
+    # reach zero: two question reports held it at 2 in Zeta_kb, and the
+    # audit that restamped them raised the dating finding on each
+    # (AI-2026-10-04-3).
     _behind = []
     for _f, (_fm, _body) in concepts.items():
         for _s in ((_fm or {}).get('sources') or []):
@@ -1855,6 +2012,8 @@ def audit(kb):
             if not _lm:
                 continue
             _t = os.path.normpath(os.path.join(os.path.dirname(_f), _r))
+            if NAME_DATE.match(os.path.basename(_t)):
+                continue
             _c = _commit_date(_t)
             if _c and _c > _lm.group(1):
                 _behind.append('%s -> %s' % (os.path.relpath(_f, root),
@@ -1865,43 +2024,102 @@ def audit(kb):
                          'commit of the vault file they cite; re-read the file '
                          'and restamp; first: %s' % (len(_behind), _behind[0])))
 
+    # An image source left at `last_modified: unknown` while the image's name
+    # carries a date. `unknown` stands only where no date is knowable, and
+    # the name of a pasted image or a screenshot gives the day. An export
+    # stores an attachment under a number, so its name is read from the
+    # Attachments list of the Raw page that carries it; an image cited under
+    # its own name is tested as it stands. 29 of 291 image sources stood that
+    # way in five Epsilon_kb concepts on 04.10.2026, found and dated by a
+    # throwaway script, with nothing to catch the next one (Epsilon_kb
+    # AI-2026-10-04-4). A gauge, owner's decision 2 of 04.10.2026. Calibrated
+    # that day over all six bundles: 307 image sources, 293 in Epsilon_kb and
+    # 14 in Alpha_kb, 66 of them at `unknown`, and none of the 66 names carries
+    # a date. The pages are read only where an image source stands undated.
+    # `_stamps`, built for the gauge of split dates above, already holds
+    # every source by its path and its stamp.
+    _undated = sorted((_c, _t) for _t, _v in _stamps.items()
+                      if IMAGE_FILE.search(_t) for _c in _v.get('unknown', ()))
+    _named = {}
+    if _undated:
+        for _p in glob.glob(os.path.join(root, 'Raw', '**', '*.md'),
+                            recursive=True):
+            for _n, _t in ATTACHMENT.findall(
+                    open(_p, encoding='utf-8', errors='replace').read()):
+                _named[bundle.canon(
+                    os.path.join(os.path.dirname(_p), _t))] = _n
+    _dateable = ['%s -> %s' % (_c, _named.get(_t, os.path.basename(_t)))
+                 for _c, _t in _undated
+                 if IMAGE_DATED.search(os.path.basename(_t))
+                 or IMAGE_DATED.search(_named.get(_t, ''))]
+    if _dateable:
+        findings.append(('(bundle)',
+                         '%d image source(s) stand at last_modified: unknown '
+                         'while the image\'s name carries a date; stamp them '
+                         'from the name; first: %s'
+                         % (len(_dateable), _dateable[0])))
+
+    # `memory.md` against its own two rules. It is the cold-start file every
+    # session reads whole and trusts without deriving it again, so a stale
+    # count in it is read as fact by every run; the report of 03.09.2026 asked
+    # for a recount and none was written. And it is held to roughly 60 lines
+    # so that it stays a first screen and not a second manual: Alpha_kb stood at
+    # 135 on 05.10.2026 with nothing counting. Ten lines of grace, because the
+    # rule says roughly. Gauges: the health check rewrites the file, and a
+    # frozen base's only when the owner names the base.
+    _mem = os.path.join(root, 'memory.md')
+    if os.path.exists(_mem):
+        _mt = open(_mem, encoding='utf-8').read()
+        _row = re.search(r"^\|\s*Concepts\s*\|\s*\**\s*(\d[\d']*)", _mt, re.M)
+        if _row and int(_row.group(1).replace("'", '')) != len(concepts):
+            findings.append(('(bundle)',
+                             'memory.md gives %s concepts and the bundle '
+                             'holds %d; rewrite the row from a count'
+                             % (_row.group(1), len(concepts))))
+        if _mt.count('\n') > MEMORY_LINES:
+            findings.append(('(bundle)',
+                             'memory.md is %d lines long; the rule is roughly '
+                             '60, and what needs more belongs in questions.md'
+                             % _mt.count('\n')))
+
     if absent_cites:
         findings.append(('(bundle)',
-                         'archive layer absent: %d citations into OneNote/ '
+                         'archive layer absent: %d citations into %s/ '
                          'could not be checked because the export has been '
                          'deleted pending replacement. They are not waived; '
                          'they are unverifiable until it is back'
-                         % absent_cites))
+                         % (absent_cites, _layer)))
     return len(concepts), citations, defects, findings
 
 
-_COMMIT_DATES = {}
+def git(*args, timeout=20):
+    """`git` over the vault, read-only: --no-optional-locks takes no index
+    lock, which a device-bridge session must not leave behind.
+
+    One call since the review of 04.10.2026. Two sites here and three in
+    `readset.py` each wrote out the flag, the vault folder and the capture
+    settings, and the flag is the part a sixth site would forget. Each caller
+    keeps its own error handling. The sites here passed `cwd=VAULT` where
+    this passes `-C VAULT`, as `readset.py` always did; both read the same
+    bytes for `ls-files -z` and `log -1`, compared that day.
+    """
+    return subprocess.run(['git', '--no-optional-locks', '-C', VAULT]
+                          + list(args),
+                          capture_output=True, text=True, timeout=timeout)
 
 
+@functools.lru_cache(maxsize=None)
 def _commit_date(path):
     """The date of the last commit touching a tracked file, or None.
 
     Cached per path: a bundle names the same few vault files many times."""
-    if path in _COMMIT_DATES:
-        return _COMMIT_DATES[path]
-    d = None
-    if os.path.isfile(path) and path.startswith(VAULT):
-        try:
-            out = subprocess.run(['git', '--no-optional-locks', 'log', '-1',
-                                  '--format=%cs', '--', path], cwd=VAULT,
-                                 capture_output=True, text=True, timeout=20)
-            d = out.stdout.strip() or None
-        except Exception:                                  # noqa: BLE001
-            d = None
-    _COMMIT_DATES[path] = d
-    return d
-
-
-def vault_assertions():
-    p = os.path.join(VAULT, 'assertions.yaml')
-    if not os.path.exists(p):
-        return {}
-    return yaml.safe_load(open(p, encoding='utf-8')) or {}
+    if not (os.path.isfile(path) and path.startswith(VAULT)):
+        return None
+    try:
+        return git('log', '-1', '--format=%cs', '--',
+                   path).stdout.strip() or None
+    except Exception:                                      # noqa: BLE001
+        return None
 
 
 def section_of(text, heading):
@@ -1927,9 +2145,7 @@ def tracked_files():
     """Files git tracks. Read-only: --no-optional-locks takes no index lock,
     which a device-bridge session must not leave behind."""
     try:
-        out = subprocess.run(['git', '--no-optional-locks', 'ls-files', '-z'],
-                             cwd=VAULT, capture_output=True, text=True,
-                             timeout=60)
+        out = git('ls-files', '-z', timeout=60)
     except Exception:
         return None
     if out.returncode != 0:
@@ -1985,9 +2201,8 @@ def export_contract(kb):
     Skipped where there is no export: the frozen bundles have no exporter, and a
     knowledge base whose archive has not been synced yet has nothing to check.
     """
-    import json as _json
     defects = []
-    roots = glob.glob(os.path.join(VAULT, kb, 'OneNote', '*'))
+    roots = _coverage.archive_roots(kb)
     reports = sorted(f for r in roots
                      for f in glob.glob(os.path.join(r, '_CHANGES-*.json')))
     if not reports:
@@ -1995,7 +2210,7 @@ def export_contract(kb):
     newest = reports[-1]
     rel = os.path.relpath(newest, os.path.join(VAULT, kb))
     try:
-        doc = _json.load(open(newest, encoding='utf-8'))
+        doc = json.load(open(newest, encoding='utf-8'))
     except Exception as e:
         defects.append((rel, 'the newest change report does not parse: %s' % e))
         return defects
@@ -2082,7 +2297,7 @@ def repo_hygiene():
             defects.append((rel, 'a tracked file carries a Teams join code '
                                  '(meeting or conference ID); record that it '
                                  'exists, never its value'))
-    waived = set((vault_assertions().get('secret_waivers') or []))
+    waived = set((assertions().get('secret_waivers') or []))
     for rel in tracked:
         if rel.endswith(('.md', '.py', '.sh', '.js', '.yaml', '.yml')):
             continue                        # prose and code, not data dumps
@@ -2156,7 +2371,7 @@ def vault_audit():
     """Audits the files above the knowledge bases. Nothing checked these until
     15.08.2026, which is how a stale concept count sat in CLAUDE.md through two
     runs. The per-KB assertions guard concepts; these guard the map."""
-    A = vault_assertions()
+    A = assertions()
     defects = []
     for rule in A.get('forbid_in') or []:
         rel = rule.get('path', '')
@@ -2180,6 +2395,55 @@ def vault_audit():
     return defects
 
 
+def blankline_cases():
+    """The blank-line rules still count and mend what their cases say.
+
+    Every base counts 0 for these findings, so the corpus cannot tell when a
+    rule in `blanklines.py` stops counting: the audit would stay green until
+    a compile next wrote the fault. `blanklines-cases.py` holds one made-up
+    body per shape, with what the audit counts in it and what the repairs
+    leave. Kept since the review of 05.10.2026, whose three faults in the
+    joined rule all sat on shapes no base holds.
+    """
+    return [('_scripts/blanklines.py', m)
+            for m in bundle.script('blanklines-cases.py').failures()]
+
+
+def kept_cases():
+    """Every check of a knowledge base still fires on its kept case, and a
+    check with no case is owed or new.
+
+    `verify-cases.py` builds a made-up base the audit passes, changes it one
+    way per case, and holds the audit to the words it must then say. A
+    reporting site of `audit()` with no case and no line in its `OWED` list
+    fails here, so a new check brings its case in the commit that adds it.
+    Kept since 05.10.2026.
+    """
+    return [('_scripts/verify-cases.py', m)
+            for m in bundle.script('verify-cases.py').failures()]
+
+
+def one_separator():
+    """`tableorder.SEP` is the only reading of a table's separator row.
+
+    Three scripts each carried a pattern of their own for it, a character
+    class of dash, colon, pipe and space, and all three took a data row of
+    single dashes for a separator: the table repair wrote a blank line into
+    the table, the helper dropped the row from a rendered report, and the
+    attachment register would have lost it. Found by the review of
+    05.10.2026. The class is the shape looked for, in any order.
+    """
+    out = []
+    for f in sorted(glob.glob(os.path.join(VAULT, '_scripts', '*.py'))):
+        for n, line in enumerate(open(f, encoding='utf-8'), 1):
+            if any(set(c.replace('\\s', '').replace(' ', '')) == set(':|-')
+                   for c in re.findall(r'\[([^\]\n]+)\]', line)):
+                out.append(('_scripts/' + os.path.basename(f),
+                            'line %d reads a table\'s separator row by a '
+                            'pattern of its own; use tableorder.SEP' % n))
+    return out
+
+
 def skill_packages():
     """A .skill package must match its source under _skills/.
 
@@ -2197,19 +2461,18 @@ def skill_packages():
     src = os.path.join(VAULT, '_skills')
     if not os.path.isdir(src):
         return out
+    # Which files make up a skill is the builder's rule, so the builder is
+    # asked, as the index check asks `reindex.py`. This walked `_skills/<name>`
+    # itself until the review of 04.10.2026, a second copy of `files_of()`:
+    # no dot-file, no dot-folder. Had the builder changed what it packs, this
+    # would have kept the old rule and failed every package. The two walks
+    # gave the same files for all four skills that day.
+    builder = bundle.script('build-skill.py')
     for name in sorted(os.listdir(src)):
-        d = os.path.join(src, name)
-        if not os.path.isdir(d):
+        if not os.path.isdir(os.path.join(src, name)):
             continue
-        want = {}
-        for dp, dn, fn in os.walk(d):
-            dn[:] = [x for x in dn if not x.startswith('.')]
-            for f in fn:
-                if f.startswith('.'):
-                    continue
-                full = os.path.join(dp, f)
-                want[os.path.relpath(full, src).replace(os.sep, '/')] = \
-                    open(full, 'rb').read()
+        want = {arc: open(full, 'rb').read()
+                for full, arc in builder.files_of(name)}
         pkg = os.path.join(VAULT, name + '.skill')
         if not os.path.exists(pkg):
             out.append((name + '.skill', 'source exists under _skills/ but no '
@@ -2240,6 +2503,12 @@ HISTORY = ('CHANGELOG.md',
 SKIP_DIRS = ('/OneNote/', '/_to_delete/', '/.git/', '/_extractions/',
              '/.obsidian/', '/_snapshots/', '/uploads/')
 BACKTICK = re.compile(r'`([^`\n]+)`')
+# Every link target, whatever it ends in. `audit()` reads its link graph and
+# the root-index check with this pattern too. A narrower one of the same name,
+# `.md` targets with no fragment, stood near the top of the file until
+# 04.10.2026 and was never in force: this definition came later in the module,
+# so it was the one every call found. The first was deleted, so each use keeps
+# the pattern it had.
 MDLINK = re.compile(r'\]\(([^)\n]+)\)')
 KB_TOKEN = re.compile(r'(?:^|/)([A-Za-z0-9]+_kb)/')
 
@@ -2338,6 +2607,16 @@ def reports_register():
     if not os.path.exists(reg):
         return [('Outputs/_REPORTS.md', 'the register is missing')]
     text = open(reg, encoding='utf-8').read()
+    # Each dated row, once: its cells after the date, and its report link or
+    # None. The three checks below that read rows each parsed the register
+    # for themselves until the review of 04.10.2026, with the same row
+    # pattern, the same split and the same link search; each keeps its own
+    # guard, so the messages and their order are as they were.
+    rows = []
+    for row in re.finditer(r'^\|\s*20\d\d-\d\d-\d\d\s*\|([^\n]*)$', text, re.M):
+        cells = [c.strip() for c in row.group(1).split('|')]
+        rows.append((cells, re.search(r'\]\(([^)]+\.md)\)', cells[2])
+                     if len(cells) > 2 else None))
     for sub in ('', AUDIT_DIR):
         dd = os.path.join(d, sub) if sub else d
         if not os.path.isdir(dd):
@@ -2360,12 +2639,8 @@ def reports_register():
     # would pass `2026-08-09_contradiction-sweep.md`, which is an audit and
     # says nothing about health checks, and would fail a question report that
     # happened to ask about one.
-    for row in re.finditer(r'^\|\s*20\d\d-\d\d-\d\d\s*\|([^\n]*)$', text, re.M):
-        cells = [c.strip() for c in row.group(1).split('|')]
-        if len(cells) < 4:
-            continue
-        link = re.search(r'\]\(([^)]+\.md)\)', cells[2])
-        if not link:
+    for cells, link in rows:
+        if len(cells) < 4 or not link:
             continue
         is_audit = cells[1].lower().startswith('audit')
         in_dir = link.group(1).startswith(AUDIT_DIR + '/')
@@ -2418,11 +2693,9 @@ def reports_register():
     # is decided only when its Promotion names a concept there, and `none` is
     # not an outcome it can have.
     vault_rows = set()
-    for row in re.finditer(r'^\|\s*20\d\d-\d\d-\d\d\s*\|([^\n]*)$', text, re.M):
-        cells = [c.strip() for c in row.group(1).split('|')]
+    for cells, link in rows:
         if len(cells) < 5 or 'vault' not in cells[0].lower():
             continue
-        link = re.search(r'\]\(([^)]+\.md)\)', cells[2])
         if not link or cells[1].lower().startswith('audit'):
             continue
         vault_rows.add(link.group(1))
@@ -2452,13 +2725,11 @@ def reports_register():
             frozen.add(m.group(1).upper())
     except OSError:
         pass
-    for row in re.finditer(r'^\|\s*20\d\d-\d\d-\d\d\s*\|([^\n]*)$', text, re.M):
-        cells = [c.strip() for c in row.group(1).split('|')]
+    for cells, link in rows:
         if len(cells) < 5 or not frozen:
             continue
         scope = {t.replace(' ', '').upper()
                  for t in cells[0].split(',') if t.strip()}
-        link = re.search(r'\]\(([^)]+\.md)\)', cells[2])
         if link and scope and scope <= frozen \
                 and cells[4].lstrip('*').lower().startswith('pending review'):
             out.append(('Outputs/_REPORTS.md', '%s concerns only frozen bases '
@@ -2528,19 +2799,23 @@ def raw_register():
 STATE = os.path.join(VAULT, '_scripts', 'verify-state.json')
 
 
+def _stored():
+    """The clock as it stands on disk, or {} where it is missing or unreadable.
+    Read at the start of a run and again before the write; see `main()`."""
+    try:
+        return json.load(open(STATE, encoding='utf-8'))
+    except Exception:
+        return {}
+
+
 def main():
-    import json
     total = 0
-    state = {}
-    if os.path.exists(STATE):
-        try:
-            state = json.load(open(STATE, encoding='utf-8'))
-        except Exception:
-            state = {}
+    state = _stored()
     today = datetime.date.today().isoformat()
     if not sys.argv[1:]:
         vd = (vault_audit() + repo_hygiene() + reports_register()
-              + raw_register() + packer_dedup())
+              + raw_register() + packer_dedup()
+              + blankline_cases() + kept_cases() + one_separator())
         print('== 00_Cerebrum (vault): %d defects' % len(vd))
         for rel, msg in vd:
             print('  DEFECT  %s: %s' % (rel, msg))
@@ -2550,6 +2825,16 @@ def main():
         n, c, defects, findings = audit(kb)
         defects = defects + export_contract(kb)
         waivers = assertions(kb).get('finding_waivers') or []
+
+        # Whether a finding is waived decides two things: what escalates,
+        # just below, and what prints as waived, further down. The test was
+        # written out in both places until the review of 04.10.2026, where
+        # two copies could have come to disagree.
+        def _waived(rel, msg):
+            return any(fnmatch.fnmatch(rel, w.get('path', '*'))
+                       and w.get('contains', '') in msg
+                       for w in waivers)
+
         fresh = {}
         for rel, msg in findings:
             if rel == '(bundle)':
@@ -2560,9 +2845,7 @@ def main():
                 dates = (dates + [today])[-5:]
             fresh[fp] = dates
             if len(dates) >= 3:
-                if any(fnmatch.fnmatch(rel, w.get('path', '*'))
-                       and w.get('contains', '') in msg
-                       for w in waivers):
+                if _waived(rel, msg):
                     continue
                 defects.append((rel, 'standing finding, %d distinct run-days '
                                 '(fix it, or waive it with a reason in '
@@ -2591,11 +2874,6 @@ def main():
         # worse than having no check, since the run reads as clean. The tail is
         # now one line per distinct message shape with its count, so a class
         # can be silent only if it never fires at all.
-        def _waived(rel, msg):
-            return any(fnmatch.fnmatch(rel, w.get('path', '*'))
-                       and w.get('contains', '') in msg
-                       for w in waivers)
-
         open_f = [(r, m) for r, m in findings if not _waived(r, m)]
         waived_f = [(r, m) for r, m in findings if _waived(r, m)]
         for rel, msg in open_f[:20]:
@@ -2622,12 +2900,7 @@ def main():
     # thing that escalates a standing finding to a DEFECT, so losing a day
     # delays the escalation silently. Only the bases this run actually audited
     # are taken from memory; every other prefix comes from disk as it stands.
-    on_disk = {}
-    if os.path.exists(STATE):
-        try:
-            on_disk = json.load(open(STATE, encoding='utf-8'))
-        except Exception:
-            on_disk = {}
+    on_disk = _stored()
     mine = tuple(kb + '|' for kb in touched)
     merged = {k: v for k, v in on_disk.items() if not k.startswith(mine)}
     merged.update({k: v for k, v in state.items() if k.startswith(mine)})

@@ -32,6 +32,25 @@ forbid_in:
       prose under the table may discuss numbers; only the table rows are
       scanned.
 
+  # A frontmatter block read for its keys goes through `bundle.mapping()`.
+  # Settled 05.10.2026: a block that is a list parses, and to something with
+  # no keys, so a reader that took the parse with `or {}` and asked it for a
+  # key stopped on it. The scripts the audit calls are held by kept cases in
+  # `verify-cases.py`. These three it does not call, so no case can reach
+  # them, and the old read is forbidden in each instead.
+  - path: _scripts/visualize.py
+    pattern: '(safe_load|frontmatter)\(.*\) or \{\}'
+    reason: &one-reader >-
+      A frontmatter block that is a list stopped this script with an
+      AttributeError until 05.10.2026. Read the block with bundle.mapping(),
+      which gives no keys where the block holds none
+  - path: _scripts/readblocks.py
+    pattern: '(safe_load|frontmatter)\(.*\) or \{\}'
+    reason: *one-reader
+  - path: _scripts/attribution-scan.py
+    pattern: '(safe_load|frontmatter)\(.*\) or \{\}'
+    reason: *one-reader
+
 # Add an entry per knowledge base as facts settle. Two patterns worth copying,
 # both learned from manuals that went stale while the generated files beside
 # them stayed correct:

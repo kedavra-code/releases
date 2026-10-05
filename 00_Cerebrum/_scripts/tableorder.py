@@ -34,14 +34,21 @@ is listed. Beta_kb counted 34 single stray rows on 08.09.2026, which is why.
 
 Usage:  python3 _scripts/tableorder.py <KB> [more KBs...] [--dry-run]
 """
-import glob
 import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import bundle
+from bundle import VAULT, FM, concept_files
+
 FENCE_LINE = re.compile(r'^\s*```')
-SEP = re.compile(r'^\s*\|[\s:|-]+\|\s*$')
+# A table's separator row: three dashes or more in every cell, as the house
+# writes it, with a closing pipe or without one. Until 05.10.2026 any row of
+# dashes, colons and spaces passed, so a data row of single dashes and the
+# empty header row `| | |` were both read as separators: the repair took the
+# row above the first for a second header, and four tables in two bases had
+# their header counted as no row at all.
+SEP = re.compile(r'^\s*\|\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$')
 DATE_CELL = re.compile(
     r'^(?:ca\.\s*|~\s*)?(?:(\d{4})(?:-(\d\d)(?:-(\d\d))?)?(?!\d)'
     r'|(\d{1,2})\.(\d{1,2})\.(\d{4})|(\d{1,2})\.(\d{4}))')
@@ -158,9 +165,12 @@ def _page_carries(concept, row, date):
     labels = re.findall(r'\[\^([^\]]+)\]', row)
     if not labels:
         return False
-    fm = re.match(r'^---\n(.*?)\n---\n', open(concept, encoding='utf-8')
-                  .read(), re.S)
-    if not fm:
+    # The page behind each label, from the bundle's YAML reader since
+    # 04.10.2026. The pattern that stood here asked for `resource:` on the line
+    # directly under `id:` and stopped a path at its first quote, so it found
+    # no page, or a wrong one, for 14 labels in Alpha_kb that day.
+    by_id = {str(s.get('id')): page for s, page in bundle.sources(concept) if page}
+    if not by_id:
         return False
     y, m, d = date
     forms = {str(y)} if not m else set()
@@ -171,12 +181,9 @@ def _page_carries(concept, row, date):
                   '%d%02d%02d' % (y, m, d), '%d.%d.%d' % (d, m, y),
                   '%02d.%02d.%02d' % (d, m, y % 100)}
     for lab in labels:
-        rm = re.search(r'- id:\s*%s\s*\n\s*resource:\s*[\'"]?([^\'"\n]+)'
-                       % re.escape(lab), fm.group(1))
-        if not rm:
+        tgt = by_id.get(lab)
+        if not tgt:
             continue
-        tgt = os.path.normpath(os.path.join(os.path.dirname(concept),
-                                            rm.group(1).strip()))
         hay = tgt
         if os.path.isfile(tgt) and tgt.endswith(('.md', '.txt', '.html')):
             hay += open(tgt, encoding='utf-8', errors='replace').read()
@@ -187,7 +194,7 @@ def _page_carries(concept, row, date):
 
 def fix_file(path, dry=False):
     text = open(path, encoding='utf-8').read()
-    m = re.match(r'^---\n.*?\n---\n', text, re.S)
+    m = FM.match(text)
     head, body = (text[:m.end()], text[m.end():]) if m else ('', text)
     lines = body.split('\n')
     moved, held = 0, []
@@ -216,11 +223,7 @@ def main():
     kbs = [a for a in sys.argv[1:] if not a.startswith('--')]
     tables = files = 0
     for kb in kbs:
-        for f in sorted(glob.glob(os.path.join(VAULT, kb, 'Wiki', '**', '*.md'),
-                                  recursive=True)):
-            if '_to_delete' in f or os.path.basename(f) in ('index.md',
-                                                            'log.md'):
-                continue
+        for f in concept_files(kb):
             n, held = fix_file(f, dry)
             if n:
                 files += 1

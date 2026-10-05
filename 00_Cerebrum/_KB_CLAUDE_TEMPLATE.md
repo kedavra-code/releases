@@ -187,7 +187,7 @@ One entry per operation, most recent first, each naming its scope:
 - Updated: concept-d, concept-e
 - Open: 1 unsourced claim moved to Wiki/questions.md
 
-## YYYY-MM-DD — Health check (delta)
+## YYYY-MM-DD — Health check
 - 0 contradictions, 2 unsourced claims (→ questions.md), 4 stale concepts
 - OKF conformance: all frontmatter parses, 1 unresolved footnote label fixed
 - Auto-fixed: 5 writing-rules violations, 2 index entries refreshed
@@ -219,7 +219,7 @@ Question answering and concept drafting follow the system rules in `../CLAUDE.md
 
 When you ask for a health check, I run the `knowledge-base-health-check-skill` against this knowledge base. Nothing in this repository schedules it; `../CLAUDE.md` under *The monthly scheduled task* says what is and is not automatic. What a run reads in full is the read rule under *Health check skill* in `../CLAUDE.md`, which this file does not restate.
 
-It auto-fixes routine drift (writing-rules violations, stale index entries, unresolved footnote labels, `draft`→`stable` promotions where sourcing now supports it, contradiction cross-references), checks OKF conformance, auto-drafts up to three suggested new concepts where there's enough evidence, and flags only judgement calls (out-of-scope Raw, output promotion candidates, stale rewrites that need taste).
+It auto-fixes routine drift (writing-rules violations, stale index entries, unresolved footnote labels, `draft`→`stable` promotions where the concept no longer names anything unsettled, contradiction cross-references), checks OKF conformance, auto-drafts up to three suggested new concepts where there's enough evidence, and flags only judgement calls (out-of-scope Raw, output promotion candidates, stale rewrites that need taste).
 
 Broken links are reported, not fixed — under OKF a broken link is legitimate and usually marks a concept worth writing.
 

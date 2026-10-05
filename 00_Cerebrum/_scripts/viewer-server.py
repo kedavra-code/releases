@@ -40,6 +40,12 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+# A sibling module, found beside this file however the file was loaded:
+# viewer-check.js loads it by path, and then no folder of scripts is on the
+# import path. Without this line that load failed on 05.10.2026.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from tableorder import SEP  # noqa: E402
+
 VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUTS = os.path.join(VAULT, 'Outputs')
 REGISTER = os.path.join(OUTPUTS, '_REPORTS.md')
@@ -113,11 +119,10 @@ MODELS = [
      'note': 'The strongest reader.'},
     # Added 28.09.2026, its release day, on the owner's instruction. Claude
     # Code 2.1.280 runs it but prints `unrecognized_model` first, a line that
-    # is not JSON, so run_claude() skips it.
+    # is not JSON, so run_claude() skips it. It took Sonnet 5's place in the
+    # picker on 04.10.2026, on the owner's instruction: "replace sonnet 5 with
+    # sonnet 5.5".
     {'id': 'claude-sonnet-5-5', 'label': 'Sonnet 5.5', 'provider': 'anthropic',
-     'effort': True, 'agentic': True, 'translates': True,
-     'note': 'Faster than Sonnet 5, same price per token.'},
-    {'id': 'claude-sonnet-5', 'label': 'Sonnet 5', 'provider': 'anthropic',
      'effort': True, 'agentic': True, 'translates': True,
      'note': 'Faster and cheaper than Opus.'},
     {'id': 'claude-haiku-4-5', 'label': 'Haiku 4.5', 'provider': 'anthropic',
@@ -619,10 +624,13 @@ def render(rel):
             while j < len(lines) and lines[j].startswith('|'):
                 rows.append(lines[j])
                 j += 1
+            # The separator row goes, and so does an empty row: a report
+            # that wants no header opens its table on `| | |`, and the first
+            # row of data then heads it. A data row of single dashes stays;
+            # until 05.10.2026 a pattern of this script's own dropped it.
             cells = [[c.strip() for c in r.strip().strip('|').split('|')]
-                     for r in rows]
-            cells = [c for c in cells
-                     if not re.match(r'^[\s:|-]+$', '|'.join(c))]
+                     for r in rows if not SEP.match(r)]
+            cells = [c for c in cells if any(c)]
             if cells:
                 head = ''.join('<th>%s</th>' % inline(c) for c in cells[0])
                 rest = ''.join(
@@ -831,7 +839,7 @@ def ask(question, emit, mid=None, effort=None):
     # report is filed and correct, and the DE button is still there.
     de = None
     if rel:
-        de, err, de_secs = write_german(rel, emit, mid, effort)
+        de, _, de_secs = write_german(rel, emit, mid, effort)
         secs += de_secs
     emit({'type': 'done', 'path': rel, 'de': de, 'seconds': secs,
           'text': text.strip()[-600:]})
@@ -1029,6 +1037,102 @@ def scheduled(root=CLAUDE_APP, now=None):
     return {'tasks': out}
 
 
+SYNC_JOB = 'ch.Zeta.onenote-sync'
+# The heading `readset.py` takes a base's last health check from.
+HEALTH = re.compile(r'^## (\d{4}-\d{2}-\d{2}) — Health check', re.M)
+
+
+def vault_jobs(vault=VAULT, home=None, now=None, host=None):
+    """The two things on a clock that the Claude app does not run, in the
+    shape of a task so the page lists them with the others.
+
+    The OneNote sync is a launchd job on one Mac. Its only traces are the
+    export's own stamp and one line a run in the archive, so a Sunday it did
+    not run looked like a quiet week, and from 13.09. to 05.10.2026 two Macs
+    ran it and nothing showed that. The health checks run on request, and a
+    month without one is the owner's prompt to ask.
+    """
+    import datetime as _dt
+    import glob
+    import socket
+    now = now or _dt.datetime.now()
+    home = home or os.path.expanduser('~')
+    host = host or socket.gethostname().split('.')[0]
+    # The job's own file is read as text and not with `plistlib`: the one on
+    # the owner's Mac holds a token that parser refuses and launchd accepts.
+    expr = None
+    try:
+        cal = dict(re.findall(r'<key>(\w+)</key>\s*<integer>(\d+)</integer>', re.search(
+            r'<key>StartCalendarInterval</key>\s*<dict>(.*?)</dict>',
+            open(os.path.join(home, 'Library', 'LaunchAgents', SYNC_JOB + '.plist'),
+                 encoding='utf-8', errors='replace').read(), re.S).group(1)))
+        expr = '%d %d * * %d' % (int(cal.get('Minute', 0)), int(cal['Hour']), int(cal['Weekday']))
+    except Exception:                                         # noqa: BLE001
+        pass                    # the job is not on this Mac, or not weekly
+    out = []
+    for info in sorted(glob.glob(os.path.join(vault, '*', 'OneNote', '*', '_EXPORT-INFO.md'))):
+        log = os.path.join(os.path.dirname(info), '_CHANGELOG.md')
+        if not os.path.exists(log):
+            continue            # an export nothing syncs any more
+        text = open(info, encoding='utf-8').read()
+        gen = re.search(r'^\| Generated \| (\S+) \|$', text, re.M)
+        on = re.search(r'^\| Host \| (.+?) \|$', text, re.M)
+        on = on.group(1).split('.')[0] if on else ''
+        last = None
+        try:
+            last = _dt.datetime.fromisoformat(gen.group(1).replace('Z', '+00:00'))
+        except Exception:                                     # noqa: BLE001
+            pass
+        runs = [l[2:] for l in open(log, encoding='utf-8').read().split('\n') if l.startswith('- ')]
+        nxt = _cron_times(expr, now + _dt.timedelta(minutes=1), True) if expr else None
+        prev = _cron_times(expr, now, False) if expr else None
+        ran = last.astimezone().replace(tzinfo=None) if last else None
+        # Two hours of grace: a run reads every notebook before it writes.
+        missed = prev.isoformat(timespec='minutes') if prev and now - prev > _dt.timedelta(hours=2) \
+            and (not ran or ran < prev) else None
+        needs = ''
+        marker = os.path.join(home, '.config', 'onenote-export', 'LAST-RUN-FAILED')
+        if expr and os.path.exists(marker):
+            why = [l.strip() for l in open(marker, encoding='utf-8', errors='replace') if l.strip()]
+            needs = 'The last run on this Mac failed: ' + (why[-1] if why else 'no reason written')
+        elif expr and on and on != host:
+            needs = ('The last run was on %s, and this Mac has the job too. '
+                     'Only one Mac may run it.' % on)
+        out.append({'id': 'onenote-sync', 'name': 'OneNote sync',
+                    'when': _when(expr) if expr else ('on ' + on if on else 'on another Mac'),
+                    'enabled': True, 'last': last.isoformat(timespec='minutes') if last else None,
+                    'next': nxt.isoformat(timespec='minutes') if nxt else None, 'missed': missed,
+                    'state': 'completed' if last else None,
+                    'detail': ' · '.join(x for x in ('on ' + on if on else '', runs[-1] if runs else '') if x),
+                    'needs': needs, 'active': None})
+    try:
+        frozen = set(re.findall(r'^\| `(\w+_kb)` \|[^|]*\| frozen',
+                                open(os.path.join(vault, 'CLAUDE.md'), encoding='utf-8').read(), re.M))
+    except OSError:
+        frozen = set()
+    days = {}
+    for kb in sorted(os.listdir(vault)):
+        log = os.path.join(vault, kb, 'CHANGELOG.md')
+        if kb in frozen or not os.path.isdir(os.path.join(vault, kb, 'Wiki')) \
+                or not os.path.exists(os.path.join(vault, kb, 'CLAUDE.md')):
+            continue
+        hits = HEALTH.findall(open(log, encoding='utf-8').read()) if os.path.exists(log) else []
+        days[kb] = hits[0] if hits else None
+    if days:
+        late = [kb for kb, d in days.items()
+                if not d or (now.date() - _dt.date.fromisoformat(d)).days > 31]
+        known = [d for d in days.values() if d]
+        out.append({'id': 'health-checks', 'name': 'Health checks', 'when': 'on request',
+                    'enabled': True, 'last': min(known) if known else None, 'next': None,
+                    'missed': None, 'state': 'completed' if known else None,
+                    'detail': ' · '.join('%s %s' % (kb, '%s.%s.' % (d[8:], d[5:7]) if d else 'never')
+                                           for kb, d in days.items()),
+                    'needs': ('%s: no health check for a month. Say "run a health check".'
+                              % ', '.join(late)) if late else '',
+                    'active': None})
+    return out
+
+
 def model_rows():
     """The registry as the page needs it: labels, capabilities, and whether the
     weights are actually here. Capability is read from the registry; presence is
@@ -1188,6 +1292,35 @@ class Handler(BaseHTTPRequestHandler):
         self._head(code)
         self.wfile.write(json.dumps(obj).encode())
 
+    def _emit(self, obj):
+        """One event of a stream, in the form the page reads. A reader that
+        has gone away is not an error: the job runs on and its report is
+        filed."""
+        try:
+            self.wfile.write(('data: %s\n\n' % json.dumps(obj)).encode())
+            self.wfile.flush()
+        except (BrokenPipeError, ValueError):
+            pass
+
+    def _stream(self, job):
+        """Answer with the events `job(emit)` reports. The lock is already
+        held, and is let go when the job ends, however it ends.
+
+        A download and a question each carried this wrapper, and the closure
+        that writes an event, until 04.10.2026. They were joined that day:
+        this is the code that must always release the lock, and two copies
+        of it are two chances to change one. Old and new gave the same bytes,
+        log lines and lock state over 22 requests driven without a socket.
+        """
+        self._head(200, 'text/event-stream', stream=True)
+        try:
+            job(self._emit)
+        except Exception as e:                       # noqa: BLE001
+            self._emit({'type': 'error',
+                        'error': '%s: %s' % (type(e).__name__, e)})
+        finally:
+            BUSY.release()
+
     def do_OPTIONS(self):
         self._head(204, 'text/plain')
 
@@ -1207,7 +1340,13 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/reports':
             return self._json({'reports': reports()})
         if path == '/tasks':
-            return self._json(scheduled())
+            d = scheduled()
+            if 'tasks' in d:
+                try:
+                    d['tasks'] += vault_jobs()
+                except Exception:                             # noqa: BLE001
+                    pass        # the app's tasks are still worth showing
+            return self._json(d)
         if path.startswith('/report/'):
             page = render(path[len('/report/'):])
             if page is None:
@@ -1279,24 +1418,11 @@ class Handler(BaseHTTPRequestHandler):
             mid = (body.get('model') or '').strip()
             if not BUSY.acquire(blocking=False):
                 return self._json({'error': 'the librarian is busy'}, 409)
-            self._head(200, 'text/event-stream', stream=True)
 
-            def emit_pull(obj):
-                try:
-                    self.wfile.write(
-                        ('data: %s\n\n' % json.dumps(obj)).encode())
-                    self.wfile.flush()
-                except (BrokenPipeError, ValueError):
-                    pass
-            try:
+            def job(emit):
                 print('[pull] %s' % mid[:120], flush=True)
-                pull(mid, emit_pull)
-            except Exception as e:                   # noqa: BLE001
-                emit_pull({'type': 'error',
-                           'error': '%s: %s' % (type(e).__name__, e)})
-            finally:
-                BUSY.release()
-            return
+                pull(mid, emit)
+            return self._stream(job)
 
         # Translating answers with the finished path rather than a stream: the
         # page that asks for it is the report itself, and all it does with the
@@ -1333,21 +1459,11 @@ class Handler(BaseHTTPRequestHandler):
         if not BUSY.acquire(blocking=False):
             return self._json({'error': 'a report is already being written'},
                               409)
-        self._head(200, 'text/event-stream', stream=True)
 
-        def emit(obj):
-            try:
-                self.wfile.write(('data: %s\n\n' % json.dumps(obj)).encode())
-                self.wfile.flush()
-            except (BrokenPipeError, ValueError):
-                pass
-        try:
+        def job(emit):
             print('[ask] %s (%s)' % (q[:120], mid), flush=True)
             ask(q, emit, mid, effort)
-        except Exception as e:                       # noqa: BLE001
-            emit({'type': 'error', 'error': '%s: %s' % (type(e).__name__, e)})
-        finally:
-            BUSY.release()
+        self._stream(job)
 
     def log_message(self, *a):
         pass

@@ -31,16 +31,15 @@ Usage:  python3 _scripts/merge-appends.py <KB> [batch-file ...]   (default: all)
 import collections
 import datetime
 import glob
-import importlib.util
 import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_spec = importlib.util.spec_from_file_location(
-    'cerebrum_tableorder', os.path.join(VAULT, '_scripts', 'tableorder.py'))
-tableorder = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(tableorder)
+import bundle
+
+VAULT = bundle.VAULT
+tableorder = bundle.script('tableorder.py')
+coverage = bundle.script('coverage.py')
 FOOTDEF = re.compile(r'^\[\^[^\]]+\]:', re.M)
 BLOCK = re.compile(r'^### APPEND (\S+)\s*$', re.M)
 # [ \t]* not \s*: \s* matches the newline, so the first line of every
@@ -98,9 +97,13 @@ def resolve_resource(kb_root, concept_path, val):
             return cand
     base = os.path.basename(val)
     hits = []
-    for dp, dn, fn in os.walk(os.path.join(kb_root, 'OneNote')):
-        if base in fn:
-            hits.append(os.path.join(dp, base))
+    # Searched where `coverage.py` says the corpus is, since 04.10.2026. It
+    # was a literal `OneNote/` until then, so in a base whose corpus is `Raw/`
+    # this last resort walked a folder that does not exist and found nothing.
+    for top in coverage.archive_roots(os.path.basename(kb_root)):
+        for dp, dn, fn in os.walk(top):
+            if base in fn:
+                hits.append(os.path.join(dp, base))
     return os.path.relpath(hits[0], d) if len(hits) == 1 else val
 
 
@@ -114,15 +117,6 @@ def apply(kb_root, req, dry):
         return 'NO-FRONTMATTER  ' + req['target']
     fm, body = m.group(2), text[m.end():]
     added_src = added_sec = 0
-
-    # A page already cited under another id must not gain a second entry.
-    # Instead the appended footnotes are pointed at the id already in the
-    # file. Sixteen labels dangled this way on 15.08.2026, because the
-    # dedupe was right and the footnote was not remapped to match it.
-    existing_by_res = {}
-    for em in re.finditer(r'^\s*- id:\s*(\S+)\s*\n\s*resource:\s*\'?([^\'\n]+)\'?',
-                          fm, re.M):
-        existing_by_res[em.group(2).strip()] = em.group(1)
 
     # Sources are appended to the end of the sources: block, re-indented to
     # match the file. Two bugs on 15.08.2026, both fixed here: entries were

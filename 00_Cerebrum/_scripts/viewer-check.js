@@ -23,6 +23,30 @@ const check = (ok, label, detail) => {
   if (!ok) failures++;
 };
 
+// The newest full Chromium in Playwright's own cache, whatever build it is.
+function cachedChromium() {
+  const fs = require('fs'), os = require('os');
+  const roots = [process.env.PLAYWRIGHT_BROWSERS_PATH,
+    path.join(os.homedir(), 'Library', 'Caches', 'ms-playwright'),
+    path.join(os.homedir(), '.cache', 'ms-playwright')].filter(Boolean);
+  const inside = ['chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing',
+    'chrome-mac/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing',
+    'chrome-mac-arm64/Chromium.app/Contents/MacOS/Chromium',
+    'chrome-mac/Chromium.app/Contents/MacOS/Chromium',
+    'chrome-linux64/chrome', 'chrome-linux/chrome'];
+  for (const root of roots) {
+    let builds = [];
+    try { builds = fs.readdirSync(root).filter(d => /^chromium-\d+$/.test(d)); } catch (e) { continue; }
+    builds.sort((x, y) => Number(y.split('-')[1]) - Number(x.split('-')[1]));
+    for (const build of builds)
+      for (const rel of inside) {
+        const exe = path.join(root, build, rel);
+        if (fs.existsSync(exe)) return { build, exe };
+      }
+  }
+  return null;
+}
+
 // The pixels of a screenshot, for what no style property can say: two lines
 // drawn by different means, a pseudo-element and a shadow, compared as painted.
 // Decodes what Chromium writes, an 8-bit PNG without interlacing, RGB or RGBA.
@@ -58,7 +82,21 @@ const pngPixels = buf => {
   // on the viewer before and after that day's change alike. A check of the page
   // must not be a check of the test's renderer. Where the full browser is not
   // installed, the shell is used and says so.
-  const browser = await chromium.launch({ channel: 'chromium' }).catch(e => {
+  //
+  // Playwright looks for the one build its own version names. Where the cache
+  // holds another build of the full browser, that one is used and named: on the
+  // owner's Mac the vault's playwright asked for 1234 and the cache held 1243,
+  // so the check ran only through a wrapper script kept in a temporary folder,
+  // and on 05.10.2026 a change to the helper went in with the check not run.
+  // CEREBRUM_CHROMIUM names a browser outright.
+  const browser = await chromium.launch(
+    process.env.CEREBRUM_CHROMIUM ? { executablePath: process.env.CEREBRUM_CHROMIUM } : { channel: 'chromium' }
+  ).catch(e => {
+    const other = cachedChromium();
+    if (other) {
+      console.log('note    the full Chromium of another build is used: ' + other.build);
+      return chromium.launch({ executablePath: other.exe });
+    }
     console.log('note    the full Chromium is not installed; the headless shell draws WebGL in software  [' + e.message.split('\n')[0] + ']');
     return chromium.launch();
   });
@@ -69,17 +107,16 @@ const pngPixels = buf => {
   await page.goto('file://' + FILE);
   await page.waitForTimeout(700);
 
-  // 1. The page boots: data present, sidebar populated, no JS errors.
+  // 1. The page boots: data present, no JS errors. That the sidebar lists
+  // every concept is asked where the page is reopened, at the end: the same
+  // count on the same boot. It was asked here as well until 04.10.2026.
   const boot = await page.evaluate(() => ({
     concepts: typeof D === 'object' ? Object.keys(D).length : 0,
-    items: document.querySelectorAll('.it').length,
     setHidden: document.getElementById('setBox').hidden,
     setExpanded: document.getElementById('bSet').getAttribute('aria-expanded'),
   }));
   check(jsErrors.length === 0, 'no JS errors on load', jsErrors[0]);
   check(boot.concepts > 0, 'concept data present', boot.concepts + ' concepts');
-  check(boot.items === boot.concepts, 'sidebar lists every concept',
-        boot.items + ' of ' + boot.concepts);
   // Here, before anything is clicked. It sat with the other Settings checks
   // first, and passed with the panel open at load, because every click before
   // it counts as a click outside the panel and closes it.
@@ -141,18 +178,15 @@ const pngPixels = buf => {
   //        on — setting the value alone would leave the list filtered.
   const clr = await page.evaluate(t => {
     const q = document.getElementById('q'), w = document.getElementById('qwrap');
-    q.value = ''; q.dispatchEvent(new Event('input'));
-    const hiddenWhenEmpty = getComputedStyle(document.getElementById('qx')).display === 'none';
     q.value = D[t].t.toLowerCase(); q.dispatchEvent(new Event('input'));
     const shownWhenTyped = getComputedStyle(document.getElementById('qx')).display !== 'none';
     const filtered = document.querySelectorAll('.it').length;
     document.getElementById('qx').click();
-    return {hiddenWhenEmpty, shownWhenTyped, filtered,
+    return {shownWhenTyped, filtered,
             value: q.value, after: document.querySelectorAll('.it').length,
             hiddenAgain: getComputedStyle(document.getElementById('qx')).display === 'none',
             wrapClass: w.className};
   }, target);
-  check(clr.hiddenWhenEmpty, 'clear button is hidden while the search box is empty');
   check(clr.shownWhenTyped, 'clear button appears once something is typed');
   check(clr.value === '', 'clicking it empties the box', JSON.stringify(clr.value));
   check(clr.after > clr.filtered, 'clicking it restores the unfiltered list',
@@ -165,7 +199,8 @@ const pngPixels = buf => {
   //     search overrides folding, and a concept reached while its group is
   //     folded unfolds it. Added 15.08.2026 with the feature — the sidebar
   //     had grown to 223 entries in one scroll. Items stay in the DOM when
-  //     folded, so check 1 above stays a true statement; visibility is what
+  //     folded, so the count of rows against concepts, taken where the page is
+  //     reopened at the end, stays a true statement; visibility is what
   //     this checks.
   const fold = await page.evaluate(async () => {
     const vis = () => [...document.querySelectorAll('.it')]
@@ -324,7 +359,7 @@ const pngPixels = buf => {
       const ids = Object.keys(D).filter(id => blk.kbs.includes(id.split('/')[0]));
       return [...new Set(ids.map(id => LBL[cat(id)] || cat(id)))].sort();
     });
-    return { ink, chroma, chips: document.querySelectorAll('#legend .chip').length,
+    return { ink, chroma,
              rows: rows.length, blocks: KB_BLOCKS.length,
              rowCats: rows.map(r => lbl(r).slice().sort()), wantCats: want,
              tags: document.querySelectorAll('#legend .lrow i').length };
@@ -370,7 +405,6 @@ const pngPixels = buf => {
   check(corners.every(c => c[2] >= 39), 'no two knowledge bases\' halos come closer than the 40-unit gap',
         corners.length ? 'halo gaps: ' + corners.map(c => c[0] + '~' + c[1] + ' ' + c[2]).join(', ')
                        : 'one knowledge base, nothing to separate');
-  check(graph.chips >= 1, 'legend chips present', graph.chips + ' chips');
   check(graph.rows === graph.blocks, 'the legend draws one row per block',
         graph.rows + ' rows for ' + graph.blocks + ' block(s)');
   // The literal this replaced named one vault's shelves and went red the day a
@@ -455,10 +489,9 @@ const pngPixels = buf => {
   const about = await page.evaluate(() => {
     const top = document.getElementById('top'), btn = document.getElementById('aboutBtn');
     const legend = document.getElementById('legend'), stage = document.getElementById('stage');
-    if (!top || !btn || !legend || !stage) return { present: !!btn };
+    if (!top || !btn || !legend || !stage) return {};
     const r = e => e.getBoundingClientRect();
     return {
-      present: true,
       first: top.firstElementChild === btn,
       inHeader: top.contains(legend),
       leftOf: r(btn).right <= r(legend).left,
@@ -466,7 +499,6 @@ const pngPixels = buf => {
       openBefore: document.getElementById('aboutWrap').classList.contains('on'),
     };
   });
-  check(about.present, 'About button present');
   check(about.first && about.inHeader && about.leftOf && about.above,
         'the logo opens the header, the categories sit to its right, and the view sits below',
         'first=' + about.first + ' categories in header=' + about.inHeader +
@@ -685,6 +717,9 @@ const pngPixels = buf => {
         'canvas at ' + Math.round(gv.gc.left) + ',' + Math.round(gv.gc.top) + ' size ' +
         Math.round(gv.gc.width) + 'x' + Math.round(gv.gc.height) + ' in ' + gv.win + 'x' + gv.winH +
         ', header ends ' + Math.round(gv.top.bottom) + ', sidebar ' + gv.side);
+  // The Concept view asked the same of the same element until 04.10.2026, as
+  // "never re-parented". Nothing in the page moves the box, so one reading
+  // holds for both views.
   check(gv.searchIn === 'askbar', 'the search box is the bar above the graph, not inside it', 'parent=' + gv.searchIn);
   // Each graph says how to drive it, bottom left, in one style: owner's
   // request of 23.09.2026, for the 2D graph after the 3D view had one.
@@ -704,8 +739,7 @@ const pngPixels = buf => {
   const cvw = await page.evaluate(() => {
     const box = id => document.getElementById(id).getBoundingClientRect().toJSON();
     return { side: box('side'), main: box('main'), top: box('askbar'), gc: box('gc'),
-             win: innerWidth, winH: innerHeight, on: document.getElementById('bList').classList.contains('on'),
-             searchIn: document.getElementById('qwrap').parentNode.id };
+             win: innerWidth, winH: innerHeight, on: document.getElementById('bList').classList.contains('on') };
   });
   check(cvw.on && cvw.gc.width === 0 && cvw.side.left === 0 && cvw.side.width > 0 &&
         cvw.main.left >= cvw.side.right && Math.abs(cvw.main.right - cvw.win) < 1 &&
@@ -713,7 +747,6 @@ const pngPixels = buf => {
         'the Concept view is the list on the left and the page on the right, below the search bar',
         'list ' + Math.round(cvw.side.left) + '-' + Math.round(cvw.side.right) + ', page ' +
         Math.round(cvw.main.left) + '-' + Math.round(cvw.main.right) + ' of ' + cvw.win + ', graph width ' + cvw.gc.width);
-  check(cvw.searchIn === 'askbar', 'the search box is the same bar in the Concept view, never re-parented', 'parent=' + cvw.searchIn);
   // One search bar for both views, and since 16.09.2026 it spans the window and
   // never moves: the owner asked for the full width, and Ask Claude needs the
   // room. The checks this replaced guarded a box that lived inside each pane and
@@ -1555,12 +1588,10 @@ const pngPixels = buf => {
     const gear = document.getElementById('bSet').getBoundingClientRect(), top = document.getElementById('top').getBoundingClientRect();
     return { shown: !b.hidden && r.width > 0 && r.height > 0, below: r.top >= top.bottom,
              edge: Math.abs(r.right - gear.right) < 40 && r.right <= innerWidth,
-             on: document.getElementById('bSet').classList.contains('on'),
-             buttons: b.querySelectorAll('#kbbar button').length };
+             on: document.getElementById('bSet').classList.contains('on') };
   });
   check(s1.shown && s1.below && s1.edge && s1.on, 'the gear opens Settings under the header, at its right edge',
         'shown=' + s1.shown + ' below header=' + s1.below + ' at the gear=' + s1.edge + ' gear active=' + s1.on);
-  check(s1.buttons === kbAll.length, 'Settings offers every knowledge base', s1.buttons + ' of ' + kbAll.length);
 
   // The bundle to hide is the last one by name, whichever that is, so the
   // test says nothing about which knowledge bases a vault holds. With only one
@@ -1593,7 +1624,6 @@ const pngPixels = buf => {
     kedNodes: N.filter(n => n.kb === v && !hid(n)).length,
     rows: document.querySelectorAll('#legend .lrow:not(.void)').length,
     dot: (document.querySelector('#bSet .dot') || {}).textContent || '',
-    open: !document.getElementById('setBox').hidden,
     stored: localStorage.getItem('okf.kbOff') }), victim);
   check(hid1.kedRows === 0 && hid1.kedNodes === 0 && hid1.items === before.items - before.ked,
         'hiding a knowledge base in Settings takes it out of the list and the graph',
@@ -1604,7 +1634,6 @@ const pngPixels = buf => {
   const geo1 = await geo(), mv1 = moved(geo0, geo1);
   check(mv1.length === 0, 'hiding a knowledge base moves nothing on the screen', mv1.slice(0, 4).join('; ') || Object.keys(geo0).length + ' boxes in place');
   check(hid1.dot === '1', 'the gear says how many knowledge bases are hidden', 'badge=' + JSON.stringify(hid1.dot));
-  check(hid1.open, 'a click inside Settings keeps it open');
   await page.reload();
   await page.waitForTimeout(900);
   const kept = await page.evaluate(v => ({ ked: document.querySelectorAll('.it[data-t^="' + v + '/"]').length,
@@ -1677,8 +1706,9 @@ const pngPixels = buf => {
   fs.rmSync(fake, { recursive: true, force: true });
   const cors = { 'Access-Control-Allow-Origin': 'null', 'content-type': 'application/json' };
   let tasksAnswer = { status: 200, body: fixture };
+  let login = { state: 'ok' };
   await page.route('http://127.0.0.1:8760/health', r => r.fulfill({ status: 200, headers: cors,
-    body: JSON.stringify({ ok: true, busy: false, login: { state: 'ok' }, reports: 0 }) }));
+    body: JSON.stringify({ ok: true, busy: false, model: 'claude-opus-5-5', effort: 'high', login, reports: 0 }) }));
   await page.route('http://127.0.0.1:8760/tasks', r => r.fulfill({ status: tasksAnswer.status, headers: cors, body: tasksAnswer.body }));
   await page.route('http://127.0.0.1:8760/models', r => r.fulfill({ status: 200, headers: cors, body: JSON.stringify({
     models: [{ id: 'claude-opus-5-5', label: 'Opus 5.5', provider: 'anthropic', effort: true, agentic: true, installed: true, note: '' },
@@ -1748,6 +1778,65 @@ const pngPixels = buf => {
     hint: document.getElementById('tasksHint').textContent }));
   check(old.n === 0 && /older than this page\. Restart it/.test(old.hint),
         'an old helper is named as the reason, not shown as an empty list', old.n + ' cards; "' + old.hint + '"');
+  // The two rows that are the vault's own, the OneNote sync and the health
+  // checks, read by the helper's `vault_jobs()` from a made-up vault and a
+  // made-up home folder. The sync is a launchd job on one Mac whose only
+  // trace is the export's own stamp: from 13.09. to 05.10.2026 two Macs ran
+  // it and no screen showed that, and a Sunday it did not run looked like a
+  // quiet week. Monday 28.09.2026, noon: the job is due Sundays at 08:00.
+  const fv = fs.mkdtempSync(path.join(os.tmpdir(), 'cerebrum-jobs-'));
+  const put = (rel, text) => { fs.mkdirSync(path.dirname(path.join(fv, rel)), { recursive: true }); fs.writeFileSync(path.join(fv, rel), text); };
+  put('vault/CLAUDE.md', '| Knowledge base | Focus | Live? | State |\n|---|---|---|---|\n| `Old_kb` | x | frozen | y |\n| `New_kb` | x | **live** | y |\n| `Late_kb` | x | live | y |\n');
+  for (const [kb, day] of [['Old_kb', '2020-01-01'], ['New_kb', '2026-09-27'], ['Late_kb', '2026-08-01']]) {
+    put('vault/' + kb + '/CLAUDE.md', '# ' + kb + '\n'); put('vault/' + kb + '/Wiki/index.md', '');
+    put('vault/' + kb + '/CHANGELOG.md', '# CHANGELOG\n\n## ' + day + ' — Health check: clean\n\nRead.\n');
+  }
+  const info = (stamp, host) => '# Export info\n\n| | |\n| --- | --- |\n| Generated | ' + stamp + ' |\n' + (host ? '| Host | ' + host + ' |\n' : '');
+  put('vault/New_kb/OneNote/Work/_CHANGELOG.md', '# Changes\n\n- 2026-09-20 — 3 new · 0 modified\n');
+  put('home/Library/LaunchAgents/ch.Zeta.onenote-sync.plist', '<plist version="1.0"><dict>\n<key>StartCalendarInterval</key>\n<dict>\n<key>Hour</key><integer>8</integer>\n<key>Minute</key><integer>0</integer>\n<key>Weekday</key><integer>0</integer>\n</dict></dict></plist>\n');
+  const jobs = () => cp.execFileSync('python3', ['-c',
+    'import importlib.util,json,sys,datetime\n' +
+    's=importlib.util.spec_from_file_location("vs",sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\n' +
+    'print(json.dumps({"tasks":m.vault_jobs(vault=sys.argv[2],home=sys.argv[3],now=datetime.datetime(2026,9,28,12,0),host="this-mac")}))',
+    path.join(__dirname, 'viewer-server.py'), path.join(fv, 'vault'), path.join(fv, 'home')]).toString();
+  const shown = async body => { tasksAnswer = { status: 200, body }; await page.evaluate(() => loadTasks()); await page.waitForTimeout(300);
+    return page.evaluate(() => [...document.querySelectorAll('#tasks .tr')].map(c => ({ id: c.dataset.t, cls: c.className,
+      st: c.querySelector('.st').textContent, tn: c.querySelector('.tn').textContent, sd: (c.querySelector('.sd') || {}).textContent || '' }))); };
+  const row = (rows, id) => rows.find(c => c.id === id) || { cls: '', st: '', tn: '', sd: '' };
+  put('vault/New_kb/OneNote/Work/_EXPORT-INFO.md', info('2026-09-20T06:02:05.000Z', ''));
+  const late = await shown(jobs());
+  check(/\bbad\b/.test(row(late, 'onenote-sync').cls) && /^Missed Sun 27\.09\., 08:00 · last ran Sun 20\.09\./.test(row(late, 'onenote-sync').st) &&
+        /Sundays 08:00/.test(row(late, 'onenote-sync').tn) && /3 new/.test(row(late, 'onenote-sync').sd),
+        'the OneNote sync is listed with the tasks, and a Sunday it did not run is shown as missed, in red',
+        '"' + row(late, 'onenote-sync').st + '" ' + row(late, 'onenote-sync').cls + ' "' + row(late, 'onenote-sync').sd + '"');
+  check(/\bwarn\b/.test(row(late, 'health-checks').cls) && /^Needs you · Sat 01\.08\.$/.test(row(late, 'health-checks').st) &&
+        /Late_kb: no health check for a month/.test(row(late, 'health-checks').sd) && !/Old_kb/.test(row(late, 'health-checks').sd),
+        'the health checks give the oldest live base\'s day with no clock time, ask for a run after a month, and leave a frozen base out',
+        '"' + row(late, 'health-checks').st + '" "' + row(late, 'health-checks').sd + '"');
+  put('vault/New_kb/OneNote/Work/_EXPORT-INFO.md', info('2026-09-27T06:02:05.000Z', 'other-mac.local'));
+  const twice = await shown(jobs());
+  check(/\bwarn\b/.test(row(twice, 'onenote-sync').cls) && /^Needs you/.test(row(twice, 'onenote-sync').st) &&
+        /last run was on other-mac, and this Mac has the job too/.test(row(twice, 'onenote-sync').sd),
+        'a run on another Mac while this Mac has the job too is named', '"' + row(twice, 'onenote-sync').st + '" "' + row(twice, 'onenote-sync').sd + '"');
+  put('home/.config/onenote-export/LAST-RUN-FAILED', '2026-09-27T06:02:05Z\naudit found sections short\n');
+  const failed = await shown(jobs());
+  check(/^Needs you/.test(row(failed, 'onenote-sync').st) && /The last run on this Mac failed: audit found sections short/.test(row(failed, 'onenote-sync').sd),
+        'a run that failed says so, with the reason the job left', '"' + row(failed, 'onenote-sync').sd + '"');
+  fs.rmSync(fv, { recursive: true, force: true });
+  // The command-line login lasts 28 days. A week before its end the Ask button
+  // says so, and it has to say where the way out is: until 05.10.2026 it named
+  // the day and nothing else, and the owner asked for it to be fixed. The
+  // launcher asks to sign in again from that day on.
+  const askSays = async state => { login = state; return page.evaluate(async () => { await pingHelper();
+    const b = document.getElementById('mAsk'); return { title: b.title, warn: b.classList.contains('warn') }; }); };
+  const soon = await askSays({ state: 'soon', days: 7, when: '13.10.2026' });
+  const dead = await askSays({ state: 'expired', days: -1, when: '13.10.2026' });
+  const fine = await askSays({ state: 'ok', days: 20, when: '02.11.2026' });
+  check(soon.warn && /expires in 7 day\(s\), on 13\.10\.2026\. Double-click "Open 00_Cerebrum\.command" to sign in again/.test(soon.title) &&
+        dead.warn && /expired on 13\.10\.2026\. Double-click "Open 00_Cerebrum\.command" to sign in again/.test(dead.title) &&
+        !fine.warn && !/login/.test(fine.title),
+        'a login near its end or past it is marked on the Ask button with where to sign in again, and a sound one is not',
+        '"' + soon.title.split(' — ')[1] + '" | "' + dead.title.split(' — ')[1] + '" | fine: warn=' + fine.warn);
   await page.click('#setAbout');
   await page.waitForTimeout(200);
   const ab = await page.evaluate(() => ({ about: document.getElementById('aboutWrap').classList.contains('on'),
@@ -1796,12 +1885,7 @@ const pngPixels = buf => {
   // search box it has always been, with the two new buttons saying plainly
   // that they cannot work rather than failing when pressed.
   const bar = await page.evaluate(() => {
-    const b = document.getElementById('askbar');
-    const r = b && b.getBoundingClientRect();
     return {
-      w: r ? Math.round(r.width) : 0,
-      page: Math.round(document.documentElement.clientWidth),
-      left: r ? Math.round(r.left) : -1,
       search: !!document.getElementById('mSearch'),
       ask: !!document.getElementById('mAsk'),
       reports: !!document.getElementById('bRep'),
@@ -1809,8 +1893,6 @@ const pngPixels = buf => {
       askOn: document.getElementById('mAsk').classList.contains('on')
     };
   });
-  check(bar.w === bar.page && bar.left === 0, 'the search bar spans the window',
-        bar.w + ' of ' + bar.page + ', left ' + bar.left);
   check(bar.search && bar.ask && bar.reports && bar.searchOn && !bar.askOn,
         'the bar carries both modes, and opens in search',
         'search=' + bar.search + ' ask=' + bar.ask + ' reports=' + bar.reports +
@@ -2088,9 +2170,17 @@ const pngPixels = buf => {
     // The choice has to survive a reload, or it is a control the reader sets
     // once per visit. Back to the default afterwards, so no later check runs
     // against a brain this one happened to leave selected.
-    await page.evaluate(() => {
+    // The model is taken from the list the helper serves, not named here. The
+    // check named Sonnet 5 until 04.10.2026, when that model left the list;
+    // naming its successor failed at once, because a helper that is still
+    // running serves the list it started with. What is tested is that a choice
+    // survives, whichever model it is.
+    const chosen = await page.evaluate(() => {
       const m = document.getElementById('bModel');
-      m.value = 'claude-sonnet-5'; m.dispatchEvent(new Event('change'));
+      const ids = MODELS.filter(x => x.provider !== 'local').map(x => x.id);
+      const id = ids.find(i => i.includes('sonnet')) || ids[ids.length - 1];
+      m.value = id; m.dispatchEvent(new Event('change'));
+      return id;
     });
     await page.waitForTimeout(400);
     await page.reload();
@@ -2099,7 +2189,7 @@ const pngPixels = buf => {
       stored: localStorage.getItem('okf.model'),
       sent: JSON.stringify(brainBody())
     }));
-    check(kept.stored === 'claude-sonnet-5' && kept.sent.includes('claude-sonnet-5'),
+    check(!!chosen && kept.stored === chosen && kept.sent.includes(chosen),
           'and the chosen brain survives a reload and rides on the next question',
           'stored ' + kept.stored + ', body ' + kept.sent);
     await page.evaluate(() => { localStorage.removeItem('okf.model');

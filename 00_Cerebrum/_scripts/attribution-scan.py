@@ -32,7 +32,7 @@ false positive, and each worth keeping:**
    newest first, so the top header is the last reply. `2016-08-23-lizenzen-
    sccm-scsm-sma.md` opens with Lorenz Hafner and carries two the vault owner
    messages below it; reading only the top called a correct sentence wrong.
-2. **Normalise the apostrophe names.** `Almeida` and `D'Almeida` are the same
+2. **Normalise the apostrophe names.** `Agostino` and `D'Agostino` are the same
    man, and the page writes the second.
 3. **It cannot see passive voice.** "Ettore Ravelli invited alongside the
    standing members" means he *was* invited. This is the one shape the scan
@@ -52,9 +52,10 @@ import os
 import re
 import sys
 
-import yaml
+import yaml  # noqa: F401  asked for here, so a missing PyYAML is loud
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import bundle
+from bundle import VAULT, FM
 
 VERBS = (r'(?:called|convened|organised|set the brief|briefed|announced'
          r'|offered|invited|wrote to|put the question|opened the|sent the)')
@@ -68,7 +69,6 @@ STOP = {'She', 'He', 'They', 'It', 'Alternatives', 'Outcome', 'Situation',
 
 CLAIM = re.compile(r'(?<![\w`])([A-ZÄÖÜ][a-zäöü]+(?:\s+[A-ZÄÖÜ][a-zäöü]+)?)'
                    r'\s+' + VERBS + r'\b[^\n]{0,400}?\[\^([A-Za-z0-9_-]+)\]')
-FM = re.compile(r'^---\n(.*?)\n---\n', re.S)
 
 
 def page_people(path):
@@ -130,7 +130,7 @@ def scan(kbs):
                 if not m:
                     continue
                 try:
-                    fm = yaml.safe_load(m.group(1)) or {}
+                    fm = bundle.mapping(m.group(1))
                 except Exception:
                     continue
                 byid = {e['id']: e for e in (fm.get('sources') or [])

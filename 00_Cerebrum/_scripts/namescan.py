@@ -56,7 +56,6 @@ import argparse
 import json
 import os
 import re
-import importlib.util as _ilu
 import statistics
 import sys
 
@@ -65,25 +64,16 @@ try:
 except ImportError:
     sys.exit('namescan.py needs PyYAML: python3 -m pip install --user pyyaml')
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import bundle
+
+VAULT = bundle.VAULT
 
 
-def _load_coverage():
-    """`coverage.py` as a module, so `archive_layer` has one definition.
-
-    Same loader as `verify.py`'s, deliberately: copying the key's default
-    would give this vault two places that decide where a bundle's archive
-    lives, and the next edit would land in one of them.
-    """
-    spec = _ilu.spec_from_file_location(
-        'cerebrum_coverage', os.path.join(VAULT, '_scripts', 'coverage.py'))
-    m = _ilu.module_from_spec(spec)
-    spec.loader.exec_module(m)
-    return m
+_cov = bundle.script('coverage.py')
 
 
 def discover():
-    """{knowledge base: archive root}, found on disk rather than hard-coded.
+    """{knowledge base: archive roots}, found on disk rather than hard-coded.
 
     Until 15.08.2026 this was a literal map keyed on chapter names. Those
     were the chapter directories inside one combined knowledge base,
@@ -110,25 +100,24 @@ def discover():
     all, silently: argparse simply never offered it as a choice. Same defect
     class as the literal chapter map above, one layer down, and the same cure.
     """
-    cov = _load_coverage()
     out = {}
     for kb in sorted(os.listdir(VAULT)):
-        base = os.path.join(VAULT, kb)
-        if not os.path.exists(os.path.join(base, 'CLAUDE.md')):
+        if not os.path.exists(os.path.join(VAULT, kb, 'CLAUDE.md')):
             continue
-        layer = cov.archive_layer(kb)
-        arch = os.path.join(base, layer)
-        if not os.path.isdir(arch):
-            continue
-        subs = [d for d in sorted(os.listdir(arch))
-                if os.path.isdir(os.path.join(arch, d))]
-        out[kb] = ('%s/%s/%s' % (kb, layer, subs[0])) if len(subs) == 1 \
-            else '%s/%s' % (kb, layer)
+        # The roots and the pages are `coverage.py`'s own since 04.10.2026.
+        # Until then this function carried a copy of the root rule, and the
+        # copy had missed the fix of 08.09.2026: it took a dot-directory for
+        # a chapter, so `Delta_kb` resolved to `Raw/.claude` and every scan of
+        # it read 0 pages. The walk below counted every `.md` file, the
+        # exporter's `_index.md` section lists among them, which `coverage.py`
+        # does not count as pages: 2'743 files in Alpha where coverage has 2'701.
+        roots = _cov.archive_roots(kb)
+        if roots:
+            out[kb] = roots
     return out
 
 
 TREES = discover()
-KBS = {k: k for k in TREES}
 CACHE = os.path.join(VAULT, '_scripts', '.namescan-cache.json')
 TITLE = re.compile(r'^title:\s*(.+)$', re.M)
 
@@ -141,13 +130,17 @@ def known_people():
     that span all three employers live in Alpha_kb but are not Alpha-only, so they
     are marked chapter=None and scanned against every tree; without that,
     the vault owner would be counted in one archive out of three.
+
+    The loop ran over `KBS`, a map of each tree to itself left from the
+    pre-split chapters, until the review of 04.10.2026. The chapter and the
+    knowledge base were one name, so it runs over `TREES` and uses `kb`.
     """
     # Concepts that span more than one knowledge base, so a person in them
     # belongs to no single chapter. Empty here: a fresh vault has none.
     # Add the stem of any people concept two bundles both cite.
     SPANNING = set()
     out = {}
-    for chapter, kb in KBS.items():
+    for kb in TREES:
         root = os.path.join(VAULT, kb, 'Wiki', 'people')
         if not os.path.isdir(root):
             continue
@@ -164,7 +157,7 @@ def known_people():
                     continue
                 stem = fn[:-3]
                 out[stem] = (words[0], words[-1],
-                             None if stem in SPANNING else chapter)
+                             None if stem in SPANNING else kb)
     return out
 
 
@@ -178,15 +171,11 @@ def alias_map():
     entry to say the same thing; now the file's location says it.
     """
     out = []
-    for chapter, kb in KBS.items():
-        p = os.path.join(VAULT, kb, 'assertions.yaml')
-        if not os.path.exists(p):
-            continue
-        for a in ((yaml.safe_load(open(p, encoding='utf-8')) or {})
-                  .get('aliases') or []):
+    for kb in TREES:
+        for a in (bundle.assertions(kb).get('aliases') or []):
             if not a.get('person'):
                 continue                      # not a person, e.g. a role acronym
-            out.append(dict(a, chapter=a.get('chapter') or chapter))
+            out.append(dict(a, chapter=a.get('chapter') or kb))
     return out
 
 
@@ -221,17 +210,12 @@ def scan_tree(tree, pats):
     """One pass over one archive tree. Returns {stem: {family: n, _union: n}}."""
     hits = {stem: {f: 0 for f in fams} for stem, fams in pats.items()}
     union = {stem: 0 for stem in pats}
-    root = os.path.join(VAULT, TREES[tree])
     nfiles = 0
-    for dirp, dirs, files in os.walk(root):
-        dirs[:] = [d for d in dirs if d != '_assets']
-        for fn in files:
-            if not fn.endswith('.md'):
-                continue
+    for root in TREES[tree]:
+        for page in sorted(_cov.pages(root)):
             nfiles += 1
             try:
-                text = open(os.path.join(dirp, fn), encoding='utf-8',
-                            errors='ignore').read()
+                text = open(page, encoding='utf-8', errors='ignore').read()
             except OSError:
                 continue
             for stem, fams in pats.items():

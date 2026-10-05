@@ -53,15 +53,18 @@ Usage:
 """
 import collections
 import datetime
-import glob
 import hashlib
 import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import unicodedata
 
-FM = re.compile(r'^---\n(.*?)\n---\n', re.S)
+import bundle
+from bundle import VAULT, FM
+
+coverage = bundle.script('coverage.py')
+
 IMG_MARKER = re.compile(r'🖼\s*image:\s*`[^`]*`')
 MD_IMAGE = re.compile(r'!\[[^\]]*\]\([^)]*\)')
 MD_LINK = re.compile(r'\[([^\]]{1,120})\]\([^)]*\)')
@@ -105,36 +108,27 @@ def fingerprint(path):
 
 
 def pages(root):
-    out = []
-    for dp, dn, fn in os.walk(root):
-        dn[:] = [d for d in dn if d != '_assets']
-        for n in sorted(fn):
-            if n.endswith('.md') and n != '_index.md':
-                out.append(os.path.join(dp, n))
-    return sorted(out)
+    """The pages under one archive root, sorted: `coverage.py`'s own page set
+    since 04.10.2026, so this script, the coverage table and the name scan
+    count one thing. Paths are canonical, as the citations are."""
+    return sorted(coverage.pages(root))
 
 
 def citations(kb):
     """Every citation into this KB's archive: concept, source id, path."""
     root = os.path.join(VAULT, kb)
-    arch = os.path.abspath(os.path.join(root, 'OneNote'))
+    arch = bundle.canon(os.path.join(root, coverage.archive_layer(kb)))
     out = []
-    for f in sorted(glob.glob(os.path.join(VAULT, '*_kb', 'Wiki', '**', '*.md'),
-                              recursive=True)):
-        if os.path.basename(f) in ('index.md', 'log.md') or '_to_delete' in f:
-            continue
-        m = FM.match(open(f, encoding='utf-8').read())
-        if not m:
-            continue
-        for entry in re.finditer(
-                r'^\s*- id:\s*(\S+)\s*\n(?:\s+\w+:.*\n)*?\s*resource:\s*\'?([^\'\n]+?)\'?\s*$',
-                m.group(1), re.M):
-            sid, res = entry.group(1), entry.group(2)
-            p = os.path.abspath(os.path.normpath(
-                os.path.join(os.path.dirname(f), res)))
-            if p.startswith(arch):
-                out.append((os.path.relpath(f, VAULT), sid,
-                            os.path.relpath(p, root), res))
+    # Every bundle's concepts, read by the bundle's YAML reader since
+    # 04.10.2026. The pattern that stood here missed 26 citations in Alpha_kb
+    # and 11 in Zeta_kb that day. The page is the canonical path, so a
+    # citation and the page it names compare equal however either is spelt.
+    for other in bundle.discover():
+        for f in bundle.concept_files(other):
+            for s, page in bundle.sources(f):
+                if page and page.startswith(arch):
+                    out.append((os.path.relpath(f, VAULT), str(s.get('id', '')),
+                                os.path.relpath(page, root), str(s['resource'])))
     return out
 
 
@@ -143,8 +137,10 @@ def do_fingerprint(kb):
     snaps = os.path.join(root, '_snapshots')
     os.makedirs(snaps, exist_ok=True)
     stamp = datetime.date.today().isoformat()
-    layers = [d for d in sorted(os.listdir(os.path.join(root, 'OneNote')))
-              if os.path.isdir(os.path.join(root, 'OneNote', d))]
+    # Where the corpus is, and its chapters, are `coverage.py`'s answer since
+    # 04.10.2026. This listed a literal `OneNote/` until then, and stopped on
+    # a base whose corpus is `Raw/`.
+    layers = coverage.archive_roots(kb)
     cites = citations(kb)
     cited_paths = collections.Counter(c[2] for c in cites)
 
@@ -156,7 +152,8 @@ def do_fingerprint(kb):
 
     total = 0
     for layer in layers:
-        ps = pages(os.path.join(root, 'OneNote', layer))
+        ps = pages(layer)
+        layer = os.path.basename(layer)
         out = os.path.join(snaps, '%s-%s.fingerprint.tsv'
                            % (re.sub(r'\W+', '-', layer).strip('-').lower(), stamp))
         dupes = collections.defaultdict(list)
@@ -208,6 +205,9 @@ def do_match(kb, oldfile, newdir):
         hdr = fh.readline().rstrip('\n').split('\t')
         for line in fh:
             old.append(dict(zip(hdr, line.rstrip('\n').split('\t'))))
+            # A fingerprint taken before 04.10.2026 spells a path as the disk
+            # does. Pages are keyed by the canonical spelling now.
+            old[-1]['path'] = unicodedata.normalize('NFC', old[-1]['path'])
     new_by_body = collections.defaultdict(list)
     new_by_titledate = collections.defaultdict(list)
     new_strict, new_paths = {}, set()

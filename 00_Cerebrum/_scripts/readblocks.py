@@ -29,14 +29,12 @@ Usage:  python3 _scripts/readblocks.py [KB ...]   (default: every KB)
         python3 _scripts/readblocks.py --block 3  (print one block)
         python3 _scripts/readblocks.py --write    (write Outputs/_READING-BLOCKS.md)
 """
-import collections
-import glob
 import os
-import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import verify  # noqa: E402
+import readset  # noqa: E402
 
 try:
     import yaml
@@ -44,31 +42,26 @@ except ImportError:
     sys.exit('readblocks.py needs PyYAML')
 
 VAULT = verify.VAULT
-LINK = re.compile(r'\]\((?!http)([^)]+\.md)\)')
 SIZE = 50
 
 
 def bundle(kb):
     root = os.path.join(VAULT, kb)
     rels, meta = [], {}
-    for p in sorted(glob.glob(os.path.join(root, 'Wiki', '**', '*.md'),
-                              recursive=True)):
-        if os.path.basename(p) in ('index.md', 'log.md') or '_to_delete' in p:
-            continue
+    # The concept walk and the inbound count are `verify.py`'s and
+    # `readset.py`'s since the review of 04.10.2026. This script carried a
+    # copy of each, and of readset's LINK pattern, which is how "ordered by
+    # inbound links" here and "top 15 by inbound links" there could have come
+    # to count differently. The output was the same for all six bases.
+    for p in verify.concept_files(kb):
         rel = os.path.relpath(p, root).replace(os.sep, '/')
         t = verify.FENCE.sub('', open(p, encoding='utf-8').read())
         m = verify.FM.match(t)
         if not m:
             continue
         rels.append(rel)
-        meta[rel] = (yaml.safe_load(m.group(1)) or {}, t[m.end():])
-    inb = collections.Counter()
-    for rel, (_, body) in meta.items():
-        for tgt in LINK.findall(body):
-            q = os.path.normpath(os.path.join(os.path.dirname(rel), tgt))
-            q = q.replace(os.sep, '/')
-            if q in meta and q != rel:
-                inb[q] += 1
+        meta[rel] = (verify.bundle.mapping(m.group(1)), t[m.end():])
+    inb = readset.inbound_links({rel: body for rel, (_, body) in meta.items()})
     rows = []
     for rel in rels:
         fm, _ = meta[rel]
@@ -87,8 +80,10 @@ def bundle(kb):
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
-    kbs = args or sorted(d for d in os.listdir(VAULT)
-                         if os.path.isdir(os.path.join(VAULT, d, 'Wiki')))
+    # `verify.discover()` asks for a CLAUDE.md as well as a Wiki/. The list
+    # written out here until 04.10.2026 asked for the Wiki/ alone; every
+    # folder with one had the other that day, so the six bases are the same.
+    kbs = args or verify.discover()
     rows = []
     for kb in kbs:
         rows += bundle(kb)

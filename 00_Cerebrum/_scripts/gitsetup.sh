@@ -35,11 +35,42 @@ git remote add origin "$REMOTE" 2>/dev/null || git remote set-url origin "$REMOT
 # hook holds even for a hand-typed commit at midnight. Installed on every
 # run of this script, so re-running repairs a deleted hook.
 mkdir -p .git/hooks
+#
+# Since 05.10.2026 a commit that changes the viewer, its helper or their check
+# is held to the rendered page as well. "No viewer delivery without
+# viewer-check.js green" was a sentence in CLAUDE.md and nothing ran it: that
+# day a change to `viewer-server.py` went in with the check not run, and the
+# check stood broken at 133 of 171 until the next commit. The page is built
+# from the tree being committed and checked before the commit is made. Where
+# node or playwright is missing the hook says so and lets the commit through,
+# so a Mac without them can still commit; the line it prints is the record
+# that the viewer went in unchecked.
 cat > .git/hooks/pre-commit <<'HOOK'
 #!/bin/sh
-# Installed by _scripts/gitsetup.sh. Blocks the commit on any DEFECT.
+# Installed by _scripts/gitsetup.sh. Blocks the commit on any DEFECT, and a
+# commit that changes the viewer on a red viewer-check.js.
 cd "$(git rev-parse --show-toplevel)" || exit 1
-exec python3 _scripts/verify.py
+python3 _scripts/verify.py || exit 1
+if git diff --cached --name-only | grep -q -E '^_scripts/(visualize\.py|viewer-server\.py|viewer-check\.js)$'; then
+  if command -v node >/dev/null 2>&1 && node -e "require('playwright')" >/dev/null 2>&1; then
+    python3 _scripts/visualize.py >/dev/null 2>&1 \
+      || { echo "!! visualize.py failed, so the viewer was not built. The commit is refused."; exit 1; }
+    OUT="${TMPDIR:-/tmp}/viewer-check.$$.out"
+    if node _scripts/viewer-check.js > "$OUT" 2>&1; then
+      echo "· viewer-check.js green, $(grep -c '^ok' "$OUT") checks"
+      rm -f "$OUT"
+    else
+      grep -E '^FAIL' "$OUT" | head -20
+      tail -3 "$OUT"
+      echo "!! viewer-check.js is red and this commit changes the viewer or its helper. The commit is refused."
+      echo "   The whole output is in $OUT"
+      exit 1
+    fi
+  else
+    echo "!! This commit changes the viewer or its helper, and node or playwright is missing here: viewer-check.js did NOT run."
+  fi
+fi
+exit 0
 HOOK
 chmod +x .git/hooks/pre-commit
 

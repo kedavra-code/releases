@@ -13,27 +13,37 @@ where re-anchoring on the path from OneNote/ onward finds the file.
 
 Usage:  python3 _scripts/fix-depth.py <KB> [--dry-run]
 """
-import os, re, sys, glob, importlib.util
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_s = importlib.util.spec_from_file_location(
-    'ma', os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                       'merge-appends.py'))
-ma = importlib.util.module_from_spec(_s); _s.loader.exec_module(ma)
+import os, re, sys
+import bundle
+VAULT = bundle.VAULT
+ma = bundle.script('merge-appends.py')
+RES = r'^(\s*(?:-\s+)?resource:\s*)(.+)$'
 
 def main():
     kb = sys.argv[1]; dry = '--dry-run' in sys.argv
     root = os.path.join(VAULT, kb); n = files = 0
-    for f in sorted(glob.glob(os.path.join(root, 'Wiki', '**', '*.md'),
-                              recursive=True)):
-        if os.path.basename(f) in ('index.md', 'log.md') or '_to_delete' in f:
-            continue
+    for f in bundle.concept_files(kb):
         t = open(f, encoding='utf-8').read()
         m = re.match(r'^(---\n)(.*?)(\n---\n)', t, re.S)
         if not m:
             continue
-        c = [0]
+        # What each `resource:` line holds is read by the bundle's YAML reader
+        # since 04.10.2026, in the order the lines stand in. Read as text, a
+        # path in double quotes kept its quotes and one holding an apostrophe
+        # kept the doubled one, so neither resolved and neither could be
+        # repaired: 13 citations in Alpha_kb and 11 in Zeta_kb that day, all of
+        # which resolve. Where the two counts differ the old reading stands.
+        written = [str(s['resource']) for s in bundle.entries(m.group(2))
+                   if s.get('resource')]
+        # A line that opens its entry, `- resource: …`, is a line too: the
+        # pattern did not see those until that day, twelve of them in Alpha_kb.
+        if len(written) != len(re.findall(RES, m.group(2), re.M)):
+            written = None
+        c, k = [0], [0]
         def sub(mm):
-            v = mm.group(2).strip().strip("'")
+            old = mm.group(2).strip().strip("'")
+            v = written[k[0]] if written else old
+            k[0] += 1
             if os.path.isfile(os.path.normpath(
                     os.path.join(os.path.dirname(f), v))):
                 return mm.group(0)
@@ -44,9 +54,12 @@ def main():
             nv = ma.resolve_resource(root, f, v)
             if nv != v:
                 c[0] += 1
-                return mm.group(1) + nv
+                # A value the old reading got right is written as it always
+                # was. One it got wrong was quoted, and stays quoted.
+                return mm.group(1) + (nv if old == v
+                                      else "'%s'" % nv.replace("'", "''"))
             return mm.group(0)
-        fm = re.sub(r'^(\s*resource:\s*)(.+)$', sub, m.group(2), flags=re.M)
+        fm = re.sub(RES, sub, m.group(2), flags=re.M)
         if c[0]:
             files += 1; n += c[0]
             print('   %-52s %d repaired' % (os.path.relpath(f, root), c[0]))

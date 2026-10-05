@@ -56,8 +56,9 @@ try:
 except ImportError:
     sys.exit('reindex.py needs PyYAML')
 
+import bundle  # noqa: E402
+
 VAULT = verify.VAULT
-BULLET = re.compile(r'^\s*[*-] \[', re.M)
 
 
 def sortkey(text):
@@ -90,7 +91,7 @@ def concepts_in(d):
         # reports unparseable frontmatter as a defect of its own, which is
         # where that fault belongs; here it is skipped.
         try:
-            fm = yaml.safe_load(m.group(1)) or {}
+            fm = bundle.mapping(m.group(1))
         except yaml.YAMLError:
             continue
         out[os.path.basename(f)] = (
@@ -110,47 +111,29 @@ def rebuild(idx):
     if not have:
         return None
     lines = old.split('\n')
-    first = last = None
-    listed = []
-    for i, ln in enumerate(lines):
-        m = ENTRY.match(ln)
-        if not m:
-            continue
-        if first is None:
-            first = i
-        last = i
-        listed.append((i, m.group(1), m.group(3)))
-    if first is None:
+    listed = [(i, m.group(1), m.group(3)) for i, m in
+              ((i, ENTRY.match(ln)) for i, ln in enumerate(lines)) if m]
+    if not listed:
         return None
+    first, last, bullet = listed[0][0], listed[-1][0], listed[0][1]
 
-    bullet = listed[0][1]
-    order = [fn for _, _, fn in listed]
-    kept = [fn for fn in order if fn in have]
-    sorted_by_file = kept == sorted(kept)
-    sorted_by_title = kept == sorted(kept, key=lambda f: sortkey(have[f][0]))
-
-    body = [line_for(fn, have[fn][0], have[fn][1], bullet)
-            for fn in order if fn in have]
+    # The entries whose file still exists, in the order they stand in. The
+    # order is tested once and gives one sort key: by title, else by file
+    # name, else none, which appends. Until the review of 04.10.2026 the two
+    # sorted cases were two branches with the same insert; `requote()` below
+    # already chose its key once. 4'000 generated directories gave the same
+    # text from both forms that day, and so did every index in the vault.
+    order = [fn for _, _, fn in listed if fn in have]
+    by_title = lambda f: sortkey(have[f][0])
+    key = (by_title if order == sorted(order, key=by_title)
+           else (lambda f: f) if order == sorted(order) else None)
     for fn in sorted(have):
         if fn in order:
             continue
-        new = line_for(fn, have[fn][0], have[fn][1], bullet)
-        if sorted_by_title:
-            k = sortkey(have[fn][0])
-            pos = next((j for j, f2 in enumerate([f for f in order if f in have])
-                        if sortkey(have[f2][0]) > k), len(body))
-            body.insert(pos, new)
-            order = [f for f in order if f in have]
-            order.insert(pos, fn)
-        elif sorted_by_file:
-            pos = next((j for j, f2 in enumerate([f for f in order if f in have])
-                        if f2 > fn), len(body))
-            body.insert(pos, new)
-            order = [f for f in order if f in have]
-            order.insert(pos, fn)
-        else:
-            body.append(new)
-            order = [f for f in order if f in have] + [fn]
+        pos = next((j for j, f2 in enumerate(order) if key(f2) > key(fn)),
+                   len(order)) if key else len(order)
+        order.insert(pos, fn)
+    body = [line_for(fn, have[fn][0], have[fn][1], bullet) for fn in order]
     return '\n'.join(lines[:first] + body + lines[last + 1:])
 
 
@@ -292,9 +275,11 @@ def create(d):
 
 def main():
     check = '--check' in sys.argv
-    kbs = [a for a in sys.argv[1:] if not a.startswith('--')] or sorted(
-        d for d in os.listdir(VAULT)
-        if os.path.isdir(os.path.join(VAULT, d, 'Wiki')))
+    # `verify.discover()` asks for a CLAUDE.md as well as a Wiki/. The list
+    # written out here until 04.10.2026 asked for the Wiki/ alone; every
+    # folder with one had the other that day, so the six bases are the same.
+    kbs = ([a for a in sys.argv[1:] if not a.startswith('--')]
+           or verify.discover())
     stale = written = 0
     for kb in kbs:
         root = os.path.join(VAULT, kb, 'Wiki')

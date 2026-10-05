@@ -45,24 +45,17 @@ that resolves nowhere is different and `verify.py` already fails the run on it;
 this script counts them so the two measurements can be compared.
 """
 import collections
-import glob
 import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from bundle import VAULT, discover, concept_files
+
 LINK = re.compile(r'\]\(((?!https?://)[^)\s]+\.md)(?:#[^)\s]*)?\)')
-RESERVED = ('index.md', 'log.md')
 
 # Share of concepts with no inbound link, above which a linking pass is due.
 # See the calibration in the module docstring.
 ISOLATE_FLOOR = 0.05
-
-
-def discover():
-    return sorted(d for d in os.listdir(VAULT)
-                  if os.path.isdir(os.path.join(VAULT, d, 'Wiki'))
-                  and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
 
 
 def concepts(kb):
@@ -74,18 +67,13 @@ def concepts(kb):
     the real figure is 2 — a wrong number that nearly sent an agent to invent
     links into the healthiest bundle in the vault.
     """
-    root = os.path.join(VAULT, kb, 'Wiki')
-    return sorted(
-        os.path.relpath(f, VAULT)
-        for f in glob.glob(os.path.join(root, '**', '*.md'), recursive=True)
-        if os.path.basename(f) not in RESERVED and '_to_delete' not in f)
+    return [os.path.relpath(f, VAULT) for f in concept_files(kb)]
 
 
-def measure(kb, universe):
+def measure(kb):
     cs = concepts(kb)
     have = set(cs)
     inb = collections.Counter({c: 0 for c in cs})
-    outb = collections.Counter({c: 0 for c in cs})
     pairs = set()
     dead, xkb_ok, xkb_bad, xkb_targets = 0, 0, [], collections.Counter()
 
@@ -98,7 +86,6 @@ def measure(kb, universe):
                 if rel != c:
                     pairs.add(tuple(sorted((c, rel))))
                     inb[rel] += 1
-                    outb[c] += 1
             elif rel.split(os.sep)[0] != kb:
                 # crosses into another knowledge base
                 if os.path.isfile(tgt):
@@ -132,13 +119,9 @@ def measure(kb, universe):
     return {
         'kb': kb, 'n': len(cs), 'edges': len(pairs),
         'no_in': [c for c in cs if inb[c] == 0],
-        'no_out': [c for c in cs if outb[c] == 0],
-        'isolated': [c for c in cs if inb[c] == 0 and outb[c] == 0],
         'dead': dead, 'xkb_ok': xkb_ok, 'xkb_bad': xkb_bad,
         'xkb_targets': xkb_targets,
         'comps': comps,
-        'hubs': [c for c, _ in inb.most_common(3)],
-        'inb': inb,
     }
 
 
@@ -146,7 +129,7 @@ def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     verbose = '--verbose' in sys.argv
     kbs = args or discover()
-    rows = [measure(kb, kbs) for kb in kbs]
+    rows = [measure(kb) for kb in kbs]
 
     print('%-12s %7s %7s %7s   %-14s %-13s %s'
           % ('bundle', 'concepts', 'edges', 'per', 'no inbound',

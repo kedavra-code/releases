@@ -23,13 +23,8 @@ try:
 except ImportError:
     sys.exit('needs PyYAML: python3 -m pip install --user pyyaml')
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FM = re.compile(r'^---\n(.*?)\n---\n', re.S)
-
-def kbs():
-    return sorted(d for d in os.listdir(VAULT)
-                  if os.path.isdir(os.path.join(VAULT, d, 'Wiki'))
-                  and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
+import bundle
+from bundle import VAULT, FM, discover
 
 def esc(s): return html.escape(str(s), quote=False)
 
@@ -54,7 +49,7 @@ def inline(s, cid, ids):
 
 def md2html(text, cid, ids):
     out, lines = [], text.split('\n')
-    i, para, ul, tbl, fns = 0, [], [], [], []
+    para, ul, tbl, fns = [], [], [], []
     def flushp():
         if para: out.append('<p>' + inline(esc(' '.join(para)), cid, ids) + '</p>'); para.clear()
     def flushu():
@@ -92,7 +87,7 @@ def md2html(text, cid, ids):
     return ''.join(out)
 
 concepts, order = {}, []
-for kb in kbs():
+for kb in discover():
     root = os.path.join(VAULT, kb, 'Wiki')
     for dp, dn, fn in os.walk(root):
         if '_to_delete' in dp: continue
@@ -103,33 +98,36 @@ for kb in kbs():
             raw = open(p, encoding='utf-8').read()
             m = FM.match(raw)
             if not m: continue
-            try: fm = yaml.safe_load(m.group(1)) or {}
+            try: fm = bundle.mapping(m.group(1))
             except Exception: fm = {}
             v = fm.get('verified') or {}
-            tier = ('human-reviewed' if str((v or {}).get('by', '')).startswith('human:')
+            tier = ('human-reviewed' if str(v.get('by', '')).startswith('human:')
                     else 'machine-confirmed' if v else 'unverified')
             concepts[cid] = dict(kb=kb, fm=fm, body=raw[m.end():], tier=tier)
             order.append(cid)
 
+# Each body is searched for links once: what a concept links to, and from
+# that what links to it. Until the review of 04.10.2026 the same pattern ran
+# over every body twice, once for each direction. The generated page was
+# byte-identical from both forms that day.
+outbound = {cid: sorted({os.path.normpath(os.path.join(os.path.dirname(cid), m.group(1))).replace(os.sep, '/')
+                         for m in re.finditer(r'\]\(([^)#\s]+\.md)\)', c['body'])} & set(concepts))
+            for cid, c in concepts.items()}
 inbound = collections.defaultdict(list)
-for cid, c in concepts.items():
-    for m in re.finditer(r'\]\(([^)#\s]+\.md)\)', c['body']):
-        t = os.path.normpath(os.path.join(os.path.dirname(cid), m.group(1))).replace(os.sep, '/')
-        if t in concepts and cid not in inbound[t]: inbound[t].append(cid)
+for cid, outs in outbound.items():
+    for t in outs: inbound[t].append(cid)
 
 data = {}
 for cid, c in concepts.items():
     fm = c['fm']
     srcs = [s for s in (fm.get('sources') or []) if isinstance(s, dict)]
-    out_links = sorted({os.path.normpath(os.path.join(os.path.dirname(cid), m.group(1))).replace(os.sep, '/')
-                        for m in re.finditer(r'\]\(([^)#\s]+\.md)\)', c['body'])} & set(concepts))
     data[cid] = dict(
         t=fm.get('title') or os.path.basename(cid)[:-3],
         d=fm.get('description') or '', ty=fm.get('type') or '?',
         st=fm.get('status') or 'stable', tr=c['tier'], kb=c['kb'],
         tags=[str(x) for x in (fm.get('tags') or [])], ns=len(srcs),
         srcs=[[s.get('title') or s.get('resource', ''), str(s.get('last_modified', ''))] for s in srcs[:40]],
-        inb=sorted(inbound[cid]), out=out_links,
+        inb=sorted(inbound[cid]), out=outbound[cid],
         html=md2html(c['body'], cid, concepts))
 
 
@@ -247,10 +245,23 @@ def _layout(members, floor=0.0):
         P = P0.copy()
         for it in range(420):
             tmp = 60.0 * (1 - it / 420) + 2.0
-            d = P[:, None, :] - P[None, :, :]
-            dist = np.sqrt((d ** 2).sum(-1)) + 1e-6
-            F = (d / dist[..., None]) * (K * K / dist)[..., None]
-            disp = F.sum(1)
+            # Repulsion between every pair, as two m-by-m planes, x and y.
+            # Until the review of 04.10.2026 this built one m-by-m-by-2 array
+            # and summed over its 2-long axis, 420 times a run, and a build
+            # took 14 seconds; it takes 8.5 now. The force on a node is the
+            # row sum; the planes are antisymmetric, so it is taken as the
+            # negated column sum, which is the form that adds the same
+            # numbers in the same order: the positions came out bit for bit
+            # the same that day, and the plain row sum did not. It leans on
+            # numpy's order of summation, so another numpy build could move
+            # the picture once in the last bit.
+            dx = P[:, 0][:, None] - P[:, 0][None, :]
+            dy = P[:, 1][:, None] - P[:, 1][None, :]
+            dist = np.sqrt(dx ** 2 + dy ** 2) + 1e-6
+            w = K * K / dist
+            disp = np.empty_like(P)
+            disp[:, 0] = -((dx / dist) * w).sum(0)
+            disp[:, 1] = -((dy / dist) * w).sum(0)
             if has_e:
                 ev = P[E[:, 1]] - P[E[:, 0]]
                 el = np.sqrt((ev ** 2).sum(-1)) + 1e-6
@@ -461,6 +472,43 @@ def _kb_points(kb, centres):
 # from Alpha's when the owner asked for Delta and Epsilon to be moved out of it.
 HALO_GAP = 40.0
 
+# One rule for keeping halos apart, and one walk. Until 04.10.2026 the rule
+# stood here four times, each copy written after one overlap: for the corners,
+# for the Alpha pair, for Zeta and, on extents alone, for a base nobody has
+# placed. A change to the clearance needed four edits, and the fourth copy had
+# never learnt about halos. They were joined in a review, from a prototype
+# that gave the same x, y and z for every concept and the same halos. What
+# each placement needs is said where it is called, with what it was born from.
+def _short(moving, extents=False):
+    """How far the halos of `moving` fall short of clearing every placed halo
+    by HALO_GAP. With `extents`, also how far their extents fall short of
+    every placed group's by GAP, which is the older rule and the wider gap."""
+    cent = {g: (ANCHOR[g][0] * _T, ANCHOR[g][1] * _T) for g in ANCHOR if g in _groups}
+    h = {kb: _halo(_kb_points(kb, cent)) for kb in {data[_ids[i]]['kb'] for g in cent for i in _groups[g]}}
+    s = max([0.0] + [h[a][2] + h[b][2] + HALO_GAP - math.hypot(h[a][0] - h[b][0], h[a][1] - h[b][1])
+                     for a in moving for b in h if a != b])
+    if extents:
+        s = max([s] + [_ext[a] + _ext[g] + GAP - math.hypot(cent[a][0] - cent[g][0], cent[a][1] - cent[g][1])
+                       for a in moving for g in cent if g != a])
+    return s
+
+def _walk(moving, put, d, extents=False):
+    """Place `moving` with put(d), d being how far out, and step out until it clears."""
+    for _ in range(400):
+        put(d)
+        s = _short(moving, extents)
+        if s <= 0:
+            return
+        d += s + 1.0
+    print('warning: %s did not clear in 400 steps' % ' and '.join(moving), file=sys.stderr)
+
+def _along(kb, ux, uy):
+    """put() for one base on one ray from the origin."""
+    ul = math.hypot(ux, uy)
+    def put(d):
+        ANCHOR[kb] = (ux / ul * d / _T, uy / ul * d / _T)
+    return put
+
 # The corners clear each other's halos, not only their extents. Owner's
 # instruction of 14.09.2026, after Delta and Epsilon were moved out of Alpha's halo:
 # "also move Beta slightly out". Beta's halo reached 92 units into Alpha's. A corner
@@ -470,25 +518,16 @@ HALO_GAP = 40.0
 # distance from the centre, the property the unit circle was chosen for, and
 # that is the trade the instruction makes: the angles hold, and the career
 # concepts keep the middle.
+#
+# Every corner but the largest walks, the larger of them first. Where the two
+# smaller corners' halos touched each other this would step the larger of the
+# two where the old loop stepped the smaller; they stood 447 units clear on
+# the day the copies were joined.
 _corners = [k for k in _corners_all if k in _groups]
-for _ in range(400):
-    _cent = {g: (ANCHOR[g][0] * _T, ANCHOR[g][1] * _T) for g in ANCHOR if g in _groups}
-    _stepped = False
-    for _i, _a in enumerate(_corners):
-        for _b in _corners[_i + 1:]:
-            _ha, _hb = _halo(_kb_points(_a, _cent)), _halo(_kb_points(_b, _cent))
-            _short = _ha[2] + _hb[2] + HALO_GAP - math.hypot(_ha[0] - _hb[0], _ha[1] - _hb[1])
-            if _short > 0:
-                _g = _a if _ha[2] < _hb[2] else _b
-                _ux, _uy = ANCHOR[_g]
-                _ul = math.hypot(_ux, _uy)
-                ANCHOR[_g] = (_ux + _ux / _ul * (_short + 1.0) / _T, _uy + _uy / _ul * (_short + 1.0) / _T)
-                _stepped = True
-                _cent = {g: (ANCHOR[g][0] * _T, ANCHOR[g][1] * _T) for g in ANCHOR if g in _groups}
-    if not _stepped:
-        break
-else:
-    print('warning: the corners\' halos did not clear in 400 steps', file=sys.stderr)
+_cent0 = {g: (ANCHOR[g][0] * _T, ANCHOR[g][1] * _T) for g in ANCHOR if g in _groups}
+_r0 = {k: _halo(_kb_points(k, _cent0))[2] for k in _corners}
+for k in sorted(_corners, key=_r0.get, reverse=True)[1:]:
+    _walk([k], _along(k, *ANCHOR[k]), math.hypot(*ANCHOR[k]) * _T)
 
 _pos = {}
 for g, members in _groups.items():
@@ -516,6 +555,12 @@ for g, members in _groups.items():
 # ring into a loose outer shell.
 # Deterministic, like the layout: no random numbers, so a rebuild draws the
 # same picture.
+# How deep a large knowledge base has to be for its width, and what large
+# means: viewer-check.js asks for more than 0.75 of every base with 100
+# concepts or more, and DEEP leaves it a margin, as ROUND does for the layout.
+DEEP = 0.85
+BALL_MIN = 100
+
 def _depth(P, Rt, members):
     m = len(members)
     if m < 3:
@@ -547,11 +592,33 @@ def _depth(P, Rt, members):
     # unlinked halo's outer edge at 1.44. The rim keeps a little depth, a
     # quarter of Rt, or concepts crowded at the edge of a small base would
     # overlap again there: Epsilon went from one overlapping pair to nine.
-    z = zn * np.sqrt(np.maximum((1.10 * Rt) ** 2 - r2, (0.25 * Rt) ** 2))
-    if (~linked).any():
-        k = np.arange(int((~linked).sum()))
-        z[~linked] = (((k * 0.6180339887) % 1.0) * 2 - 1) * np.sqrt(np.maximum((1.55 * Rt) ** 2 - r2[~linked], 0.0))
-    return z
+    env = np.sqrt(np.maximum((1.10 * Rt) ** 2 - r2, (0.25 * Rt) ** 2))
+    # The same order in depth, spaced evenly: what the relaxed depths are
+    # blended towards when they come out too flat, below.
+    n = int(linked.sum())
+    even = np.zeros(m)
+    if n > 1:
+        even[linked] = z[linked].argsort(kind='stable').argsort() / (n - 1) * 2 - 1
+    halo = (((np.arange(m - n) * 0.6180339887) % 1.0) * 2 - 1) * np.sqrt(
+        np.maximum((1.55 * Rt) ** 2 - r2[~linked], 0.0))
+    across = float(P.std(0).mean()) or 1.0
+
+    # A large knowledge base is a ball, not a disc, whatever its links do.
+    # Nothing in the solve ties the spread in depth to the spread across: the
+    # one is scaled on the 95th percentile of the depths, the other on the
+    # 90th percentile of the radii, and the ratio moves with every change of
+    # links. Epsilon_kb measured 0.64 as deep as it is wide after the health
+    # check of 04.10.2026 and 0.96 after the action sitting of the same day,
+    # and viewer-check.js fails under 0.75. So where the spread in depth falls
+    # short of DEEP times the spread across, the depths move a quarter at a
+    # time towards even spacing in the same order, and stop at the first step
+    # that reaches it. A base that is already a ball is not touched.
+    for t in (0.0, 0.25, 0.5, 0.75, 1.0):
+        out = ((1 - t) * zn + t * even) * env
+        out[~linked] = halo
+        if m < BALL_MIN or float(out.std()) / across >= DEEP:
+            break
+    return out
 
 _depths = {}
 for g, members in _groups.items():
@@ -560,13 +627,15 @@ for g, members in _groups.items():
     for i, zz in zip(members, _depth(Pm, Rt, members)):
         _depths[i] = float(zz)
 
-# Centre the picture on the middle of the work triangle, not on the mean of
+# The picture is centred on the middle of the work triangle, not on the mean of
 # every node: the mean is dragged around by whichever knowledge base grew last,
-# and Zeta sitting below would push the career concepts off centre.
-_mx = _my = 0.0
+# and Zeta sitting below would push the career concepts off centre. The
+# anchors already put the origin there, so no offset is taken. One of zero was
+# subtracted from every coordinate until the review of 04.10.2026, which read
+# as if the picture were re-centred here.
 for i, c in enumerate(_ids):
     x, y = _pos[i]
-    data[c]['x'] = round(x - _mx, 1); data[c]['y'] = round(y - _my, 1); data[c]['z'] = round(_depths[i], 1)
+    data[c]['x'] = round(x, 1); data[c]['y'] = round(y, 1); data[c]['z'] = round(_depths[i], 1)
     data[c]['deg'] = _deg[i]
 
 # first appearance, the order the page used to meet them in, so the halos still
@@ -1372,7 +1441,6 @@ input{width:100%;padding:8px 10px;margin-bottom:10px;cursor:text}
 /* Thinking: j4k twinkles its sparkle button while the model works. One
    pseudo-element carries the whole starfield, each star a box-shadow with its
    own colour, so the keyframes fade them out of step and no two wink together. */
-#mAsk.busy{position:relative}
 #mAsk.busy::after{content:'';position:absolute;left:50%;top:50%;width:1.5px;height:1.5px;
  border-radius:50%;pointer-events:none;
  animation:spark 2.6s linear infinite}
@@ -1440,7 +1508,6 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
    the controls without wrapping. At 12px it measures 991px. */
 #legend{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut)}
 #legend .lrow{display:flex;flex-wrap:wrap;gap:5px 6px;align-items:center}
-#legend .lrow i{font-style:normal;opacity:.7;font-size:.92em;margin-right:2px}
 .chip{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px 0 6px;border:1px solid var(--line);border-radius:12px;cursor:pointer;user-select:none;white-space:nowrap}
 .chip:hover{background:var(--line)}
 .chip.off{opacity:.32}.chip b{font-weight:600;color:var(--fg)}.chip small{color:var(--mut);font-variant-numeric:tabular-nums}
@@ -1448,7 +1515,6 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
    does not change height and no chip slides sideways when a knowledge base is
    hidden. Owner's instruction of 27.09.2026. */
 #legend .void{visibility:hidden}
-.kbchip{border-width:2px;border-color:var(--fg)}.ldiv{width:1px;align-self:stretch;background:var(--line);margin:0 4px}
 /* The controls are icons, as j4k's top bar is: each is named by its tooltip.
    Views first, then Settings, set a little apart because it opens something
    rather than switching something. */
@@ -1863,8 +1929,11 @@ async function pingHelper(){
     launcher and here, on the button the question is asked from. */
  const L=(helper&&helper.login)||null;
  let warn=null;
- if(L&&L.state==='expired')warn=' — the Claude Code login expired on '+L.when+', run: claude auth login';
- else if(L&&L.state==='soon')warn=' — the Claude Code login expires in '+L.days+' day(s), on '+L.when;
+ /* Both say where the sign-in is: the launcher asks, one Return and one click
+    in the browser. Until 05.10.2026 the close expiry named the day and no way
+    out, and the dead one a command to type into a Terminal. */
+ if(L&&L.state==='expired')warn=' — the Claude Code login expired on '+L.when+'. Double-click "Open 00_Cerebrum.command" to sign in again';
+ else if(L&&L.state==='soon')warn=' — the Claude Code login expires in '+L.days+' day(s), on '+L.when+'. Double-click "Open 00_Cerebrum.command" to sign in again';
  mAsk.title=off?'Ask Claude — open the vault with "Open 00_Cerebrum.command" to use this'
   :('Ask Claude for a report instead of searching ('+helper.model+', '+helper.effort+' effort)'+(warn||''));
  mAsk.classList.toggle('warn',!!warn);
@@ -2095,7 +2164,9 @@ async function pullModel(id,btn){const row=btn.closest('.wr');
    hint says to restart it rather than showing an empty list, because an empty
    list would read as "no tasks". */
 const tasksEl=document.getElementById('tasks'),tasksHint=document.getElementById('tasksHint');
-function when(s){const d=new Date(s),n=new Date(),hm=d.toTimeString().slice(0,5),
+/* A day with no clock time, as the health checks give it, is shown as a day. */
+function when(s){if(s.length===10)return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(s+'T12:00').getDay()]+' '+s.slice(8)+'.'+s.slice(5,7)+'.';
+ const d=new Date(s),n=new Date(),hm=d.toTimeString().slice(0,5),
  off=Math.round((new Date(d.toDateString())-new Date(n.toDateString()))/864e5);
  if(off===0)return 'today '+hm;if(off===1)return 'tomorrow '+hm;if(off===-1)return 'yesterday '+hm;
  return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'.'+
@@ -2123,7 +2194,7 @@ async function loadTasks(){
  catch(e){d={error:'the helper answered nothing'}}
  if(!d.tasks){tasksEl.innerHTML='';tasksHint.textContent=d.error||'no answer';return}
  tasksEl.innerHTML=d.tasks.map(taskRow).join('');
- tasksHint.textContent=d.tasks.length?'Read from the Claude app on this Mac. A task runs only while the app is open; a missed run starts at the next launch.'
+ tasksHint.textContent=d.tasks.length?'Read from the Claude app on this Mac. A task runs only while the app is open; a missed run starts at the next launch. The OneNote sync and the health checks are read from the vault itself.'
   :'The Claude app has no scheduled tasks.'}
 
 function showReports(on){repWrap.classList.toggle('on',on);
@@ -2296,8 +2367,6 @@ function renderCard(){if(sel<0){card.style.display='none';return}
 const id=N[sel].id,c=D[id];let h='<div class="cs"><div class="hd"><h3>'+E(c.t)+'</h3><button class="ib open" title="Open concept" aria-label="Open concept">__ICONCEPTS__</button><button class="ib x" title="Close (Esc)" aria-label="Close">&#215;</button></div>';
 h+='<div>'+'<span class="badge">'+E(c.ty)+'</span><span class="badge">'+E(LBL[cat(id)]||cat(id))+'</span><span class="badge">'+c.ns+' sources</span></div>';
 if(c.d)h+='<div class="desc">'+E(c.d)+'</div>';h+='</div>';
-const nb=[...NB[sel]];
-const inb=nb.filter(j=>D[N[j].id].out.includes(id)||c.inb.includes(N[j].id));
 if(c.inb.length){h+='<div class="cs"><div class="sec"><i class="lk in"></i>Linked from ('+c.inb.length+')</div>';
 c.inb.slice(0,9).forEach(x=>{h+='<span class="nb" data-i="'+idx[x]+'">'+E(D[x].t)+'</span>'});
 if(c.inb.length>9)h+='<span class="nb" style="color:var(--mut);cursor:default">… '+(c.inb.length-9)+' more</span>';h+='</div>'}

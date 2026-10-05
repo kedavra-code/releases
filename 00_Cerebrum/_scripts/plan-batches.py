@@ -26,14 +26,10 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-_cov = __import__('importlib').import_module('importlib.util')
-_spec = _cov.spec_from_file_location(
-    'coverage_mod', os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                 'coverage.py'))
-coverage = _cov.module_from_spec(_spec)
-_spec.loader.exec_module(coverage)
+import bundle  # noqa: E402
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+coverage = bundle.script('coverage.py')
+VAULT = bundle.VAULT
 DEFAULT_SIZE = 55
 
 
@@ -84,7 +80,7 @@ def main():
 
     # coverage.cited() returns (paths, n_concepts, n_citations)
     done = coverage.cited(kb)[0] | coverage.ledger(kb)
-    plan, manifests, seen_ids, taken = [], {}, {}, set()
+    plan, manifests, seen_ids, taken = [], {}, set(), set()
     for chapter in coverage.archive_roots(kb):
         # Deepest scope first, chapter root last. The root walks recursively,
         # so visiting it first claims every page in the chapter and collapses
@@ -101,8 +97,7 @@ def main():
             todo = [p for p in todo if p not in seen_ids]
             if not todo:
                 continue
-            for p in todo:
-                seen_ids[p] = True
+            seen_ids.update(todo)
             sid = scope_id(os.path.basename(scope_dir), taken)
             n = 0
             for i in range(0, len(todo), size):

@@ -21,10 +21,8 @@ and the ledger stays the honest record of what was actually opened.
 Usage:  python3 _scripts/coverage.py [KnowledgeBase ...]   (default: all)
         python3 _scripts/coverage.py --check               (exit 1 if stale)
 """
-import glob
 import json
 import os
-import unicodedata
 import re
 import sys
 import collections
@@ -35,16 +33,10 @@ try:
 except ImportError:
     sys.exit('coverage.py needs PyYAML: python3 -m pip install --user pyyaml')
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FM = re.compile(r'^---\n(.*?)\n---\n', re.S)
-FENCE = re.compile(r'```.*?```', re.S)
+import bundle
+from bundle import VAULT, FM, FENCE, discover, concept_files  # noqa: F401
+
 LEDGER_PAGE = re.compile(r'^\s*[-*]\s+`([^`]+)`', re.M)
-
-
-def discover():
-    return sorted(d for d in os.listdir(VAULT)
-                  if os.path.isdir(os.path.join(VAULT, d, 'Wiki'))
-                  and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
 
 
 def archive_layer(kb):
@@ -59,14 +51,12 @@ def archive_layer(kb):
     unmeasurable and "compiled" could only ever be asserted — which is the one
     thing this script exists to prevent.
     """
-    p = os.path.join(VAULT, kb, 'assertions.yaml')
-    if os.path.exists(p):
-        try:
-            A = yaml.safe_load(open(p, encoding='utf-8')) or {}
-            if A.get('archive_layer'):
-                return str(A['archive_layer'])
-        except Exception:
-            pass
+    try:
+        A = bundle.assertions(kb)
+        if A.get('archive_layer'):
+            return str(A['archive_layer'])
+    except Exception:
+        pass
     return 'OneNote'
 
 
@@ -101,30 +91,25 @@ def archive_roots(kb):
     return [base] if pages(base) else []
 
 
-def _p(path):
-    """One canonical spelling for a path, so the three sets can be compared.
+# One canonical spelling for a path, so the three sets can be compared. Born
+# here on 08.09.2026 as a function of this script and shared from `bundle.py`
+# since 04.10.2026, where its history is told. The name stays: `plan-batches.py`
+# calls it.
+_p = bundle.canon
 
-    macOS stores filenames decomposed (NFD): `regulär` is `r-e-g-u-l-a-` plus a
-    combining diaeresis. A citation typed or rewritten in a markdown file is
-    composed (NFC), one code point for the whole letter. The two strings are
-    not equal, so a set of pages read off the filesystem and a set of pages
-    read out of `sources[].resource` never intersect on those names, and the
-    page reads as uncited.
 
-    `verify.py` does not see this because it asks the filesystem whether the
-    path resolves, and macOS compares normalisation-insensitively. So the
-    citation is real and provable, and the coverage number is wrong -- which is
-    the worst shape a measurement bug can take.
+def archive_empty(kb):
+    """True where the base's archive layer is on disk and holds no page.
 
-    Found 08.09.2026. The vault sweep of that day rewrote citations in the
-    concepts it repaired, normalising them to NFC on the way, and coverage fell
-    from 100.0 to 92.6 per cent in `Alpha_kb` and to 96.0 in `Beta_kb`. Those
-    losses were 195 and 93 pages, exactly the number of NFD-only filenames in
-    each archive. `Gamma_kb` has 94 such filenames and lost nothing, because
-    the sweep skipped it -- so the corpus had not changed at all, and 288 pages
-    were about to be re-read for nothing.
+    That is an export deleted pending its replacement, and it is not the same
+    as a base that never had a layer. `verify.py` asked the question in two
+    places with a literal `OneNote/`, so it could only ever be true of a
+    OneNote base, and this script asked it a third way. One answer since
+    04.10.2026, from the layer `archive_layer()` names and the pages
+    `pages()` counts.
     """
-    return unicodedata.normalize('NFC', os.path.abspath(path))
+    return (os.path.isdir(os.path.join(VAULT, kb, archive_layer(kb)))
+            and not any(pages(r) for r in archive_roots(kb)))
 
 
 # Files in an archive layer that are bookkeeping, not pages. `_index.md` is a
@@ -155,23 +140,18 @@ def cited(kb):
     staleness check in verify.py can compare them directly.
     """
     out, n_concepts, n_cites = set(), 0, 0
-    for f in sorted(glob.glob(os.path.join(VAULT, kb, 'Wiki', '**', '*.md'),
-                              recursive=True)):
-        if os.path.basename(f) in ('index.md', 'log.md') or '_to_delete' in f:
-            continue
+    for f in concept_files(kb):
         text = FENCE.sub('', open(f, encoding='utf-8').read())
         m = FM.match(text)
         if not m:
             continue
         try:
-            fm = yaml.safe_load(m.group(1)) or {}
+            bundle.frontmatter(m.group(1))
         except Exception:
             continue
         n_concepts += 1
         d = os.path.dirname(f)
-        for src in (fm.get('sources') or []):
-            if not isinstance(src, dict):
-                continue
+        for src in bundle.entries(m.group(1)):
             r = src.get('resource')
             if not r:
                 continue
@@ -319,57 +299,38 @@ def render(kb, chapters, n_concepts, n_cites, stamp):
     return '\n'.join(L)
 
 
+def _stored(state):
+    """What a `.coverage-state.json` holds, or {} where it is missing or
+    unreadable. `main()` read it with the same six lines in two places until
+    the review of 04.10.2026."""
+    try:
+        return json.load(open(state, encoding='utf-8'))
+    except Exception:
+        return {}
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     check = '--check' in sys.argv
     stale = []
     for kb in (args or discover()):
         chapters, n_concepts, n_cites = measure(kb)
-        if not chapters:
-            # No archive layer at all is a knowledge base that never had one,
-            # and it has no coverage table to keep. An archive folder that is
-            # present but empty is different: the export has been deleted
-            # pending a replacement, and skipping here would leave the last
-            # table on disk describing pages that no longer exist while
-            # verify.py went on failing it as stale — a stale number nobody
-            # can refresh. Write the honest empty table instead. Alpha,
-            # 16.08.2026.
-            arch = os.path.join(VAULT, kb, archive_layer(kb))
-            if not os.path.isdir(arch):
-                continue
-            out = os.path.join(VAULT, kb, 'COVERAGE.md')
-            state = os.path.join(VAULT, kb, '.coverage-state.json')
-            now = {'concepts': n_concepts, 'citations': n_cites}
-            if check:
-                old = {}
-                if os.path.exists(state):
-                    try:
-                        old = json.load(open(state, encoding='utf-8'))
-                    except Exception:
-                        old = {}
-                if not os.path.exists(out) or old != now:
-                    stale.append(kb)
-                continue
-            open(out, 'w', encoding='utf-8').write('\n'.join([
-                '# Archive coverage — %s' % kb, '',
-                '**Generated, not authored. Do not edit this file.** Written '
-                'by `_scripts/coverage.py`; regenerate rather than correct.',
-                '',
-                '**The archive layer is empty.** The export was deleted '
-                'pending a complete replacement, so there is nothing to '
-                'measure coverage against. This is not nought per cent of a '
-                'corpus; it is the absence of one. Regenerate once the new '
-                'export is in place.', '',
-                'Measured **%s** from %d concepts and %d citations.'
-                % (datetime.datetime.now(datetime.timezone.utc)
-                   .strftime('%d.%m.%Y, %H:%M UTC'), n_concepts, n_cites),
-                '']))
-            json.dump(now, open(state, 'w', encoding='utf-8'))
-            print('%-14s archive layer empty; wrote the empty table'
-                  % kb)
-            continue
         out = os.path.join(VAULT, kb, 'COVERAGE.md')
         state = os.path.join(VAULT, kb, '.coverage-state.json')
+        # No archive layer at all is a knowledge base that never had one, and
+        # it has no coverage table to keep. An archive folder that is present
+        # but empty is different: the export has been deleted pending a
+        # replacement, and skipping here would leave the last table on disk
+        # describing pages that no longer exist while verify.py went on
+        # failing it as stale — a stale number nobody can refresh. Write the
+        # honest empty table instead. Alpha, 16.08.2026.
+        #
+        # The empty archive had a branch of its own here until 04.10.2026, and
+        # the branch recorded two keys where `state_key()` gives four. So
+        # verify.py, which compares against `state_key()`, would have read an
+        # emptied archive as stale for ever. It takes the general path now.
+        if not chapters and not archive_empty(kb):
+            continue
         # The archive side belongs in the staleness key, not just the bundle
         # side. Until 08.09.2026 this recorded {concepts, citations} alone, so
         # no change on the archive side could ever mark a table stale. That is
@@ -381,19 +342,26 @@ def main():
         # fault did; `pages` moves when the corpus does.
         now = state_key(kb, chapters, n_concepts, n_cites)
         if check:
-            old = {}
-            if os.path.exists(state):
-                try:
-                    old = json.load(open(state, encoding='utf-8'))
-                except Exception:
-                    old = {}
+            old = _stored(state)
             if not os.path.exists(out) or old != now:
                 stale.append('%s: COVERAGE.md missing or stale (measured %s, '
                              'bundle now %s)' % (kb, old or 'never', now))
             continue
         stamp = datetime.datetime.now(datetime.timezone.utc).strftime(
             '%d.%m.%Y, %H:%M UTC')
-        body = render(kb, chapters, n_concepts, n_cites, stamp)
+        body = render(kb, chapters, n_concepts, n_cites, stamp) if chapters \
+            else '\n'.join([
+                '# Archive coverage — %s' % kb, '',
+                '**Generated, not authored. Do not edit this file.** Written '
+                'by `_scripts/coverage.py`; regenerate rather than correct.',
+                '',
+                '**The archive layer is empty.** The export was deleted '
+                'pending a complete replacement, so there is nothing to '
+                'measure coverage against. This is not nought per cent of a '
+                'corpus; it is the absence of one. Regenerate once the new '
+                'export is in place.', '',
+                'Measured **%s** from %d concepts and %d citations.'
+                % (stamp, n_concepts, n_cites), ''])
         # Only rewrite when the measurement itself moved. Re-running on an
         # unchanged bundle used to bump the timestamp alone, which shows up
         # as a modified file with a one-line diff and trains a reader to
@@ -407,9 +375,13 @@ def main():
             continue
         open(out, 'w', encoding='utf-8').write(body)
         json.dump(now, open(state, 'w', encoding='utf-8'))
-        tot = sum(sum(t.values()) for t, _, _ in chapters.values())
-        cov = sum(sum(h.values()) + sum(r.values())
-                  for _, h, r in chapters.values())
+        # The totals `state_key()` just counted, so the line printed cannot
+        # differ from the state written. They were added up a second time
+        # here until the review of 04.10.2026.
+        tot, cov = now['pages'], now['covered']
+        if not tot:
+            print('%-14s archive layer empty; wrote the empty table' % kb)
+            continue
         print('%-12s %6d pages, %5d covered, %5.1f%%  -> %s'
               % (kb, tot, cov, 100.0 * cov / tot,
                  os.path.relpath(out, VAULT)))

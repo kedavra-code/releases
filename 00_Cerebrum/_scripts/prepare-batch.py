@@ -37,7 +37,9 @@ import os
 import re
 import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import bundle
+
+VAULT = bundle.VAULT
 BOILER = re.compile(
     r'(Microsoft Teams|Join the meeting|Meeting-?ID|Passcode|Kenncode|dial-?in|'
     r'teams\.microsoft\.com|Besprechung beitreten|An Besprechung teilnehmen|'
@@ -92,7 +94,7 @@ def clean_text(raw):
     A page that differs only in a link is still packed with `<link>`: the
     saving is unchanged. Only the comparison moved.
     """
-    m = re.match(r'^---\n(.*?)\n---\n', raw, re.S)
+    m = bundle.FM.match(raw)
     fm, body = ({}, raw)
     if m:
         body = raw[m.end():]
@@ -107,26 +109,19 @@ def clean_text(raw):
     return fm, _squeeze(body), ident
 
 
-def clean(path, kb_root):
+def clean(path):
     return clean_text(open(path, encoding='utf-8', errors='ignore').read())
 
 
 def seen_from_cited(kb_root):
     """Lines already inside the bundle's cited pages: never re-read them."""
-    import glob as _g
-    fmre = re.compile(r'^---\n(.*?)\n---\n', re.S)
-    fence = re.compile(r'```.*?```', re.S)
     cited, seen = set(), {}
-    for f in _g.glob(os.path.join(kb_root, 'Wiki', '**', '*.md'), recursive=True):
-        if os.path.basename(f) in ('index.md', 'log.md') or '_to_delete' in f:
-            continue
-        t = fence.sub('', open(f, encoding='utf-8').read())
-        m = fmre.match(t)
-        if not m:
-            continue
-        for mm in re.finditer(r"resource:\s*'?([^'\n]+?)'?\s*$", m.group(1), re.M):
-            cited.add(os.path.abspath(os.path.normpath(
-                os.path.join(os.path.dirname(f), mm.group(1)))))
+    # Read by the bundle's YAML reader since 04.10.2026. The pattern that stood
+    # here took a path in double quotes with its quotes and cut one holding an
+    # apostrophe short, so 19 cited pages in Alpha_kb and 11 in Zeta_kb were
+    # not known as cited and their lines were packed again.
+    for f in bundle.concept_files(os.path.basename(kb_root)):
+        cited.update(page for _, page in bundle.sources(f) if page)
     for p in cited:
         if not os.path.isfile(p):
             continue  # a citation may point at a directory; only files hold lines
@@ -150,16 +145,15 @@ def main():
     # `--all` packed nothing, ran zero iterations and exited 0, which is the
     # worst shape a failure can take. Found 31.08.2026, when it silently
     # packed none of Epsilon_kb's ten batches.
+    plan = json.load(open(os.path.join(ex, '_BATCHES.json'), encoding='utf-8'))
     if '--all' in sys.argv:
-        plan = json.load(open(os.path.join(ex, '_BATCHES.json'), encoding='utf-8'))
         ids = [b['id'] for b in plan]
     # A manifest from a superseded plan stays on disk — the bridge forbids
     # deletion — and packing one re-reads pages that are already compiled.
     # It cost a whole batch on 15.08.2026: `BBHO-01` was packed from a stale
     # manifest and 38 of its 55 pages came back "nothing novel", which is the
     # tell. Refuse anything the current plan does not list.
-    plan_ids = {b['id'] for b in json.load(
-        open(os.path.join(ex, '_BATCHES.json'), encoding='utf-8'))}
+    plan_ids = {b['id'] for b in plan}
     stale = [b for b in ids if b not in plan_ids]
     if stale:
         sys.exit('not in the current _BATCHES.json: %s\n'
@@ -176,7 +170,7 @@ def main():
         for rel in files:
             p = os.path.join(kb_root, rel)
             bytes_in += os.path.getsize(p)
-            fm, body, ident = clean(p, kb_root)
+            fm, body, ident = clean(p)
             # Hashed on the identity, never on the packed body: see clean_text.
             h = hashlib.md5(ident.encode()).hexdigest()
             if h in seen_body and body:
@@ -184,7 +178,6 @@ def main():
                 chunks.append('=== PAGE %s\n=== DUPLICATE-OF %s\n' % (rel, seen_body[h]))
                 continue
             seen_body[h] = rel
-            seen_bodies_marker = None
             kept += 1
             head = ' | '.join('%s: %s' % (k, v) for k, v in fm.items())
             if collapse and body:

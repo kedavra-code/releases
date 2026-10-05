@@ -12,20 +12,14 @@ Usage:  python3 _scripts/actionitems.py
 import datetime
 import os
 import re
-import sys
 
-VAULT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from bundle import VAULT, discover
+
 # Cells may not span lines. Without the \n exclusion the five-cell pattern
 # runs past the end of a short row and swallows the next one, which is how
 # the two-column 'Deferred' sub-table under this heading got parsed as an
 # action item on 15.08.2026 and raised 'unrecognised state AI-2026-08-15-5'.
 ROW = re.compile(r'^\|\s*(AI-[^|\n]+)\|([^|\n]*)\|([^|\n]*)\|([^|\n]*)\|([^|\n]*)\|', re.M)
-
-
-def discover():
-    return sorted(d for d in os.listdir(VAULT)
-                  if os.path.isdir(os.path.join(VAULT, d, 'Wiki'))
-                  and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
 
 
 VALID = ('open', 'actioned', 'deferred', 'withdrawn')

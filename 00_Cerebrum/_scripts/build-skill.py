@@ -20,7 +20,6 @@ Usage:  python3 _scripts/build-skill.py <name> [more names...]
         python3 _scripts/build-skill.py --all
         python3 _scripts/build-skill.py --check     (verify, write nothing)
 """
-import hashlib
 import io
 import os
 import sys
@@ -64,7 +63,7 @@ def build(name, check=False):
             z.writestr(zi, open(full, 'rb').read())
     new = mem.getvalue()
     old = open(pkg, 'rb').read() if os.path.exists(pkg) else b''
-    same = hashlib.sha256(new).digest() == hashlib.sha256(old).digest()
+    same = new == old
     if check:
         # content comparison, not byte comparison: a package built by another
         # tool differs in framing while holding identical files

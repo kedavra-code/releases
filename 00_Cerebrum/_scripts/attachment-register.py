@@ -21,36 +21,35 @@ vault manual described the script as doing all along.
 """
 import os, re, sys, datetime
 
+import bundle
+from tableorder import SEP
+
 kb = sys.argv[1]
-vault = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+vault = bundle.VAULT
 wiki = os.path.join(vault, kb, "Wiki")
 
 rows = []
-for dp, dns, fns in os.walk(wiki):
-    # Skip `_`-prefixed directories, as every other script that walks a bundle
-    # does. Without it the register listed 42 concepts and 75 rows, of which
-    # 37 concepts were retired copies sitting in
-    # `_to_delete/2026-08-15-pre-archive-replacement/` — a queue of work
-    # against concepts that no longer exist.
-    dns[:] = [d for d in dns if not d.startswith('_')]
-    for fn in sorted(fns):
-        if not fn.endswith(".md") or fn in ("index.md", "log.md"):
-            continue
-        p = os.path.join(dp, fn)
-        t = open(p, encoding="utf-8").read()
-        m = re.search(r"^# Pending attachments(.*?)(?=^# |\Z)", t, re.S | re.M)
-        if not m:
-            continue
-        rel = os.path.relpath(p, wiki)
-        body = [l for l in m.group(1).split("\n")
-                if l.startswith("|") and not re.match(r"^\|[\s|:-]+\|$", l)]
-        for l in body[1:]:                       # drop the header row
-            cells = [re.sub(r"\[\^[^\]]+\]", "", c).strip()
-                     for c in l.strip().strip("|").split("|")]
-            while len(cells) < 3:
-                cells.append("")
-            rows.append((rel, cells[0], cells[1], cells[2]))
-
+# The bundle's own concept walk, which leaves `_to_delete/` out. This script
+# walked the tree for itself until 04.10.2026 and skipped every `_`-prefixed
+# directory. Without that the register listed 42 concepts and 75 rows, of
+# which 37 concepts were retired copies sitting in
+# `_to_delete/2026-08-15-pre-archive-replacement/` — a queue of work against
+# concepts that no longer exist. The rows are sorted before they are written,
+# so the order of the walk never showed.
+for p in bundle.concept_files(kb):
+    t = open(p, encoding="utf-8").read()
+    m = re.search(r"^# Pending attachments(.*?)(?=^# |\Z)", t, re.S | re.M)
+    if not m:
+        continue
+    rel = os.path.relpath(p, wiki)
+    body = [l for l in m.group(1).split("\n")
+            if l.startswith("|") and not SEP.match(l)]
+    for l in body[1:]:                       # drop the header row
+        cells = [re.sub(r"\[\^[^\]]+\]", "", c).strip()
+                 for c in l.strip().strip("|").split("|")]
+        while len(cells) < 3:
+            cells.append("")
+        rows.append((rel, cells[0], cells[1], cells[2]))
 
 out = [
  "# Attachment pass register",

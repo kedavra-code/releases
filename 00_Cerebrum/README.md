@@ -15,7 +15,7 @@ The knowledge bases get better the longer they are used. The machinery gets bett
 | `_KB_CLAUDE_TEMPLATE.md` | The per-knowledge-base manual, filled in when you create one |
 | `About me/writing-rules.md` | House style, derived from Wikipedia's *Signs of AI writing* and inverted into instructions |
 | `_skills/` | Three Claude Code skills: compile an archive, health-check a bundle, action the open items |
-| `_scripts/` | Thirty executable checks and repairs, `verify.py` first among them |
+| `_scripts/` | The executable checks and repairs, `verify.py` first among them |
 | `assertions.yaml` | Vault-level assertions `verify.py` enforces over the manuals themselves |
 
 ## Starting
