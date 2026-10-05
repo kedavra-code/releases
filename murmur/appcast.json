@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 116,
-  "commit": "addb62f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-116/murmur.dmg",
-  "sha256": "8c8fc3098303e2ebfe8b8f03cdc5ceb84e698de5cb77d30a04bff0b50d9d201a",
+  "build": 123,
+  "commit": "21f8434",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-123/murmur.dmg",
+  "sha256": "33b0c97251da911b1026ca524f0d90248bae8edaf592dba6fbe668c3519c4b2c",
   "minimumSystemVersion": "26.0",
-  "notes": "The Parakeet download is the kit's, pinned; two texts name the right tab"
+  "notes": "CLAUDE.md: the taller Dictionary tab, which build 122 shipped without its note"
 }
