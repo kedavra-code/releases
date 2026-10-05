@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 299,
-  "commit": "2c8ccbb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-299/GLaDOS.dmg",
-  "sha256": "a692fb44e92f24c915ee90db4131f2f4f289a0d1f74fe1310badc82f3e2cda05",
+  "build": 302,
+  "commit": "e6aefe0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-302/GLaDOS.dmg",
+  "sha256": "2bbe37070cb3dab545bf134eea4283a21a87c80559f414c2b9d9daabeb4e9a82",
   "minimumSystemVersion": "26.0",
-  "notes": "His German voice is one semitone down, not two"
+  "notes": "kit-21: the Dictionary tab is taller"
 }
