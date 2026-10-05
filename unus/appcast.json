@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 153,
-  "commit": "85f32b0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-153/unus.dmg",
-  "sha256": "aaa4fb359295af2b27942baea558b03f61a0fd5062f69d81b8a510c31ef8a34d",
+  "build": 158,
+  "commit": "2d33d9c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-158/unus.dmg",
+  "sha256": "33eab4e87205ffad84703473b2337c95fc7cd57832eefe358d8da0853ab01aa7",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings is 620 pt wide, as in murmur, scripta and GLaDOS"
+  "notes": "A refused line says why; prose still says nothing"
 }
