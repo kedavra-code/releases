@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 323,
-  "commit": "e4a252f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-323/GLaDOS.dmg",
-  "sha256": "d1007a28776b9eb536009fc88a73014aa9999876dcc667c34370b2f59d041225",
+  "build": 329,
+  "commit": "b7b8b1e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-329/GLaDOS.dmg",
+  "sha256": "64a7b67732a2f4fa12431dc7a83f451d7c57b4df4988c377e5cef15f549814e9",
   "minimumSystemVersion": "26.0",
-  "notes": "An update says what is new, and a bad one is undone\nShe remembers what you tell her to\nAbout shows the kit version\nSay \"think hard\" for one deep answer\nShe hears again by herself\nShe knows the section she presents\nA turn never ends in silence"
+  "notes": "A discussion goes on where you cut it\nAfter an update, What's New opens once\nThe menu bar icon stays the eye\nDual speed is a switch in Settings"
 }
