@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 121,
-  "commit": "2241496",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-121/scripta.dmg",
-  "sha256": "ab3d605e1a800359e88c84530ad5079a5859fd1059b37adb7dbe3fcc8526edc6",
+  "build": 122,
+  "commit": "559eab8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-122/scripta.dmg",
+  "sha256": "26efb0d126c4c581369f63c7d83a5a1c6abf7551b2fbd97461104afeca1051ce",
   "minimumSystemVersion": "26.0",
-  "notes": "An update says what is new, and a bad one is undone\nA few words are not named by themselves\nscripta guesses who a voice is\nThe meeting's title and people from your calendar\nHear a moment of the meeting\nThe search finds what was said\nA meeting comes back after a crash\nAbout shows the kit version"
+  "notes": "An imported recording finds its meeting in your calendar"
 }
