@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 331,
-  "commit": "3bd72bb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-331/GLaDOS.dmg",
-  "sha256": "3d587121fbeedea01da3eaf111d3baf9f3fde660c13ef47ce5aa23fd7af936a8",
+  "build": 332,
+  "commit": "333c62c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-332/GLaDOS.dmg",
+  "sha256": "cf6e5f4d2dd6e4cd9511a399f2525db45ce912de2c246df3a95b7e4ad1f554f9",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-30: What's New after an update is decided by the build that starts, alone"
+  "notes": "Small fixes and improvements."
 }
