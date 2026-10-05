@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 335,
-  "commit": "12364a5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-335/GLaDOS.dmg",
-  "sha256": "15ceafcda115481f9d22c416ceb4f52e0bd6440c15a6d0d94707302b1705ca11",
+  "build": 337,
+  "commit": "a4edbf0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-337/GLaDOS.dmg",
+  "sha256": "37c6eeb0fae88a62f36ab89a7e2853df1f59974d7a0319dcee8b8a139ebf6973",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "J.A.R.V.I.S. speaks German like a butler\nJ.A.R.V.I.S.'s German voice has no effects"
 }
