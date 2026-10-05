@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 170,
-  "commit": "204bf73",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-170/unus.dmg",
-  "sha256": "85b8a29f01678d261220ef375b8eb3aebbfc24652c542656b3538e376f196042",
+  "build": 171,
+  "commit": "35e74c9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-171/unus.dmg",
+  "sha256": "9c2bbf68515a1543e925edcde7d180e12abc8374b996bdf4a06629970b955084",
   "minimumSystemVersion": "26.0",
-  "notes": "After an update, What's New opens once"
+  "notes": "kit-30: What's New after an update is decided by the build that starts, alone"
 }
