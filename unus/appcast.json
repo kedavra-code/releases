@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 147,
-  "commit": "f4700ed",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-147/unus.dmg",
-  "sha256": "d6bd1a824d553d0939e5db248cbca7a82fac0b35f46c3be7198bfd49f6543d72",
+  "build": 153,
+  "commit": "85f32b0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-153/unus.dmg",
+  "sha256": "aaa4fb359295af2b27942baea558b03f61a0fd5062f69d81b8a510c31ef8a34d",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-16: the kit's clean-up (dead code, repeated tests, one test stub)"
+  "notes": "Settings is 620 pt wide, as in murmur, scripta and GLaDOS"
 }
