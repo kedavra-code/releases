@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 123,
-  "commit": "21f8434",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-123/murmur.dmg",
-  "sha256": "33b0c97251da911b1026ca524f0d90248bae8edaf592dba6fbe668c3519c4b2c",
+  "build": 131,
+  "commit": "b9d0b92",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-131/murmur.dmg",
+  "sha256": "b179b676fd5fd7ddc81159075742b4ca40ecbfd0eda28fb4720ba3eac04f02da",
   "minimumSystemVersion": "26.0",
-  "notes": "CLAUDE.md: the taller Dictionary tab, which build 122 shipped without its note"
+  "notes": "CLAUDE.md: Parakeet against Apple's engine, 192 clips through both"
 }
