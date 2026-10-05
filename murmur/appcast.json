@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 142,
-  "commit": "99e83cb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-142/murmur.dmg",
-  "sha256": "ef34085a778f1eb4d809e3cf1c2c1c8ec58535a89a750e4f96e060b4a7fb4ca1",
+  "build": 143,
+  "commit": "6a9f41a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-143/murmur.dmg",
+  "sha256": "2c0f88fbb4d1bf45c15bc7a95b4520c63922ba9fb56fec8f25dd037b48775897",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-30: What's New after an update is decided by the build that starts, alone"
+  "notes": "Small fixes and improvements."
 }
