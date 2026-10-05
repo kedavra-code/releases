@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 137,
-  "commit": "ec3e85a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-137/murmur.dmg",
-  "sha256": "49ae01e936d7b953d5f26792d7f8842017866f7a64745bac69b3e12f36058d9f",
+  "build": 141,
+  "commit": "37cc86e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-141/murmur.dmg",
+  "sha256": "1ddc510f76c497da86c81a17fb57a0840b8d2b3ca3b41415f2d57bd5fed811fe",
   "minimumSystemVersion": "26.0",
-  "notes": "An update says what is new, and a bad one is undone"
+  "notes": "After an update, What's New opens once"
 }
