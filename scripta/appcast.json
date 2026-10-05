@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 126,
-  "commit": "6498ced",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-126/scripta.dmg",
-  "sha256": "030b6d88e900b58689c93cc8100e6e60297add461fed8e656290b024b850b14a",
+  "build": 127,
+  "commit": "de2a2e4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-127/scripta.dmg",
+  "sha256": "5d22a466f6de241150892b082c87538800e846b36395a2e17ddff77908e11ac9",
   "minimumSystemVersion": "26.0",
-  "notes": "After an update, What's New opens once"
+  "notes": "kit-30: What's New after an update is decided by the build that starts, alone"
 }
