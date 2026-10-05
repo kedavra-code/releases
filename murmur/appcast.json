@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 131,
-  "commit": "b9d0b92",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-131/murmur.dmg",
-  "sha256": "b179b676fd5fd7ddc81159075742b4ca40ecbfd0eda28fb4720ba3eac04f02da",
+  "build": 137,
+  "commit": "ec3e85a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-137/murmur.dmg",
+  "sha256": "49ae01e936d7b953d5f26792d7f8842017866f7a64745bac69b3e12f36058d9f",
   "minimumSystemVersion": "26.0",
-  "notes": "CLAUDE.md: Parakeet against Apple's engine, 192 clips through both"
+  "notes": "An update says what is new, and a bad one is undone"
 }
