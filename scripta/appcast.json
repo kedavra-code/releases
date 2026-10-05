@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 105,
-  "commit": "6e82b7b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-105/scripta.dmg",
-  "sha256": "4cfb842831efc0189104a019c52922582b624d6fe40f37aca314e2fd473f8779",
+  "build": 121,
+  "commit": "2241496",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-121/scripta.dmg",
+  "sha256": "ab3d605e1a800359e88c84530ad5079a5859fd1059b37adb7dbe3fcc8526edc6",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings is 620 pt wide, as in murmur and GLaDOS"
+  "notes": "An update says what is new, and a bad one is undone\nA few words are not named by themselves\nscripta guesses who a voice is\nThe meeting's title and people from your calendar\nHear a moment of the meeting\nThe search finds what was said\nA meeting comes back after a crash\nAbout shows the kit version"
 }
