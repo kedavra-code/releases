@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 166,
-  "commit": "e30d68f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-166/unus.dmg",
-  "sha256": "1ec151b91ac72a65b6475b86a375d24b1996580fe24d6d461f1380c8a08df402",
+  "build": 170,
+  "commit": "204bf73",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-170/unus.dmg",
+  "sha256": "85b8a29f01678d261220ef375b8eb3aebbfc24652c542656b3538e376f196042",
   "minimumSystemVersion": "26.0",
-  "notes": "An update says what is new, and a bad one is undone"
+  "notes": "After an update, What's New opens once"
 }
