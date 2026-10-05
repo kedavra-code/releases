@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 329,
-  "commit": "b7b8b1e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-329/GLaDOS.dmg",
-  "sha256": "64a7b67732a2f4fa12431dc7a83f451d7c57b4df4988c377e5cef15f549814e9",
+  "build": 330,
+  "commit": "34af716",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-330/GLaDOS.dmg",
+  "sha256": "f8551cccbe796fdda0c56413d3c39eaa9e1d62daf428c724ac79abe097ef38bf",
   "minimumSystemVersion": "26.0",
-  "notes": "A discussion goes on where you cut it\nAfter an update, What's New opens once\nThe menu bar icon stays the eye\nDual speed is a switch in Settings"
+  "notes": "kit-29: the update proof asks by the updater's own download; a refused download is deleted"
 }
