@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 100,
-  "commit": "2a714a2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-100/scripta.dmg",
-  "sha256": "094cebe4852391e2d90be43bbc54bc4f6a6ef7bbaa33d44ee249834cc2fb8ed0",
+  "build": 105,
+  "commit": "6e82b7b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-105/scripta.dmg",
+  "sha256": "4cfb842831efc0189104a019c52922582b624d6fe40f37aca314e2fd473f8779",
   "minimumSystemVersion": "26.0",
-  "notes": "Stop asks for no interim minutes; a number goes with its noun"
+  "notes": "Settings is 620 pt wide, as in murmur and GLaDOS"
 }
