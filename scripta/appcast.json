@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 127,
-  "commit": "de2a2e4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-127/scripta.dmg",
-  "sha256": "5d22a466f6de241150892b082c87538800e846b36395a2e17ddff77908e11ac9",
+  "build": 128,
+  "commit": "93e3d92",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-128/scripta.dmg",
+  "sha256": "bcc1174782ff8357eba5e695e633c9e5075bf9b86b5c5e0787d09b0c33449d84",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-30: What's New after an update is decided by the build that starts, alone"
+  "notes": "Small fixes and improvements."
 }
