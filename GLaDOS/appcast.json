@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 295,
-  "commit": "59b8a3f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-295/GLaDOS.dmg",
-  "sha256": "6d8cd67f65c25bc3681637d89b0d4d71e4626e36325456614f72da23a495c82d",
+  "build": 299,
+  "commit": "2c8ccbb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-299/GLaDOS.dmg",
+  "sha256": "a692fb44e92f24c915ee90db4131f2f4f289a0d1f74fe1310badc82f3e2cda05",
   "minimumSystemVersion": "26.0",
-  "notes": "The mute code and other dead code are gone, and five copied blocks are one"
+  "notes": "His German voice is one semitone down, not two"
 }
