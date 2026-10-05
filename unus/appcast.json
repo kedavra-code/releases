@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 158,
-  "commit": "2d33d9c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-158/unus.dmg",
-  "sha256": "33eab4e87205ffad84703473b2337c95fc7cd57832eefe358d8da0853ab01aa7",
+  "build": 161,
+  "commit": "70cae3b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-161/unus.dmg",
+  "sha256": "609721c907e06d96435ab81217efe19cf57f62f07faf6b24a76de3eceb0cbd38",
   "minimumSystemVersion": "26.0",
-  "notes": "A refused line says why; prose still says nothing"
+  "notes": "A hyphen inside a word is not a minus"
 }
