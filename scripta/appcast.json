@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 122,
-  "commit": "559eab8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-122/scripta.dmg",
-  "sha256": "26efb0d126c4c581369f63c7d83a5a1c6abf7551b2fbd97461104afeca1051ce",
+  "build": 126,
+  "commit": "6498ced",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-126/scripta.dmg",
+  "sha256": "030b6d88e900b58689c93cc8100e6e60297add461fed8e656290b024b850b14a",
   "minimumSystemVersion": "26.0",
-  "notes": "An imported recording finds its meeting in your calendar"
+  "notes": "After an update, What's New opens once"
 }
