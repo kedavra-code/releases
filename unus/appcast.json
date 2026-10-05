@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 171,
-  "commit": "35e74c9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-171/unus.dmg",
-  "sha256": "9c2bbf68515a1543e925edcde7d180e12abc8374b996bdf4a06629970b955084",
+  "build": 172,
+  "commit": "def8ecc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-172/unus.dmg",
+  "sha256": "d34967a4f3158405d0d98611ee2eeea30cad0888d5155863441501ac58471762",
   "minimumSystemVersion": "26.0",
-  "notes": "kit-30: What's New after an update is decided by the build that starts, alone"
+  "notes": "Small fixes and improvements."
 }
