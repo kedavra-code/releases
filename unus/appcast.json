@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 161,
-  "commit": "70cae3b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-161/unus.dmg",
-  "sha256": "609721c907e06d96435ab81217efe19cf57f62f07faf6b24a76de3eceb0cbd38",
+  "build": 166,
+  "commit": "e30d68f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-166/unus.dmg",
+  "sha256": "1ec151b91ac72a65b6475b86a375d24b1996580fe24d6d461f1380c8a08df402",
   "minimumSystemVersion": "26.0",
-  "notes": "A hyphen inside a word is not a minus"
+  "notes": "An update says what is new, and a bad one is undone"
 }
