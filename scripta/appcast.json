@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 130,
-  "commit": "b55f603",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-130/scripta.dmg",
-  "sha256": "4cec9760e9812e1b6ed375cddc92fcb047a19f66e2b309f59a652a20d8a6c929",
+  "build": 133,
+  "commit": "c37b52c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-133/scripta.dmg",
+  "sha256": "20ad2c6a7469ba0b3ce698b21af380aed4ac7b9a9feecda0a54440f0a7c4b91f",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "The menu bar icon moves while scripta works\nOneNote is gone: your calendar gives the title and the people"
 }
