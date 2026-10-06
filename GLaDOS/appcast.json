@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 344,
-  "commit": "6c29bcd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-344/GLaDOS.dmg",
-  "sha256": "fd74f7e052aac70d5d080793b7f05bf353ad21904300998d56645804ad0e4941",
+  "build": 345,
+  "commit": "a26d763",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-345/GLaDOS.dmg",
+  "sha256": "bd5a24fa8049a1ba00f2b0d36f22a57274b2d19359e5b63d15cffcfdb906329a",
   "minimumSystemVersion": "26.0",
-  "notes": "J.A.R.V.I.S. is as loud as GLaDOS on the Mac's speakers\nThe menu bar icon turns smoothly, at no cost\nThe menu bar icon turns while they speak\nThe menu bar icon is always the eye"
+  "notes": "The one you speak to answers"
 }
