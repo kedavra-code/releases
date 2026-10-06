@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 144,
-  "commit": "f62d06e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-144/murmur.dmg",
-  "sha256": "0c3926d0b9ecf367f869f389a7c238ecfb92848e46a03df2518ca69b9cd4c13b",
+  "build": 147,
+  "commit": "ea87734",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-147/murmur.dmg",
+  "sha256": "4d7c1d1bbc0eddd1ee284362ee1a71e78eb5c7ec439ad86a1d2ab729f99347a2",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "The menu bar icon moves while murmur records"
 }
