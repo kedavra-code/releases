@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 350,
-  "commit": "d43db06",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-350/GLaDOS.dmg",
-  "sha256": "bcf8470329352200e9f4448431c87e01ff364b8d1ff95951f99feb98f4e5d500",
+  "build": 354,
+  "commit": "35cbaa0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-354/GLaDOS.dmg",
+  "sha256": "5eb5862fce04e95f6e84ec2ac73ee213154117f1e33178b6ce519caf26452e37",
   "minimumSystemVersion": "26.0",
-  "notes": "She starts the film in Cerebrum"
+  "notes": "The one that is off keeps its small black disc\nSettings › Voice has no J.A.R.V.I.S. switch any more"
 }
