@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 346,
-  "commit": "6e9a553",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-346/GLaDOS.dmg",
-  "sha256": "beb97e3084f0d458c1add9d59b20e611d52ac1fded8300765c1c436d8773e4a4",
+  "build": 347,
+  "commit": "02cdfaf",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-347/GLaDOS.dmg",
+  "sha256": "8b25d1fd043678f8fb9a23be143816f4fef9989a5e4a0797240001932e38637b",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "Haiku 5.5 replaces Haiku 4.5"
 }
