@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 347,
-  "commit": "02cdfaf",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-347/GLaDOS.dmg",
-  "sha256": "8b25d1fd043678f8fb9a23be143816f4fef9989a5e4a0797240001932e38637b",
+  "build": 350,
+  "commit": "d43db06",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-350/GLaDOS.dmg",
+  "sha256": "bcf8470329352200e9f4448431c87e01ff364b8d1ff95951f99feb98f4e5d500",
   "minimumSystemVersion": "26.0",
-  "notes": "Haiku 5.5 replaces Haiku 4.5"
+  "notes": "She starts the film in Cerebrum"
 }
