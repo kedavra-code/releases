@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 133,
-  "commit": "c37b52c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-133/scripta.dmg",
-  "sha256": "20ad2c6a7469ba0b3ce698b21af380aed4ac7b9a9feecda0a54440f0a7c4b91f",
+  "build": 134,
+  "commit": "8d256f1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-134/scripta.dmg",
+  "sha256": "a3a8232724f1528e072da22588a8b12b42bcb677d9dd782cbed5a931ca5b3535",
   "minimumSystemVersion": "26.0",
-  "notes": "The menu bar icon moves while scripta works\nOneNote is gone: your calendar gives the title and the people"
+  "notes": "Haiku 5.5 takes the place of Haiku 4.5"
 }
