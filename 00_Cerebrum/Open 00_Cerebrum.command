@@ -89,6 +89,25 @@ if [ ! -f "$VIEWER" ]; then
   python3 _scripts/visualize.py || { echo "!! visualize.py failed"; exit 1; }
 fi
 
+# A helper reads its code and its model list one time, when it starts. One that
+# began before its script last changed is stopped here, and the new one is
+# started below. Until 08.10.2026 it was left to run, and the owner started the
+# viewer again after two models had left the list and saw them still. A helper
+# that is answering a question at this moment is left to finish.
+OLD=$(pgrep -f "viewer-server.py --port $PORT" | head -1)
+if [ -n "$OLD" ] && python3 _scripts/viewer-server.py --stale "$OLD"; then
+  if curl -fsS -m 2 "http://127.0.0.1:$PORT/health" 2>/dev/null | grep -q '"busy": true'; then
+    echo "· the helper is older than its script, but it is answering a question: it is left running"
+  else
+    echo "· the helper is older than its script: stopping it, the new one starts now"
+    kill "$OLD" 2>/dev/null || true
+    for _ in $(seq 1 20); do
+      curl -fsS -m 1 "http://127.0.0.1:$PORT/health" >/dev/null 2>&1 || break
+      sleep 0.25
+    done
+  fi
+fi
+
 # Is the helper already answering? Ask it rather than looking for a process:
 # what matters is whether the port responds, not whether something is named
 # like it.

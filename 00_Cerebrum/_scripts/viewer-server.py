@@ -94,8 +94,8 @@ EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max']
 # shape the expensive way: everything downstream asks the registry and branches
 # on a capability field, never on the id string.
 #
-# `effort` says whether the model takes `--effort` at all — Haiku rejects it, and
-# a local model has no such notion. `agentic` says whether it can run Ask Claude:
+# `effort` says whether the model takes `--effort` at all — Haiku 4.5 rejected it,
+# and a local model has no such notion. `agentic` says whether it can run Ask Claude:
 # that job is an agent which reads the vault, greps it, writes the report and
 # adds the register row, and `claude -p` is that agent. A local model here is a
 # text completion, prompt in and text out, with no loop and no tools. GLaDOS
@@ -125,9 +125,14 @@ MODELS = [
     {'id': 'claude-sonnet-5-5', 'label': 'Sonnet 5.5', 'provider': 'anthropic',
      'effort': True, 'agentic': True, 'translates': True,
      'note': 'Faster and cheaper than Opus.'},
-    {'id': 'claude-haiku-4-5', 'label': 'Haiku 4.5', 'provider': 'anthropic',
-     'effort': False, 'agentic': True, 'translates': True,
-     'note': 'The cheap one. No effort level.'},
+    # Haiku 5.5 took Haiku 4.5's place on 08.10.2026, the day after its release,
+    # on the owner's instruction: "replace haiku 4.5 with haiku 5.5 in the
+    # picker". Haiku 4.5 took no effort level; this one does. Claude Code
+    # 2.1.280 ran it with `--effort high` that day, after the same
+    # `unrecognized_model` line it prints for Sonnet 5.5.
+    {'id': 'claude-haiku-5-5', 'label': 'Haiku 5.5', 'provider': 'anthropic',
+     'effort': True, 'agentic': True, 'translates': True,
+     'note': 'The cheap one.'},
     {'id': 'local:mlx-community/Qwen3-30B-A3B-Instruct-2507-4bit',
      'label': 'Qwen3 30B (local)', 'provider': 'local',
      'effort': False, 'agentic': False, 'translates': True,
@@ -135,18 +140,9 @@ MODELS = [
      'revision': 'e9675aa3ca5f900ccef55267914466d55ab325fa',
      'bytes': 17_197_087_380,
      'note': '30B resident, 3B read per token. The quick one.'},
-    {'id': 'local:mlx-community/gemma-3-27b-it-4bit',
-     'label': 'Gemma 3 27B (local)', 'provider': 'local',
-     'effort': False, 'agentic': False, 'translates': True,
-     'repo': 'mlx-community/gemma-3-27b-it-4bit',
-     'revision': None, 'bytes': 15_600_000_000,
-     'note': 'Sliding-window attention. Check its German on a long report.'},
-    {'id': 'local:mlx-community/Mistral-Small-3.2-24B-Instruct-2506-4bit',
-     'label': 'Mistral Small 24B (local)', 'provider': 'local',
-     'effort': False, 'agentic': False, 'translates': True,
-     'repo': 'mlx-community/Mistral-Small-3.2-24B-Instruct-2506-4bit',
-     'revision': None, 'bytes': 13_400_000_000,
-     'note': 'The European house. Strong multilingual.'},
+    # Gemma 3 27B and Mistral Small 24B stood here until 08.10.2026. Owner's
+    # instruction: "remove gemma and mistral from the settings". Settings shows
+    # what this list names, so they left the list.
 ]
 
 
@@ -416,7 +412,7 @@ def run_claude(prompt, emit, started_note, mid=None, effort=None):
     """Run the librarian and report the tools it picks up. Returns its text."""
     cmd = ['claude', '-p', prompt, '--model', mid or MODEL,
            '--output-format', 'stream-json', '--verbose']
-    # Haiku rejects `--effort` outright, so the flag is added rather than always
+    # Haiku 4.5 rejected `--effort` outright, so the flag is added rather than always
     # present. The registry says which models take it; this only obeys.
     if effort:
         cmd[3:3] = ['--effort', effort]
@@ -1469,10 +1465,39 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
 
+def started_before(pid, path=None):
+    """Whether process `pid` began before `path` last changed: True, False, or
+    None when `ps` knows no such process.
+
+    The launcher asks this of the helper that is running, with the helper's own
+    script as the file. A helper reads its code and its model list one time,
+    when it starts. Until 08.10.2026 the launcher left any helper that answered,
+    and the owner started the viewer again after two models had left the list
+    and saw them still: "i still have mistral and gemma in the settings",
+    "although i restarted the helper".
+    """
+    out = subprocess.run(['ps', '-o', 'etime=', '-p', str(pid)],
+                         capture_output=True, text=True).stdout.strip()
+    if not out:
+        return None
+    # `ps` gives the age as [[days-]hours:]minutes:seconds
+    days, _, clock = out.rpartition('-')
+    parts = [int(x) for x in clock.split(':')]
+    parts = [0] * (3 - len(parts)) + parts
+    age = int(days or 0) * 86400 + parts[0] * 3600 + parts[1] * 60 + parts[2]
+    return age > time.time() - os.path.getmtime(path or os.path.abspath(__file__))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('--port', type=int, default=8760)
+    ap.add_argument('--stale', nargs='+', metavar=('PID', 'FILE'),
+                    help='start nothing: say whether process PID began before this '
+                         'script, or FILE, last changed. Exit 0 yes, 1 no, 2 unknown')
     a = ap.parse_args()
+    if a.stale:
+        older = started_before(int(a.stale[0]), *a.stale[1:2])
+        sys.exit(2 if older is None else 0 if older else 1)
     srv = ThreadingHTTPServer(('127.0.0.1', a.port), Handler)
     print('viewer helper on http://127.0.0.1:%d  (%s at %s effort)'
           % (a.port, MODEL, EFFORT))

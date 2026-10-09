@@ -117,11 +117,27 @@ inbound = collections.defaultdict(list)
 for cid, outs in outbound.items():
     for t in outs: inbound[t].append(cid)
 
+# The film, 07.10.2026: a concept comes into the picture at the date of its
+# oldest dated source. That is when its subject first shows in the notes, not
+# when the concept was written, which for every concept here is 2026. One
+# number a concept: the date counted in days with every month 31 long, so the
+# page gets the month by dividing by 31 and the day keeps the order inside a
+# month. A concept with no dated source has none.
+_DATED = re.compile(r'(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?')
+def _born(srcs):
+    days = []
+    for s in srcs:
+        m = _DATED.match(str(s.get('last_modified', '')))
+        if not m: continue
+        y, mo, d = int(m.group(1)), int(m.group(2) or 1), int(m.group(3) or 1)
+        if 1 <= mo <= 12 and 1 <= d <= 31: days.append(y * 372 + (mo - 1) * 31 + d - 1)
+    return min(days) if days else None
+
 data = {}
 for cid, c in concepts.items():
     fm = c['fm']
     srcs = [s for s in (fm.get('sources') or []) if isinstance(s, dict)]
-    data[cid] = dict(
+    data[cid] = dict(b=_born(srcs),
         t=fm.get('title') or os.path.basename(cid)[:-3],
         d=fm.get('description') or '', ty=fm.get('type') or '?',
         st=fm.get('status') or 'stable', tr=c['tier'], kb=c['kb'],
@@ -633,6 +649,28 @@ for g, members in _groups.items():
 # anchors already put the origin there, so no offset is taken. One of zero was
 # subtracted from every coordinate until the review of 04.10.2026, which read
 # as if the picture were re-centred here.
+# ---- Places set by hand. A vault whose owner wants the middle of a knowledge
+# base at a place of his own names it here: '<Topic>_kb': (x, y, z).
+#
+# x to the right, y up and z out of the map's plane toward the reader; the
+# middle of the map is 0 0 0. A base named here is moved there whole, as the
+# solve above laid it out and with its own depths, so that the middle of its
+# concepts stands at the place. A base not named keeps the place the solve gave
+# it. The Graph view is the map seen from above: it shows x and y of these
+# places, and the 3D view adds z. The table is empty in the template, so every
+# base keeps the solve's place and the 40 units between two halos hold.
+PLACE = {}
+for _kb, (_px, _py, _pz) in PLACE.items():
+    _m = _groups.get(_kb, [])
+    if not _m:
+        continue
+    _cx = sum(_pos[i][0] for i in _m) / len(_m)
+    _cy = sum(_pos[i][1] for i in _m) / len(_m)
+    _cz = sum(_depths[i] for i in _m) / len(_m)
+    for i in _m:
+        _pos[i] = (_pos[i][0] - _cx + _px, _pos[i][1] - _cy - _py)   # the map's own y runs down the page
+        _depths[i] += _pz - _cz
+
 for i, c in enumerate(_ids):
     x, y = _pos[i]
     data[c]['x'] = round(x, 1); data[c]['y'] = round(y, 1); data[c]['z'] = round(_depths[i], 1)
@@ -865,7 +903,7 @@ if(!gl){b3.disabled=true;b3.title='3D view: needs WebGL2, which this browser doe
  document.getElementById('about3d').disabled=true;return}
 G3.ok=true;G3.opaque=gl.getContextAttributes().alpha===false;
 const RM=matchMedia('(prefers-reduced-motion: reduce)');RM.addEventListener('change',()=>{need=true});
-const FOV=38*Math.PI/180,NN=N.length,MARGIN=36;
+const FOV=38*Math.PI/180,NN=N.length,MARGIN=36;let fov=FOV,nearW=1;
 const hex=h=>{h=h.trim().replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');
  const v=parseInt(h.slice(0,6),16);return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255]};
 /* canvas y points down, GL y points up: flipping y here is what makes the
@@ -873,6 +911,25 @@ const hex=h=>{h=h.trim().replace('#','');if(h.length===3)h=h.split('').map(c=>c+
 const PX=new Float32Array(NN),PY=new Float32Array(NN),PZ=new Float32Array(NN),RR=new Float32Array(NN);
 N.forEach((n,i)=>{PX[i]=n.x;PY[i]=-n.y;PZ[i]=D[n.id].z||0;RR[i]=n.r});
 const C3=N.map(n=>hex(COL[n.c]));
+/* The film's clock, 07.10.2026. A concept is born at the date of its oldest
+   source, D[id].b, here in months from the film's first month. The film begins
+   where the dates begin to follow one another: a lone early date with more
+   than a year of nothing after it would open on an empty sky for that long, so
+   such a concept is born with the first month, and a concept with no date with
+   the last. fp is the playhead in months, null while no film shows, and a
+   concept is gone from the picture until the playhead has passed its birth. */
+const BD=N.map(n=>D[n.id].b),MO=[...new Set(BD.filter(b=>b!=null).map(b=>Math.floor(b/31)))].sort((a,b)=>a-b);
+let m0=0;while(m0<MO.length-1&&MO[m0+1]-MO[m0]>12)m0++;
+const T0=MO.length?MO[m0]:0,TOT=MO.length?MO[MO.length-1]-T0+1:1;
+const R=BD.map((b,i)=>b!=null?Math.max(0,b/31-T0):TOT-1+(i*.6180339887)%1*.9);
+/* The most-linked concept of the vault is there from the film's first month, whatever
+   its date. Owner's words of 08.10.2026, whose own concept that is: "make it such
+   that you are showing me from the beginning on". The links to it still come as
+   their other ends do. */
+R[N.reduce((m,n,i)=>D[n.id].inb.length>D[N[m].id].inb.length?i:m,0)]=0;
+let fp=null;const gone=i=>hid(N[i])||(fp!==null&&R[i]>=fp);
+/* a month of film takes MSM milliseconds; a concept's flash lasts FLASH months and a link draws itself in GROW */
+const MSM=450,FLASH=1.6,GROW=1.2;
 
 function prog(vs,fs){const p=gl.createProgram();
  for(const[t,s]of[[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const sh=gl.createShader(t);
@@ -885,15 +942,42 @@ function buf(data,usage){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER
 function attr(loc,b,size,stride,off,div){gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.enableVertexAttribArray(loc);
  gl.vertexAttribPointer(loc,size,gl.FLOAT,false,stride*4,off*4);gl.vertexAttribDivisor(loc,div)}
 
+/* ---- the flight at speed, 08.10.2026. Owner's words: "relativistic Doppler
+   effect. Light from ahead is blueshifted because you're flying into it. Light
+   from behind is redshifted because you're moving away from it. also distort
+   the shape the way objects are changed when flying close to lightspeed."
+
+   The neuron is the one who flies, and the map is drawn as it is seen from
+   the neuron. A point is seen where the light it sent out comes in: moved
+   along the direction of flight, by the Lorentz transformation of the moment
+   that light left. So what is ahead stands further off and closer round the
+   way ahead, and what is behind stands closer by; the neuron itself and the
+   line through it along its way stay where they are, which keeps the neuron
+   on its link. The light is shifted by the same amount: toward blue and
+   brighter ahead, toward red and dimmer behind, by tint(). uRb is the
+   neuron's pace as a share of the pace of light: 0 at a stop, where the map
+   is as it is and in its own colours, and BMAX at most, on a long link. The
+   page's warp() does rel()'s sum for the names and for viewer-check. NR is
+   the size of the neuron's mark. */
+const BMAX=.5,NR=9,REL=`uniform vec3 uRo,uRu;uniform float uRb;
+vec3 rel(vec3 p){if(uRb<=0.)return p;vec3 r=p-uRo;float g=inversesqrt(1.-uRb*uRb);
+ return p+((g-1.)*dot(r,uRu)+g*uRb*length(r))*uRu;}
+/* the shift of a point's light, from where the point is seen: above 1 ahead, below 1 behind */
+float dopp(vec3 q){if(uRb<=0.)return 1.;vec3 r=q-uRo;float l=length(r);
+ return l<1e-3?1.:sqrt(1.-uRb*uRb)/(1.-uRb*dot(r,uRu)/l);}
+vec3 tint(vec3 c,float D){float s=clamp(log2(D)*${(1/Math.log2(Math.sqrt((1+BMAX)/(1-BMAX)))).toFixed(4)},-1.,1.),v=max(c.r,max(c.g,c.b));
+ return s>0.?mix(c,vec3(.42,.66,1.)*v,s)*(1.+.8*s):mix(c,vec3(1.,.26,.13)*v,-s)*(1.+.5*s);}
+`;
+
 /* ---- concepts: one quad each, the legend shape in its core and a glow round it */
 const FOG='uniform float uF0,uF1;float fog(float w){return 1.-.72*smoothstep(uF0,uF1,w);}';
-const PN=prog(FOG+`
+const PN=prog(FOG+REL+`
 layout(location=0)in vec2 aQ;layout(location=1)in vec4 aP;layout(location=2)in vec4 aC;layout(location=3)in float aS;
-uniform mat4 uM;uniform vec2 uV;uniform float uPx,uZs,uMin;
+uniform mat4 uM;uniform vec2 uV;uniform float uPx,uZs,uMin,uMax;
 out vec2 vQ;out vec3 vC;out float vShape,vS,vF;
-void main(){vec4 c=uM*vec4(aP.x,aP.y,aP.z*uZs,1.);
- float rp=clamp(aP.w*sqrt(uPx/max(c.w,1e-3)),uMin,30.);
- const float G=3.2;vQ=aQ*G;vC=aC.rgb;vShape=aC.a;vS=aS;vF=fog(c.w);
+void main(){vec3 q=rel(vec3(aP.x,aP.y,aP.z*uZs));vec4 c=uM*vec4(q,1.);
+ float rp=clamp(aP.w*sqrt(uPx/max(c.w,1e-3)),uMin,uMax);
+ const float G=3.2;vQ=aQ*G;vC=tint(aC.rgb,dopp(q));vShape=aC.a;vS=aS;vF=fog(c.w);
  gl_Position=c+vec4(aQ*G*rp*2./uV*c.w,0.,0.);}`,`
 uniform sampler2D uT;uniform vec3 uBg,uAcc;uniform float uCell;
 in vec2 vQ;in vec3 vC;in float vShape,vS,vF;out vec4 o;
@@ -906,7 +990,7 @@ void main(){float d=length(vQ);
   float ring=(1.-smoothstep(w,w+.07,abs(d-rr)))*(1.-edge);rgb+=uAcc*ring;a+=ring;}
  vec3 glow=vC*exp(-d*d*.6)*(ghost>0.?0.:(vS>2.5?.7:.4));
  float k=vF*(ghost>0.?.13:1.);o=vec4((rgb+glow)*k,a*k);if(o.a<.003&&dot(o.rgb,o.rgb)<1e-5)discard;}`);
-const NS=9,nodeArr=new Float32Array(NN*NS),quad=buf(new Float32Array([-1,-1,1,-1,-1,1,1,1]));
+const NS=9,nodeArr=new Float32Array((NN+12)*NS),quad=buf(new Float32Array([-1,-1,1,-1,-1,1,1,1]));
 const nodeBuf=buf(nodeArr.byteLength,gl.DYNAMIC_DRAW);
 const vaoN=gl.createVertexArray();gl.bindVertexArray(vaoN);
 attr(0,quad,2,2,0,0);attr(1,nodeBuf,4,NS,0,1);attr(2,nodeBuf,4,NS,4,1);attr(3,nodeBuf,1,NS,8,1);
@@ -933,13 +1017,18 @@ const CELL=128,SR_=40,tex=gl.createTexture();
 
 /* ---- links: one strip each, cut in screen space so a link is the same width
    near and far, with a soft edge instead of the GPU's jagged one-pixel line */
-const PE=prog(FOG+`
+const PE=prog(FOG+REL+`
 layout(location=0)in vec2 aQ;layout(location=1)in vec3 aA;layout(location=2)in vec3 aB;
 layout(location=3)in vec3 aCa;layout(location=4)in vec3 aCb;layout(location=5)in vec4 aW;
-uniform mat4 uM;uniform vec2 uV;uniform float uZs;
-out vec3 vC;out float vA,vD,vH,vF,vS,vSW,vWW,vL,vFg,vAl;
-void main(){vec4 a=uM*vec4(aA.xy,aA.z*uZs,1.),b=uM*vec4(aB.xy,aB.z*uZs,1.);
- if(aW.x<.001||a.w<=0.||b.w<=0.){gl_Position=vec4(2.,2.,2.,1.);return;}
+uniform mat4 uM;uniform vec2 uV;uniform float uZs,uN;
+out vec3 vC,vP;out float vA,vD,vH,vF,vS,vSW,vWW,vL,vFg,vAl;
+void main(){vec3 wa=rel(vec3(aA.xy,aA.z*uZs)),wb=rel(vec3(aB.xy,aB.z*uZs));vec4 a=uM*vec4(wa,1.),b=uM*vec4(wb,1.);
+ if(aW.x<.001||(a.w<=uN&&b.w<=uN)){gl_Position=vec4(2.,2.,2.,1.);return;}
+ /* an end behind the eye is brought to the near plane along the link, so a link
+    that passes the camera is drawn as far as it can be seen. Until 08.10.2026
+    such a link was not drawn at all, which the flight along the links met at
+    once: the link it flies is one. */
+ if(a.w<uN){float t=(b.w-uN)/(b.w-a.w);a=mix(b,a,t);wa=mix(wb,wa,t);}else if(b.w<uN){float t=(a.w-uN)/(a.w-b.w);b=mix(a,b,t);wb=mix(wa,wb,t);}
  vec2 sa=a.xy/a.w*uV,sb=b.xy/b.w*uV,dd=sb-sa;float l=length(dd);vec2 dir=l>1e-4?dd/l:vec2(1.,0.);
  vec4 p=mix(a,b,aQ.x);float h=aW.y*.5+1.;if(aW.z!=0.)h=max(h,abs(aW.z)>5.?4.4:2.6);
  gl_Position=p+vec4(vec2(-dir.y,dir.x)*aQ.y*h*2./uV*p.w,0.,0.);
@@ -947,8 +1036,12 @@ void main(){vec4 a=uM*vec4(aA.xy,aA.z*uZs,1.),b=uM*vec4(aB.xy,aB.z*uZs,1.);
  /* the distance along the link in screen pixels, interpolated linearly on
     screen: GLSL ES 3.00 has no noperspective, so it travels multiplied by w
     and is divided by the interpolated w in the fragment shader */
- vL=l*.5;vSW=aQ.x*vL*p.w;vWW=p.w;}`,`
-in vec3 vC;in float vA,vD,vH,vF,vS,vSW,vWW,vL,vFg,vAl;uniform float uTime;uniform vec3 uFg;out vec4 o;
+ vL=l*.5;vSW=aQ.x*vL*p.w;vWW=p.w;
+ /* where on the link, as it is seen, this is: the light's shift is worked out
+    for each pixel there, because the link the neuron is on is blue ahead of it
+    and red behind it, and the two ends alone cannot say where the neuron is */
+ vP=mix(wa,wb,aQ.x);}`,REL+`
+in vec3 vC,vP;in float vA,vD,vH,vF,vS,vSW,vWW,vL,vFg,vAl;uniform float uTime;uniform vec3 uFg;out vec4 o;
 /* A bead is a round dot of a fixed size on screen, whatever the link's length,
    as the 2D graph draws it: owner's choice of 23.09.2026, after the first cut
    drew a streak whose length was a share of the link's. */
@@ -962,7 +1055,7 @@ void main(){float cov=clamp(vH+.5-abs(vD),0.,1.);vec3 c=vC*vA*cov;
    c+=(vC*ring*(1.-core)+vec3(core))*vFg;}
   else{float b=d>0.?disc(s,ca,1.6):disc(s,cb,1.6);if(d>1.5)b=max(b,disc(s,ca,1.6));
    c+=uFg*b*.45*min(1.,vAl/.12)*vFg;}}
- o=vec4(c,0.);}`);
+ o=vec4(tint(c,dopp(vP)),0.);}`);
 const pairs=new Map();L.forEach(([a,b])=>{const k=a<b?a*NN+b:b*NN+a;if(!pairs.has(k))pairs.set(k,[Math.min(a,b),Math.max(a,b)])});
 const E3=[...pairs.values()],NE=E3.length,MUT=hex(css('--mut'));
 const eArr=new Float32Array(NE*12);
@@ -1002,19 +1095,19 @@ uniform mat4 uM;uniform vec3 uR,uU;uniform float uZs,uA;out vec2 vQ;out vec3 vC;
 void main(){vQ=aQ;vC=aC;vec3 c=vec3(aP.xy,aP.z*uZs)+(uR*aQ.x+uU*aQ.y)*aP.w;gl_Position=uM*vec4(c,1.);}`,`
 in vec2 vQ;in vec3 vC;uniform float uA;out vec4 o;
 void main(){float d=dot(vQ,vQ);if(d>1.)discard;o=vec4(vC*uA*(exp(-d*2.6)-.074)*1.08,0.);}`);
-const KBS=Object.keys(KBC).filter(k=>HUE[k]),KBZ={};
-KBS.forEach(k=>{let s=0,c=0;N.forEach((n,i)=>{if(n.kb===k){s+=PZ[i];c++}});KBZ[k]=c?s/c:0});
+const KBS=Object.keys(KBC).filter(k=>HUE[k]),KBZ={},KBN={};let KBB=null;
+KBS.forEach(k=>{let s=0,c=0;N.forEach((n,i)=>{if(n.kb===k){s+=PZ[i];c++}});KBZ[k]=c?s/c:0;KBN[k]=c||1});
 const hArr=new Float32Array(KBS.length*7),hBuf=buf(hArr.byteLength,gl.DYNAMIC_DRAW);let nH=0;
 const vaoH=gl.createVertexArray();gl.bindVertexArray(vaoH);attr(0,quad,2,2,0,0);attr(1,hBuf,4,7,0,1);attr(2,hBuf,3,7,4,1);
 
 /* ---- dust: a few hundred faint motes far behind and around the map. They
    carry nothing; they are there so that turning the view reads as moving
    through space, which is most of what makes depth legible on a screen */
-const PD=prog(`
-layout(location=0)in vec3 aP;uniform mat4 uM;uniform float uDpr;out float vA;
-void main(){gl_Position=uM*vec4(aP,1.);gl_PointSize=(1.2+fract(aP.x*.013)*1.4)*uDpr;vA=.1+fract(aP.y*.017)*.22;}`,`
-in float vA;uniform vec3 uCol;out vec4 o;
-void main(){vec2 q=gl_PointCoord*2.-1.;float d=dot(q,q);if(d>1.)discard;o=vec4(uCol*vA*(1.-d),0.);}`);
+const PD=prog(REL+`
+layout(location=0)in vec3 aP;uniform mat4 uM;uniform float uDpr;out float vA,vDo;
+void main(){vec3 q=rel(aP);gl_Position=uM*vec4(q,1.);gl_PointSize=(1.2+fract(aP.x*.013)*1.4)*uDpr;vA=.1+fract(aP.y*.017)*.22;vDo=dopp(q);}`,REL+`
+in float vA,vDo;uniform vec3 uCol;out vec4 o;
+void main(){vec2 q=gl_PointCoord*2.-1.;float d=dot(q,q);if(d>1.)discard;o=vec4(tint(uCol*vA*(1.-d),vDo),0.);}`);
 let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(let i=0;i<NN;i++){x0=Math.min(x0,PX[i]);x1=Math.max(x1,PX[i]);y0=Math.min(y0,PY[i]);y1=Math.max(y1,PY[i])}
 const SCX=(x0+x1)/2,SCY=(y0+y1)/2,SCR=Math.max(x1-x0,y1-y0)/2,ND=900,dArr=new Float32Array(ND*3);
 let seed=20260923;const rnd=()=>(seed=(seed*1664525+1013904223)>>>0)/4294967296;
@@ -1051,6 +1144,10 @@ const cam={t:[SCX,SCY,0],d:SCR*3,q:qYP(0,0),zs:1};
 /* a turn is about the camera's own axes: sideways about its up, up and down
    about its right, which is what makes it endless both ways */
 function turn(a,b){cam.q=qnorm(qmul(cam.q,qmul(qax(0,1,0,a),qax(1,0,0,-b))))}
+/* The roll: the picture turned in its own plane, clockwise by a, about the
+   line of sight. It is the 2D graph's turn, and comes the same two ways: the
+   Option key with a two-finger swipe, and Safari's two-finger turn. */
+function roll(a){cam.q=qnorm(qmul(cam.q,qax(0,0,1,a)))}
 let W=1,H=1,dpr3=1,M=null,pxs=1,right=[1,0,0],up=[0,1,0],back=[0,0,1],anim=null,entered=false,
  vy=0,vp=0,drag3=null,last=performance.now(),idle=last,need=true,skey='',GH=new Uint8Array(NN),
  F0=0,F1=1,BR={c:[SCX,SCY,0],r:SCR};
@@ -1059,32 +1156,38 @@ const basis=q=>[qrot(q,[1,0,0]),qrot(q,[0,1,0]),qrot(q,[0,0,1])];
 function matrix(){[right,up,back]=basis(cam.q);
  const e=[0,1,2].map(k=>cam.t[k]+cam.d*back[k]),dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
  const V=[right[0],up[0],back[0],0,right[1],up[1],back[1],0,right[2],up[2],back[2],0,-dot(right,e),-dot(up,e),-dot(back,e),1];
- const n=Math.max(1,cam.d*.02),f=cam.d+SCR*8,t=1/Math.tan(FOV/2),a=W/H,nf=1/(n-f);
+ const n=nearW=Math.max(1,cam.d*.02),f=cam.d+SCR*8,t=1/Math.tan(fov/2),a=W/H,nf=1/(n-f);
  const P=[t/a,0,0,0,0,t,0,0,0,0,(f+n)*nf,-1,0,0,2*f*n*nf,0];M=new Float32Array(16);
  for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;for(let k=0;k<4;k++)s+=P[k*4+r]*V[c*4+k];M[c*4+r]=s}
  pxs=(H/2)*t}
 function resize3(){const w=g3.clientWidth,h=g3.clientHeight;if(!w||!h)return;W=w;H=h;dpr3=Math.min(devicePixelRatio||1,2);
- for(const c of[g3,g3l]){c.width=Math.round(w*dpr3);c.height=Math.round(h*dpr3)}need=true}
+ for(const c of[g3,g3l]){c.width=Math.round(w*dpr3);c.height=Math.round(h*dpr3)}need=true;
+ if(cine==='film')planFilm()}   // the film's frames are planned for the window's shape
 new ResizeObserver(resize3).observe(g3);
 
 /* What is showing decides the frame: the bounds Fit uses and the fog range. */
-function bounds(zs){let a=[1e9,1e9,1e9],b=[-1e9,-1e9,-1e9],any=false;
- for(let i=0;i<NN;i++){if(hid(N[i]))continue;any=true;const p=[PX[i],PY[i],PZ[i]*zs];
+function bounds(zs,keep){let a=[1e9,1e9,1e9],b=[-1e9,-1e9,-1e9],any=false;
+ for(let i=0;i<NN;i++){if(keep?!keep(i):gone(i))continue;any=true;const p=[PX[i],PY[i],PZ[i]*zs];
   for(let k=0;k<3;k++){a[k]=Math.min(a[k],p[k]);b[k]=Math.max(b[k],p[k])}}
  if(!any)return null;const c=[0,1,2].map(k=>(a[k]+b[k])/2);
  return{c,r:Math.max(1,Math.hypot(b[0]-a[0],b[1]-a[1],b[2]-a[2])/2)}}
 /* Fit is solved, not guessed: for the camera's direction, the distance at
    which every showing concept's centre lands inside the canvas, margins
    included, with the target moved to the middle of what the camera sees. */
-function fitFor(q,zs){const[r,u,b]=basis(q),bb=bounds(zs);if(!bb)return null;
- const tx=Math.tan(FOV/2)*(W/H)*(W-2*MARGIN)/W,ty=Math.tan(FOV/2)*(H-2*MARGIN)/H;
+function fitFor(q,zs,keep,cap){const[r,u,b]=basis(q),bb=bounds(zs,keep);if(!bb)return null;
+ /* in the cinema the frame is what the two bars leave, less `cap` pixels above
+    the lower one where the film's caption stands: the picture is fitted into
+    that and moved up by half the difference */
+ const top=MARGIN+(cine?Math.max(.09*H,58):0),bot=top+(cap||0);
+ const tx=Math.tan(FOV/2)*(W/H)*(W-2*MARGIN)/W,ty=Math.tan(FOV/2)*(H-top-bot)/H;
  let xa=1e9,xb=-1e9,ya=1e9,yb=-1e9;const pts=[];
- for(let i=0;i<NN;i++){if(hid(N[i]))continue;const p=[PX[i]-bb.c[0],PY[i]-bb.c[1],PZ[i]*zs-bb.c[2]];
+ for(let i=0;i<NN;i++){if(keep?!keep(i):gone(i))continue;const p=[PX[i]-bb.c[0],PY[i]-bb.c[1],PZ[i]*zs-bb.c[2]];
   const x=p[0]*r[0]+p[1]*r[1]+p[2]*r[2],y=p[0]*u[0]+p[1]*u[1]+p[2]*u[2],z=p[0]*b[0]+p[1]*b[1]+p[2]*b[2];
   pts.push([x,y,z]);xa=Math.min(xa,x);xb=Math.max(xb,x);ya=Math.min(ya,y);yb=Math.max(yb,y)}
  const mx=(xa+xb)/2,my=(ya+yb)/2;let d=1;
  for(const[x,y,z]of pts)d=Math.max(d,z+Math.abs(x-mx)/tx,z+Math.abs(y-my)/ty);
- return{t:[0,1,2].map(k=>bb.c[k]+r[k]*mx+u[k]*my),d:d*1.01,q:q.slice(),zs}}
+ d*=1.01;const dn=(bot-top)*d*Math.tan(FOV/2)/H;
+ return{t:[0,1,2].map(k=>bb.c[k]+r[k]*mx+u[k]*(my-dn)),d,q:q.slice(),zs}}
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 function tween(g,ms){if(RM.matches||ms<=0){Object.assign(cam,g,{t:g.t?g.t.slice():cam.t,q:g.q?g.q.slice():cam.q});anim=null;need=true;return}
  anim={f:{t:cam.t.slice(),d:cam.d,q:cam.q.slice(),zs:cam.zs},g:Object.assign({t:cam.t.slice(),d:cam.d,q:cam.q.slice(),zs:cam.zs},g),t0:performance.now(),ms}}
@@ -1110,14 +1213,27 @@ G3.orient=(y,p)=>{cam.q=qYP(y,p);need=true};G3.q=()=>cam.q.slice();
 G3.angle=q0=>2*Math.acos(Math.min(1,Math.abs(q0[0]*cam.q[0]+q0[1]*cam.q[1]+q0[2]*cam.q[2]+q0[3]*cam.q[3])));
 G3.up=()=>qrot(cam.q,[0,1,0]);G3.eye=()=>{const b=qrot(cam.q,[0,0,1]);return[0,1,2].map(k=>cam.t[k]+cam.d*b[k])};
 
+/* In the film a link draws itself, from the younger of its two concepts to the
+   older, in GROW months: the end at the older concept is moved along the link,
+   and put back when the link is whole or the film is over. */
+const growing=new Set();
+function grow(){let ch=growing.size>0;for(const j of growing)eArr.set(eBase.subarray(j*12,j*12+6),j*12);growing.clear();
+ if(fp!==null)E3.forEach(([a,b],j)=>{const k=(fp-Math.max(R[a],R[b]))/GROW;if(k<=0||k>=1)return;
+  const y=R[a]>R[b]?a:b,o=y===a?b:a,at=j*12+(o===a?0:3);
+  eArr[at]=PX[y]+(PX[o]-PX[y])*k;eArr[at+1]=PY[y]+(PY[o]-PY[y])*k;eArr[at+2]=PZ[y]+(PZ[o]-PZ[y])*k;growing.add(j);ch=true});
+ if(ch){gl.bindBuffer(gl.ARRAY_BUFFER,eBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,eArr)}}
+
 /* ---- state: what the search, the selection, hover and the filters decide.
    Recomputed when any of them changes, never per frame. */
 function restate(){const anySel=sel>=0;
  for(let i=0;i<NN;i++)GH[i]=ghost(N[i])?1:0;
  const fo=anySel?sel:hov3;
+ /* in the flight the link the neuron is on is lit, and no other: see the flight's sixth cut */
+ const on=cine==='flight'&&fl&&fl.L?[Math.min(fl.L.from,fl.L.to),Math.max(fl.L.from,fl.L.to)]:null;
  E3.forEach(([a,b],j)=>{let al=0,w=1.1,fl=0;
-  if(!hid(N[a])&&!hid(N[b])){
-   if(anySel&&(a===sel||b===sel)){al=.55;w=2.4}
+  if(!gone(a)&&!gone(b)){
+   if(on&&a===on[0]&&b===on[1]){al=.55;w=2.4}
+   else if(anySel&&(a===sel||b===sel)){al=.55;w=2.4}
    else if(!anySel&&hov3>=0&&(a===hov3||b===hov3)){al=.45;w=2}
    else if(anySel)al=.02;
    else if(qv)al=GH[a]||GH[b]?.015:.34;
@@ -1128,43 +1244,58 @@ function restate(){const anySel=sel>=0;
       brighter and without pause. Owner's requests of 23.09.2026. */
    if(!RM.matches){const ab=OUTS[a].has(b),ba=OUTS[b].has(a);fl=(ab&&ba?2:ab?1:-1)*(fo>=0&&(a===fo||b===fo)?10:1)}}
   wArr[j*4]=al;wArr[j*4+1]=w;wArr[j*4+2]=fl;wArr[j*4+3]=(j*.6180339887)%1});
- gl.bindBuffer(gl.ARRAY_BUFFER,wBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,wArr);
- nH=0;KBS.forEach(k=>{if(offKB.has(k))return;const c=KBC[k],h=hex(HUE[k]);
-  hArr.set([c.cx,-c.cy,KBZ[k],c.halo*1.12,h[0],h[1],h[2]],nH*7);nH++});
+ gl.bindBuffer(gl.ARRAY_BUFFER,wBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,wArr);grow();
+ /* in the film a knowledge base's halo and name come up with its concepts,
+    and the halo is whole when a quarter of them are there */
+ KBB=null;if(fp!==null){KBB={};for(let i=0;i<NN;i++)if(!gone(i))KBB[N[i].kb]=(KBB[N[i].kb]||0)+1;
+  for(const k in KBB)KBB[k]=Math.min(1,KBB[k]/((KBN[k]||1)*.25))}
+ nH=0;if(cine!=='flight')KBS.forEach(k=>{if(offKB.has(k))return;const c=KBC[k],s=KBB?KBB[k]||0:1,h=hex(HUE[k]).map(v=>v*s);
+  if(!s)return;hArr.set([c.cx,-c.cy,KBZ[k],c.halo*1.12,h[0],h[1],h[2]],nH*7);nH++});
  gl.bindBuffer(gl.ARRAY_BUFFER,hBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,hArr);
  BR=bounds(1)||BR;recolour(sel>=0?sel:hov3)}
 
 function draw3(){G3.frames++;
- const key=sel+'|'+hov3+'|'+qv+'|'+[...off].join()+'|'+[...offKB].join()+'|'+RM.matches;if(key!==skey){skey=key;restate()}
+ const key=sel+'|'+hov3+'|'+qv+'|'+[...off].join()+'|'+[...offKB].join()+'|'+RM.matches+'|'+fp+'|'+cine+'|'+(fl&&fl.L?fl.L.from+'>'+fl.L.to:'');if(key!==skey){skey=key;restate()}
  matrix();const anySel=sel>=0;
  const dc=Math.hypot(cam.t[0]+cam.d*back[0]-BR.c[0],cam.t[1]+cam.d*back[1]-BR.c[1],cam.t[2]+cam.d*back[2]-BR.c[2]);
  F0=dc-BR.r*.55;F1=dc+BR.r*1.05;
  order.length=0;const umin=3.2;
- for(let i=0;i<NN;i++){if(hid(N[i]))continue;const x=PX[i],y=PY[i],z=PZ[i]*cam.zs;
+ for(let i=0;i<NN;i++){if(gone(i))continue;const[x,y,z]=warp([PX[i],PY[i],PZ[i]*cam.zs]);
   const w=M[3]*x+M[7]*y+M[11]*z+M[15];if(w<=cam.d*.03)continue;
   SX[i]=((M[0]*x+M[4]*y+M[8]*z+M[12])/w*.5+.5)*W;SY[i]=(.5-(M[1]*x+M[5]*y+M[9]*z+M[13])/w*.5)*H;
   SW[i]=w;SRp[i]=Math.min(30,Math.max(umin,RR[i]*Math.sqrt(pxs/w)));order.push(i)}
  order.sort((a,b)=>SW[b]-SW[a]);
- order.forEach((i,k)=>{const o=k*NS,c=C3[i];nodeArr[o]=PX[i];nodeArr[o+1]=PY[i];nodeArr[o+2]=PZ[i];nodeArr[o+3]=RR[i];
-  nodeArr[o+4]=c[0];nodeArr[o+5]=c[1];nodeArr[o+6]=c[2];nodeArr[o+7]=N[i].c;
-  nodeArr[o+8]=i===sel?3:(i===hov3&&!GH[i])?2:GH[i]?1:0});
- gl.bindBuffer(gl.ARRAY_BUFFER,nodeBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,nodeArr,0,order.length*NS);
+ /* in the film a concept arrives larger and brighter than it stays */
+ order.forEach((i,k)=>{const o=k*NS,c=C3[i],f=fp!==null?Math.max(0,1-(fp-R[i])/FLASH):fl&&i===fl.hit?Math.max(0,1-(fl.clk-fl.hitT)/700):0,u=1+2.5*f;
+  nodeArr[o]=PX[i];nodeArr[o+1]=PY[i];nodeArr[o+2]=PZ[i];nodeArr[o+3]=RR[i]*(1+1.8*f);
+  nodeArr[o+4]=c[0]*u;nodeArr[o+5]=c[1]*u;nodeArr[o+6]=c[2]*u;nodeArr[o+7]=N[i].c;
+  nodeArr[o+8]=i===sel||(fl&&i===fl.cur)?3:(i===hov3&&!GH[i])?2:GH[i]?1:0});
+ /* The flight's neuron: a round mark in the accent colour, of one size, and
+    nine smaller ones behind it where it has just been. They go after the
+    concepts, so nothing covers them. Until 08.10.2026 the mark beat, a third
+    larger and smaller. Owner's words: "I do not like the current animation of
+    the moving neuron. it shrinks and grows in size". What moves now is the
+    map round it, by its pace: see REL. */
+ let more=0;if(cine==='flight'&&fl&&fl.p){const acc=hex(css('--acc')),
+   put=(p,r,m)=>{const o=(order.length+more++)*NS;nodeArr.set([p[0],p[1],p[2],r,acc[0]*m,acc[1]*m,acc[2]*m,0,0],o)};
+  fl.tail.forEach((p,j)=>put(p,5.5*(1-j/10),1.3*(1-j/10)));put(fl.p,fl.drawn=NR,2.6)}
+ gl.bindBuffer(gl.ARRAY_BUFFER,nodeBuf);gl.bufferSubData(gl.ARRAY_BUFFER,0,nodeArr,0,(order.length+more)*NS);
  gl.viewport(0,0,g3.width,g3.height);gl.disable(gl.BLEND);
  gl.useProgram(PB.p);gl.uniform3fv(PB.u.uA,hex('#2e2d2a'));gl.uniform3fv(PB.u.uB,hex(css('--bg')));gl.uniform3fv(PB.u.uC,hex('#1b1b1b'));
  gl.bindVertexArray(vaoB);gl.drawArrays(gl.TRIANGLES,0,3);
  gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);
  gl.useProgram(PD.p);gl.uniformMatrix4fv(PD.u.uM,false,M);gl.uniform1f(PD.u.uDpr,dpr3);gl.uniform3fv(PD.u.uCol,hex(css('--fg')));
- gl.bindVertexArray(vaoD);gl.drawArrays(gl.POINTS,0,ND);
+ relU(PD);gl.bindVertexArray(vaoD);gl.drawArrays(gl.POINTS,0,ND);
  gl.useProgram(PH.p);gl.uniformMatrix4fv(PH.u.uM,false,M);gl.uniform3fv(PH.u.uR,right);gl.uniform3fv(PH.u.uU,up);
  gl.uniform1f(PH.u.uZs,cam.zs);gl.uniform1f(PH.u.uA,anySel||qv?.1:.22);gl.bindVertexArray(vaoH);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,nH);
- gl.useProgram(PE.p);gl.uniformMatrix4fv(PE.u.uM,false,M);gl.uniform2f(PE.u.uV,W,H);gl.uniform1f(PE.u.uZs,cam.zs);
- gl.uniform1f(PE.u.uF0,F0);gl.uniform1f(PE.u.uF1,F1);gl.uniform1f(PE.u.uTime,T3!==null?T3:performance.now()/1000);gl.uniform3fv(PE.u.uFg,hex(css('--fg')));gl.bindVertexArray(vaoE);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,NE);
+ gl.useProgram(PE.p);gl.uniformMatrix4fv(PE.u.uM,false,M);gl.uniform2f(PE.u.uV,W,H);gl.uniform1f(PE.u.uZs,cam.zs);gl.uniform1f(PE.u.uN,nearW);
+ gl.uniform1f(PE.u.uF0,F0);gl.uniform1f(PE.u.uF1,F1);gl.uniform1f(PE.u.uTime,T3!==null?T3:performance.now()/1000);gl.uniform3fv(PE.u.uFg,hex(css('--fg')));relU(PE);gl.bindVertexArray(vaoE);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,NE);
  gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
  gl.useProgram(PN.p);gl.uniformMatrix4fv(PN.u.uM,false,M);gl.uniform2f(PN.u.uV,W,H);gl.uniform1f(PN.u.uPx,pxs);
- gl.uniform1f(PN.u.uZs,cam.zs);gl.uniform1f(PN.u.uMin,umin);gl.uniform1f(PN.u.uF0,F0);gl.uniform1f(PN.u.uF1,F1);
+ gl.uniform1f(PN.u.uZs,cam.zs);gl.uniform1f(PN.u.uMin,umin);gl.uniform1f(PN.u.uMax,30);gl.uniform1f(PN.u.uF0,F0);gl.uniform1f(PN.u.uF1,F1);
  gl.uniform3fv(PN.u.uBg,hex(css('--bg')));gl.uniform3fv(PN.u.uAcc,hex(css('--acc')));gl.uniform1f(PN.u.uCell,SR_/CELL);
- gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(PN.u.uT,0);
- gl.bindVertexArray(vaoN);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,order.length);gl.bindVertexArray(null);
+ gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(PN.u.uT,0);relU(PN);
+ gl.bindVertexArray(vaoN);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,order.length+more);gl.bindVertexArray(null);
  G3.drawn=order.length;labels(anySel)}
 
 /* Labels on their own canvas, in screen space: the knowledge-base names in
@@ -1175,20 +1306,20 @@ function fogAt(w){const t=Math.max(0,Math.min(1,(w-F0)/(F1-F0)));return 1-.72*t*
 function labels(anySel){const x2=g3l.getContext('2d');x2.setTransform(dpr3,0,0,dpr3,0,0);x2.clearRect(0,0,W,H);
  x2.textAlign='center';x2.textBaseline='middle';x2.font='700 19px system-ui,-apple-system,sans-serif';x2.lineJoin='round';
  const bg=css('--bg');
- for(const k of KBS){if(offKB.has(k))continue;const c=KBC[k],x=c.cx,y=-c.cy,z=KBZ[k]*cam.zs;
+ for(const k of KBS){if(offKB.has(k)||(KBB&&!KBB[k]))continue;const c=KBC[k],[x,y,z]=warp([c.cx,-c.cy,KBZ[k]*cam.zs]);
   const w=M[3]*x+M[7]*y+M[11]*z+M[15];if(w<=cam.d*.03)continue;
   const sx=((M[0]*x+M[4]*y+M[8]*z+M[12])/w*.5+.5)*W,sy=(.5-(M[1]*x+M[5]*y+M[9]*z+M[13])/w*.5)*H;
-  x2.globalAlpha=(anySel||qv?.25:.85)*fogAt(w);x2.lineWidth=5;x2.strokeStyle=bg;x2.strokeText(kbName(k),sx,sy);
+  x2.globalAlpha=(anySel||qv?.25:.85)*fogAt(w)*(KBB?KBB[k]:1);x2.lineWidth=5;x2.strokeStyle=bg;x2.strokeText(kbName(k),sx,sy);
   x2.fillStyle=HUE[k];x2.fillText(kbName(k),sx,sy)}
  x2.textAlign='start';x2.font='600 12px system-ui,-apple-system,sans-serif';x2.lineWidth=3;
- const s=pxs/cam.d,thr=s<.28?7:s<.55?4:s<.95?2:0,placed=[];
- const pri=i=>i===sel?1e6:i===hov3?1e5:(anySel&&NB[sel].has(i))?1e4+D[N[i].id].inb.length:D[N[i].id].inb.length;
- const cand=order.filter(i=>!GH[i]&&(i===sel||i===hov3||(anySel&&NB[sel].has(i))||D[N[i].id].inb.length>=thr)).sort((a,b)=>pri(b)-pri(a));
+ const s=pxs/cam.d,thr=s<.28?7:s<.55?4:s<.95?2:0,placed=[],mk=fl?fl.cur:-1;   // mk: the stop the flight has marked
+ const pri=i=>i===sel||i===mk?1e6:i===hov3?1e5:(anySel&&NB[sel].has(i))?1e4+D[N[i].id].inb.length:D[N[i].id].inb.length;
+ const cand=order.filter(i=>!GH[i]&&(i===sel||i===mk||i===hov3||(anySel&&NB[sel].has(i))||D[N[i].id].inb.length>=thr)).sort((a,b)=>pri(b)-pri(a));
  for(const i of cand){const sx=SX[i],sy=SY[i];if(sx<-40||sy<0||sx>W+40||sy>H)continue;
   const t=D[N[i].id].t,wd=x2.measureText(t).width,bx=sx+SRp[i]+6,box=[bx-2,sy-9,bx+wd+2,sy+9];
   if(placed.some(p=>box[0]<p[2]&&box[2]>p[0]&&box[1]<p[3]&&box[3]>p[1]))continue;placed.push(box);
-  x2.globalAlpha=i===sel||i===hov3?1:Math.max(.4,fogAt(SW[i]));
-  x2.strokeStyle=bg;x2.strokeText(t,bx,sy);x2.fillStyle=i===sel?css('--fg'):css('--mut');x2.fillText(t,bx,sy)}
+  x2.globalAlpha=i===sel||i===mk||i===hov3?1:Math.max(.4,fogAt(SW[i]));
+  x2.strokeStyle=bg;x2.strokeText(t,bx,sy);x2.fillStyle=i===sel||i===mk?css('--fg'):css('--mut');x2.fillText(t,bx,sy)}
  x2.globalAlpha=1}
 
 /* ---- input. Drag turns the map, Shift-drag or the right button moves it,
@@ -1205,16 +1336,22 @@ g3.addEventListener('pointerdown',e=>{g3.setPointerCapture(e.pointerId);settle()
 g3.addEventListener('pointermove',e=>{const[mx,my]=local(e);
  if(drag3){const dx=e.clientX-drag3.x,dy=e.clientY-drag3.y,now=performance.now(),dt=Math.max(8,now-drag3.t);
   drag3.x=e.clientX;drag3.y=e.clientY;drag3.t=now;drag3.m+=Math.abs(dx)+Math.abs(dy);idle=now;
-  if(drag3.m<5)return;g3.style.cursor='grabbing';
+  if(drag3.m<5)return;g3.style.cursor='grabbing';hold();
   if(drag3.pan){const k=cam.d/pxs;for(let j=0;j<3;j++)cam.t[j]+=(-dx*right[j]+dy*up[j])*k}
   else{const a=-dx*.0055,b=dy*.0055;turn(a,b);vy=a/dt;vp=b/dt}
   need=true;return}
- const h=pick3(mx,my);if(h!==hov3){hov3=h;need=true}g3.style.cursor=h>=0?'pointer':'grab'});
+ const h=cine?-1:pick3(mx,my);if(h!==hov3){hov3=h;need=true}g3.style.cursor=h>=0?'pointer':'grab'});
 g3.addEventListener('pointerup',e=>{if(!drag3)return;const d=drag3;drag3=null;g3.style.cursor='grab';
  if(performance.now()-d.t>70)vy=vp=0;
- if(d.m<5){vy=vp=0;const[mx,my]=local(e),h=pick3(mx,my);if(h>=0){if(sel===h)clearSel();else select(h)}}});
+ if(d.m<5){vy=vp=0;if(cine)return;const[mx,my]=local(e),h=pick3(mx,my);if(h>=0){if(sel===h)clearSel();else select(h)}}});
 g3.addEventListener('pointerleave',()=>{if(hov3>=0&&!drag3){hov3=-1;need=true}});
-g3.addEventListener('dblclick',e=>{const[mx,my]=local(e),h=pick3(mx,my);if(h>=0){select(h);show(N[h].id)}else G3.fit()});
+g3.addEventListener('dblclick',e=>{if(cine)return;const[mx,my]=local(e),h=pick3(mx,my);if(h>=0){select(h);show(N[h].id)}else G3.fit()});
+/* Safari's two-finger turn rolls the view and its pinch zooms, about the middle of the picture */
+let ges3=null;
+g3.addEventListener('gesturestart',e=>{e.preventDefault();settle();vy=vp=0;ges3={q:cam.q.slice(),d:cam.d}});
+g3.addEventListener('gesturechange',e=>{e.preventDefault();if(!ges3)return;idle=performance.now();hold();
+ cam.q=qnorm(qmul(ges3.q,qax(0,0,1,(e.rotation||0)*Math.PI/180)));cam.d=Math.min(1e6,Math.max(DMIN,ges3.d/(e.scale||1)));need=true});
+g3.addEventListener('gestureend',e=>{e.preventDefault();ges3=null});
 /* The wheel zooms toward the pointer, and does not stop when it arrives:
    closer than DMIN it flies on, carrying the orbit point ahead of it along
    the pointer's ray, through the clusters and out the other side. Owner's
@@ -1223,6 +1360,7 @@ g3.addEventListener('dblclick',e=>{const[mx,my]=local(e),h=pick3(mx,my);if(h>=0)
    only to keep the arithmetic finite. */
 const DMIN=40;
 g3.addEventListener('wheel',e=>{e.preventDefault();settle();vy=vp=0;idle=performance.now();
+ hold();if(e.altKey){roll(swipe(e));need=true;return}
  const[mx,my]=local(e),f=Math.exp(e.deltaY*(e.ctrlKey?.01:.0015));
  const want=Math.min(1e6,cam.d*f),nd=Math.max(DMIN,want),k=cam.d/pxs,r=nd/cam.d;
  for(let j=0;j<3;j++){const p=cam.t[j]+right[j]*(mx-W/2)*k+up[j]*(H/2-my)*k;cam.t[j]=p+(cam.t[j]-p)*r}
@@ -1231,13 +1369,306 @@ g3.addEventListener('wheel',e=>{e.preventDefault();settle();vy=vp=0;idle=perform
   for(let j=0;j<3;j++)cam.t[j]+=ray[j]/l*go}
  need=true},{passive:false});
 
+/* ---- Film and Flight, 07.10.2026. Owner's request: "i want more cinema, more
+   spectacle", and of the two ideas put to him, "both please". Both are this
+   view with a director: the same canvas, marks, links and camera, and a clock
+   that decides what shows and where the camera looks.
+
+   Film plays the vault's years. The playhead fp runs from 0 to TOT months; a
+   concept is in the picture once fp has passed its birth, arrives with a
+   flash, and a link draws itself when both its ends are there. The camera
+   starts close in the first cluster and draws back as the bases begin.
+
+   Flight tours the concepts. It comes to one, selects it, which lights its
+   neighbours, shows its title and description, and moves on along a link,
+   without standing still. A
+   base can be chosen for the tour. Left alone it goes on for ever. Until
+   08.10.2026 a title could be typed and was flown to along the shortest path
+   of links; the owner had the field removed: "remove the fly to concept". */
+const el=id=>document.getElementById(id),box=el('cine'),big=el('cineBig'),sub=el('cineSub'),tag=el('cineTag'),
+ bar=el('cineTime'),route=el('cineRoute'),bPlay=el('cinePlay'),bSpeed=el('cineSpeed');
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const INB=N.map(n=>D[n.id].inb.length),VF=.2,RAMP=240,LIGHT=380,BACK=300,TILT=.32,BEND=160,TURN=520,SWING=.0009,FOVF=.87,TOP=VF*1.6,FOLLOW=900;
+let cine=null,playing=false,speed=1,fl=null,ct=0,barDrag=false,wakeT=0,wentFull=false,relK=1;
+/* The flight at speed: the neuron's pace as a share of light's, what the
+   shaders are told of it, and rel()'s sum in the page's own arithmetic, for
+   the names and for viewer-check. See REL. */
+const rb=()=>cine==='flight'&&fl&&fl.p&&fl.L?fl.beta*relK*fl.look:0;
+const relU=P=>{const b=rb();gl.uniform1f(P.u.uRb,b);if(b>0){gl.uniform3fv(P.u.uRo,fl.p);gl.uniform3fv(P.u.uRu,fl.L.dir)}};
+const warp=p=>{const b=rb();if(!(b>0))return p;const o=fl.p,u=fl.L.dir,r=[p[0]-o[0],p[1]-o[1],p[2]-o[2]],g=1/Math.sqrt(1-b*b),
+ k=(g-1)*(r[0]*u[0]+r[1]*u[1]+r[2]*u[2])+g*b*Math.hypot(r[0],r[1],r[2]);return[p[0]+k*u[0],p[1]+k*u[1],p[2]+k*u[2]]};
+
+/* The film's camera, second cut, 08.10.2026. The first looked at the concepts of
+   the last year of film time, stood as far off as their spread asked, and
+   turned slowly. Owner's words on it: "dont zoom in and out so much. this looks
+   hectic and you loose sight", "start small inside the first cluster, then
+   zoom out over time", "make sure to have an angle/view that you see all the
+   important stuff of the whole universe". So the view keeps one direction,
+   HOME, the one the 3D view opens on, and the frames are planned for the whole
+   film before it plays. A month's frame is the fit of every knowledge base
+   that has begun, a tenth of its concepts being there, or of the largest one
+   while none has, and of the vault's most-linked concept, which is there
+   from the first month and stands between the bases: without it in the fit it
+   sat on the picture's lower edge, half behind the bar; as it will be a year
+   on: the camera has drawn back before a
+   base begins, not after. The distance is never let fall from one month to the
+   next, and the frames are averaged over the months around, so the camera
+   starts close in the first cluster and draws back slowly, and only back.
+
+   And it is never quite still. Owner's words on the second cut, the same day:
+   "keep the camera always slightly in motion. especially at the beginning it
+   was to static and towards the end". The direction of view sways a little
+   about HOME, a few degrees to the sides and less up and down, by the
+   playhead, so a time of the film has one view and each month's frame is
+   fitted for the view that month has. */
+const CAP=130,SWAY=[.16,.06];let plan=[];
+const look=p=>qnorm(qmul(HOME,qmul(qax(0,1,0,SWAY[0]*Math.sin(p*.098)),qax(1,0,0,-SWAY[1]*Math.sin(p*.143)))));
+function planFilm(){const tot={};let hub=-1;for(let i=0;i<NN;i++)if(!hid(N[i])){tot[N[i].kb]=(tot[N[i].kb]||0)+1;if(hub<0||INB[i]>INB[hub])hub=i}
+ const raw=[];for(let m=1;m<=TOT;m++){const n={};for(let i=0;i<NN;i++)if(!hid(N[i])&&R[i]<m)n[N[i].kb]=(n[N[i].kb]||0)+1;
+  let on=Object.keys(n).filter(k=>n[k]>=tot[k]*.1);if(!on.length)on=Object.keys(n).sort((x,y)=>n[y]-n[x]).slice(0,1);
+  raw.push(fitFor(look(m),1,i=>!hid(N[i])&&R[i]<m&&(i===hub||on.includes(N[i].kb)),CAP)||raw[raw.length-1]||{t:cam.t.slice(),d:cam.d})}
+ for(let m=1;m<raw.length;m++)if(raw[m].d<raw[m-1].d)raw[m]={t:raw[m].t,d:raw[m-1].d};
+ plan=raw.map((_,m)=>raw[Math.min(raw.length-1,m+12)]);
+ for(let pass=0;pass<2;pass++)plan=plan.map((_,m)=>{const t=[0,0,0];let l=0,c=0;
+  for(let j=Math.max(0,m-10);j<=Math.min(plan.length-1,m+10);j++,c++){for(let k=0;k<3;k++)t[k]+=plan[j].t[k];l+=Math.log(plan[j].d)}
+  return{t:t.map(v=>v/c),d:Math.exp(l/c)}})}
+function framed(p){const x=Math.max(0,Math.min(plan.length-1,p-1)),a=plan[Math.floor(x)],b=plan[Math.ceil(x)],f=x-Math.floor(x);
+ return{t:a.t.map((v,k)=>v+(b.t[k]-v)*f),d:Math.exp(Math.log(a.d)+(Math.log(b.d)-Math.log(a.d))*f)}}
+function filmUI(){const mi=T0+Math.min(TOT-1,Math.floor(fp)),lab=MONTHS[mi%12]+' '+Math.floor(mi/12);let n=0;
+ for(let i=0;i<NN;i++)if(!gone(i))n++;const s=sw(n)+(n===1?' concept':' concepts');
+ if(big.textContent!==lab)big.textContent=lab;if(sub.textContent!==s)sub.textContent=s;
+ if(!barDrag)bar.value=Math.round(fp/TOT*1000)}
+function seek(p){if(cine!=='film')return;fp=Math.max(0,Math.min(TOT,p));
+ if(!playing){const g=fp>=TOT?fitFor(cam.q,1,null,CAP):Object.assign(framed(fp),{q:RM.matches?cam.q.slice():look(fp)});if(g)tween(g,700)}
+ filmUI();need=true}
+
+/* The flight, fourth cut, 08.10.2026: a neuron that travels the links, seen
+   from behind. Owner's words on the third cut, which rode the links with the
+   eye itself: "give me a third person view on the neuron which is flying",
+   "make the neuron animated", "show the connection lines along which the
+   neuron is traveling", "the neuron stays strict on the connection lines",
+   "the speed is currently too high"; and earlier, which stands: "when you
+   approach a node, you see the node connections lighting up from a certain
+   distance", "make it smooth, especially the direction changes", "slightly
+   slow down the speed in front of a huge node and then accelerate during a
+   connection flight".
+
+   The neuron is a point of light with a short tail, of one size: the fourth
+   cut's mark beat, and the owner did not like that it "shrinks and grows in
+   size". What is animated since the fifth cut, of the same day, is the map
+   round the neuron, which is drawn as the neuron sees it at its pace: bent
+   toward the way of flight, blue ahead and red behind. See REL, by the
+   shaders. It goes from stop to stop
+   in a straight line, which is the link between them, so it is on a link
+   wherever it is. Its pace is by the place on the link: slowest at a stop, and
+   the more a concept is linked to the slower, and fastest in the middle of a
+   long link. The stop ahead is marked when the neuron is LIGHT away from it:
+   a ring round its mark, its name beside it, and its title and description
+   below. Nothing else changes for it. The whole map shows as the 3D view
+   shows it, and of the links only the one the neuron is on is lit. That is
+   the sixth cut, of 08.10.2026. Until then the stop was selected, which lit
+   its links in their direction's colours and dimmed the rest of the map.
+   Owner's words: "please remove: when you approach a node, you see the node
+   connections lighting up from a certain distance, showing inbound and
+   outbound neurons", "instead show all the universe, but hightlight the node
+   you are flying towars. you are already doing that". A stop flashes when
+   the neuron goes through it.
+
+   The camera stands behind the neuron and a little above, and looks at it. The
+   neuron turns at a stop at once; the camera does not. The direction it stands
+   behind bends from one link's to the next's over BEND before and after the
+   stop, and the camera closes on that by a share of the gap each frame and
+   never faster than SWING, so it swings round behind the neuron.
+
+   Which stop comes next: the next of a path being flown; or else, of the
+   concepts the stop links to or from that the tour has not been to, the one
+   with the most links and the most ahead: its links, and one more, times a
+   factor that is 1 for a stop to the side or behind and 2.5 for one straight
+   on, so the neuron does not double back for a slightly larger concept. Of
+   two that score alike, the earlier in the page's order. With none of those
+   left it goes on along the links, by the shortest chain of them, through
+   stops it has been to, to the nearest concept it has not been to, and of
+   those equally near the most-linked; and when links lead to no such
+   concept, the tour begins again. Until 08.10.2026 it went straight to the
+   most-linked concept it had not been to, with no link under it: 20 of the
+   first 500 hops, the first of them the 230th, against the owner's "the
+   neuron stays strict on the connection lines". Only a stop with no link at
+   all is still left in a straight line. The tour looks one stop ahead,
+   because the camera bends toward the next link before the stop. */
+const most=p=>p.reduce((b,i)=>b<0||INB[i]>INB[b]?i:b,-1);
+const inRoute=i=>!hid(N[i])&&(!fl.base||N[i].kb===fl.base);
+function pool(skip){const p=[];for(let i=0;i<NN;i++)if(inRoute(i)&&!skip(i))p.push(i);return p}
+const vsub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],vlen=a=>Math.hypot(a[0],a[1],a[2]),
+ vnorm=a=>{const l=vlen(a)||1;return[a[0]/l,a[1]/l,a[2]/l]},vcross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],
+ at3=i=>[PX[i],PY[i],PZ[i]];
+/* the chain of links from a stop to the nearest concept the tour may go on to, as the concepts after the stop; none where links reach no such concept */
+function onward(from,skip){const prev=new Map([[from,-1]]);let ring=[from],b=-1;
+ while(ring.length&&b<0){const nx=[];for(const x of ring)for(const y of NB[x]||[])if(!prev.has(y)&&inRoute(y)){prev.set(y,x);nx.push(y)}
+  ring=nx;b=most(ring.filter(i=>!skip(i)))}
+ const p=[];if(b>=0)for(let x=b;x!==from;x=prev.get(x))p.unshift(x);return p}
+function pick(from,came){let x=fl.queue.shift();
+ if(x===undefined){const c=at3(from),a=came?vnorm(vsub(c,came)):null,score=i=>{const b=vnorm(vsub(at3(i),c));
+   return(INB[i]+1)*(1+1.5*Math.max(0,a?a[0]*b[0]+a[1]*b[1]+a[2]*b[2]:0))};
+  x=[...(NB[from]||[])].filter(i=>inRoute(i)&&!fl.seen.has(i)).sort((p,q)=>p-q).reduce((m,i)=>m<0||score(i)>score(m)?i:m,-1);
+  if(x<0){let p=onward(from,i=>fl.seen.has(i));if(!p.length){fl.seen.clear();fl.seen.add(from);p=onward(from,i=>i===from)}
+   if(p.length){x=p.shift();fl.queue=p}else x=most(pool(i=>i===from))}}
+ if(x>=0)fl.seen.add(x);return x}
+/* the share of a link's pace that is left at a stop, less at a much-linked concept; and the pace at a place on a link */
+const slow=i=>.5-.25*Math.min(1,INB[i]/40),ramp=x=>{const t=Math.min(1,Math.max(0,x/RAMP));return t*t*(3-2*t)};
+function pace(L,s){const a=slow(L.from),b=slow(L.to);return L.top*Math.min(a+(1-a)*ramp(s),b+(1-b)*ramp(L.len-s))}
+function light(i){fl.cur=i;if(sel>=0)clearSel();need=true;const d=D[N[i].id];tag.textContent=kbName(N[i].kb)+' · '+d.ty;big.textContent=d.t;sub.textContent=d.d}
+/* The next link. The first begins at the first stop, where the neuron waits
+   while the camera comes down to it; each later one begins at the stop the
+   last one ended at, which flashes. */
+function nextLeg(){const L=fl.L;let from,to;
+ if(L){from=L.to;to=fl.next>=0?fl.next:pick(from,L.a)}
+ else{from=fl.cur>=0?fl.cur:fl.queue.shift();if(!(from>=0)){fl.rest=true;return}
+  if(fl.cur<0){fl.seen.add(from);light(from);fl.wait=fl.free?0:2600}to=pick(from,null)}
+ if(!(to>=0)){fl.rest=true;return}
+ const a=at3(from),b=at3(to),len=vlen(vsub(b,a))||1;
+ fl.prev=L?L.dir:null;fl.L={a,b,from,to,len,dir:vnorm(vsub(b,a)),top:VF*(1+.6*Math.min(1,len/2500))};
+ fl.next=pick(to,a);fl.s=0;fl.rest=false;if(L){fl.hit=from;fl.hitT=fl.clk}}
+/* One step: the neuron on along its link, the stop ahead lit when it is near,
+   and the camera brought round behind it. The camera is turned from the
+   direction it has and never built from a fixed up, which spins when a link
+   runs along the map's depth; it rolls slowly to keep the map's depth above
+   it, the less the steeper it looks. */
+function ride(ms){fl.clk+=ms;if(!fl.L||fl.rest){nextLeg();if(!fl.L||fl.rest)return}
+ if(fl.wait>0)fl.wait-=ms;
+ else{fl.s+=pace(fl.L,fl.s)*ms;
+  if(fl.s>=fl.L.len){const over=fl.s-fl.L.len;nextLeg();fl.s=fl.rest?fl.L.len:Math.min(over,fl.L.len)}}
+ const L=fl.L;if(fl.cur!==L.to&&fl.wait<=0&&L.len-fl.s<=LIGHT)light(L.to);
+ /* its pace as a share of light's, for the look of the map: none at a stop,
+    where the neuron turns and the map must not jump with it, rising as the
+    pace does over RAMP, and the most on a long link, whose pace is the highest */
+ const P=fl.p=[0,1,2].map(k=>L.a[k]+L.dir[k]*fl.s);fl.beta=BMAX*L.top/TOP*ramp(Math.min(fl.s,L.len-fl.s));
+ if(fl.clk-fl.tailT>40){fl.tail.unshift(P.slice());fl.tail.length=Math.min(9,fl.tail.length);fl.tailT=fl.clk}
+ /* The camera is the reader's while he holds it: see hold() and follow(). The
+    look of speed is how the map is seen from the neuron, so it goes out of the
+    picture while the reader looks on from where he likes, and comes back with
+    the camera. When the camera is given back it is not snapped behind the
+    neuron: every pull on it below is let in over the first FOLLOW
+    milliseconds, so it starts from rest and glides back. */
+ fl.look+=((fl.free?0:1)-fl.look)*(1-Math.exp(-ms/500));fov+=(FOVF-fov)*(1-Math.exp(-ms/800));
+ if(fl.free)return;
+ const x=Math.min(1,fl.back/FOLLOW),w=x*x*(3-2*x);fl.back+=ms;
+ let d=L.dir;const nx=fl.next>=0?vnorm(vsub(at3(fl.next),L.b)):null;
+ if(nx&&L.len-fl.s<BEND){const w=.5*(1-(L.len-fl.s)/BEND);d=vnorm(d.map((v,k)=>v+(nx[k]-v)*w))}
+ else if(fl.prev&&fl.s<BEND){const w=.5+.5*fl.s/BEND;d=vnorm(fl.prev.map((v,k)=>v+(L.dir[k]-v)*w))}
+ const up=qrot(cam.q,[0,1,0]),want=vnorm(d.map((v,k)=>v*Math.cos(TILT)-up[k]*Math.sin(TILT))),f=qrot(cam.q,[0,0,-1]),ax=vcross(f,want),sn=vlen(ax);
+ if(sn>1e-6)cam.q=qnorm(qmul(qax(ax[0]/sn,ax[1]/sn,ax[2]/sn,
+  w*Math.min(SWING*ms,Math.atan2(sn,f[0]*want[0]+f[1]*want[1]+f[2]*want[2])*(1-Math.exp(-ms/TURN)))),cam.q));
+ const g=qrot(cam.q,[0,0,-1]),v=qrot(cam.q,[0,1,0]),zp=[-g[0]*g[2],-g[1]*g[2],1-g[2]*g[2]],zl=vlen(zp);
+ if(zl>.05){const z1=zp.map(x=>x/zl),c=vcross(v,z1),roll=Math.atan2(c[0]*g[0]+c[1]*g[1]+c[2]*g[2],v[0]*z1[0]+v[1]*z1[1]+v[2]*z1[2]);
+  cam.q=qnorm(qmul(qax(g[0],g[1],g[2],w*roll*zl*zl*(1-Math.exp(-ms/1600))),cam.q))}
+ const k=w*(1-Math.exp(-ms/260));for(let j=0;j<3;j++)cam.t[j]+=(P[j]-cam.t[j])*k;
+ cam.d=Math.exp(Math.log(cam.d)+(Math.log(BACK)-Math.log(cam.d))*w*(1-Math.exp(-ms/700)));cam.zs=1}
+/* The reader takes the camera with a drag or the wheel, once the flight is on
+   its way: it stays where he puts it and the neuron flies on. The Follow button
+   gives it back, and takes it too: it is a switch. Owner's words of 08.10.2026: "let me override the camera when
+   i zoom out for example, stay there, but let the neuron continue to fly. give
+   me a button to reset camera to behind the neuron", and of the way back:
+   "make this smooth. like now, when i zoom out, you take me smooth back in".
+   Until then a zoom was taken back at once, and the flight stood still for as
+   long as a drag lasted. */
+function hold(){if(cine!=='flight'||!fl||!fl.L||fl.free)return;fl.free=true;ui()}
+function follow(){if(!fl||!fl.free)return;fl.free=false;fl.back=0;vy=vp=0;anim=null;ui()}
+/* For a reader who asked for less motion nothing rides: every few seconds the
+   camera is set to look at the next stop from outside. */
+function cut(){const i=fl.cur<0?fl.queue.shift():pick(fl.cur,null);fl.until=ct+4200;if(!(i>=0))return;fl.seen.add(i);
+ const nd=[...NB[i]].filter(j=>!hid(N[j])).map(j=>vlen(vsub(at3(j),at3(i)))).sort((a,b)=>a-b);
+ if(!fl.free){cam.t=at3(i);cam.d=nd.length?Math.min(1500,Math.max(520,nd[nd.length>>1]*2.2)):520}light(i)}
+/* the shortest path of links from a to b, as the concepts after a; b alone
+   where no path joins them, and the flight then goes straight there */
+function path(a,b){const prev=new Map([[a,-1]]),qq=[a];
+ for(let h=0;h<qq.length&&!prev.has(b);h++)for(const y of NB[qq[h]])if(!prev.has(y)&&!hid(N[y])){prev.set(y,qq[h]);qq.push(y)}
+ const p=[];if(prev.has(b))for(let x=b;x!==a;x=prev.get(x))p.unshift(x);else p.push(b);return p}
+
+const ICON={play:'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',pause:'<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'};
+function ui(){box.classList.toggle('paused',!playing);const bk=el('cineBack'),fo=!!fl&&!fl.free;bk.setAttribute('aria-pressed',String(fo));
+ bk.title=fo?'The camera follows the neuron. Press to let it stay where it is.':'The camera stays where it is. Press to follow the neuron again.';bPlay.innerHTML=playing?ICON.pause:ICON.play;
+ bPlay.setAttribute('aria-label',playing?'Pause':'Play');bPlay.title=(playing?'Pause':'Play')+' (Space)';bSpeed.textContent=speed+'×';
+ if(cine==='film')filmUI()}
+function wake(){box.classList.add('awake');clearTimeout(wakeT);wakeT=setTimeout(()=>box.classList.remove('awake'),2600)}
+/* the film's first frame, set and not glided to: at its start, and when Play begins it again at its end */
+function first(){const a=framed(0);cam.t=a.t.slice();cam.d=a.d;cam.q=look(0);anim=null}
+function play(on){if(!cine)return;playing=on;if(on&&cine==='film'&&fp>=TOT){fp=0;first()}ui();need=true}
+/* One step of the director, dt milliseconds of the frame loop's time. */
+function cineStep(dt){const ms=playing?dt*speed:0;
+ if(cine==='film'){if(ms){fp=Math.min(TOT,fp+ms/MSM);
+   if(fp>=TOT){playing=false;const g=fitFor(cam.q,1,null,CAP);if(g)tween(g,2600);ui()}
+   else if(!drag3){const a=framed(fp),k=RM.matches?1:1-Math.exp(-dt/600);
+    for(let j=0;j<3;j++)cam.t[j]+=(a.t[j]-cam.t[j])*k;cam.d=Math.exp(Math.log(cam.d)+(Math.log(a.d)-Math.log(cam.d))*k);
+    if(!RM.matches)cam.q=look(fp)}}
+  filmUI()}
+ /* a frame's time is ridden in steps of a twentieth of a second: at sixteen times
+    one step would take the neuron a third of a link at once, and leave its tail as
+    dots far apart */
+ else if(ms){if(RM.matches){ct+=ms;if(ct>=fl.until)cut()}else for(let left=ms;left>0;left-=50)ride(Math.min(50,left))}}
+function cineStart(kind){if(view!=='3d')setView('3d');const from=sel;if(cine)cineStop();
+ cine=kind;playing=!RM.matches;speed=1;clearSel();hov3=-1;anim=null;vy=vp=0;cam.zs=1;
+ document.body.classList.add('cine');box.hidden=false;box.className=kind;resize3();
+ if(kind==='film'){fp=0;tag.textContent='';cam.q=HOME.slice();planFilm();first()}
+ /* The flight waits for Play. Owner's instruction of 08.10.2026, "dont start
+    flight immediately, let me start manually": the first cut took off at the
+    press of the button. The picture stays as the 3D view had it, the concept
+    the flight will start at stays selected if one was, and the first leg
+    begins where the camera is when Play is pressed. */
+ else{playing=false;ct=0;fl={cur:-1,seen:new Set(),queue:[],next:-1,base:'',L:null,s:0,rest:false,until:0,clk:0,wait:0,p:null,prev:null,tail:[],tailT:0,hit:-1,hitT:0,beta:0,drawn:0,free:false,look:1,back:1e9};route.value='';
+  if(!route.options.length)[''].concat(KBS).forEach(k=>route.add(new Option(k?kbName(k):'All bases',k)));
+  fl.queue=[from>=0&&!hid(N[from])?from:most(pool(()=>false))];if(fl.queue[0]===from)select(from);
+  tag.textContent='';big.textContent='Flight';sub.textContent='Press play, or Space, to start.'}
+ wake();ui();need=true}
+function cineStop(){if(!cine)return;const was=cine;cine=null;fp=null;fl=null;playing=false;anim=null;fov=FOV;
+ document.body.classList.remove('cine');box.hidden=true;resize3();
+ if(wentFull&&document.fullscreenElement)document.exitFullscreen();wentFull=false;
+ /* the flight's last stop is let go of. Owner's instruction of 07.10.2026: "after
+    stopping or quitting flight, please unselect the last shown concept" */
+ clearSel();need=true;if(was==='film')G3.fit()}
+bPlay.onclick=()=>{play(!playing);bPlay.blur()};
+/* The flight goes on to eight and sixteen times. Owner's request of 08.10.2026:
+   "can you also make a speed x8, x16 for the flight?" The film stops at four. */
+bSpeed.onclick=()=>{speed=speed>=(cine==='flight'?16:4)?1:speed*2;ui();bSpeed.blur()};
+/* Follow is a switch, and it can be set before the flight begins. Owner's
+   request of 08.10.2026: "let me choose before i begin a flight to follow or
+   unfollow". Until then it was a button that was off while the flight had the
+   camera, so a flight could only be begun following. */
+el('cineBack').onclick=e=>{e.currentTarget.blur();if(!fl)return;if(fl.free)follow();else{fl.free=true;ui()}};
+el('cineX').onclick=cineStop;el('bFilm').onclick=()=>cineStart('film');el('bFly').onclick=()=>cineStart('flight');
+el('cineFull').onclick=e=>{e.currentTarget.blur();if(document.fullscreenElement)document.exitFullscreen();
+ else{wentFull=true;document.documentElement.requestFullscreen().catch(()=>{wentFull=false})}};
+bar.addEventListener('pointerdown',()=>{barDrag=true});addEventListener('pointerup',()=>{barDrag=false});
+bar.addEventListener('input',()=>seek(bar.value/1000*TOT));
+/* choosing a base does not start a flight that waits or is paused. A flight on its
+   way goes to the base's most-linked concept along the shortest path of links,
+   from the stop it is heading for: it cannot turn on a link */
+route.onchange=()=>{fl.base=route.value;fl.seen.clear();fl.next=-1;const top=most(pool(()=>false));
+ if(fl.L)fl.seen.add(fl.L.to);fl.queue=!fl.L?[top]:top===fl.L.to||top<0?[]:path(fl.L.to,top);fl.until=ct;route.blur()};
+box.parentNode.addEventListener('pointermove',()=>{if(cine)wake()});
+/* Space plays and pauses, as in any player; not while a field has the keys */
+addEventListener('keydown',e=>{if(!cine||e.key!==' '||e.metaKey||e.ctrlKey||e.altKey)return;const t=e.target;
+ if(t&&(t.tagName==='SELECT'||(t.tagName==='INPUT'&&t.type!=='range')))return;e.preventDefault();play(!playing)});
+G3.cine={on:()=>!!cine,start:cineStart,stop:cineStop,play,seek,
+ state:()=>({kind:cine,playing,speed,fp,total:TOT,t0:T0,cur:fl?fl.cur:-1,to:fl&&fl.L?fl.L.to:-1,from:fl&&fl.L?fl.L.from:-1,at:fl&&fl.p?fl.p.slice():null,glow:fl?fl.drawn:0,beta:rb(),dir:fl&&fl.L?fl.L.dir.slice():null,free:!!(fl&&fl.free),look:fl?fl.look:1,clock:fl?fl.clk:0,queue:fl?(fl.next>=0?[fl.next]:[]).concat(fl.queue):[],base:fl?fl.base:''}),
+ /* viewer-check lets the director's clock run by a stated time, in the frame loop's own steps */
+ advance:ms=>{for(;ms>0&&cine;ms-=50)cineStep(Math.min(50,ms));need=true},
+ /* and can take the look of speed out of the picture, to compare the same moment with and without it */
+ rel:k=>{relK=k;need=true}};
+/* and reads a link and a mark as the last frame uploaded them */
+G3.link=(a,b)=>{const j=E3.findIndex(e=>e[0]===Math.min(a,b)&&e[1]===Math.max(a,b));if(j<0)return null;
+ return{lo:[...eArr.slice(j*12,j*12+3)],hi:[...eArr.slice(j*12+3,j*12+6)],alpha:wArr[j*4]}};
+G3.warp=p=>warp(p).slice();
+G3.at=(p,plain)=>{matrix();if(!plain)p=warp(p);const w=M[3]*p[0]+M[7]*p[1]+M[11]*p[2]+M[15];return w<=nearW?null:[((M[0]*p[0]+M[4]*p[1]+M[8]*p[2]+M[12])/w*.5+.5)*W,(.5-(M[1]*p[0]+M[5]*p[1]+M[9]*p[2]+M[13])/w*.5)*H]};
+G3.mark=i=>{const k=order.indexOf(i);return k<0?null:{r:nodeArr[k*NS+3],rgb:[...nodeArr.slice(k*NS+4,k*NS+7)],s:nodeArr[k*NS+8]}};
+
 (function loop3(now){requestAnimationFrame(loop3);if(view!=='3d')return;
  const dt=Math.min(64,now-last);last=now;let moved=false;
  if(anim){step(now);moved=true}
+ if(cine){cineStep(dt);moved=true}
  if(!drag3&&(Math.abs(vy)+Math.abs(vp))>1e-6){turn(vy*dt,vp*dt);
   const k=Math.pow(.9,dt/16);vy*=k;vp*=k;if(Math.abs(vy)+Math.abs(vp)<2e-6)vy=vp=0;moved=true}
  const still=now-idle;
- if(!RM.matches&&!drag3&&!anim&&hov3<0&&still>6000){turn(dt*4e-5,0);moved=true}
+ if(!cine&&!RM.matches&&!drag3&&!anim&&hov3<0&&still>6000){turn(dt*4e-5,0);moved=true}
  if(!RM.matches)moved=true;   // the flow along the links
  if(moved||dirty||need){dirty=false;need=false;draw3()}})(last);
 })();
@@ -1285,7 +1716,7 @@ except ValueError:
 PAGE_INPUTS = [':(glob)*/Wiki/**', '_scripts/visualize.py']
 if _git('status', '--porcelain', '--', *PAGE_INPUTS):
     git_id += ' · uncommitted'
-page = """<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="cerebrum-address" content="view q"><title>00_Cerebrum — OKF viewer</title><style>
+page = """<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="cerebrum-address" content="view q cine"><title>00_Cerebrum — OKF viewer</title><style>
 :root{color-scheme:dark;--bg:#242424;--fg:#f9f2d9;--mut:#a49a85;--line:#3a3733;--acc:#f0c755;--h3:#e5d5a1;--side:#191919;--card:#2b2b2b;--item:#bbaf96;--ph:#757575;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--s9:#38b2c3;--s10:#9fae2f;--s11:#c08b52;--s12:#8ecae6;--s13:#b0b7c3;--s14:#7fd1ae;--s15:#cb54d6;--s16:#e0c04d;--s17:#5ec8f2;--lin:#5aa9ff;--lout:#ff9f43;--edge:#4a4640}
 *{box-sizing:border-box}[hidden]{display:none!important}
 /* One header over two full-screen views. Owner's instruction of 14.09.2026: the
@@ -1311,6 +1742,46 @@ body.vc #gcard{display:none!important}
 #g3pane{background:radial-gradient(120% 95% at 50% 42%,#2e2d2a 0%,var(--bg) 52%,#1b1b1b 100%)}
 #g3,#g3lbl{position:absolute;inset:0;width:100%;height:100%;display:block}
 #g3{cursor:grab;touch-action:none}#g3lbl{pointer-events:none}
+/* Film and Flight, 07.10.2026: the 3D view as a cinema. Their two buttons sit
+   in the 3D pane and not in the header, where the third view button once
+   wrapped the category row at 1440px. In the cinema everything but the picture
+   leaves: the header, the search bar, the card. Two black bars frame it, the
+   lower one holds the controls, and those fade while the pointer is still.
+   Its words are set as the page sets its own: the title as a page's h1, the
+   line above it as the small grey label of the card and the list, the line
+   below as the card's description, and the controls in the colours of the
+   page's controls; the same in Film and in Flight. Owner's instruction of
+   07.10.2026, "please use the same font and font color", after the first cut
+   set the film's date thin, off-white and 78px high, and the flight's title
+   in a second size. */
+#cineGo{position:absolute;left:16px;top:44px;z-index:2;display:flex;gap:6px}
+#cineGo button{height:28px;padding:0 12px 0 10px;border-radius:14px;border:1px solid var(--line);background:var(--side);color:var(--item);font-size:12px;letter-spacing:.02em;display:inline-flex;align-items:center;gap:7px}
+#cineGo button::before{content:"";border-left:7px solid currentColor;border-top:4.5px solid transparent;border-bottom:4.5px solid transparent}
+#cineGo button:hover{color:var(--fg);border-color:var(--acc)}
+body.cine #top,body.cine #askbar,body.cine #gcard,body.cine #g3stat,body.cine #g3hint,body.cine #cineGo{display:none!important}
+#cine{position:absolute;inset:0;z-index:4;pointer-events:none;--bar:max(9vh,58px)}
+#cine[hidden]{display:none}
+#cine .bar{position:absolute;left:0;right:0;height:var(--bar);background:#000}
+#cine .bar.top{top:0}#cine .bar.bot{bottom:0}
+#cine::before{content:"";position:absolute;left:0;right:0;bottom:var(--bar);height:36vh;background:linear-gradient(#0000,#000b)}
+#cineCap{position:absolute;left:8vw;right:8vw;bottom:calc(var(--bar) + 26px);text-align:center;text-shadow:0 0 3px #000,0 2px 22px #000}
+#cineTag{min-height:1.6em}
+#cineBig{color:var(--acc);font-size:1.75em;font-weight:700;letter-spacing:-.01em;line-height:1.3;font-variant-numeric:tabular-nums}
+#cineSub{margin:.3em auto 0;max-width:74ch;font-size:.95em;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#cineCtl{position:absolute;left:0;right:0;bottom:0;height:var(--bar);display:flex;align-items:center;justify-content:center;gap:10px;padding:0 16px;pointer-events:auto;opacity:0;transition:opacity .35s}
+#cine.awake #cineCtl,#cine.paused #cineCtl,#cineCtl:focus-within{opacity:1}
+#cineCtl button,#cineCtl select{height:34px;border-radius:17px;border:1px solid var(--line);background:var(--side);color:var(--item);font-family:inherit;font-size:.9em;padding:0 14px}
+#cineCtl button:hover,#cineCtl select:hover{color:var(--fg);border-color:var(--acc)}
+#cinePlay,#cineFull,#cineX{width:34px;padding:0!important;display:inline-grid;place-items:center}
+#cineCtl svg{width:16px;height:16px;fill:currentColor}
+#cineX{font-size:18px!important;line-height:1}
+/* The time bar takes none of the page's padding for inputs: with it the knob
+   stopped ten pixels before the end of the bar, and the owner saw a film that
+   "does not go to the end" (07.10.2026). */
+#cineTime{flex:0 1 46vw;accent-color:var(--acc);padding:0;border:0;background:none}
+#cineTime{margin-bottom:0}   /* the page's inputs carry a margin below, which would lift this one off the row */
+#cine.film #cineRoute,#cine.film #cineBack,#cine.flight #cineTime{display:none}
+#cineCtl button[aria-pressed=true]{color:var(--fg);border-color:var(--acc)}
 /* One help line per graph, bottom left, in the same words where the control
    is the same. The 2D one joined on 23.09.2026, on the owner's request, and the
    same day the Fit button went, on the owner's instruction: a double-click on
@@ -1353,7 +1824,7 @@ input{width:100%;padding:8px 10px;margin-bottom:10px;cursor:text}
    these five properties, and one of the six carried them wrong — `#gcard .sec`
    had no font-weight, so the graph card's headings rendered lighter than the
    identical-looking headers a few hundred pixels to their left. */
-.grp,#gcard .sec,#aboutBtn .eyebrow,#aboutBox .eyebrow,#aboutFacts dt,.aboutLogo .tl{color:var(--mut);font-size:.78em;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.grp,#gcard .sec,#aboutBtn .eyebrow,#aboutBox .eyebrow,#aboutFacts dt,.aboutLogo .tl,#cineTag{color:var(--mut);font-size:.78em;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
 .grp{margin:12px 0 2px;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;padding:2px 4px;border-radius:5px}
 .grp:hover{color:var(--fg);background:var(--line)}.grp .gn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .grp .cv{display:inline-block;width:9px;transition:transform .12s;font-size:.9em}.grp.shut .cv{transform:rotate(-90deg)}
@@ -1542,7 +2013,10 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
    under the line as above it. One card: the local models and the scheduled
    tasks are both a name on the left and its state on the right. */
 #setBox{position:absolute;top:calc(100% + 8px);right:12px;z-index:40;display:grid;grid-template-columns:minmax(0,1fr) 32px;align-items:center;gap:8px;width:min(480px,calc(100vw - 24px));max-height:calc(100vh - 120px);overflow:auto;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);box-shadow:0 24px 80px rgba(0,0,0,.55);cursor:default;font-size:13px;line-height:1.35}
-#setBox>*{grid-column:1/-1;margin:0}
+#setBox>*,#asked>*{grid-column:1/-1;margin:0}
+/* "On request" is written by the page only when something stands under it, so
+   its title, rows and hint are in one box; the box itself is no row of the panel */
+#asked{display:contents}
 #setBox>#setAbout{grid-column:1}
 #setBox>#setX{grid-column:2;width:32px;padding:0;font-size:16px;font-weight:400;color:var(--mut)}
 #setBox button,#setBox select{min-height:32px;min-width:0;border:1px solid var(--edge);border-radius:6px;background:var(--card);color:var(--fg);font:inherit;font-weight:700}
@@ -1552,7 +2026,17 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 #setBox select:focus{border-color:var(--acc);outline:none}
 #setBox button:disabled{opacity:.42;cursor:default}
 #setBox .stt{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:6px;padding-top:12px;border-top:1px solid var(--line);color:var(--fg);font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
-#kbN{color:var(--mut);font-weight:400;letter-spacing:0;text-transform:none}
+/* Three tabs, owner's request of 08.10.2026: "please make 3 tabs in settings:
+   knowledge-base, brain, scheduled task". Until then the three parts stood one
+   under the other, each under its title, and the panel ran the height of the
+   window. The tabs are three controls of one width, as the knowledge bases'
+   buttons are; the one that is open wears the line the pressed view button
+   wears. A part is a column with the panel's own gap. The title "On request"
+   stays, inside the tasks' part. */
+#setTabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#setTabs button{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--mut)}
+#setTabs button[aria-selected="true"]{border-color:var(--acc);color:var(--fg)}
+.spane{display:grid;gap:8px}.spane>*{margin:0}
 #setBox .hint{color:var(--mut);font-size:11px;line-height:1.4}
 #setBox .hint b{color:var(--s2);font-weight:600}
 #setBuild{margin-top:4px;color:var(--ph);font-size:11px}
@@ -1562,12 +2046,12 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 #brain{display:grid}
 /* The card, shared by the local models and the scheduled tasks: a name over
    one quiet line on the left, the state or the action on the right. */
-#bWeights,#tasks{display:grid;gap:8px}
-#bWeights .wr,#tasks .tr{display:grid;align-items:center;gap:4px 12px;padding:8px 10px;border:1px solid var(--edge);border-radius:6px;background:var(--card)}
+#bWeights,:is(#tasks,#askedRows){display:grid;gap:8px}
+#bWeights .wr,:is(#tasks,#askedRows) .tr{display:grid;align-items:center;gap:4px 12px;padding:8px 10px;border:1px solid var(--edge);border-radius:6px;background:var(--card)}
 #bWeights .wr{grid-template-columns:minmax(0,1fr) auto}
-#tasks .tr{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
-#bWeights .wt,#tasks .tn b{display:block;font-weight:700}
-#bWeights .ws,#tasks .tn span,#tasks .sd{display:block;color:var(--mut);font-size:11px}
+:is(#tasks,#askedRows) .tr{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+#bWeights .wt,:is(#tasks,#askedRows) .tn b{display:block;font-weight:700}
+#bWeights .ws,:is(#tasks,#askedRows) .tn span,:is(#tasks,#askedRows) .sd{display:block;color:var(--mut);font-size:11px}
 /* Installed reads as a tick and its size on disk; missing as where the bytes
    come from. Delete asks first, because it takes an instant and costs the whole
    download to undo: the confirmation replaces the status line, so the price is
@@ -1585,12 +2069,12 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 /* The scheduled tasks, owner's request of 27.09.2026: how each one's last run
    ended, with a dot a colour for the state. Read from the Claude app through
    the helper, so it is live when Settings opens, not when the page was built. */
-#tasks .tr.bad{border-color:var(--s8)}
-#tasks .st{display:flex;align-items:center;gap:6px;font-weight:700}
-#tasks .st i{flex:0 0 8px;height:8px;border-radius:50%;background:var(--ph)}
-#tasks .ok .st i{background:var(--s3)}#tasks .warn .st i{background:var(--acc)}#tasks .bad .st i{background:var(--s8)}
-#tasks .bad .st{color:var(--s8)}
-#tasks .sd{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:1px}
+:is(#tasks,#askedRows) .tr.bad{border-color:var(--s8)}
+:is(#tasks,#askedRows) .st{display:flex;align-items:center;gap:6px;font-weight:700}
+:is(#tasks,#askedRows) .st i{flex:0 0 8px;height:8px;border-radius:50%;background:var(--ph)}
+:is(#tasks,#askedRows) .ok .st i{background:var(--s3)}:is(#tasks,#askedRows) .warn .st i{background:var(--acc)}:is(#tasks,#askedRows) .bad .st i{background:var(--s8)}
+:is(#tasks,#askedRows) .bad .st{color:var(--s8)}
+:is(#tasks,#askedRows) .sd{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:1px}
 #gc{flex:1;cursor:grab;touch-action:none;min-height:0}
 /* The card is docked, see below. The search box
    does not: it stands exactly where it stands in the Concept view, in a box
@@ -1712,24 +2196,32 @@ blockquote{border-left:3px solid var(--acc);margin:.6em 0;padding:.1em 1em;color
 <div id="tools"><div id="views" role="group" aria-label="View"><button id="bGraph" class="ib on" title="Graph view: the whole vault as one map" aria-label="Graph view" aria-pressed="true">__IGRAPH__</button><button id="b3d" class="ib" title="3D view: the same map with depth. Drag to turn it" aria-label="3D view" aria-pressed="false">__I3D__</button><button id="bList" class="ib" title="Concept view: the list of concepts, and the concept page beside it" aria-label="Concept view" aria-pressed="false">__ICONCEPTS__</button></div><button id="bSet" class="ib" title="Settings" aria-label="Settings" aria-haspopup="dialog" aria-expanded="false">__IGEAR__</button></div>
 <div id="setBox" role="dialog" aria-label="Settings" hidden>
 <button id="setAbout" type="button" title="What this vault is, and the facts to quote when something looks wrong">About 00_Cerebrum</button><button id="setX" type="button" title="Close settings (Esc)" aria-label="Close settings">&#215;</button>
-<div class="stt">Brain</div>
+<div id="setTabs" role="tablist" aria-label="Settings"><button type="button" role="tab" id="tabKb" aria-controls="paneKb" aria-selected="true">Knowledge bases</button><button type="button" role="tab" id="tabBrain" aria-controls="paneBrain" aria-selected="false">Brain</button><button type="button" role="tab" id="tabTasks" aria-controls="paneTasks" aria-selected="false">Scheduled tasks</button></div>
+<div class="spane" id="paneKb" role="tabpanel" aria-labelledby="tabKb">
+<div id="kbbar"></div>
+<p class="hint"><span id="kbN"></span>. A hidden knowledge base leaves the graph, the concept list and the category counts. The choice is kept for the next visit.</p>
+</div>
+<div class="spane" id="paneBrain" role="tabpanel" aria-labelledby="tabBrain" hidden>
 <div id="brain"><select id="bModel" aria-label="Which model answers"></select></div>
 <p class="hint" id="brainWhere"></p>
 <div id="bWeights"></div>
 <p class="hint" id="brainDisk"></p>
-<div class="stt">Knowledge bases<span id="kbN"></span></div>
-<div id="kbbar"></div>
-<p class="hint">A hidden knowledge base leaves the graph, the concept list and the category counts. The choice is kept for the next visit.</p>
-<div class="stt">Scheduled tasks</div>
+</div>
+<div class="spane" id="paneTasks" role="tabpanel" aria-labelledby="tabTasks" hidden>
 <div id="tasks"></div>
 <p class="hint" id="tasksHint"></p>
+<div id="asked"></div>
+</div>
 <p id="setBuild"></p>
 </div>
 </header>
 <div id="askbar"><div id="qwrap"><button id="mSearch" class="mb on" type="button" title="Search the vault" aria-label="Search the vault" aria-pressed="true">__ISEARCH__</button><button id="mAsk" class="mb" type="button" title="Ask Claude for a report instead of searching" aria-label="Ask Claude" aria-pressed="false">__ISPARK__</button><div id="qbar" hidden><i></i></div><input id="q" placeholder="Search title, description, tags…" aria-label="Search concepts"><button id="qx" type="button" title="Clear the search" aria-label="Clear the search">×</button><button id="bRep" class="mb" type="button" title="The reports in Outputs/" aria-label="Reports" aria-haspopup="dialog" aria-expanded="false">__IREPORTS__</button></div></div>
 <div id="stage">
-<div id="gpane"><canvas id="gc"></canvas><div class="gstat" id="g2stat"></div><div id="g2hint"><b>Drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
-<div id="g3pane"><canvas id="g3"></canvas><canvas id="g3lbl"></canvas><div class="gstat" id="g3stat"></div><div id="g3hint"><b>Drag</b> to turn · <b>Shift-drag</b> to move · <b>Scroll</b> to zoom · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
+<div id="gpane"><canvas id="gc"></canvas><div class="gstat" id="g2stat"></div><div id="g2hint"><b>Drag</b> to move · <b>Scroll</b> to zoom · <span class="howturn"></span> to turn · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div></div>
+<div id="g3pane"><canvas id="g3"></canvas><canvas id="g3lbl"></canvas><div class="gstat" id="g3stat"></div><div id="cineGo"><button id="bFilm" type="button" title="Film: the vault's years as a time-lapse. Each concept appears at the date of its oldest source">Film</button><button id="bFly" type="button" title="Flight: the camera tours the concepts by itself, along the links">Flight</button></div><div id="g3hint"><b>Drag</b> to turn · <b>Shift-drag</b> to move · <b>Scroll</b> to zoom · <span class="howturn"></span> to roll · <b>Click</b> to select · <b>Double-click</b> to open · <b>Double-click empty space</b> to fit</div>
+<div id="cine" hidden><div class="bar top"></div><div class="bar bot"></div>
+<div id="cineCap"><div id="cineTag"></div><div id="cineBig"></div><div id="cineSub"></div></div>
+<div id="cineCtl"><button id="cinePlay" type="button"></button><input id="cineTime" type="range" min="0" max="1000" value="0" aria-label="Where the film is"><select id="cineRoute" aria-label="The knowledge base the flight tours"></select><button id="cineSpeed" type="button" title="Speed"></button><button id="cineBack" type="button" aria-pressed="true">Follow</button><button id="cineFull" type="button" title="Full screen" aria-label="Full screen"><svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4zM14 4h6v6h-2V6h-4zM4 14h2v4h4v2H4zM18 14h2v6h-6v-2h4z"/></svg></button><button id="cineX" type="button" title="Leave (Esc)" aria-label="Leave">&#215;</button></div></div></div>
 <div id="gcard"></div>
 <div id="cpane"><div id="side"><div id="sidetop"><button id="ball" title="Fold or unfold every group in the list">Collapse all</button></div><div id="tree"></div></div><div id="splitter" title="drag to resize"></div><div id="main"><div class="doc"><div class="meta">Pick a concept, or search. Dashed links point at concepts not written yet — legitimate under OKF.</div></div></div></div>
 </div>
@@ -2163,7 +2655,7 @@ async function pullModel(id,btn){const row=btn.closest('.wr');
    /tasks. A helper started before this section existed answers 404, and the
    hint says to restart it rather than showing an empty list, because an empty
    list would read as "no tasks". */
-const tasksEl=document.getElementById('tasks'),tasksHint=document.getElementById('tasksHint');
+const tasksEl=document.getElementById('tasks'),tasksHint=document.getElementById('tasksHint'),askedEl=document.getElementById('asked');
 /* A day with no clock time, as the health checks give it, is shown as a day. */
 function when(s){if(s.length===10)return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(s+'T12:00').getDay()]+' '+s.slice(8)+'.'+s.slice(5,7)+'.';
  const d=new Date(s),n=new Date(),hm=d.toTimeString().slice(0,5),
@@ -2185,16 +2677,22 @@ function taskRow(t){let c,w;
  if(t.last)w+=(t.missed?' · last ran ':' · ')+when(t.last);
  const nm=t.name.replace(/^Weekly\\s+/i,''),d=t.needs||t.detail;
  return '<div class="tr '+c+'" data-t="'+E(t.id)+'"><div class="tn"><b>'+E(nm.charAt(0).toUpperCase()+nm.slice(1))+
-  '</b><span>'+E(t.when)+(t.next?' · next '+when(t.next):'')+'</span></div><div class="ts"><span class="st"><i></i>'+
+  '</b><span>'+(t.when==='on request'?'':E(t.when)+(t.next?' · next '+when(t.next):''))+'</span></div><div class="ts"><span class="st"><i></i>'+
   E(w)+'</span>'+(d?'<span class="sd" title="'+E(d)+'">'+E(d)+'</span>':'')+'</div></div>'}
 async function loadTasks(){
- if(!helper){tasksEl.innerHTML='';tasksHint.textContent='Start the helper to see the scheduled tasks.';return}
+ if(!helper){tasksEl.innerHTML=askedEl.innerHTML='';tasksHint.textContent='Start the helper to see the scheduled tasks.';return}
  let d=null;try{const r=await fetch(HELPER+'/tasks',{cache:'no-store'});d=await r.json();
   if(r.status===404)d={error:'The helper running is older than this page. Restart it to see the scheduled tasks.'}}
  catch(e){d={error:'the helper answered nothing'}}
- if(!d.tasks){tasksEl.innerHTML='';tasksHint.textContent=d.error||'no answer';return}
- tasksEl.innerHTML=d.tasks.map(taskRow).join('');
- tasksHint.textContent=d.tasks.length?'Read from the Claude app on this Mac. A task runs only while the app is open; a missed run starts at the next launch. The OneNote sync and the health checks are read from the vault itself.'
+ if(!d.tasks){tasksEl.innerHTML=askedEl.innerHTML='';tasksHint.textContent=d.error||'no answer';return}
+ /* What nothing starts by itself stands under a title of its own. Until
+    08.10.2026 the health checks were a row among the scheduled tasks, marked
+    "on request" in small letters. Owner's words on it: "i didnt know health
+    checks are scheduled"; and of the two ways put to him, "own heading". */
+ const ask=d.tasks.filter(t=>t.when==='on request'),sch=d.tasks.filter(t=>t.when!=='on request');
+ tasksEl.innerHTML=sch.map(taskRow).join('');
+ askedEl.innerHTML=ask.length?'<div class="stt">On request</div><div id="askedRows">'+ask.map(taskRow).join('')+'</div><p class="hint">Nothing starts these by itself. Say "run the health checks". The days are read from the vault itself.</p>':'';
+ tasksHint.textContent=sch.length?'Read from the Claude app on this Mac. A task runs only while the app is open; a missed run starts at the next launch. The OneNote sync is read from the vault itself.'
   :'The Claude app has no scheduled tasks.'}
 
 function showReports(on){repWrap.classList.toggle('on',on);
@@ -2239,6 +2737,17 @@ const N=ids.map((id,i)=>({id,i,c:CATS.indexOf(cat(id)),kb:D[id].kb,x:D[id].x,y:D
 const L=[];ids.forEach(id=>D[id].out.forEach(o=>{if(idx[o]!==undefined&&idx[o]!==idx[id])L.push([idx[id],idx[o]])}));
 const NB=N.map(()=>new Set());L.forEach(([a,b])=>{NB[a].add(b);NB[b].add(a)});
 let tx=0,ty=0,sc=1,hov=-1,sel=-1,drag=null,pan=null,qv='',dirty=true,dpr=devicePixelRatio||1;
+/* The map can be turned, in both graphs. Owner's request of 08.10.2026: "i
+   want to rotate on the mac with the usual two-finger rotation gesture on the
+   trackpad. if this doesnt work, please come up with an idea". It works in
+   Safari, which gives that gesture to the page as gesture events. Chrome and
+   Firefox keep it from the page, so there the idea is the Option key with a
+   two-finger swipe, which is a wheel event with altKey and arrives in every
+   browser. rot is the 2D map's turn, in radians, clockwise on the screen: a
+   place on the screen is the middle + sc * R(rot) * (place + (tx,ty)). The
+   marks and every name stay upright. SPIN is the turn for one pixel of swipe. */
+let rot=0;const SPIN=.004,rv=(x,y,a)=>{const c=Math.cos(a),n=Math.sin(a);return[x*c-y*n,x*n+y*c]};
+const swipe=e=>-(Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY)*SPIN;
 /* one soft halo per knowledge base, in its block's hue, so the clusters in
    the graph visibly belong to the settings block and legend row that share the
    colour. The generator measures each halo and hands it over, because the
@@ -2260,7 +2769,7 @@ function setView(v){view=v==='graph'||v==='3d'?v:'concepts';const g=view==='grap
 document.body.classList.toggle('vg',g);document.body.classList.toggle('vc',c);document.body.classList.toggle('v3',t);
 bG.classList.toggle('on',g);bL.classList.toggle('on',c);b3.classList.toggle('on',t);
 bG.setAttribute('aria-pressed',String(g));bL.setAttribute('aria-pressed',String(c));b3.setAttribute('aria-pressed',String(t));
-if(t)G3.enter();
+if(t)G3.enter();else if(G3.cine)G3.cine.stop();   // Film and Flight are the 3D view's, and end with it
 /* The canvas is sized from its client box, and a hidden canvas measures zero:
    a window resized while the Concept view was showing leaves the graph with no
    backing store until this runs. */
@@ -2350,14 +2859,17 @@ addEventListener('resize',resize);
    height with room to spare; the graph is centred in what they leave. */
 const FIT_TOP=76,FIT_SIDE=28,FIT_BOTTOM=28;
 function fit(){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9,any=false;
-for(const n of N){if(hid(n))continue;any=true;x0=Math.min(x0,n.x);y0=Math.min(y0,n.y);x1=Math.max(x1,n.x);y1=Math.max(y1,n.y)}
+for(const n of N){if(hid(n))continue;any=true;const[x,y]=rv(n.x,n.y,rot);x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y)}
 if(!any)return;
 const w=gc.clientWidth-2*FIT_SIDE,h=gc.clientHeight-FIT_TOP-FIT_BOTTOM;
 sc=Math.max(.08,Math.min(2.2,Math.min(w/Math.max(x1-x0,1),h/Math.max(y1-y0,1))));
-tx=-(x0+x1)/2;ty=(FIT_TOP-FIT_BOTTOM)/(2*sc)-(y0+y1)/2;dirty=true}
+[tx,ty]=rv(-(x0+x1)/2,(FIT_TOP-FIT_BOTTOM)/(2*sc)-(y0+y1)/2,-rot);dirty=true}
 function centerOn(i){if(view==='3d'){G3.focus(i);return}const n=N[i];sc=Math.max(sc,1.5);tx=-n.x;ty=-n.y;dirty=true}
-function world(e){const b=gc.getBoundingClientRect();
-return[((e.clientX-b.left)-gc.clientWidth/2)/sc-tx,((e.clientY-b.top)-gc.clientHeight/2)/sc-ty]}
+function world(e){const b=gc.getBoundingClientRect(),p=rv((e.clientX-b.left-gc.clientWidth/2)/sc,(e.clientY-b.top-gc.clientHeight/2)/sc,-rot);
+return[p[0]-tx,p[1]-ty]}
+/* put a place of the map under the pointer: what a zoom and a turn both keep still */
+function pin(e,wx,wy){const b=gc.getBoundingClientRect(),p=rv((e.clientX-b.left-gc.clientWidth/2)/sc,(e.clientY-b.top-gc.clientHeight/2)/sc,-rot);
+tx=p[0]-wx;ty=p[1]-wy;dirty=true}
 function pick(wx,wy){let best=-1,bd=1e18;
 for(const n of N){if(hid(n))continue;const rr=rEff(n)+5/sc;const d=(n.x-wx)**2+(n.y-wy)**2;
 if(d<rr*rr&&d<bd){bd=d;best=n.i}}return best}
@@ -2379,7 +2891,7 @@ card.querySelector('.open').onclick=()=>show(id);
 card.querySelectorAll('.nb[data-i]').forEach(a=>a.onclick=()=>{select(+a.dataset.i);centerOn(+a.dataset.i)})}
 gc.addEventListener('mousemove',e=>{const[wx,wy]=world(e);
 if(drag){drag.x=wx;drag.y=wy;drag._m=(drag._m||0)+Math.abs(e.movementX||1)+Math.abs(e.movementY||1);dirty=true;return}
-if(pan){tx+=(e.clientX-pan[0])/sc;ty+=(e.clientY-pan[1])/sc;pan=[e.clientX,e.clientY];dirty=true;return}
+if(pan){const p=rv((e.clientX-pan[0])/sc,(e.clientY-pan[1])/sc,-rot);tx+=p[0];ty+=p[1];pan=[e.clientX,e.clientY];dirty=true;return}
 const h=pick(wx,wy);if(h!==hov){hov=h;dirty=true}
 gc.style.cursor=hov>=0?'pointer':'grab'});
 gc.addEventListener('mousedown',e=>{const[wx,wy]=world(e);const h=pick(wx,wy);
@@ -2387,21 +2899,33 @@ if(h>=0){drag=N[h];drag._m=0}else pan=[e.clientX,e.clientY]});
 addEventListener('mouseup',()=>{if(drag&&(drag._m||0)<6){if(sel===drag.i)clearSel();else select(drag.i)}drag=null;pan=null});
 gc.addEventListener('dblclick',e=>{const[wx,wy]=world(e);const h=pick(wx,wy);
 if(h>=0){select(h);show(N[h].id)}else fit()});
-gc.addEventListener('wheel',e=>{e.preventDefault();const b=gc.getBoundingClientRect();const[wx,wy]=world(e);
 /* Zoom has no working limit: the owner asked for endless zoom on
    23.09.2026. The bounds left are there only to keep the arithmetic finite,
    1/500 of the fitted scale out to 500 times in. */
-const ns=Math.max(.002,Math.min(500,sc*Math.exp(-e.deltaY*.0015)));
-tx=(e.clientX-b.left-gc.clientWidth/2)/ns-wx;ty=(e.clientY-b.top-gc.clientHeight/2)/ns-wy;sc=ns;dirty=true},{passive:false});
+const zoomTo=v=>Math.max(.002,Math.min(500,v));
+gc.addEventListener('wheel',e=>{e.preventDefault();const[wx,wy]=world(e);
+if(e.altKey)rot+=swipe(e);else sc=zoomTo(sc*Math.exp(-e.deltaY*.0015));
+pin(e,wx,wy)},{passive:false});
+/* Safari's two-finger turn and pinch. rotation is in degrees since the gesture
+   began, clockwise, and scale is the pinch since then; the place under the
+   pointer at the start stays under it. */
+let ges=null;
+gc.addEventListener('gesturestart',e=>{e.preventDefault();const[wx,wy]=world(e);ges={r:rot,s:sc,wx,wy}});
+gc.addEventListener('gesturechange',e=>{e.preventDefault();if(!ges)return;
+rot=ges.r+(e.rotation||0)*Math.PI/180;sc=zoomTo(ges.s*(e.scale||1));pin(e,ges.wx,ges.wy)});
+gc.addEventListener('gestureend',e=>{e.preventDefault();ges=null});
+/* the line under each graph says how to turn, in this browser's and this keyboard's words */
+const ALTKEY=/Mac|iP/.test(navigator.platform)?'Option':'Alt';
+document.querySelectorAll('.howturn').forEach(h=>{h.innerHTML=('ongesturestart' in window?'<b>Two fingers turning</b> or ':'')+'<b>'+ALTKEY+'-scroll</b>'});
 /* In Ask mode the box is a question, not a filter: typing one must not empty
    the list behind it, and clearing it must not leave the list filtered by half
    a question. `askMode` is the switch; the filter is fed the empty string. */
 q.oninput=()=>{const f=askMode?'':q.value.toLowerCase();build(f);qv=f;dirty=true};
 q.addEventListener('keydown',e=>{if(e.key==='Enter'&&askMode){e.preventDefault();ask()}});
-function sxy(n){return[(n.x+tx)*sc+gc.clientWidth/2,(n.y+ty)*sc+gc.clientHeight/2]}
+function sxy(n){const p=rv(n.x+tx,n.y+ty,rot);return[p[0]*sc+gc.clientWidth/2,p[1]*sc+gc.clientHeight/2]}
 function draw(){const x2=gc.getContext('2d');x2.setTransform(dpr,0,0,dpr,0,0);
 x2.clearRect(0,0,gc.clientWidth,gc.clientHeight);
-x2.save();x2.translate(gc.clientWidth/2,gc.clientHeight/2);x2.scale(sc,sc);x2.translate(tx,ty);
+x2.save();x2.translate(gc.clientWidth/2,gc.clientHeight/2);x2.scale(sc,sc);x2.rotate(rot);x2.translate(tx,ty);
 const anySel=sel>=0;
 for(const kb in KBC){if(offKB.has(kb)||!HUE[kb])continue;const c=KBC[kb];
 const g=x2.createRadialGradient(c.cx,c.cy,0,c.cx,c.cy,c.halo);
@@ -2439,7 +2963,7 @@ if(fo>=0&&!RMQ.matches){const T=performance.now()/1000,s0=N[fo];
  for(const o of NB[fo]){const so=N[o];if(hid(so))continue;const ph=(T*.45+o*.6180339887)%1;
   if(D[s0.id].out.includes(so.id))bead(s0,so,ph,LOUT);if(D[so.id].out.includes(s0.id))bead(so,s0,ph,LIN)}}
 for(const n of N){if(hid(n))continue;const g=ghost(n);
-x2.save();x2.translate(n.x,n.y);x2.globalAlpha=g?.13:1;
+x2.save();x2.translate(n.x,n.y);x2.rotate(-rot);x2.globalAlpha=g?.13:1;
 x2.fillStyle=COL[n.c];x2.strokeStyle=css('--bg');x2.lineWidth=2/sc;
 shp(x2,rEff(n),n.c);x2.fill();x2.stroke();
 if(n.i===sel){x2.strokeStyle=css('--acc');x2.lineWidth=3/sc;shp(x2,rEff(n)+5/sc,n.c);x2.stroke()}
@@ -2456,8 +2980,9 @@ for(const kb in KBC){if(offKB.has(kb)||!HUE[kb])continue;const c=KBC[kb];
 const fs=80;
 x2.font='700 '+fs+'px system-ui,-apple-system,sans-serif';x2.textAlign='center';x2.textBaseline='middle';
 x2.globalAlpha=anySel||qv?.25:.8;
-x2.lineWidth=fs*.14;x2.strokeStyle=css('--bg');x2.strokeText(kbName(kb),c.cx,c.cy);
-x2.fillStyle=HUE[kb];x2.fillText(kbName(kb),c.cx,c.cy);
+x2.save();x2.translate(c.cx,c.cy);x2.rotate(-rot);
+x2.lineWidth=fs*.14;x2.strokeStyle=css('--bg');x2.strokeText(kbName(kb),0,0);
+x2.fillStyle=HUE[kb];x2.fillText(kbName(kb),0,0);x2.restore();
 x2.globalAlpha=1;x2.textAlign='start'}
 x2.restore();
 /* labels in screen space: constant size, halo, greedy anti-collision */
@@ -2530,6 +3055,10 @@ document.getElementById('about3d').onclick=()=>{aboutClose();if(!b3.disabled)b3.
    must close the panel before that control acts. */
 const setBox=document.getElementById('setBox'),bSet=document.getElementById('bSet');
 function setOpen(){setBox.hidden=false;bSet.classList.add('on');bSet.setAttribute('aria-expanded','true')}
+/* one part of Settings shows at a time; the tab says which */
+const setTabs=[...document.querySelectorAll('#setTabs [role=tab]')];
+function setTab(id){setTabs.forEach(t=>{const on=t.id===id;t.setAttribute('aria-selected',String(on));document.getElementById(t.getAttribute('aria-controls')).hidden=!on})}
+setTabs.forEach(t=>t.onclick=()=>{setTab(t.id);t.blur()});
 function setClose(){setBox.hidden=true;bSet.classList.remove('on');bSet.setAttribute('aria-expanded','false')}
 bSet.onclick=async()=>{if(setBox.hidden){setOpen();await pingHelper();loadBrain();loadTasks()}else setClose()};
 /* About sits first in Settings, as About j4k sits first in j4k's menu. */
@@ -2543,7 +3072,8 @@ else if(d)d.remove();
 bSet.title=n?'Settings · '+n+(n>1?' knowledge bases':' knowledge base')+' hidden':'Settings';
 document.getElementById('kbN').textContent=(KB_ALL.length-n)+' of '+KB_ALL.length+' showing'}
 /* One keyboard handler for the page. Escape closes the nearest thing open —
-   About, then Settings, then the graph card — and then lets go of any button
+   About, then Settings, then Film or Flight, then the graph card — and then
+   lets go of any button
    still holding focus. The owner reported the reason on 09.09.2026, on the
    full-screen button: a button keeps focus after a click, the first keystroke
    afterwards switches the browser to keyboard modality, and Escape itself
@@ -2556,6 +3086,7 @@ if(e.key==='Escape'){
 if(repWrap.classList.contains('on'))showReports(false);
 else if(aboutWrap.classList.contains('on'))aboutClose();
 else if(!setBox.hidden)setClose();
+else if(G3.cine&&G3.cine.on())G3.cine.stop();
 else if(view==='graph'||view==='3d')clearSel();
 const a=document.activeElement;if(a&&a.tagName==='BUTTON')a.blur();
 return}
@@ -2584,10 +3115,21 @@ document.querySelectorAll('.gstat').forEach(el=>el.innerHTML=html)})();
    event, as typing does, so it filters every view alike. `n` is hers, to make
    each address new, and means nothing here. The meta tag in the head says the
    page does this; she looks for it before telling anyone the page followed her.
-   viewer-check.js holds it. */
+   viewer-check.js holds it.
+
+   And it can start the Film, 08.10.2026. The owner's words, in her session and
+   passed on by it: "in Cerebrum, in 3D view, can you teach glados to start the
+   film?"; his yes to the change was given here. `cine=film` does what the Film
+   button does, after the view and the search: so the same address with a new
+   `n` starts the film again from its beginning, as a second press does, and
+   with Reduce Motion the film opens and waits for Play. An address without
+   `cine` leaves what plays as it is; an address that names another view ends
+   it, as that view's button does. Only `film` is read. The tag's third word
+   says the page does this, and she sends `cine` only when the word is there. */
 function fromAddress(){const a=new URLSearchParams(location.hash.slice(1)),v=a.get('view');
  if(v==='concepts'||v==='graph'||v==='3d'||v==='2d')setView(v==='2d'?'graph':v);
- if(a.has('q')){if(askMode)setMode(false);q.value=a.get('q');q.dispatchEvent(new Event('input'))}}
+ if(a.has('q')){if(askMode)setMode(false);q.value=a.get('q');q.dispatchEvent(new Event('input'))}
+ if(a.get('cine')==='film'&&G3.cine)G3.cine.start('film')}
 addEventListener('hashchange',fromAddress);
 build('');kbbar();kbBadge();chips();setView('graph');fromAddress();
 </script></body></html>"""
