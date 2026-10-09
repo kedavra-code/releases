@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 174,
-  "commit": "4ac1a8c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-174/unus.dmg",
-  "sha256": "facb2378f447f27a8a11f995b30614e620ee7f13604c38c5bd741dd509a0ab91",
+  "build": 175,
+  "commit": "02cbb12",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-175/unus.dmg",
+  "sha256": "c95f88f057339157cb2122c17fb01025ad0cb4af28aa8c3dd5c759095789f983",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "A pasted number with apostrophes counts\nAfter an update, What's New opens once\nAn update says what is new, and a bad one is undone\nA hyphen inside a word is not a minus\nunus reads back what it prints\nA refused line says why\nNine sentences answer right\nAbout shows the kit version\nand 7 more — see What's New"
 }
