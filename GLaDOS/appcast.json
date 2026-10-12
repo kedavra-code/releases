@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 354,
-  "commit": "35cbaa0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-354/GLaDOS.dmg",
-  "sha256": "5eb5862fce04e95f6e84ec2ac73ee213154117f1e33178b6ce519caf26452e37",
+  "build": 355,
+  "commit": "853527f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-355/GLaDOS.dmg",
+  "sha256": "61b2a2624c22437a0556349b03eccf94ecce9c5d82e24b2cb1853bd643216dd8",
   "minimumSystemVersion": "26.0",
-  "notes": "The one that is off keeps its small black disc\nSettings › Voice has no J.A.R.V.I.S. switch any more"
+  "notes": "The room does not stop them while they perform"
 }
