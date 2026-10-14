@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 138,
-  "commit": "c80673e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-138/scripta.dmg",
-  "sha256": "ca615f778957999597df68788538057532154d9a56417c24180f81bcc1abe75f",
+  "build": 139,
+  "commit": "1a2fd5c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-139/scripta.dmg",
+  "sha256": "b3b8d6bdfa55af4cecde1062e544ab81d6be747601d8f1af3002d35036114d53",
   "minimumSystemVersion": "26.0",
-  "notes": "Only real microphones in the Microphone menu\nChoose the microphone when you record\nFold the meeting list by month\nSpeakers can be named again"
+  "notes": "Small fixes and improvements."
 }
