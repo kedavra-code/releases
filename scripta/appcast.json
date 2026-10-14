@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 134,
-  "commit": "8d256f1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-134/scripta.dmg",
-  "sha256": "a3a8232724f1528e072da22588a8b12b42bcb677d9dd782cbed5a931ca5b3535",
+  "build": 135,
+  "commit": "3c60dc7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-135/scripta.dmg",
+  "sha256": "32bb8189348bb2f6af4348e1d2b6e0e7d36e71aa4a5256873000915d3413d6dc",
   "minimumSystemVersion": "26.0",
-  "notes": "Haiku 5.5 takes the place of Haiku 4.5"
+  "notes": "Speakers can be named again"
 }
