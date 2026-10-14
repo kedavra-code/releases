@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 355,
-  "commit": "853527f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-355/GLaDOS.dmg",
-  "sha256": "61b2a2624c22437a0556349b03eccf94ecce9c5d82e24b2cb1853bd643216dd8",
+  "build": 356,
+  "commit": "8713b57",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-356/GLaDOS.dmg",
+  "sha256": "81631a20b898c862d78dcbc2b9b2b0b2b5141cbdef3fbf17aaca75972bc2606d",
   "minimumSystemVersion": "26.0",
-  "notes": "The room does not stop them while they perform"
+  "notes": "Small fixes and improvements."
 }
