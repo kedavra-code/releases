@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 143,
-  "commit": "89aeff6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-143/scripta.dmg",
-  "sha256": "bb7c0d29778ee7b9bf7c203b44a372a7389fecc6ac88c072562097f2e1d548f9",
+  "build": 144,
+  "commit": "265b71f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-144/scripta.dmg",
+  "sha256": "5ac4a11fe4a630db7eaf0de5dc1fbed97b54e365b5a04bfad2912a568386f749",
   "minimumSystemVersion": "26.0",
-  "notes": "Updates look the same in every app"
+  "notes": "Minutes from a transcript Teams made"
 }
