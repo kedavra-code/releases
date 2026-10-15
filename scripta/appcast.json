@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 144,
-  "commit": "265b71f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-144/scripta.dmg",
-  "sha256": "5ac4a11fe4a630db7eaf0de5dc1fbed97b54e365b5a04bfad2912a568386f749",
+  "build": 145,
+  "commit": "bdbb277",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-145/scripta.dmg",
+  "sha256": "04296c1e9af501319d2743fc8e568fa774961d1d69262eb046b7f1ab5afdd35c",
   "minimumSystemVersion": "26.0",
-  "notes": "Minutes from a transcript Teams made"
+  "notes": "The call is recorded at the right speed with AirPods"
 }
