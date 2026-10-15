@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 178,
-  "commit": "eb39e48",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-178/unus.dmg",
-  "sha256": "f27f7339597214eff23428e268604af3d991bf949791305c99cdbefc1aa8f154",
+  "build": 180,
+  "commit": "1948214",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-180/unus.dmg",
+  "sha256": "23b7d804d70464d70d368eca27e2da31e6cb7cc247a43545a612d612a8d4914b",
   "minimumSystemVersion": "26.0",
-  "notes": "A Dock icon, and a choice where unus shows itself"
+  "notes": "Updates look the same in every app"
 }
