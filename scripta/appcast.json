@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 141,
-  "commit": "adf95eb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-141/scripta.dmg",
-  "sha256": "2a98b704241faf4e9394b45b8e10f4fc67e0894c0dc4bc6cdf93136bdb6f1303",
+  "build": 143,
+  "commit": "89aeff6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-143/scripta.dmg",
+  "sha256": "bb7c0d29778ee7b9bf7c203b44a372a7389fecc6ac88c072562097f2e1d548f9",
   "minimumSystemVersion": "26.0",
-  "notes": "A Dock icon, and a choice where scripta shows itself"
+  "notes": "Updates look the same in every app"
 }
