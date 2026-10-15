@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 358,
-  "commit": "9fc2952",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-358/GLaDOS.dmg",
-  "sha256": "0a550f10ba3209ab333449819ea90ed173394e295f516afa241d6aabdea60abf",
+  "build": 360,
+  "commit": "1816245",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-360/GLaDOS.dmg",
+  "sha256": "f2820a7136666e485debe701627910a144a98927ebc063f523fb66c73d20e955",
   "minimumSystemVersion": "26.0",
-  "notes": "A Dock icon, and a choice where GLaDOS shows herself"
+  "notes": "Updates look the same in every app"
 }
