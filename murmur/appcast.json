@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 150,
-  "commit": "9d63857",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-150/murmur.dmg",
-  "sha256": "3c939909dd2f849834c25604d2cc048afd8f0057fc4af18d82dfa6fa9e8a8864",
+  "build": 153,
+  "commit": "b05b237",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-153/murmur.dmg",
+  "sha256": "5cf05888713016060b45009d9386149f30a6d67283a499b046bb1bc21608039f",
   "minimumSystemVersion": "26.0",
-  "notes": "A Dock icon, and a choice where murmur shows itself"
+  "notes": "Updates look the same in every app"
 }
