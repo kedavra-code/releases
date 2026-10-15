@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 145,
-  "commit": "bdbb277",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-145/scripta.dmg",
-  "sha256": "04296c1e9af501319d2743fc8e568fa774961d1d69262eb046b7f1ab5afdd35c",
+  "build": 146,
+  "commit": "287ed8b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-146/scripta.dmg",
+  "sha256": "ac3523ab7bdb3e71de39e04076469122d4ff973689c025c3dd13d2e85f140894",
   "minimumSystemVersion": "26.0",
-  "notes": "The call is recorded at the right speed with AirPods"
+  "notes": "No crash when two voices get one name"
 }
