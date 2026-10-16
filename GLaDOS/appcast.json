@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 364,
-  "commit": "6e8955d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-364/GLaDOS.dmg",
-  "sha256": "b99bd792c1985d2eaf1b5daf0b8eb27e9c0a50e1159a128aae76d53c0b8058c9",
+  "build": 365,
+  "commit": "ea746e9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-365/GLaDOS.dmg",
+  "sha256": "d15bcf1184122141f3e402ba5a01b5e876686f9c7955f8da73ed8d183f02f31e",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "The two eyes sit mirror to mirror"
 }
