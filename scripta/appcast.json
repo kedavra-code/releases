@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 149,
-  "commit": "f451bce",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-149/scripta.dmg",
-  "sha256": "178183502f1ceb55062c8e744792d039447d85481b6248b7c28ae7b219a40021",
+  "build": 150,
+  "commit": "14293a6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-150/scripta.dmg",
+  "sha256": "30f106c9e38efa22b085c8ba21ffe0c494165ce802f2f70775a71a8bfa903840",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "A recognised voice is checked again"
 }
