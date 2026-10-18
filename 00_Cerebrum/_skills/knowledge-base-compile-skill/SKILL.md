@@ -98,6 +98,21 @@ So a `modified` page with `contentChanged` needs a judgement the bulk pass never
 3. **Do not reach for the batch machinery.** A handful of files is a direct read and a concept written or appended to. The eight-agent pipeline earns its overhead somewhere above fifty pages; below that it costs more to orchestrate than to do.
 4. Owner testimony is a source like any other — `author: human:owner`, cited normally, and **it never licenses a `verified:` key**.
 
+### The reader pass
+
+**In a base whose compiles are small, read every concept a compile writes or changes against its cited pages with a second agent before the commit.** The vault this template was cut from runs it in one knowledge base since 18.10.2026, on its owner's decision.
+
+The defect it is for: a sentence firmer than its page. A hedge or qualifier the page carries is dropped ("may", "nearly", "in the lab"), an open list ("including", "and more") is made closed, a range becomes a point. In that vault it was 102 of 116 corrections in one health check and 26 of 32 in another, three of them in concepts compiled after the hazard had been written down, each by a compile that said it had read the concept against its page. A writer does not see its own paraphrase drift; a reader with only the page and the sentence does.
+
+No script can do it. A hedge-word gauge was built and measured: it caught 9 of the 26 known cases, because 15 of the 26 drop a qualifier that is no hedge word, so any word list stops at 11 of 26.
+
+1. When the concepts are written and before `verify.py` and the commit, start one reader agent per new or changed concept; two or three small concepts may share one reader.
+2. The reader reads the concept and every page its footnotes cite, whole. It reports each sentence that says more than its page, with the page's words beside it, and each quotation that is not verbatim. **It edits nothing**, so the compiling session stays the only writer.
+3. The compiling session checks each report against the page and corrects what holds, restamping `generated.at`.
+4. The CHANGELOG entry says how many sentences the readers raised and how many were corrected.
+
+About 100k tokens a concept. Where a compile writes one to three concepts, this is part of the compile. Where it writes dozens, the health check's read set covers what changed, and running the pass as well is a cost decision for the owner. Say in this section which bases run it.
+
 ### Meeting notes
 
 scripta, the owner's transcription program, writes one note per meeting into `Meetings/<year>/YYYYMMDD_HHMM.md` at the vault root. **They belong to `Alpha_kb` by default**, owner's instruction of 26.09.2026. A note that is plainly about something else goes to the owner before it is compiled anywhere.

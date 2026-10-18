@@ -1270,10 +1270,11 @@ def audit(kb):
                 # filenames for fourteen pages. `retired_pages` names the old
                 # files, owner's decision 1 of 04.10.2026 (Delta_kb
                 # AI-2026-10-04-2).
-                retired = set(A.get('retired_pages') or [])
-                real = len([f for f in glob.glob(os.path.join(root, 'Raw', cat + '__*.md'))
-                            if not re.search(r'--\d{4}-\d{2}-\d{2}\.md$', f)
-                            and os.path.basename(f) not in retired])
+                #
+                # Both rules live in `bundle.site_pages()` since 18.10.2026,
+                # so that a reader's count and this one take the same files
+                # (Delta_kb AI-2026-10-18-1).
+                real = len(bundle.site_pages(kb, 'en', cat))
                 for pm in re.finditer(
                         r'(?i)(?:`/en/help/[a-z0-9-]+` is |\bat )?\b(%s) pages'
                         r'(?= carry an article|,| and|\b)' % PAGENUM, body):

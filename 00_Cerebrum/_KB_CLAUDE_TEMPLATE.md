@@ -132,7 +132,7 @@ Nothing in `Raw/` or an archive layer is ever edited or deleted.
 
 ## Language
 
-Everything I write is English — concept bodies, descriptions, index and log entries, Outputs reports, CHANGELOG, chat replies.
+Everything I write is English: concept bodies, descriptions, index and log entries, Outputs reports, CHANGELOG, chat replies. The one exception is the vault's, under *Language* in `../CLAUDE.md`: every question report also exists in German, in `../Outputs/de/`.
 
 [PLACEHOLDER — if the sources are in another language, say so here and keep these three rules: direct quotes stay verbatim in the source language with a short English gloss where the meaning isn't obvious; proper nouns (meeting series, org units, roles, document types) are never translated, because they're the strings you'll search the corpus with; gloss a term on first use in a concept, then use it plainly.]
 

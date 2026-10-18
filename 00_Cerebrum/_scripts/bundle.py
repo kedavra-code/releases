@@ -171,6 +171,48 @@ def sources(concept):
             for s in entries(m.group(1))]
 
 
+VERSION = re.compile(r'--(\d{4}-\d{2}-\d{2})\.md$')
+
+
+def site_pages(kb, lang='en', category=None):
+    """A mirrored website's pages in `<kb>/Raw/`, one file per page: the
+    newest version of each, without a file whose address the site has retired.
+
+    A page is a file whose name joins its address parts with `__`; testimony
+    and the register carry none. The weekly mirror files a changed page beside
+    the old one as `<name>--YYYY-MM-DD.md`, and the newest of those stands for
+    the page. `retired_pages` in the base's `assertions.yaml` names the files
+    of addresses the site has renamed. `lang` 'en' gives the English pages and
+    'de' the German ones (`de__...`); `category` keeps one category, the first
+    part of the address.
+
+    Written 18.10.2026 on the owner's decision (Delta_kb AI-2026-10-18-1).
+    Three counts of that day's health check took three different sets of
+    files, each by a reader's own script, and all three were wrong: two
+    retired server-room files in, the testimony file in, and the German file
+    of the renamed server-room parent in, which had left `retired_pages`
+    because the audit's own count read English files only.
+    """
+    raw = os.path.join(VAULT, kb, 'Raw')
+    retired = set(assertions(kb).get('retired_pages') or [])
+    newest = {}
+    for f in sorted(os.listdir(raw)):
+        if not f.endswith('.md') or '__' not in f:
+            continue
+        if f.startswith('de__') != (lang == 'de'):
+            continue
+        m = VERSION.search(f)
+        page = f[:m.start()] + '.md' if m else f
+        if page in retired:
+            continue
+        if category and page.split('__')[1 if lang == 'de' else 0] != category:
+            continue
+        stamp = m.group(1) if m else ''
+        if page not in newest or stamp > newest[page][0]:
+            newest[page] = (stamp, f)
+    return sorted(os.path.join(raw, f) for _, f in newest.values())
+
+
 def script(filename):
     """A sibling script as a module, loaded by path.
 
