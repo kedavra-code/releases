@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 153,
-  "commit": "c6487b2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-153/scripta.dmg",
-  "sha256": "082ca5b86080d4120b9da879d65c4c93ca6adcd5a9787418feae3a4bab97aaed",
+  "build": 154,
+  "commit": "2de4d8d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-154/scripta.dmg",
+  "sha256": "e9620b022ce6145034c02ffeb763aa1533ebff45e606ef681bf3ead6eb8b27a3",
   "minimumSystemVersion": "26.0",
-  "notes": "The local model's tasks to j4k\nYour tasks go to j4k"
+  "notes": "Small fixes and improvements."
 }
