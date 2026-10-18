@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 156,
-  "commit": "66b29a2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-156/murmur.dmg",
-  "sha256": "43750ffd757662cf3fcdcbe3c0e17ecbfe155caf5177ebb533fed09aaeb683e7",
+  "build": 165,
+  "commit": "62cef32",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-165/murmur.dmg",
+  "sha256": "f38fae89af0aacbf168f955995ca84e19137bd8176210a86a77f3f2113d44d08",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "Live text in Claude, in hands-free\nA lower grey waveform, and another step for live text in Claude\nA waveform that follows your voice, and live text in Claude\nA calmer grey waveform, and live text that waits for the app\nA taller grey waveform\nThe five bars are back, and a grey pill\nA bigger menu bar icon\nThree rings that follow your voice, and text while you speak"
 }
