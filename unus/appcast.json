@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 184,
-  "commit": "1dc0984",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-184/unus.dmg",
-  "sha256": "99253917c675ad48bd9aba8bdb32ffcb2aaa1fed87bacc977c9e81fa0ba91fe2",
+  "build": 185,
+  "commit": "88cfee1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-185/unus.dmg",
+  "sha256": "ff6e707b30f4dd2ffabe98324ea0ebb00faa4cbebb36dc10cc1af6c9e3757bf8",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "The shortcut puts the cursor at the bottom"
 }
