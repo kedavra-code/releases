@@ -1,0 +1,9 @@
+{
+  "app": "j4k",
+  "build": 408,
+  "commit": "ab29fd0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-408/j4k.dmg",
+  "sha256": "b579e8c03fe8631ca910c7ab199fcdcf200c433a03d44756ae63628bc2d726a1",
+  "minimumSystemVersion": "26.0",
+  "notes": "A dragged mail is a normal task\nDrag a calendar event onto j4k\nMeetings on the day you pick\nFlagged mails become tasks\nDrag a mail onto j4k\nToday's meetings next to today's tasks\nThe j4k Mac app"
+}
