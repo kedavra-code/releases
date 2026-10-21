@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 46,
-  "commit": "6aa33dd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-46/folia.dmg",
-  "sha256": "bbd0d7c2adf46d609d1257b38760b960e2048442b5b03e0ce105ba7273001071",
+  "build": 49,
+  "commit": "4ca874c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-49/folia.dmg",
+  "sha256": "53232941d3ceccf77576522fd451e5d8ef50fb0b5ba645af68960ca15654e937",
   "minimumSystemVersion": "26.0",
-  "notes": "Toolbar round 2: every tool a button, block bars, Fit width, files in the app"
+  "notes": "Plain names: Keep Markdown Copy, Import Markdown Folder; Delete says what stays"
 }
