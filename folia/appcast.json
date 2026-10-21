@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 43,
-  "commit": "4cbd89b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-43/folia.dmg",
-  "sha256": "f418f0ec41193448ac67962c2d96b41cd53ea47cc4b96c7c98f5757b8ac323a9",
+  "build": 44,
+  "commit": "7e1fc2c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-44/folia.dmg",
+  "sha256": "32fdc40ff971b9ad472da350ba8c0b23500342b9082177c50f2e6ab247884332",
   "minimumSystemVersion": "26.0",
-  "notes": "The Mac app's sign-in is checked against the real project"
+  "notes": "Guests with any Google account can sign in, Gmail too"
 }
