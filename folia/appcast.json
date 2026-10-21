@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 42,
-  "commit": "13ef4b4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-42/folia.dmg",
-  "sha256": "4f06f7548d524333da4f3ee985340d9bbe634f0d66f54c06f4bc670cdcb36f72",
+  "build": 43,
+  "commit": "4cbd89b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-43/folia.dmg",
+  "sha256": "f418f0ec41193448ac67962c2d96b41cd53ea47cc4b96c7c98f5757b8ac323a9",
   "minimumSystemVersion": "26.0",
-  "notes": "folia is online: the Mac app opens folia.pixelina.me"
+  "notes": "The Mac app's sign-in is checked against the real project"
 }
