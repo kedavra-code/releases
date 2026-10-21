@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 55,
-  "commit": "99118d2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-55/folia.dmg",
-  "sha256": "e21d3b08cd9b0fb24b66fdca9e61e3565e5e8ab2c0edc4faa19215165b8472f5",
+  "build": 60,
+  "commit": "25a70ad",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-60/folia.dmg",
+  "sha256": "7817d265429bb0e45959f407187730781a45baa5dcecc1f6c7e3db0927eca572",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings: one page in the web app for everything"
+  "notes": "Sync state back in the status bar, with the owner's texts"
 }
