@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 154,
-  "commit": "2de4d8d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-154/scripta.dmg",
-  "sha256": "e9620b022ce6145034c02ffeb763aa1533ebff45e606ef681bf3ead6eb8b27a3",
+  "build": 157,
+  "commit": "e6f9844",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-157/scripta.dmg",
+  "sha256": "d4d8ae28a3036ee565afca2d3cc9ebf8e2f06f9a7f8dd51bb4836ba4a592a6bc",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "Minutes into folia\nThe whole task at the end of the description\nShort task titles in j4k"
 }
