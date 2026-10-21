@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 412,
-  "commit": "3d6ef81",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-412/j4k.dmg",
-  "sha256": "60b26f5fd8bd339389e550ac4cd872d104de87f64e1d57339b9409a358bbed52",
+  "build": 413,
+  "commit": "8060ffd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-413/j4k.dmg",
+  "sha256": "1296e4ef0c254444c4a7c796fea87e6a2fbf784f9d43191e934f2ea9c301c3e8",
   "minimumSystemVersion": "26.0",
-  "notes": "All settings are in the ... menu again"
+  "notes": "A gear for the settings"
 }
