@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 44,
-  "commit": "7e1fc2c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-44/folia.dmg",
-  "sha256": "32fdc40ff971b9ad472da350ba8c0b23500342b9082177c50f2e6ab247884332",
+  "build": 46,
+  "commit": "6aa33dd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-46/folia.dmg",
+  "sha256": "bbd0d7c2adf46d609d1257b38760b960e2048442b5b03e0ce105ba7273001071",
   "minimumSystemVersion": "26.0",
-  "notes": "Guests with any Google account can sign in, Gmail too"
+  "notes": "Toolbar round 2: every tool a button, block bars, Fit width, files in the app"
 }
