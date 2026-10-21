@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 410,
-  "commit": "e692877",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-410/j4k.dmg",
-  "sha256": "fdc2750da1fa47ce4efc600aa91e0043adb844440565790926708ae99bc592db",
+  "build": 412,
+  "commit": "3d6ef81",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-412/j4k.dmg",
+  "sha256": "60b26f5fd8bd339389e550ac4cd872d104de87f64e1d57339b9409a358bbed52",
   "minimumSystemVersion": "26.0",
-  "notes": "One What's new for the browser and the Mac app"
+  "notes": "All settings are in the ... menu again"
 }
