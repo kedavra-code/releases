@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 53,
-  "commit": "12fc51d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-53/folia.dmg",
-  "sha256": "ba9b2cf4315cefb04fc4e812bba8eb731c86eb0c64a3aeb67c587e88fa630a32",
+  "build": 55,
+  "commit": "99118d2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-55/folia.dmg",
+  "sha256": "e21d3b08cd9b0fb24b66fdca9e61e3565e5e8ab2c0edc4faa19215165b8472f5",
   "minimumSystemVersion": "26.0",
-  "notes": "Keys: only ⌘B and ⌘I in a page by default, the rest set in Options › Keys"
+  "notes": "Settings: one page in the web app for everything"
 }
