@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 82,
-  "commit": "5f98202",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-82/folia.dmg",
-  "sha256": "d08f0fc965e60202424f8c241cb0dff285fb43262186401553c02cac9a20926a",
+  "build": 93,
+  "commit": "7f0c9d1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-93/folia.dmg",
+  "sha256": "8bf6b833ba3bc9bf4531d54ca4f97f968b085ce4867b306f71a2180268dd3285",
   "minimumSystemVersion": "26.0",
-  "notes": "Pasted pictures keep their shape and quality"
+  "notes": "Line marks in the left margin, left of the 6 dots"
 }
