@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 101,
-  "commit": "e526f22",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-101/folia.dmg",
-  "sha256": "6fc5af41c1a07f5be27e6570740fb03e51bf53566df48c4f15bf0555dbeb4794",
+  "build": 102,
+  "commit": "9326155",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-102/folia.dmg",
+  "sha256": "bfb170131d2e5d3db8ef5e158d23c614a5be0819384f54649e107532ba18b238",
   "minimumSystemVersion": "26.0",
-  "notes": "Update pages from a folder: read page groups, never change them"
+  "notes": "Import & Export: PDF with bookmarks, and Word, OpenDocument, LaTeX and more through Pandoc"
 }
