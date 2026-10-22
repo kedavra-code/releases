@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 60,
-  "commit": "25a70ad",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-60/folia.dmg",
-  "sha256": "7817d265429bb0e45959f407187730781a45baa5dcecc1f6c7e3db0927eca572",
+  "build": 67,
+  "commit": "f967763",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-67/folia.dmg",
+  "sha256": "c8a16d7f9bb822503091565c9addc6375e8a27d2f57d8dd6325df4234d4a16d2",
   "minimumSystemVersion": "26.0",
-  "notes": "Sync state back in the status bar, with the owner's texts"
+  "notes": "A picture whose caption holds a stray bracket becomes a picture"
 }
