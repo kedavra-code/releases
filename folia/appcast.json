@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 67,
-  "commit": "f967763",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-67/folia.dmg",
-  "sha256": "c8a16d7f9bb822503091565c9addc6375e8a27d2f57d8dd6325df4234d4a16d2",
+  "build": 70,
+  "commit": "0a86bac",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-70/folia.dmg",
+  "sha256": "f5a1e04df6d7b3adb540dd3d009a8a6eebe11b3ac137bf9b8b8d33c591a4ed57",
   "minimumSystemVersion": "26.0",
-  "notes": "A picture whose caption holds a stray bracket becomes a picture"
+  "notes": "What's New: sections newest first (build 69's sorting)"
 }
