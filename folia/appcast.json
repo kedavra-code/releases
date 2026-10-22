@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 71,
-  "commit": "179d590",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-71/folia.dmg",
-  "sha256": "316b4a2176150e60b69fc8cbd0dbbb7046e90850fb3b31148c2af16b6fb7f52b",
+  "build": 77,
+  "commit": "e6cdb27",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-77/folia.dmg",
+  "sha256": "23df6ddb6ab7544152e12430ee6fd76f79dab3c2043347fd98f41cf0426ced5e",
   "minimumSystemVersion": "26.0",
-  "notes": "What's New: one entry for the section order, not two"
+  "notes": "Sort by name, titles in History, page groups close again, OneNote's discuss tag goes"
 }
