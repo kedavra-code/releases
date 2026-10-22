@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 97,
-  "commit": "eb16b97",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-97/folia.dmg",
-  "sha256": "a550b5358c4bbad1f7e6f3b2294a07ba31889c380bfa160fa0f43bbc169a3ebd",
+  "build": 101,
+  "commit": "e526f22",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-101/folia.dmg",
+  "sha256": "6fc5af41c1a07f5be27e6570740fb03e51bf53566df48c4f15bf0555dbeb4794",
   "minimumSystemVersion": "26.0",
-  "notes": "Import finds files linked by bare name or from above the folder"
+  "notes": "Update pages from a folder: read page groups, never change them"
 }
