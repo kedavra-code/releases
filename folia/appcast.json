@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 95,
-  "commit": "1eb7caf",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-95/folia.dmg",
-  "sha256": "78d47e7ddf9e4c61283325ac287d681f0dd7ad5517f172ea40f4b0d2e5ae4f9a",
+  "build": 96,
+  "commit": "ac05523",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-96/folia.dmg",
+  "sha256": "0577324e064e94cdd73fff508bea6e5569f840315aa4e74b5f50a5823734f5ac",
   "minimumSystemVersion": "26.0",
-  "notes": "A task's checkbox in the middle of its first line"
+  "notes": "A long page title wraps to more lines"
 }
