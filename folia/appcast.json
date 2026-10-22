@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 93,
-  "commit": "7f0c9d1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-93/folia.dmg",
-  "sha256": "8bf6b833ba3bc9bf4531d54ca4f97f968b085ce4867b306f71a2180268dd3285",
+  "build": 94,
+  "commit": "869ed89",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-94/folia.dmg",
+  "sha256": "de8a37b4afa3cb154f139322ddfab360fbbaa24c08e27e76706b1590b0108a41",
   "minimumSystemVersion": "26.0",
-  "notes": "Line marks in the left margin, left of the 6 dots"
+  "notes": "The page list's sort and template buttons name themselves on hover"
 }
