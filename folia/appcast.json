@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 96,
-  "commit": "ac05523",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-96/folia.dmg",
-  "sha256": "0577324e064e94cdd73fff508bea6e5569f840315aa4e74b5f50a5823734f5ac",
+  "build": 97,
+  "commit": "eb16b97",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-97/folia.dmg",
+  "sha256": "a550b5358c4bbad1f7e6f3b2294a07ba31889c380bfa160fa0f43bbc169a3ebd",
   "minimumSystemVersion": "26.0",
-  "notes": "A long page title wraps to more lines"
+  "notes": "Import finds files linked by bare name or from above the folder"
 }
