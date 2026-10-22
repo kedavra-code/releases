@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 94,
-  "commit": "869ed89",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-94/folia.dmg",
-  "sha256": "de8a37b4afa3cb154f139322ddfab360fbbaa24c08e27e76706b1590b0108a41",
+  "build": 95,
+  "commit": "1eb7caf",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-95/folia.dmg",
+  "sha256": "78d47e7ddf9e4c61283325ac287d681f0dd7ad5517f172ea40f4b0d2e5ae4f9a",
   "minimumSystemVersion": "26.0",
-  "notes": "The page list's sort and template buttons name themselves on hover"
+  "notes": "A task's checkbox in the middle of its first line"
 }
