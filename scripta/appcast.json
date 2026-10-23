@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 159,
-  "commit": "577b43f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-159/scripta.dmg",
-  "sha256": "213c5c03d2ec914fd9d50c088b8f2906ecb0d4902fa394dc3c2323a129eb969b",
+  "build": 161,
+  "commit": "0eef55a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-161/scripta.dmg",
+  "sha256": "369c926f5f9ed26a621fb59d6a539f40b77195343cc5b326b8b54cfe0bf380c5",
   "minimumSystemVersion": "26.0",
-  "notes": "Your notes are in a folder named scripta"
+  "notes": "A meeting's note opens in folia\nWhere the minutes go is in Settings › Brain"
 }
