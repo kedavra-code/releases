@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 118,
-  "commit": "eec663a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-118/folia.dmg",
-  "sha256": "dcd84a9d19b903650990dafb18102d97e0f354731e9cd759d17324c42c31922d",
+  "build": 119,
+  "commit": "3212f02",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-119/folia.dmg",
+  "sha256": "c0133e7f48b7d22f86a183d1ec213bb4034b8f36b442863c966929fe3e8c73f1",
   "minimumSystemVersion": "26.0",
-  "notes": "Prepare without \"Open from last time\"; the 1:1 template is \"Meeting page with open tasks\""
+  "notes": "⌘K: \"New 1:1 page\" is \"New meeting page with open tasks\""
 }
