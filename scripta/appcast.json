@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 161,
-  "commit": "0eef55a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-161/scripta.dmg",
-  "sha256": "369c926f5f9ed26a621fb59d6a539f40b77195343cc5b326b8b54cfe0bf380c5",
+  "build": 163,
+  "commit": "53158d1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-163/scripta.dmg",
+  "sha256": "8655d7024e90f4b48c05dd6be6670b5cec4bb9fdb8a9f4883484d3fca9ffc136",
   "minimumSystemVersion": "26.0",
-  "notes": "A meeting's note opens in folia\nWhere the minutes go is in Settings › Brain"
+  "notes": "scripta no longer looks for an Obsidian vault\nThe notes folder is back in General"
 }
