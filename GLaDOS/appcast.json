@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 368,
-  "commit": "8fa70e9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-368/GLaDOS.dmg",
-  "sha256": "fcc7228234ddc4dabe9d867bfdbfcd4e432f881541f6049ff8767879c583ea4d",
+  "build": 371,
+  "commit": "5f03583",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-371/GLaDOS.dmg",
+  "sha256": "142c0ae4e42cb2ed879cfc57b306f6a376f583affd65a34162afa3c480f53698",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "About has a Docs button"
 }
