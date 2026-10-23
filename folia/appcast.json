@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 102,
-  "commit": "9326155",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-102/folia.dmg",
-  "sha256": "bfb170131d2e5d3db8ef5e158d23c614a5be0819384f54649e107532ba18b238",
+  "build": 105,
+  "commit": "b30df8e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-105/folia.dmg",
+  "sha256": "c405352c5de88cc2e665370238d015fae378526c974d32ce1bb4c23a3f353036",
   "minimumSystemVersion": "26.0",
-  "notes": "Import & Export: PDF with bookmarks, and Word, OpenDocument, LaTeX and more through Pandoc"
+  "notes": "About folia says exactly where the notes live"
 }
