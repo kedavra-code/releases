@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 105,
-  "commit": "b30df8e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-105/folia.dmg",
-  "sha256": "c405352c5de88cc2e665370238d015fae378526c974d32ce1bb4c23a3f353036",
+  "build": 106,
+  "commit": "edc46ee",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-106/folia.dmg",
+  "sha256": "c871338e58645fb3ee48e6e9a0aff8691849fe602167f67a533cb4d7b27eb605",
   "minimumSystemVersion": "26.0",
-  "notes": "About folia says exactly where the notes live"
+  "notes": "Every window in the Settings style; a calmer top bar"
 }
