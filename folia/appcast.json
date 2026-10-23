@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 113,
-  "commit": "953fc6a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-113/folia.dmg",
-  "sha256": "51aae56f719ac8644b2c52088c094dd27378b6f22cf770d7be5585a4df733a24",
+  "build": 114,
+  "commit": "cfa377f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-114/folia.dmg",
+  "sha256": "96ff231062b7b38b090c60bb26ee909c409b71fa4048ce55c854e63970f421b2",
   "minimumSystemVersion": "26.0",
-  "notes": "OneNote run: the export as a base for a page's first comparison"
+  "notes": "Join the call in the Teams web app: Teams links open in Microsoft Teams (PWA)"
 }
