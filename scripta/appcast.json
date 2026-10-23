@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 163,
-  "commit": "53158d1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-163/scripta.dmg",
-  "sha256": "8655d7024e90f4b48c05dd6be6670b5cec4bb9fdb8a9f4883484d3fca9ffc136",
+  "build": 164,
+  "commit": "682d35d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-164/scripta.dmg",
+  "sha256": "5614e9af6215f19ee9fc7955f0884ef941a6a49503d7b0079888f59767c3565e",
   "minimumSystemVersion": "26.0",
-  "notes": "scripta no longer looks for an Obsidian vault\nThe notes folder is back in General"
+  "notes": "Small fixes and improvements."
 }
