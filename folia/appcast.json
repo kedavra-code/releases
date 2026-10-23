@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 106,
-  "commit": "edc46ee",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-106/folia.dmg",
-  "sha256": "c871338e58645fb3ee48e6e9a0aff8691849fe602167f67a533cb4d7b27eb605",
+  "build": 111,
+  "commit": "c559d3a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-111/folia.dmg",
+  "sha256": "0f69a9e6790c74268f34c9edc76ab32bada7e76d32e7ebde2cfeafcfc06c0750",
   "minimumSystemVersion": "26.0",
-  "notes": "Every window in the Settings style; a calmer top bar"
+  "notes": "Markdown copies in the notebook list's order"
 }
