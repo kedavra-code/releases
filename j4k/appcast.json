@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 415,
-  "commit": "13e954e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-415/j4k.dmg",
-  "sha256": "1c31911f87b13ec1771f2e1dd1ae1888f11910b4576156c2761a71cc78920b82",
+  "build": 416,
+  "commit": "243c4eb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-416/j4k.dmg",
+  "sha256": "295f879ab894f09e95346ee43553858ee7c4d1ad85fdf5844797795174921620",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings without a scrollbar\nA Settings window, and every window in one style"
+  "notes": "Move a window by its title bar"
 }
