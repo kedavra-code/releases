@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 121,
-  "commit": "583e210",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-121/folia.dmg",
-  "sha256": "b6b797805fdf8741891ee1b41eaf820e511aae2f77f5ff0604ac4b1fb2260d80",
+  "build": 124,
+  "commit": "8f0ab03",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-124/folia.dmg",
+  "sha256": "2f2231ff554ffa516be711c3fdd7eff1670f524c12ed8eb71f307e7ae313616e",
   "minimumSystemVersion": "26.0",
-  "notes": "CLAUDE.md: a link to no page falls back; the cause was a mistyped id, not a deleted section"
+  "notes": "A new icon: the leaf"
 }
