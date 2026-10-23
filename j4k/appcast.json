@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 422,
-  "commit": "270f2c9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-422/j4k.dmg",
-  "sha256": "f57095a27c560742bea8faf77fc12280da85b88097cad990cc4c41c80a645a45",
+  "build": 428,
+  "commit": "66ddf7c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-428/j4k.dmg",
+  "sha256": "24e48f7f5236aaf701a06372df00bd3c78baaaab4fcef0c31297ca863114ce56",
   "minimumSystemVersion": "26.0",
-  "notes": "More room, the same layout as folia"
+  "notes": "About j4k shows the Board icon\nUndo and redo lead the top bar's icons, as in folia\nThe search bar in the page's colours\nThe top bar's buttons at its right edge, as in folia\nGet the Mac app from Settings · The new icon on the iPhone's home screen"
 }
