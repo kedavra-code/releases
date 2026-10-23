@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 413,
-  "commit": "8060ffd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-413/j4k.dmg",
-  "sha256": "1296e4ef0c254444c4a7c796fea87e6a2fbf784f9d43191e934f2ea9c301c3e8",
+  "build": 415,
+  "commit": "13e954e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-415/j4k.dmg",
+  "sha256": "1c31911f87b13ec1771f2e1dd1ae1888f11910b4576156c2761a71cc78920b82",
   "minimumSystemVersion": "26.0",
-  "notes": "A gear for the settings"
+  "notes": "Settings without a scrollbar\nA Settings window, and every window in one style"
 }
