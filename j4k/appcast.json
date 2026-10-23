@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 418,
-  "commit": "a8051d1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-418/j4k.dmg",
-  "sha256": "b6a2951263244622e189ff9d00106c39c5acd1a57250698fad7086919d1c21a2",
+  "build": 420,
+  "commit": "8ae9a59",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-420/j4k.dmg",
+  "sha256": "0ebc6c560debd2d343c1bc152b5bc65e627747e898b7320c8c1a28ecf3d22a93",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "The Board mark in the header\nA new j4k icon"
 }
