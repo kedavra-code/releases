@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 124,
-  "commit": "8f0ab03",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-124/folia.dmg",
-  "sha256": "2f2231ff554ffa516be711c3fdd7eff1670f524c12ed8eb71f307e7ae313616e",
+  "build": 128,
+  "commit": "5cd4551",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-128/folia.dmg",
+  "sha256": "8ec289dc6bf5be5df94bbe394f9049199fc67171c2f38169ced9b32421dba16a",
   "minimumSystemVersion": "26.0",
-  "notes": "A new icon: the leaf"
+  "notes": "The account picture in Settings in j4k's amber"
 }
