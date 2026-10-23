@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 114,
-  "commit": "cfa377f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-114/folia.dmg",
-  "sha256": "96ff231062b7b38b090c60bb26ee909c409b71fa4048ce55c854e63970f421b2",
+  "build": 118,
+  "commit": "eec663a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-118/folia.dmg",
+  "sha256": "dcd84a9d19b903650990dafb18102d97e0f354731e9cd759d17324c42c31922d",
   "minimumSystemVersion": "26.0",
-  "notes": "Join the call in the Teams web app: Teams links open in Microsoft Teams (PWA)"
+  "notes": "Prepare without \"Open from last time\"; the 1:1 template is \"Meeting page with open tasks\""
 }
