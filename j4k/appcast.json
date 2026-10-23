@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 420,
-  "commit": "8ae9a59",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-420/j4k.dmg",
-  "sha256": "0ebc6c560debd2d343c1bc152b5bc65e627747e898b7320c8c1a28ecf3d22a93",
+  "build": 422,
+  "commit": "270f2c9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-422/j4k.dmg",
+  "sha256": "f57095a27c560742bea8faf77fc12280da85b88097cad990cc4c41c80a645a45",
   "minimumSystemVersion": "26.0",
-  "notes": "The Board mark in the header\nA new j4k icon"
+  "notes": "More room, the same layout as folia"
 }
