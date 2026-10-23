@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 119,
-  "commit": "3212f02",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-119/folia.dmg",
-  "sha256": "c0133e7f48b7d22f86a183d1ec213bb4034b8f36b442863c966929fe3e8c73f1",
+  "build": 121,
+  "commit": "583e210",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-121/folia.dmg",
+  "sha256": "b6b797805fdf8741891ee1b41eaf820e511aae2f77f5ff0604ac4b1fb2260d80",
   "minimumSystemVersion": "26.0",
-  "notes": "⌘K: \"New 1:1 page\" is \"New meeting page with open tasks\""
+  "notes": "CLAUDE.md: a link to no page falls back; the cause was a mistyped id, not a deleted section"
 }
