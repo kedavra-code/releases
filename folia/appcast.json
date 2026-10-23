@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 111,
-  "commit": "c559d3a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-111/folia.dmg",
-  "sha256": "0f69a9e6790c74268f34c9edc76ab32bada7e76d32e7ebde2cfeafcfc06c0750",
+  "build": 113,
+  "commit": "953fc6a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-113/folia.dmg",
+  "sha256": "51aae56f719ac8644b2c52088c094dd27378b6f22cf770d7be5585a4df733a24",
   "minimumSystemVersion": "26.0",
-  "notes": "Markdown copies in the notebook list's order"
+  "notes": "OneNote run: the export as a base for a page's first comparison"
 }
