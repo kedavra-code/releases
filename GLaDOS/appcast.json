@@ -1,9 +1,9 @@
 {
   "app": "GLaDOS",
-  "build": 371,
-  "commit": "5f03583",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-371/GLaDOS.dmg",
-  "sha256": "142c0ae4e42cb2ed879cfc57b306f6a376f583affd65a34162afa3c480f53698",
+  "build": 372,
+  "commit": "c9a9c8e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-372/GLaDOS.dmg",
+  "sha256": "0be26ca2fef3935bdf289d67b0f4a92e9a816d56d4d78714cd80fd1195210ff7",
   "minimumSystemVersion": "26.0",
-  "notes": "About has a Docs button"
+  "notes": "The same presentations on both Macs"
 }
