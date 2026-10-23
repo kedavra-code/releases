@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 164,
-  "commit": "682d35d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-164/scripta.dmg",
-  "sha256": "5614e9af6215f19ee9fc7955f0884ef941a6a49503d7b0079888f59767c3565e",
+  "build": 165,
+  "commit": "8d4e3ea",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-165/scripta.dmg",
+  "sha256": "6330d6382307cba354f13f786d3d3b4120816eb1b4aaa9f1a7d78a82cc87cd6d",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements."
+  "notes": "\"folia note\" opens the page with the minutes"
 }
