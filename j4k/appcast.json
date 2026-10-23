@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 416,
-  "commit": "243c4eb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-416/j4k.dmg",
-  "sha256": "295f879ab894f09e95346ee43553858ee7c4d1ad85fdf5844797795174921620",
+  "build": 418,
+  "commit": "a8051d1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-418/j4k.dmg",
+  "sha256": "b6a2951263244622e189ff9d00106c39c5acd1a57250698fad7086919d1c21a2",
   "minimumSystemVersion": "26.0",
-  "notes": "Move a window by its title bar"
+  "notes": "Small fixes and improvements."
 }
