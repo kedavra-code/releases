@@ -1,9 +1,239 @@
 {
   "app": "murmur",
-  "build": 169,
-  "commit": "973ba3c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-169/murmur.dmg",
-  "sha256": "fb13e442e9eb11bc2b44038c9b4dd0b62d1f06acee88b6ee928f129daaa6d630",
+  "build": 171,
+  "commit": "886db5c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-171/murmur.dmg",
+  "sha256": "7de0ef09557bbd9926040d03ffa7b7c79fd4c238e889950d0924d99031d54005",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs, from About"
+  "notes": "What's New looks like j4k's",
+  "entries": [
+    {
+      "build": 171,
+      "date": "2026-10-24",
+      "title": "What's New looks like j4k's",
+      "detail": "What's New shows a card for each day, as in j4k. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch."
+    },
+    {
+      "build": 168,
+      "date": "2026-10-23",
+      "title": "Docs, from About",
+      "detail": "About murmur has a Docs button. It opens the murmur Field Manual in your browser."
+    },
+    {
+      "build": 165,
+      "date": "2026-10-18",
+      "title": "Live text in Claude, in hands-free",
+      "detail": "Claude's message box takes no text the way TextEdit does. In hands-free (tap the key twice) murmur now types the words into it as you speak, and corrects them as it hears more. With the key held, the text comes when you let go, as before."
+    },
+    {
+      "build": 164,
+      "date": "2026-10-18",
+      "title": "A lower grey waveform, and another step for live text in Claude",
+      "detail": "With Grey the waveform is 25 points tall. Write the text while I speak copes with the line break an empty Claude message box keeps, and waits a little longer for Claude to show the words."
+    },
+    {
+      "build": 163,
+      "date": "2026-10-18",
+      "title": "A waveform that follows your voice, and live text in Claude",
+      "detail": "The pill's waveform fits itself to your microphone: a pause drops to the bottom and a loud syllable reaches the top, instead of sitting near the top all the time. The red dot beside it in hands-free is gone. Write the text while I speak can now follow its words in apps such as Claude, which do not say where the cursor is."
+    },
+    {
+      "build": 162,
+      "date": "2026-10-18",
+      "title": "A calmer grey waveform, and live text that waits for the app",
+      "detail": "With Grey the waveform is 30 points tall. Write the text while I speak now gives an app such as Claude a moment to show the words before murmur checks them, instead of stopping at once."
+    },
+    {
+      "build": 161,
+      "date": "2026-10-18",
+      "title": "A taller grey waveform",
+      "detail": "With Grey, the waveform is about twice as tall as before, and ordinary speech moves it well up, not only the loudest syllables. Spectrum and Amber stay as they were."
+    },
+    {
+      "build": 160,
+      "date": "2026-10-18",
+      "title": "The five bars are back, and a grey pill",
+      "detail": "The menu bar icon and the app icon are the five bars again, and the bars in the menu bar move as before while murmur records. New in Settings › General › Waveform: Grey, grey bars alone, with no glass and no edge, a little see-through."
+    },
+    {
+      "build": 159,
+      "date": "2026-10-18",
+      "title": "A bigger menu bar icon",
+      "detail": "The three rings in the menu bar are as big as GLaDOS's eye now, and further apart, in the app icon too. While you speak they swing mostly inwards, so the stronger motion still fits."
+    },
+    {
+      "build": 158,
+      "date": "2026-10-18",
+      "title": "Three rings that follow your voice, and text while you speak",
+      "detail": "murmur's mark is three fine rings now, in the menu bar and as the app icon. While you dictate, each ring in the menu bar follows one part of your voice: the inner one the low sounds, the middle one the vowels, the outer one the s and t sounds. New in Settings › Text: Write the text while I speak puts the words where you clicked as murmur hears them; when you let go, the cleaned-up text takes their place, and Escape takes them out."
+    },
+    {
+      "build": 155,
+      "date": "2026-10-15",
+      "title": "Settings look like scripta's",
+      "detail": "Settings has the same look as in scripta now: no section titles, each box ends with one grey line that says what it does, and a warning is an orange line. Start murmur at login has a box of its own, before Updates."
+    },
+    {
+      "build": 153,
+      "date": "2026-10-15",
+      "title": "Updates look the same in every app",
+      "detail": "Settings › General ends with Updates now, the same in all four apps: Check Now and an Automatic switch in one row, and under it what the last check found. An update ready to install is in the menu bar menu, as Update to build …; Menu bar and Dock comes after Behaviour."
+    },
+    {
+      "build": 150,
+      "date": "2026-10-15",
+      "title": "A Dock icon, and a choice where murmur shows itself",
+      "detail": "murmur now has an icon in the Dock as well as in the menu bar. Settings › General chooses where it shows: the menu bar and the Dock, the menu bar alone, or the Dock alone. The Dock icon's menu has the items of the menu bar menu, and a click on the Dock icon opens Settings."
+    },
+    {
+      "build": 146,
+      "date": "2026-10-06",
+      "title": "The menu bar icon moves while murmur records",
+      "detail": "While you hold the key, and in hands-free, the five bars in the menu bar move like a voice. They are still again when murmur stops recording. So one look at the menu bar tells you that the microphone is open."
+    },
+    {
+      "build": 139,
+      "date": "2026-10-05",
+      "title": "After an update, What's New opens once",
+      "detail": "When murmur has updated itself, the What's New window opens one time, so you see what changed without looking for it."
+    },
+    {
+      "build": 134,
+      "date": "2026-10-05",
+      "title": "An update says what is new, and a bad one is undone",
+      "detail": "When a new build is offered, the message lists what changed for you, from What's New. And when a new build does not stay open after an update, murmur puts the build you had back and tells you."
+    },
+    {
+      "build": 130,
+      "date": "2026-10-05",
+      "title": "English and German without a switch, with Apple's engine",
+      "detail": "With Apple's engine you had to tell murmur the language. Now Settings › Brain has \"Switch between English and German by itself\", and the menu has the same choice. murmur then listens in both languages at once and keeps the text of the one you spoke. It is off until you switch it on. Parakeet always did this."
+    },
+    {
+      "build": 129,
+      "date": "2026-10-05",
+      "title": "The transcript marks words murmur may have got wrong",
+      "detail": "In Settings › Transcript, a word that is in no dictionary has a dotted orange line under it. Most of these are words murmur misheard. Correct… then opens with the first such word picked, so you only type what it must write. A name that is right gets the line too; add it to the dictionary as a word, and the line goes."
+    },
+    {
+      "build": 128,
+      "date": "2026-10-05",
+      "title": "AirPods connected: murmur uses the Mac's own microphone",
+      "detail": "A Bluetooth headset's microphone is too poor to transcribe, and macOS makes it the input when the headset connects. With the microphone set to System default, murmur now records from the Mac's own microphone in that case, and Settings › General says so. To dictate through the headset anyway, pick it there."
+    },
+    {
+      "build": 127,
+      "date": "2026-10-05",
+      "title": "murmur shows when its speech model is still loading",
+      "detail": "Sometimes the speech model needs some seconds to load after murmur starts. If you hold the dictation key in that time, the pill now shows a spinner, and the menu says that the model is still loading. Before, nothing showed, and nothing was recorded. Wait until the spinner goes, then dictate."
+    },
+    {
+      "build": 125,
+      "date": "2026-10-05",
+      "title": "About shows the kit version",
+      "detail": "The About window has a new row, Kit. It names the version of the code that murmur shares with unus, scripta and GLaDOS."
+    },
+    {
+      "build": 122,
+      "date": "2026-10-05",
+      "title": "The Dictionary tab is taller",
+      "detail": "The Dictionary tab in Settings shows about thirteen entries at a time, where it showed eight. The same in scripta and GLaDOS."
+    },
+    {
+      "build": 121,
+      "date": "2026-10-05",
+      "title": "The Settings window can be moved",
+      "detail": "The Settings window did not move when you dragged its top. The tabs fill that strip, and after a drag on them the strip stopped moving the window. Now a drag on the empty part of the strip, beside the tabs, moves the window."
+    },
+    {
+      "build": 119,
+      "date": "2026-10-05",
+      "title": "Correct a wrong word from the Transcript tab",
+      "detail": "Each line in Settings › Transcript has a new Correct… button. Click the word murmur got wrong — for a phrase, its first word and its last — type what it must write, and the correction is in your dictionary. And the Dictionary tab now keeps the comment lines you wrote in the dictionary file; before, each edit there deleted them."
+    },
+    {
+      "build": 117,
+      "date": "2026-10-05",
+      "title": "One dictionary for murmur, scripta and GLaDOS",
+      "detail": "The three apps now read the same dictionary file, so you teach a word one time. murmur moved its entries into that file; the old file is kept beside it as dictionary-before-sharing.txt. An entry now fires in all three apps. The Dictionary tab in Settings edits the shared file."
+    },
+    {
+      "build": 116,
+      "date": "2026-10-04",
+      "title": "The Parakeet download shows real progress",
+      "detail": "The bar moves with every megabyte, and no longer stands still during the one large file. Before it starts, murmur checks that the disk has room, and it checks each file when it arrives. Cancel keeps what has arrived, and Download continues from there. Two texts that named the wrong Settings tab now name the correct one."
+    },
+    {
+      "build": 110,
+      "date": "2026-10-04",
+      "title": "What's New shows its scroll bar",
+      "detail": "When this window opens, the list shows its scroll bar, so you see that it goes on below."
+    },
+    {
+      "build": 104,
+      "date": "2026-10-04",
+      "title": "What's New, and a button for it in About",
+      "detail": "This window. In About murmur, the new What's New… button opens it."
+    },
+    {
+      "build": 103,
+      "date": "2026-10-04",
+      "title": "Settings has no empty space at the bottom",
+      "detail": "Every Settings tab is as tall as what is in it, so the window changes its height when you change the tab. Dictionary and Transcript are lists and keep one height."
+    },
+    {
+      "build": 102,
+      "date": "2026-10-04",
+      "title": "Apple Intelligence polish keeps your words",
+      "detail": "With “Polish the transcript” on in Settings › Brain, the on-device model could delete a real German word such as “Er”, and the full stop at the end. murmur now refuses a result that drops a real word, and puts the full stop back. A text of more than 50 words is not sent to the model, because the model was too slow to finish it in time."
+    },
+    {
+      "build": 99,
+      "date": "2026-09-30",
+      "title": "The menu's windows open in front",
+      "detail": "About, Settings and Setup open in front of the app you were in. Before, a window could open behind it, and the menu row looked dead."
+    },
+    {
+      "build": 96,
+      "date": "2026-09-29",
+      "title": "A correction keeps its own capitals",
+      "detail": "A dictionary entry with a capital inside it, such as “ethOS”, is written exactly as you spelled it, also at the start of a sentence."
+    },
+    {
+      "build": 93,
+      "date": "2026-09-29",
+      "title": "Parakeet works on macOS 27.2",
+      "detail": "On macOS 27.2 murmur quit at the first dictation with the Parakeet engine. It dictates again."
+    },
+    {
+      "build": 83,
+      "date": "2026-09-06",
+      "title": "A Brain tab in Settings",
+      "detail": "Settings › Brain holds what does the listening and the thinking: the recognition engine, the language and Apple Intelligence. They were on the General and Text tabs before."
+    },
+    {
+      "build": 82,
+      "date": "2026-09-06",
+      "title": "History is now Transcript",
+      "detail": "The Settings tab that lists what you dictated is named Transcript."
+    },
+    {
+      "build": 77,
+      "date": "2026-08-29",
+      "title": "Cancel a model download, and confirm a delete",
+      "detail": "The Parakeet download has a Cancel button, and Download continues later where it stopped. Delete Model asks first, and says what it frees."
+    },
+    {
+      "build": 70,
+      "date": "2026-08-29",
+      "title": "Delete the Parakeet model",
+      "detail": "Settings shows how much disk space Parakeet uses, with its compiled copies. Delete Model frees all of it and switches dictation back to Apple's engine."
+    },
+    {
+      "build": 65,
+      "date": "2026-08-29",
+      "title": "murmur updates itself",
+      "detail": "murmur looks for a new build once a day and offers it in the menu; it installs when you choose it. “Check for updates automatically” in Settings › General switches the daily look off."
+    }
+  ]
 }
