@@ -1,9 +1,251 @@
 {
   "app": "GLaDOS",
-  "build": 372,
-  "commit": "c9a9c8e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-372/GLaDOS.dmg",
-  "sha256": "0be26ca2fef3935bdf289d67b0f4a92e9a816d56d4d78714cd80fd1195210ff7",
+  "build": 374,
+  "commit": "00fdc69",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-374/GLaDOS.dmg",
+  "sha256": "203758d53c64c3a3977cd9d06417818c340af15ad78f2716bc6a75ab5c66cdd3",
   "minimumSystemVersion": "26.0",
-  "notes": "The same presentations on both Macs"
+  "notes": "What's New looks like j4k's",
+  "entries": [
+    {
+      "build": 374,
+      "date": "2026-10-24",
+      "title": "What's New looks like j4k's",
+      "detail": "What's New shows a card for each day, as in j4k. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch."
+    },
+    {
+      "build": 372,
+      "date": "2026-10-23",
+      "title": "The same presentations on both Macs",
+      "detail": "GLaDOS now finds the pages she presents in iCloud Drive, in the folder GLaDOS › Artifacts. iCloud keeps it the same on both of your Macs: a page you put there, and a duet script she writes for it, are on the other Mac too. The nine manuals are in it now. The old presentations folder on each Mac is no longer read."
+    },
+    {
+      "build": 369,
+      "date": "2026-10-23",
+      "title": "About has a Docs button",
+      "detail": "About has a new button on the left, Docs…. It opens the GLaDOS Field Manual in your browser."
+    },
+    {
+      "build": 365,
+      "date": "2026-10-16",
+      "title": "The two eyes sit mirror to mirror",
+      "detail": "Her eye sits in the bottom-right corner and his in the bottom-left, each the same distance from its side of the screen as from the bottom. A Dock on the left or right no longer pushes one of them further in. If you have moved one, it stays where you put it."
+    },
+    {
+      "build": 362,
+      "date": "2026-10-15",
+      "title": "Settings look like scripta's",
+      "detail": "Settings has the same look as in scripta now: no section titles, each box ends with one grey line that says what it does, and a warning is an orange line. Brain has a box each for the brain, Claude Code or the key, and the model on this Mac. General and Voice are each about 150 points shorter."
+    },
+    {
+      "build": 360,
+      "date": "2026-10-15",
+      "title": "Updates look the same in every app",
+      "detail": "Settings › General ends with Updates now, the same in all four apps: Check Now and an Automatic switch in one row, and under it what the last check found. Her build number is on the About page."
+    },
+    {
+      "build": 358,
+      "date": "2026-10-15",
+      "title": "A Dock icon, and a choice where GLaDOS shows herself",
+      "detail": "GLaDOS has an icon in the Dock now, beside her eye in the menu bar. Settings › General › \"Show GLaDOS in\" chooses: the menu bar and the Dock, the menu bar alone, or the Dock alone. A right-click on the Dock icon shows the items of the menu bar menu, and a click on it opens Settings."
+    },
+    {
+      "build": 355,
+      "date": "2026-10-12",
+      "title": "The room does not stop them while they perform",
+      "detail": "In a discussion, a story or a page, a voice in the room does not stop GLaDOS and J.A.R.V.I.S. any more. They talk on through a laugh and through people who talk to each other. To cut in, say \"GLaDOS\", \"Jarvis\" or \"Stopp\": they stop half a second to a second after the word began, and your sentence is heard from its first word. If they stop and nothing was said to them, a discussion and a page go on by themselves. A normal answer is as before: any voice cuts it."
+    },
+    {
+      "build": 354,
+      "date": "2026-10-08",
+      "title": "The one that is off keeps its small black disc",
+      "detail": "When only GLaDOS is on, the small black disc of J.A.R.V.I.S. stays in its place, and her disc stays when only he is on. Before, the second disc went away as soon as one of them started. In big mode the one that is off is not shown."
+    },
+    {
+      "build": 353,
+      "date": "2026-10-08",
+      "title": "Settings › Voice has no J.A.R.V.I.S. switch any more",
+      "detail": "The switch \"J.A.R.V.I.S. beside her\" is gone from Settings › Voice. It did what the hotkey \"J.A.R.V.I.S. eye\" and the J.A.R.V.I.S. row in the menu do, and both of those stay. His two voices are still listed there."
+    },
+    {
+      "build": 349,
+      "date": "2026-10-08",
+      "title": "She starts the film in Cerebrum",
+      "detail": "Say \"start the film in Cerebrum\". GLaDOS puts the vault's viewer on its 3D view and starts its Film: the vault's years as a time-lapse. An older viewer does not know this command. There she opens the 3D view and tells you to press the Film button."
+    },
+    {
+      "build": 347,
+      "date": "2026-10-07",
+      "title": "Haiku 5.5 replaces Haiku 4.5",
+      "detail": "Settings › Brain has Claude Haiku 5.5 where Haiku 4.5 was: the model that Anthropic released today. You can choose an effort for it, as for the other Claude models, and it starts at Low. A Mac that was on Haiku 4.5 is on Haiku 5.5 now."
+    },
+    {
+      "build": 345,
+      "date": "2026-10-06",
+      "title": "The one you speak to answers",
+      "detail": "With both of them on, a name now counts wherever it stands in your sentence, and the first name decides. GLaDOS's name also counts when it is heard a little wrong. And when you cut into one of them in a discussion, your next words go to that one."
+    },
+    {
+      "build": 344,
+      "date": "2026-10-06",
+      "title": "J.A.R.V.I.S. is as loud as GLaDOS on the Mac's speakers",
+      "detail": "On the Mac's speakers J.A.R.V.I.S. was less loud than GLaDOS, in German and in English. He is one and a half decibels louder there now, and a measurement at the speakers shows the two level."
+    },
+    {
+      "build": 341,
+      "date": "2026-10-06",
+      "title": "The menu bar icon turns smoothly, at no cost",
+      "detail": "While GLaDOS or J.A.R.V.I.S. speaks, the eye in the menu bar icon still turns. The graphics chip draws the turn now. It is smoother, and the app uses no more processor power than with the still icon."
+    },
+    {
+      "build": 339,
+      "date": "2026-10-06",
+      "title": "The menu bar icon turns while they speak",
+      "detail": "While GLaDOS or J.A.R.V.I.S. speaks, the eye in the menu bar icon goes round clockwise, and its pupil goes round anticlockwise. One turn takes three seconds. At all other times it is the still eye."
+    },
+    {
+      "build": 338,
+      "date": "2026-10-06",
+      "title": "The menu bar icon is always the eye",
+      "detail": "The icon in the menu bar changed while GLaDOS listened, thought or spoke. Now it is the eye all the time. The menu still says what she does."
+    },
+    {
+      "build": 337,
+      "date": "2026-10-05",
+      "title": "J.A.R.V.I.S. speaks German like a butler",
+      "detail": "His German voice is calmer and warmer. He speaks a little slower, his tone has more depth and a softer top, and he leaves a short pause after each sentence. The pitch is his own, and the metallic ring stays gone. His English voice is the same."
+    },
+    {
+      "build": 336,
+      "date": "2026-10-05",
+      "title": "J.A.R.V.I.S.'s German voice has no effects",
+      "detail": "His German voice played one semitone lower than its model speaks, with a light metallic ring. Both are gone: you hear the voice as it is. His English voice had no effects, and it is the same."
+    },
+    {
+      "build": 328,
+      "date": "2026-10-05",
+      "title": "A discussion goes on where you cut it",
+      "detail": "When you speak into a discussion between GLaDOS and J.A.R.V.I.S., it stops, as before. Now say \"go on\" or \"weiter\", and it goes on at the line where you cut it, not from the beginning. The line you cut is said again. When you ask them something about the discussion, the one you asked answers, and can then carry it on from the same place."
+    },
+    {
+      "build": 327,
+      "date": "2026-10-05",
+      "title": "After an update, What's New opens once",
+      "detail": "When GLaDOS has updated itself, the What's New window opens one time, so you see what changed without looking for it."
+    },
+    {
+      "build": 325,
+      "date": "2026-10-05",
+      "title": "The menu bar icon stays the eye",
+      "detail": "Powered down, GLaDOS showed a power symbol in the menu bar. She now shows her eye there too, as she does when she is powered up and waits."
+    },
+    {
+      "build": 324,
+      "date": "2026-10-05",
+      "title": "Dual speed is a switch in Settings",
+      "detail": "Settings, under Brain, has a new switch: Dual speed. Your brain stays what it is, and it is the think hard brain. With the switch on you choose a second, fast brain, with a model and an effort of its own, and the fast brain answers. Say \"think hard\" in a question, and that one answer comes from the think hard brain. With the switch off, your brain answers everything, and \"think hard\" changes nothing. The switch starts off."
+    },
+    {
+      "build": 317,
+      "date": "2026-10-05",
+      "title": "An update says what is new, and a bad one is undone",
+      "detail": "When a new build is offered, the message lists what changed for you, from What's New. And when a new build does not stay open after an update, GLaDOS puts the build you had back and tells you."
+    },
+    {
+      "build": 310,
+      "date": "2026-10-05",
+      "title": "She remembers what you tell her to",
+      "detail": "Switch it on in Settings, under Transcript. Then say \"remember that…\" or \"merk dir…\", and she keeps that note for every later conversation; J.A.R.V.I.S. has the same notes. \"Forget that…\" removes one. The notes are a text file on this Mac that you can read and edit, and they go to the model with every turn. She keeps nothing you did not ask her to keep."
+    },
+    {
+      "build": 308,
+      "date": "2026-10-05",
+      "title": "About shows the kit version",
+      "detail": "The About window has a new row, Kit. It names the version of the code that GLaDOS shares with murmur, unus and scripta."
+    },
+    {
+      "build": 306,
+      "date": "2026-10-05",
+      "title": "Say \"think hard\" for one deep answer",
+      "detail": "Say \"think hard\", \"take your time\" or \"denk nach\" in a question, and that one answer comes from Opus at high effort, whatever brain you chose in Settings. The next answer is your own brain's again. So you can set a fast brain for every day, for example Sonnet at Low, and still get a careful answer when you ask for one."
+    },
+    {
+      "build": 305,
+      "date": "2026-10-05",
+      "title": "She hears again by herself",
+      "detail": "When the Mac's audio changed under her, for example with earbuds whose connection changed, she could stop hearing until you restarted her. She now notices that her audio stopped and starts it again, in about two seconds."
+    },
+    {
+      "build": 304,
+      "date": "2026-10-05",
+      "title": "She knows the section she presents",
+      "detail": "While a page is presented or read, you can ask about the part in front of you: \"what does this section say about…\". She answers from its own words. For that, the words of that one section go to the model with your question."
+    },
+    {
+      "build": 303,
+      "date": "2026-10-05",
+      "title": "A turn never ends in silence",
+      "detail": "When a brain kept asking for its tools and never got to an answer, she said nothing at all. Now she says that she ran out of steps and that some of the work may be done. When a reply comes back empty, she says that too. J.A.R.V.I.S. has his own lines for both."
+    },
+    {
+      "build": 302,
+      "date": "2026-10-05",
+      "title": "The Dictionary tab is taller",
+      "detail": "The Dictionary tab in Settings shows about thirteen entries at a time, where it showed eight. The same in murmur and scripta."
+    },
+    {
+      "build": 301,
+      "date": "2026-10-05",
+      "title": "A Dictionary tab in Settings",
+      "detail": "Settings has a new Dictionary tab: each word and each correction is a row you can change, with a search field and buttons to add one. It is the same tab as in murmur and scripta, and an entry made in one app works in all three. GLaDOS uses a change in her next answer."
+    },
+    {
+      "build": 299,
+      "date": "2026-10-05",
+      "title": "J.A.R.V.I.S.'s German voice is less deep",
+      "detail": "His German voice played two semitones lower than its model speaks. It now plays one semitone lower. The light metallic ring is the same, and he is as loud as before."
+    },
+    {
+      "build": 297,
+      "date": "2026-10-05",
+      "title": "One dictionary for GLaDOS, murmur and scripta",
+      "detail": "The three apps now read the same dictionary file, so you teach a word one time. GLaDOS put the names she knew into that file. You can now change them: in murmur's Settings, under Dictionary, or in the file itself. An entry works in all three apps."
+    },
+    {
+      "build": 292,
+      "date": "2026-10-04",
+      "title": "What's New shows its scroll bar",
+      "detail": "When this window opens, the list shows its scroll bar, so you see that it goes on below."
+    },
+    {
+      "build": 288,
+      "date": "2026-10-04",
+      "title": "J.A.R.V.I.S. is as loud as GLaDOS",
+      "detail": "Through the Mac's speakers he arrived about one decibel quieter than she did in German, and nearly two in English: the Mac's echo cancelling takes more from his voice than from hers. His level now follows her voice in each language and makes up for that, so both arrive equally loud. On headphones, where nothing is taken, he is no longer louder than she is in German."
+    },
+    {
+      "build": 287,
+      "date": "2026-10-04",
+      "title": "About counts her voices right",
+      "detail": "The Voices row in About GLaDOS said “1 of 2 installed” with both of her voices installed. It now counts the two voices that Settings › Voice shows."
+    },
+    {
+      "build": 286,
+      "date": "2026-10-04",
+      "title": "What's New, and three buttons in About",
+      "detail": "This window. About GLaDOS opens it, and has a button for Setup and one for Settings beside it."
+    },
+    {
+      "build": 284,
+      "date": "2026-10-04",
+      "title": "Settings has no empty space at the bottom",
+      "detail": "Every Settings tab is as tall as what is in it, so the window changes its height when you change the tab or when a row comes or goes. The Transcript tab is a list and keeps one height."
+    },
+    {
+      "build": 283,
+      "date": "2026-10-04",
+      "title": "Sonnet 5.5 replaces Sonnet 5",
+      "detail": "The Model picker offers Sonnet 5.5, with an API key and on your Claude plan. A Mac that was set to Sonnet 5 moves to it by itself."
+    }
+  ]
 }
