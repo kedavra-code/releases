@@ -1,9 +1,9 @@
 {
   "app": "folia",
-  "build": 135,
-  "commit": "9b28f06",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-135/folia.dmg",
-  "sha256": "20fb416226df9df74c3f34bb7f110e091f5dab0d86207cb091f15d1b0cf62206",
+  "build": 136,
+  "commit": "0fbd26f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-136/folia.dmg",
+  "sha256": "9af8d5e25b79a94a0ea4d2d38d9953c1b8de03b3286aca8f092aa3962f48634b",
   "minimumSystemVersion": "26.0",
-  "notes": "Match the OneNote pages that still had no folia page"
+  "notes": "Markdown copy: trim a page's end without a slow pattern"
 }
