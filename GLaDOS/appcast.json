@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 384,
-  "commit": "deda775",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-384/GLaDOS.dmg",
-  "sha256": "d7e7b7f2b4f54ad3745acae78c1502ff2a954ddef6adf80c48a69515008412ac",
+  "build": 392,
+  "commit": "6bd0efe",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-392/GLaDOS.dmg",
+  "sha256": "7e5a0084ee656513ce6fbbc7e7c90d3133e3be79d0cab5586a92eb3e81ba027c",
   "minimumSystemVersion": "26.0",
-  "notes": "She opens Cerebrum when its name is misheard",
+  "notes": "She opens Cerebrum in specula",
   "entries": [
+    {
+      "build": 390,
+      "date": "2026-10-24",
+      "title": "She opens Cerebrum in specula",
+      "detail": "specula is the new viewer of your vault. When you ask GLaDOS to open Cerebrum, show the 3D view or play the timelapse, she now opens it in specula, in her Chrome tab. If specula is not running, she starts it in the background and waits a few seconds for it."
+    },
     {
       "build": 375,
       "date": "2026-10-24",
@@ -240,12 +246,6 @@
       "date": "2026-10-04",
       "title": "What's New, and three buttons in About",
       "detail": "This window. About GLaDOS opens it, and has a button for Setup and one for Settings beside it."
-    },
-    {
-      "build": 284,
-      "date": "2026-10-04",
-      "title": "Settings has no empty space at the bottom",
-      "detail": "Every Settings tab is as tall as what is in it, so the window changes its height when you change the tab or when a row comes or goes. The Transcript tab is a list and keeps one height."
     }
   ]
 }
