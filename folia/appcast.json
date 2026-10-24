@@ -1,12 +1,48 @@
 {
   "app": "folia",
-  "build": 165,
-  "commit": "8c226b9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-165/folia.dmg",
-  "sha256": "a6993190ded7ee22182e533ba5bf6fcfd8a48d131f7aed5201d2e15c1fd215e8",
+  "build": 172,
+  "commit": "bfed968",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-172/folia.dmg",
+  "sha256": "56bcfbf75af4cdc14b34f17d9507e349d2d841c68a430421d89d0f927e49105e",
   "minimumSystemVersion": "26.0",
-  "notes": "Copy a page fresh from OneNote\nThe opened page at the top of the page list\nThe open page shows in the page list\nZooming keeps the page’s width\nThe page uses its whole width\nA click on a link opens it\nYouTube videos play in the page\nThe page back to 100%",
+  "notes": "Repair broken tables from OneNote\nFiles in table cells as file cards\nFiles in table cells open\nTables from OneNote keep their rows\nETH OneNote and Private OneNote in Settings\nCopy fresh from OneNote, also for NZZ and SRG SSR",
   "entries": [
+    {
+      "build": 172,
+      "date": "2026-10-24",
+      "title": "Repair broken tables from OneNote",
+      "detail": "Settings › OneNote counts the pages whose OneNote table came in broken, ETH and NZZ and SRG SSR alike, and repairs them in one run: each page is copied fresh from OneNote, one after the other. A page with lines of your own stays as it is and is listed."
+    },
+    {
+      "build": 170,
+      "date": "2026-10-24",
+      "title": "Files in table cells as file cards",
+      "detail": "A file that OneNote keeps in a table cell now shows as a file card in that cell, with its size, like any file on a page. A file within a sentence stays a link."
+    },
+    {
+      "build": 169,
+      "date": "2026-10-24",
+      "title": "Files in table cells open",
+      "detail": "A file that stands in a table cell, as OneNote puts files in tables, opens with a click, like a file card. Wide tables are saved without padding, so their Markdown stays small."
+    },
+    {
+      "build": 168,
+      "date": "2026-10-24",
+      "title": "Tables from OneNote keep their rows",
+      "detail": "A OneNote table whose cells hold several lines or a list now comes in as a table, each line of a cell on its own line. A line break you make in a table cell stays after saving."
+    },
+    {
+      "build": 167,
+      "date": "2026-10-24",
+      "title": "ETH OneNote and Private OneNote in Settings",
+      "detail": "Settings › OneNote names both of your OneNote accounts alike: ETH OneNote, which comes in every day at 20:00, and Private OneNote, for your NZZ and SRG SSR notebooks."
+    },
+    {
+      "build": 166,
+      "date": "2026-10-24",
+      "title": "Copy fresh from OneNote, also for NZZ and SRG SSR",
+      "detail": "Pages of your NZZ and SRG SSR notebooks can be copied fresh from OneNote too, as ETH pages are. Connect your private OneNote once in Settings › OneNote. folia reads a page there only when you ask; nothing comes in by itself."
+    },
     {
       "build": 162,
       "date": "2026-10-24",
@@ -210,42 +246,6 @@
       "date": "2026-10-23",
       "title": "OneNote every evening",
       "detail": "Your ETH notebooks come from OneNote into folia every day at 20:00: new pages and sections, and the changes of pages you did not change here. Connect OneNote once in Settings › OneNote. A page you changed in folia stays as it is and is listed there."
-    },
-    {
-      "build": 106,
-      "date": "2026-10-23",
-      "title": "Every window in the style of Settings",
-      "detail": "⌘K, Export, Share, a version from History, the Markdown file, Prepare and every question now look like Settings: a title, groups in cards, buttons at the foot. Focus and typewriter mode left the top bar (they are in Settings and ⌘K), and About folia comes first in Settings."
-    },
-    {
-      "build": 105,
-      "date": "2026-10-23",
-      "title": "Where your notes live, exactly",
-      "detail": "Settings › About folia now says it in full: your pages are stored by Supabase in Zurich, and while you edit or import and export, they pass through folia's sync server in Frankfurt, which keeps nothing."
-    },
-    {
-      "build": 104,
-      "date": "2026-10-23",
-      "title": "Pictures stay pictures in Markdown",
-      "detail": "A picture at the start of a list item, or with a bracket in its caption, and an empty line in a list stay as they are when a page's Markdown is read again: in the Markdown copy, and in a version restored from History."
-    },
-    {
-      "build": 103,
-      "date": "2026-10-23",
-      "title": "A second update counts right",
-      "detail": "Update pages from a folder, run again, no longer names pages it updated before as changed by you."
-    },
-    {
-      "build": 102,
-      "date": "2026-10-23",
-      "title": "Import & Export",
-      "detail": "File › Export… (⇧⌘E) saves the open page as PDF, with its headings as bookmarks, or as Word, OpenDocument, HTML, LaTeX, EPUB, RTF, Markdown and more, pictures included. File › Import File… (⇧⌘I) makes a page from a Word, OpenDocument, LaTeX, HTML or other file, with its pictures."
-    },
-    {
-      "build": 101,
-      "date": "2026-10-23",
-      "title": "Updating leaves page groups alone",
-      "detail": "Update pages from a folder no longer adds a page group's page from the folder as a new, empty page."
     }
   ]
 }
