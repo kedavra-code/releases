@@ -1,9 +1,167 @@
 {
   "app": "unus",
-  "build": 188,
-  "commit": "6786389",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-188/unus.dmg",
-  "sha256": "9af042e6a6f639a9f23ec18d55b698a4a2659b92f6a351e7f6a1001bdc59eff6",
+  "build": 190,
+  "commit": "8495f43",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-190/unus.dmg",
+  "sha256": "e28ec82bc7c0bdfda086eabd7985a82e2fde6f8491d5d78f74cf6c12befd420d",
   "minimumSystemVersion": "26.0",
-  "notes": "About has a Docs button"
+  "notes": "What's New looks like j4k's",
+  "entries": [
+    {
+      "build": 190,
+      "date": "2026-10-24",
+      "title": "What's New looks like j4k's",
+      "detail": "What's New shows a card for each day, as in j4k. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch."
+    },
+    {
+      "build": 187,
+      "date": "2026-10-23",
+      "title": "About has a Docs button",
+      "detail": "About › Docs… opens the unus Field Manual in your browser: what unus understands, with examples to try."
+    },
+    {
+      "build": 185,
+      "date": "2026-10-19",
+      "title": "The shortcut puts the cursor at the bottom",
+      "detail": "When the shortcut brings the sheet up, the cursor waits at the end, on an empty line, ready for the next sum. If the last line has text, a new line is made under it; an empty one is used as it is."
+    },
+    {
+      "build": 182,
+      "date": "2026-10-15",
+      "title": "Settings look like scripta's",
+      "detail": "Settings has the same look as in scripta now: each box ends with one grey line that says what it does. Precision and the hotkey have a box each, and Start unus at login says what it does too."
+    },
+    {
+      "build": 180,
+      "date": "2026-10-15",
+      "title": "Updates look the same in every app",
+      "detail": "Settings › General ends with Updates now, the same in all four apps: Check Now and an Automatic switch in one row, and under it what the last check found."
+    },
+    {
+      "build": 178,
+      "date": "2026-10-15",
+      "title": "A Dock icon, and a choice where unus shows itself",
+      "detail": "unus has a Dock icon now, beside its icon in the menu bar. Settings › General chooses where it shows itself: the menu bar and the Dock, the menu bar alone, or the Dock alone. A click on the Dock icon opens the calculator, and its menu has the items of the menu bar menu."
+    },
+    {
+      "build": 175,
+      "date": "2026-10-09",
+      "title": "A pasted number with apostrophes counts",
+      "detail": "Paste 1’234’567 from a web page or from Word and unus answered 567: the apostrophe in it only LOOKS like the one unus writes. Four of those look-alikes count as thousands separators now, and a pasted number is tidied to one spelling. A space between the groups is still not a separator."
+    },
+    {
+      "build": 168,
+      "date": "2026-10-05",
+      "title": "After an update, What's New opens once",
+      "detail": "When unus has updated itself, the What's New window opens one time, so you see what changed without looking for it."
+    },
+    {
+      "build": 163,
+      "date": "2026-10-05",
+      "title": "An update says what is new, and a bad one is undone",
+      "detail": "When a new build is offered, the message lists what changed for you, from What's New. And when a new build does not stay open after an update, unus puts the build you had back and tells you."
+    },
+    {
+      "build": 161,
+      "date": "2026-10-05",
+      "title": "A hyphen inside a word is not a minus",
+      "detail": "x-ray 80 answered -80, and 2-bedroom flat 1800 answered -1'798: each hyphen was a subtraction. A word with a hyphen is one word now. 10-5 is still 5, and rate-tax still subtracts when you defined both names."
+    },
+    {
+      "build": 160,
+      "date": "2026-10-05",
+      "title": "unus reads back what it prints",
+      "detail": "A result you copy and paste into a line is the same amount again. Three kinds were not: tonnes (1'000 t), torque (N·m, lb·ft) and light minutes. A date that a sum moves past the year 9999, or before the year 1, shows a ? and no longer a wrong year."
+    },
+    {
+      "build": 158,
+      "date": "2026-10-05",
+      "title": "A refused line says why",
+      "detail": "A line that unus cannot answer, such as 5 km in kg or 5 / 0, shows a dim ? where the result would be. Point at the ? and the top bar says why. A line of plain text shows nothing, as before."
+    },
+    {
+      "build": 157,
+      "date": "2026-10-05",
+      "title": "Nine sentences answer right",
+      "detail": "These lines gave a wrong answer, and are right now: twenty five percent of 80 · one and a half hours · 120 less 10% · dinner 84 tip 20% · 3 nights at $120 · 12 payments of 99 · 6 ft 2 in cm · 1st of october · tomorrow at 3pm. An amount in parts is one amount: 2 h 45 min, 1 kg 200 g. The docs in the sheet show an example of each."
+    },
+    {
+      "build": 156,
+      "date": "2026-10-05",
+      "title": "About shows the kit version",
+      "detail": "The About window has a new row, Kit. It names the version of the code that unus shares with murmur, scripta and GLaDOS."
+    },
+    {
+      "build": 154,
+      "date": "2026-10-05",
+      "title": "Qwen holds less memory",
+      "detail": "With the Qwen model, unus held about 5 GB of memory. It now holds about 3 GB, at the same speed. After ten minutes without a translation, Qwen leaves memory; the next ⌘⏎ then takes about 4 seconds."
+    },
+    {
+      "build": 153,
+      "date": "2026-10-05",
+      "title": "Settings is as wide as in murmur, scripta and GLaDOS",
+      "detail": "The Settings window is wider, in both tabs. It now has the same width in all four apps."
+    },
+    {
+      "build": 152,
+      "date": "2026-10-05",
+      "title": "The Settings window keeps moving",
+      "detail": "After a drag on the tabs of the Settings window, a drag on its top no longer moved the window. Now a drag on the empty part of the top, beside the tabs, always moves it."
+    },
+    {
+      "build": 146,
+      "date": "2026-10-04",
+      "title": "What's New shows its scroll bar",
+      "detail": "When this window opens, the list shows its scroll bar, so you see that it goes on below."
+    },
+    {
+      "build": 140,
+      "date": "2026-10-04",
+      "title": "What's New",
+      "detail": "This window. About unus opens it, with the What's New… button beside the Settings… button."
+    },
+    {
+      "build": 139,
+      "date": "2026-10-04",
+      "title": "A Settings button in About",
+      "detail": "About unus has a Settings… button at the bottom. It opens the Settings window."
+    },
+    {
+      "build": 138,
+      "date": "2026-10-03",
+      "title": "Settings has a Brain tab",
+      "detail": "Settings has two tabs, General and Brain. The ⌘⏎ switch and the model picker are on the Brain tab. The text there has the scores measured on macOS 27, and it says that the Qwen model holds about 5 GB of memory while it is chosen."
+    },
+    {
+      "build": 135,
+      "date": "2026-09-30",
+      "title": "An update leaves no disk behind",
+      "detail": "After an update, the disk image it came on stayed open on this Mac. The updater now ejects it before it starts the new unus."
+    },
+    {
+      "build": 133,
+      "date": "2026-09-30",
+      "title": "Show unus in the menu, and a red shortcut when it is taken",
+      "detail": "The menu bar menu has a Show unus row, with the shortcut beside it. In Settings, the shortcut's label turns red when another app holds the same keys; hold the pointer on it to read why. A new sheet opens in front of the app you were in."
+    },
+    {
+      "build": 132,
+      "date": "2026-09-30",
+      "title": "The menu's windows open in front",
+      "detail": "About and Settings open in front of the app you were in. Before, a window could open behind it, and the menu row looked dead."
+    },
+    {
+      "build": 123,
+      "date": "2026-09-26",
+      "title": "⌘H hides unus",
+      "detail": "⌘H hides the sheet, as in every other app, and the shortcut brings it back. Hide Others and Show All are in the same menu."
+    },
+    {
+      "build": 116,
+      "date": "2026-09-10",
+      "title": "The shortcut works after a login",
+      "detail": "After a login, the shortcut could do nothing until unus was started again. It now makes the sheet when there is none."
+    }
+  ]
 }
