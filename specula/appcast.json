@@ -1,0 +1,65 @@
+{
+  "app": "specula",
+  "build": 14,
+  "commit": "6a08790",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-14/specula.dmg",
+  "sha256": "d076946a65e1418ed2e0999aa181e625e053db0030222c9830e49ee4dbbfc744",
+  "minimumSystemVersion": "26.0",
+  "notes": "About specula first in the menu bar\nThe vault's newest commit in About\nspecula is the vault's viewer\nReports as in folia · The Brain's controls, one size\niCloud Drive's question, said\nspecula for Mac\nLight, dark or the system's and 3 more\nAsk Claude and the reports in specula\nand 1 more — see What's New",
+  "entries": [
+    {
+      "build": 14,
+      "date": "2026-10-24",
+      "title": "About specula first in the menu bar",
+      "detail": "The menu of specula's icon in the menu bar starts with About specula, a line under it."
+    },
+    {
+      "build": 13,
+      "date": "2026-10-24",
+      "title": "The vault's newest commit in About",
+      "detail": "About specula names the vault's newest commit as soon as it is made. Before, it said \"uncommitted\" until the next change to a concept."
+    },
+    {
+      "build": 12,
+      "date": "2026-10-24",
+      "title": "specula is the vault's viewer",
+      "detail": "The vault's old one-file viewer has retired. Open 00_Cerebrum opens specula, and while the app runs, this Mac's browser shows specula at 127.0.0.1:8760, where the old viewer was."
+    },
+    {
+      "build": 11,
+      "date": "2026-10-24",
+      "title": "Reports as in folia · The Brain's controls, one size",
+      "detail": "Reports as in folia: The Reports window and a report open in folia's window. A report reads like a page in folia, light or dark with specula, its drawings too; English and Deutsch sit at its foot. The Brain's controls, one size: In Settings › Brain, the Model and Effort menus and the buttons have one height, one width and one type. Every row has its icon."
+    },
+    {
+      "build": 8,
+      "date": "2026-10-24",
+      "title": "iCloud Drive's question, said",
+      "detail": "The first time, macOS asks whether specula may open files in iCloud Drive, where the vault is. specula now opens its window at once and says so while it waits, and shows the vault once you choose Allow."
+    },
+    {
+      "build": 7,
+      "date": "2026-10-24",
+      "title": "specula for Mac",
+      "detail": "specula comes as an app for your Mac. It starts specula's server, can open at login, shows in the menu bar or the Dock, and updates itself; while it runs, this Mac's browser shows specula at the same address."
+    },
+    {
+      "build": 6,
+      "date": "2026-10-24",
+      "title": "Light, dark or the system's and 3 more",
+      "detail": "Light, dark or the system's: Settings › General picks the look: light, dark, or the same as your Mac. Everything around the map follows it; the 2D map and the 3D view keep their dark sky. Settings as in folia: The gear opens Settings, the mark opens About: About specula, General, Knowledge bases, Brain, Keys and Mac app, in the same window as folia and j4k. What's new: Settings › About specula › What's new lists what changed in specula, newest first, and counts what you have not read yet. Commands with ⌘K: ⌘K finds a concept, a report, a view or a setting by its name, and opens it."
+    },
+    {
+      "build": 4,
+      "date": "2026-10-24",
+      "title": "Ask Claude and the reports in specula",
+      "detail": "Ask Claude, the reports and the Brain work in specula itself. A report opens inside specula, in English and German, and a link in it to a concept opens that concept."
+    },
+    {
+      "build": 3,
+      "date": "2026-10-24",
+      "title": "The vault in specula · Newer data with one click",
+      "detail": "The vault in specula: specula shows the vault as its old viewer did: the 2D map, the 3D view, the Timelapse, the concepts and the search, read live from the vault. Newer data with one click: When the vault changes, a note at the foot says so. Show brings the new state in and keeps your view, your search and your selection."
+    }
+  ]
+}
