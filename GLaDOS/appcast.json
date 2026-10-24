@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 374,
-  "commit": "00fdc69",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-374/GLaDOS.dmg",
-  "sha256": "203758d53c64c3a3977cd9d06417818c340af15ad78f2716bc6a75ab5c66cdd3",
+  "build": 384,
+  "commit": "deda775",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-384/GLaDOS.dmg",
+  "sha256": "d7e7b7f2b4f54ad3745acae78c1502ff2a954ddef6adf80c48a69515008412ac",
   "minimumSystemVersion": "26.0",
-  "notes": "What's New looks like j4k's",
+  "notes": "She opens Cerebrum when its name is misheard",
   "entries": [
+    {
+      "build": 375,
+      "date": "2026-10-24",
+      "title": "She opens Cerebrum when its name is misheard",
+      "detail": "The speech recogniser sometimes writes \"Cerebrum\" as \"Care Room\", \"Cary Room\", \"Caleb room\" or \"qué room\". These four now become Cerebrum in the word list that GLaDOS, murmur and scripta share. And GLaDOS and J.A.R.V.I.S. know that the name is often misheard: a \"room\" you ask them to open is your vault."
+    },
     {
       "build": 374,
       "date": "2026-10-24",
@@ -240,12 +246,6 @@
       "date": "2026-10-04",
       "title": "Settings has no empty space at the bottom",
       "detail": "Every Settings tab is as tall as what is in it, so the window changes its height when you change the tab or when a row comes or goes. The Transcript tab is a list and keeps one height."
-    },
-    {
-      "build": 283,
-      "date": "2026-10-04",
-      "title": "Sonnet 5.5 replaces Sonnet 5",
-      "detail": "The Model picker offers Sonnet 5.5, with an API key and on your Claude plan. A Mac that was set to Sonnet 5 moves to it by itself."
     }
   ]
 }
