@@ -1,11 +1,11 @@
 {
   "app": "scripta",
-  "build": 169,
-  "commit": "1b85d3a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-169/scripta.dmg",
-  "sha256": "d5406b1bdd9bdb80e9adb87072d242c45194313888db35a3cd02a0c21c1b729a",
+  "build": 178,
+  "commit": "078b73d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-178/scripta.dmg",
+  "sha256": "64d699d2c55ca8cc53fd09d7f4e5f4308f1f295c1c0d7c357fc72c4bd4a15b0a",
   "minimumSystemVersion": "26.0",
-  "notes": "What's New looks like j4k's",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 169,
