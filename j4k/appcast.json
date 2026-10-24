@@ -1,9 +1,251 @@
 {
   "app": "j4k",
-  "build": 428,
-  "commit": "66ddf7c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-428/j4k.dmg",
-  "sha256": "24e48f7f5236aaf701a06372df00bd3c78baaaab4fcef0c31297ca863114ce56",
+  "build": 431,
+  "commit": "a1d7e78",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-431/j4k.dmg",
+  "sha256": "4ace8be94901020646158b64a529e574646e4b2d7394407b1fa66e286b89ec3c",
   "minimumSystemVersion": "26.0",
-  "notes": "About j4k shows the Board icon\nUndo and redo lead the top bar's icons, as in folia\nThe search bar in the page's colours\nThe top bar's buttons at its right edge, as in folia\nGet the Mac app from Settings · The new icon on the iPhone's home screen"
+  "notes": "The Mac app's What's New looks like this one, and its About has Docs\nDocs is the j4k Field Manual",
+  "entries": [
+    {
+      "build": 431,
+      "date": "2026-10-24",
+      "title": "The Mac app's What's New looks like this one, and its About has Docs",
+      "detail": "In the Mac app, What's New shows a card for each day, as here. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch. About j4k has a Docs button: it opens the j4k Field Manual."
+    },
+    {
+      "build": 429,
+      "date": "2026-10-23",
+      "title": "Docs is the j4k Field Manual",
+      "detail": "Settings › About j4k › Docs now opens the j4k Field Manual in a new tab: one illustrated page on what j4k is and how it works. The old Docs window inside the app is gone."
+    },
+    {
+      "build": 428,
+      "date": "2026-10-23",
+      "title": "About j4k shows the Board icon",
+      "detail": "Settings › About j4k now shows the app's Board icon beside the name, as folia's About shows its own, instead of the old j4k logo."
+    },
+    {
+      "build": 427,
+      "date": "2026-10-23",
+      "title": "Undo and redo lead the top bar's icons, as in folia",
+      "detail": "The undo and redo arrows moved to the start of the top bar's icons, before the plus, where folia has them. They are faded while there is nothing to undo or redo."
+    },
+    {
+      "build": 426,
+      "date": "2026-10-23",
+      "title": "The search bar in the page's colours",
+      "detail": "The search bar now has the same colours and rounded edge as the filter band and the task columns. In dark mode it no longer shows a black box with a grey border inside it."
+    },
+    {
+      "build": 424,
+      "date": "2026-10-23",
+      "title": "The top bar's buttons at its right edge, as in folia",
+      "detail": "The buttons in the top bar moved to its right edge, as in folia; they followed the j4k name before. The search field stays where it was, above the task list."
+    },
+    {
+      "build": 423,
+      "date": "2026-10-23",
+      "title": "Get the Mac app from Settings · The new icon on the iPhone's home screen",
+      "detail": "Get the Mac app from Settings: In a browser, Settings › Mac app now offers the j4k Mac app as a download: always the newest build, with the macOS it needs. Open the file, drag j4k into Applications, and it updates itself from then on. The new icon on the iPhone's home screen: Adding j4k to an iPhone's home screen kept showing the old icon, because the phone had saved it. The icons now have a new address, so the phone fetches the Board icon. An icon already on your home screen stays as it is: remove it and add j4k again."
+    },
+    {
+      "build": 422,
+      "date": "2026-10-23",
+      "title": "More room, the same layout as folia",
+      "detail": "The page reaches closer to the window's edges, with 10px around and between its bands, like folia. The header has folia's height and button size, so with the two windows side by side j4k and folia line up."
+    },
+    {
+      "build": 420,
+      "date": "2026-10-23",
+      "title": "j4k written in the header",
+      "detail": "The top of the page writes j4k as plain bold text, the way folia writes its name, in light and in dark. It fits every phone without touching the buttons."
+    },
+    {
+      "build": 419,
+      "date": "2026-10-23",
+      "title": "A new j4k icon",
+      "detail": "j4k has a new icon: a small task board, an orange rail with three columns, in the colours of scripta, murmur and unus. You see it in the browser tab, on the phone's home screen and in the Mac app's Dock. A browser may need a hard reload to show the new tab icon."
+    },
+    {
+      "build": 416,
+      "date": "2026-10-23",
+      "title": "Move a window by its title bar",
+      "detail": "Drag the Settings window, or any other window of j4k, by its title bar to put it where you want. It stays on the screen, and opens in the middle again next time."
+    },
+    {
+      "build": 415,
+      "date": "2026-10-23",
+      "title": "Settings without a scrollbar",
+      "detail": "The Settings window is as tall as its longest part, so no part needs a scrollbar, and it keeps its size when you switch parts. Your tags stand in two columns. Users no longer marks a Gmail address as unable to sign in: Google lets those accounts in now, when they are test users in Google Cloud."
+    },
+    {
+      "build": 414,
+      "date": "2026-10-23",
+      "title": "A Settings window, and every window in one style",
+      "detail": "The gear opens a Settings window like folia's: its parts on the left — About j4k, General, Tags, Users, Assistant, Data, Mac app and Account — and on the right each setting in a row that says what it does, with a switch for anything on or off. It replaces the ... menu and the Tags, Users and About windows. Docs, What's new, Backups, the assistant's chat and the Recurrence window have the same look now, and Escape closes only the window on top."
+    },
+    {
+      "build": 413,
+      "date": "2026-10-21",
+      "title": "A gear for the settings",
+      "detail": "The ... button at the right of the header shows a gear now, as in folia, since every setting is in that menu. It opens the same menu as before."
+    },
+    {
+      "build": 412,
+      "date": "2026-10-21",
+      "title": "All settings are in the ... menu again",
+      "detail": "The Mac app has no Settings window any more: every setting is in the ... menu, as in a browser, and j4k -> Settings... (Cmd+,) opens that menu. Its Mac app part holds the app's own switches: Calendar meetings, Flagged mails as tasks, Open at login and Automatic updates."
+    },
+    {
+      "build": 409,
+      "date": "2026-10-21",
+      "title": "One What's new for the browser and the Mac app",
+      "detail": "The Mac app's What's New window now shows the same list as ... -> What's new in the browser: every change to j4k, newest first. A change only the Mac app has is marked Mac app here. Where one build brought several changes, the Mac window shows them as one entry."
+    },
+    {
+      "build": 407,
+      "date": "2026-10-21",
+      "title": "A dragged mail is a normal task",
+      "detail": "A mail you drag from Apple Mail onto j4k now becomes a task in Backlog and opens, like a dragged calendar event: you chose it, so it skips Review. Mails you flag in Mail still arrive in Review."
+    },
+    {
+      "build": 405,
+      "date": "2026-10-21",
+      "title": "Drag a calendar event onto j4k",
+      "detail": "Drag an event from the Calendar app onto j4k's window and it becomes a task for that day, with its time, room and join link. Settings now has a Calendar tab: switch the meetings in Calendar view off, and j4k does not read your calendar at all. The meeting rows are tighter."
+    },
+    {
+      "build": 404,
+      "date": "2026-10-21",
+      "title": "Meetings on the day you pick and 2 more",
+      "detail": "Meetings on the day you pick: In Calendar view, the column of a day you pick in the month lists that day's meetings too, and meetings look like task cards. The Gmail import is gone: Starred Gmail mail no longer becomes a task, and the Gmail group has left the ... menu. The tasks it made earlier stay where they are. In the j4k Mac app a mail can still become a task: drag it from Apple Mail onto the window, or flag it in Mail. No scroll bar over a short text box: In Safari and in the j4k Mac app, on a Mac set to always show scroll bars, a one-line text box in the task editor — Write a new subtask, the description — drew a sideways scroll bar over its own text and cut it in half. It no longer does."
+    },
+    {
+      "build": 400,
+      "date": "2026-10-21",
+      "title": "The view you pick stays picked",
+      "detail": "In a freshly opened tab, a view you picked — List, Kanban or Calendar — could jump back to your default view when you came back to the tab from another one, or when the window got narrower or wider than a phone screen. It now stays until you pick another. The default view still applies when you open j4k, and at once when you change it under ... -> View."
+    },
+    {
+      "build": 398,
+      "date": "2026-10-21",
+      "title": "Flagged mails become tasks",
+      "detail": "Switch it on in Settings › Mail: every mail you flag in Apple Mail after that becomes a task in Review, once. Mails flagged before stay as they are. j4k looks every five minutes while it runs and Mail is open."
+    },
+    {
+      "build": 397,
+      "date": "2026-10-21",
+      "title": "Drag a mail onto j4k",
+      "detail": "Drag a mail from Apple Mail onto j4k's window and it becomes a task in Review, with a link that opens the mail again. It works for every account in Mail, and the same mail never becomes two tasks."
+    },
+    {
+      "build": 396,
+      "date": "2026-10-20",
+      "title": "Today's meetings next to today's tasks",
+      "detail": "In Calendar view, Today's Agenda lists today's meetings from your Mac's Calendar. The + beside a meeting makes it a task for that day, with its time, room and join link. j4k asks once to read your calendars."
+    },
+    {
+      "build": 395,
+      "date": "2026-10-20",
+      "title": "The j4k Mac app",
+      "detail": "j4k in its own window, with menus and its own updates. Sign in with Google in a system window. Settings (⌘,) opens j4k's settings. Reload Page (⌘R) loads j4k again."
+    },
+    {
+      "build": 392,
+      "date": "2026-10-07",
+      "title": "Choose how much the assistant thinks",
+      "detail": "Under ... -> Assistant there is now an effort selector beside the model: Low, Medium or High. Low is the default and the fastest. High makes Claude think longer before it answers, which helps with a request that is hard to understand, and it takes more time. Your choice is remembered on this device. The Assistant button, the model and the effort now sit in one line."
+    },
+    {
+      "build": 391,
+      "date": "2026-10-07",
+      "title": "The assistant runs on the newest Claude models",
+      "detail": "The Model picker beside the Assistant button under ... now offers Haiku 5.5, Sonnet 5.5 and Opus 5.5, in place of Haiku 4.5, Sonnet 5 and Opus 5. Haiku 5.5 is the default and the fastest; Opus 5.5 understands the most. If you had picked Sonnet or Opus before, pick it again once: an old choice falls back to Haiku 5.5."
+    },
+    {
+      "build": 387,
+      "date": "2026-10-05",
+      "title": "Cards show how many subtasks are done",
+      "detail": "A task with subtasks now shows a small count under the three dots, such as 2/5: two of its five subtasks are done. You see it on a closed card, without opening the task, and it changes at once when you tick a subtask. Hover it to read it in words. A task with no subtasks shows nothing."
+    },
+    {
+      "build": 386,
+      "date": "2026-10-05",
+      "title": "Swimlanes by priority and by week",
+      "detail": "The Swimlanes button on the Kanban board has two more choices. Priority gives one row each for No prio, High, Medium and Low; drag a card into another row to change its priority. Week gives a row for this week and each of the next three, plus a row for any other week a task is planned for, and No week last. Drag a card onto a week row to plan it for that week: the week is set and the start date moves to that week’s Monday, exactly as when you pick a week in the editor. Dropping a card on No week takes the week off and leaves the start date alone. As before, one Undo takes back a drop."
+    },
+    {
+      "build": 384,
+      "date": "2026-10-04",
+      "title": "The filter menus look the same in light and dark mode",
+      "detail": "In light mode the small headings inside the filter menus (Show, Sort) were too pale to read comfortably, and Clear filter was missing the bold text and the line under it that dark mode has always shown. Both themes now draw the menus the same way. Nothing about how the filters work has changed."
+    },
+    {
+      "build": 382,
+      "date": "2026-10-04",
+      "title": "The small filter line now says how much each filter cuts",
+      "detail": "The line under the filter buttons used to show a number on every chip, and all four were always the same number — the tasks on screen. Now a chip shows a number only when its filter is on, as two numbers: 12 of 34 means that filter keeps 12 of the 34 tasks the other filters allow. So you can see which filter removes the most. A filter that is off shows nothing, and a sort alone does not count."
+    },
+    {
+      "build": 378,
+      "date": "2026-10-04",
+      "title": "Swimlanes on the Kanban board",
+      "detail": "A fifth button beside the four filters, Swimlanes, cuts the Kanban board into rows: one row per tag, or one row per size. Each row has the usual four columns, so you see at a glance what is in Backlog, Doing, Pending and Done for every tag. Every tag and every size gets a row, empty ones too, so you can drag a card onto a tag nothing uses yet; tasks without one sit in a last row. In the browser, dragging a card into another row changes its tag or size — and its status too if you drop it in another column — as one change that a single Undo takes back. The menu also has a Sort section for the order of the rows: the usual order, reversed, most tasks first or fewest tasks first — most tasks first puts the full rows on top and the empty ones at the bottom. The small line under the buttons reports the swimlanes too, with the number of rows, and in the menu Tags and Size each show how many rows they would give. Clear filter in the menu, None, or the j4k logo puts the plain board back. The button shows on the Kanban board only."
+    },
+    {
+      "build": 372,
+      "date": "2026-09-08",
+      "title": "The scrollbar that was always there is gone",
+      "detail": "Every page had about 14 pixels of scroll it did not need — a scrollbar on the right even with a single task on screen and plenty of empty space below it. The page is now exactly as tall as what is on it, so a scrollbar means there is genuinely more to see. Nothing moved: the header and everything under it sit where they always did."
+    },
+    {
+      "build": 371,
+      "date": "2026-09-08",
+      "title": "The tag list in a task no longer runs off the screen · The New button is gone; Review keeps its place",
+      "detail": "The tag list in a task no longer runs off the screen: Picking a tag while editing a task opened a tall single column that ran past the bottom of the window and put a scrollbar on the page — it had fitted until the editor was enlarged last week, which made it a quarter taller. The tags now sit in two columns, with No tag across the top, so the whole list is visible at once without scrolling anything. Nothing about tags themselves changed. The New button is gone; Review keeps its place: The row under the filter chips carried two buttons for a day, New and Review. New has been removed and Review is on its own there now, the same size, colour and count it always had. The New filter itself has not gone anywhere — it is in the Status menu's Filter section, next to All and the star, where it does exactly what the button did: show only what you created in the last 24 hours, narrowing whatever else you have picked."
+    },
+    {
+      "build": 365,
+      "date": "2026-09-08",
+      "title": "The logo gives back the view a filter took",
+      "detail": "Filtering to Deleted, Archived or Review switches to the list, because those views have no board columns. Pressing the j4k logo now returns you to the view you have set under Layout — Kanban, List or Calendar — instead of leaving you in the list the filter borrowed. It only gives back a view a filter took away: if you picked a view yourself with the header buttons, the logo leaves it alone."
+    },
+    {
+      "build": 364,
+      "date": "2026-09-08",
+      "title": "Deleted and Archived now order by the minute, not the day · The new-task outline lasts a minute",
+      "detail": "Deleted and Archived now order by the minute, not the day: The Deleted and Archived views have always put the newest first, but only to the day — everything parked on the same day fell back to priority order, which with a dozen deletions a day was most of what you saw. They now order by the actual moment a task was deleted or archived. Tasks parked from now on are exact; for older ones the time was recovered where the task had not been touched since, which covers everything from the last couple of weeks, and anything older keeps ordering by day as before. Review already ordered to the minute and is unchanged. The new-task outline lasts a minute: The violet outline on a newly created task now stays for a minute instead of ten seconds, which matters most for a task dictated by voice — it arrives while you are not looking at the screen, so ten seconds was rarely enough to see it. The outline also fades out properly again at the end; it had been disappearing abruptly."
+    },
+    {
+      "build": 363,
+      "date": "2026-09-08",
+      "title": "A task you dictate is marked as new when it arrives",
+      "detail": "A task created by voice now gets the same violet outline for ten seconds that a task you type gets, so it is easy to spot when it lands in a list you are already looking at. It only marks a task as it arrives, never one that was already there — opening the app does not light up everything dictated earlier. Tasks arriving from Gmail or handed over by another user are unchanged: they already carry the pink Review edge."
+    },
+    {
+      "build": 353,
+      "date": "2026-09-08",
+      "title": "The Status menu opens with All, New and Star",
+      "detail": "The Status filter now leads with a small Filter section holding All, New and the star, above the list of states. New is the same filter as the New button under the chips — set it in either place and both light up. None of the three is a state: New and the star narrow whatever you have picked, so a starred Doing view means the starred Doing tasks rather than everything that is either, and All means nothing narrowing at all — it lights up only when none of the three is on, and pressing it switches the other two off as well. The Status chip now names them the way it already named the star — reading New, or a star, or both, and adding the states when you tick any. It no longer tacks All onto the end, which claimed to be showing everything next to the very thing narrowing it. Clear filter switches both off. The Tags menu also stopped showing a scrollbar with a full tag list, which it should not have had."
+    },
+    {
+      "build": 351,
+      "date": "2026-09-07",
+      "title": "Two new buttons: New and Review",
+      "detail": "Under the filter rows there are now two one-press views, each showing how many tasks it holds. New shows only what you created in the last 24 hours; Review shows only what arrived from somewhere else and has not been triaged yet. Each is drawn in the colour its cards already wear — violet for a task you just made, pink for an arrival — so the button matches the outline you are hunting for. Press again to switch it off. They stack with everything else rather than replacing it, so New while a tag is selected means the recent tasks with that tag, and each button's number tells you what pressing it would actually give you."
+    },
+    {
+      "build": 349,
+      "date": "2026-09-07",
+      "title": "Deleting a task no longer clears your filters",
+      "detail": "Filtering to Review and working down the list used to throw you back to all active tasks the moment you deleted one, so the filter had to be set again for every single task. Deleting now leaves the view exactly as you set it — the status you picked, the tags, the priority, the sort, the search box — and the deleted task simply drops out of the list. Everything else already behaved this way: renaming a task, or moving one out of Review, has always kept you where you were."
+    },
+    {
+      "build": 348,
+      "date": "2026-09-07",
+      "title": "The task editor is bigger in the browser",
+      "detail": "Opening a task in the browser now draws the whole edit card at 125% — text, dropdowns, date fields, spacing and the calendar picker all together, not just a wider box. The eight parameter fields get real room, so a date reads in full instead of being squeezed. On a window narrower than 900px it returns to its usual size, where the card already fills the screen. Phones are unchanged."
+    }
+  ]
 }
