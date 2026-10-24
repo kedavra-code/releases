@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 431,
-  "commit": "a1d7e78",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-431/j4k.dmg",
-  "sha256": "4ace8be94901020646158b64a529e574646e4b2d7394407b1fa66e286b89ec3c",
+  "build": 440,
+  "commit": "9f70a5b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-440/j4k.dmg",
+  "sha256": "e7efa908591de68c6ed76e98fa0ca0cc4a37c10ea46efce3eeb214335bb873b2",
   "minimumSystemVersion": "26.0",
-  "notes": "The Mac app's What's New looks like this one, and its About has Docs\nDocs is the j4k Field Manual",
+  "notes": "Settings › Assistant is now called Brain",
   "entries": [
+    {
+      "build": 439,
+      "date": "2026-10-24",
+      "title": "Settings › Assistant is now called Brain",
+      "detail": "The part of the Settings window where you open the chat with Claude and pick its model and effort is now called Brain. Nothing in it changed but the name."
+    },
     {
       "build": 431,
       "date": "2026-10-24",
@@ -240,12 +246,6 @@
       "date": "2026-09-07",
       "title": "Deleting a task no longer clears your filters",
       "detail": "Filtering to Review and working down the list used to throw you back to all active tasks the moment you deleted one, so the filter had to be set again for every single task. Deleting now leaves the view exactly as you set it — the status you picked, the tags, the priority, the sort, the search box — and the deleted task simply drops out of the list. Everything else already behaved this way: renaming a task, or moving one out of Review, has always kept you where you were."
-    },
-    {
-      "build": 348,
-      "date": "2026-09-07",
-      "title": "The task editor is bigger in the browser",
-      "detail": "Opening a task in the browser now draws the whole edit card at 125% — text, dropdowns, date fields, spacing and the calendar picker all together, not just a wider box. The eight parameter fields get real room, so a date reads in full instead of being squeezed. On a window narrower than 900px it returns to its usual size, where the card already fills the screen. Phones are unchanged."
     }
   ]
 }
