@@ -1,9 +1,251 @@
 {
   "app": "folia",
-  "build": 136,
-  "commit": "0fbd26f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-136/folia.dmg",
-  "sha256": "9af8d5e25b79a94a0ea4d2d38d9953c1b8de03b3286aca8f092aa3962f48634b",
+  "build": 147,
+  "commit": "5500811",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-147/folia.dmg",
+  "sha256": "9bffa55c3d8d7055faa43b5cc1b79d544ca8ad6c0bbd67bf3968532a85582c15",
   "minimumSystemVersion": "26.0",
-  "notes": "Markdown copy: trim a page's end without a slow pattern"
+  "notes": "Updates show at once\nThe Mac app's What's New looks like this one, and its About has Docs\nEach notebook opens on your last page\nPinch to zoom on every page; the page alone, with the bars\nNotebooks start in their right order and colours\nPictures in tables can grow past their cell\nCopy a page’s link with a right click\nPage only, on the whole screen\nand 2 more — see What's New",
+  "entries": [
+    {
+      "build": 147,
+      "date": "2026-10-24",
+      "title": "Updates show at once",
+      "detail": "When a new version of folia has come, folia reloads once and uses it. Before, the new version showed only from the second start."
+    },
+    {
+      "build": 146,
+      "date": "2026-10-24",
+      "title": "The Mac app's What's New looks like this one, and its About has Docs",
+      "detail": "In the Mac app, What's New shows a card for each day, as here. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch. About folia has a Docs button: it opens the folia Field Manual."
+    },
+    {
+      "build": 145,
+      "date": "2026-10-24",
+      "title": "Each notebook opens on your last page",
+      "detail": "Switch to another notebook and back: folia opens the page you had open there, as long as it is still there."
+    },
+    {
+      "build": 144,
+      "date": "2026-10-24",
+      "title": "Pinch to zoom on every page; the page alone, with the bars",
+      "detail": "Pinch on the trackpad to make any page larger or smaller. The button in the top bar now hides the side columns and keeps the top bar and the status bar; click it again to bring them back. No more full screen."
+    },
+    {
+      "build": 142,
+      "date": "2026-10-24",
+      "title": "Notebooks start in their right order and colours",
+      "detail": "At the start folia showed an old copy of your notebooks for a moment, in an old order and old colours. It now keeps that copy where there is room, and never shows an old one."
+    },
+    {
+      "build": 141,
+      "date": "2026-10-24",
+      "title": "Pictures in tables can grow past their cell",
+      "detail": "Drag a picture’s corner in a table: it may pass its cell, and its column widens to hold it when you let go."
+    },
+    {
+      "build": 140,
+      "date": "2026-10-24",
+      "title": "Copy a page’s link with a right click",
+      "detail": "A right click on a page in the list opens its menu; Copy link puts the page’s address on the clipboard, to paste anywhere."
+    },
+    {
+      "build": 139,
+      "date": "2026-10-24",
+      "title": "Page only, on the whole screen",
+      "detail": "The new button in the top bar shows the page alone, without the side columns and bars, on the whole screen. Pinch on the trackpad to make it larger or smaller; Esc leaves."
+    },
+    {
+      "build": 138,
+      "date": "2026-10-24",
+      "title": "Several files attach reliably",
+      "detail": "Files you pick, drop or paste all land below your line, in their order, also when the page changes while they upload. Before, sometimes not a single one was attached."
+    },
+    {
+      "build": 137,
+      "date": "2026-10-24",
+      "title": "Search and the calendar stay quick on very long lines",
+      "detail": "A page or a meeting invitation with a very long run of spaces could make folia stop answering. Search and the meeting pages now read such lines at once."
+    },
+    {
+      "build": 136,
+      "date": "2026-10-24",
+      "title": "No more freezes from the Markdown copy",
+      "detail": "A page with a very wide table made folia stop answering for about a minute each time it saved its Markdown copy. It now saves such a page at once."
+    },
+    {
+      "build": 135,
+      "date": "2026-10-24",
+      "title": "More pages find their place when updating",
+      "detail": "Copies of one page, pages renamed in folia and OneNote’s empty year pages now find their folia page: in ⌘K › Update pages from a folder, and in the daily OneNote import."
+    },
+    {
+      "build": 132,
+      "date": "2026-10-23",
+      "title": "Update pages from a folder ignores list numbers",
+      "detail": "A page whose numbered list folia renumbered is no longer left as changed by you."
+    },
+    {
+      "build": 131,
+      "date": "2026-10-23",
+      "title": "Docs and What's new in About folia",
+      "detail": "Settings › About folia opens the folia Field Manual, on what folia is and how it works, and lists what changed in folia, newest first, as j4k does."
+    },
+    {
+      "build": 129,
+      "date": "2026-10-23",
+      "title": "St., ca. and Mo. stay at a line start",
+      "detail": "A line that starts with a short word and a dot, like \"St. Gallen\" or \"ca. 40\", no longer turns into a numbered list that drops the word."
+    },
+    {
+      "build": 128,
+      "date": "2026-10-23",
+      "title": "Your account picture in j4k's amber",
+      "detail": "The round picture with your initials in Settings has the same amber as in j4k."
+    },
+    {
+      "build": 127,
+      "date": "2026-10-23",
+      "title": "folia for Mac from the website",
+      "detail": "In a browser, Settings › Mac app offers the newest folia for Mac to download, as j4k does."
+    },
+    {
+      "build": 126,
+      "date": "2026-10-23",
+      "title": "The leaf on the iPhone too",
+      "detail": "Adding folia to an iPhone's home screen now gives it the leaf. An icon added before keeps the old one: remove it and add folia again."
+    },
+    {
+      "build": 124,
+      "date": "2026-10-23",
+      "title": "A new icon: the leaf",
+      "detail": "folia means leaves: the new icon is a leaf of an orange midrib and four veins, in the style of murmur, scripta, unus and j4k. The website and the browser tab show it too."
+    },
+    {
+      "build": 122,
+      "date": "2026-10-23",
+      "title": "Update pages from a folder sees through broken links",
+      "detail": "A page whose old text had a link address broken at a bracket now gets the new text too, instead of being left as changed by you."
+    },
+    {
+      "build": 120,
+      "date": "2026-10-23",
+      "title": "scripta opens its meeting's page in folia",
+      "detail": "scripta's \"folia note\" link opens the page with the meeting's minutes right here, in folia's window — also when folia was closed."
+    },
+    {
+      "build": 119,
+      "date": "2026-10-23",
+      "title": "One name for the meeting page with open tasks",
+      "detail": "In ⌘K, \"New 1:1 page\" is now \"New meeting page with open tasks\", as in the template menu."
+    },
+    {
+      "build": 118,
+      "date": "2026-10-23",
+      "title": "Prepared meetings without last time's tasks",
+      "detail": "Prepare no longer copies the open tasks of the meeting before. The template \"Meeting page with open tasks\" still does; it was called \"1:1 page, with open tasks\"."
+    },
+    {
+      "build": 114,
+      "date": "2026-10-23",
+      "title": "Join the call in the Teams web app",
+      "detail": "Join the call, and any other Teams link, opens in the Microsoft Teams web app (PWA) when you have it installed. The first time, Chrome asks whether it may open it."
+    },
+    {
+      "build": 111,
+      "date": "2026-10-23",
+      "title": "Markdown copies in your order",
+      "detail": "Settings › Markdown copies lists the notebooks in the order of your notebook list."
+    },
+    {
+      "build": 110,
+      "date": "2026-10-23",
+      "title": "OneNote every evening",
+      "detail": "Your ETH notebooks come from OneNote into folia every day at 20:00: new pages and sections, and the changes of pages you did not change here. Connect OneNote once in Settings › OneNote. A page you changed in folia stays as it is and is listed there."
+    },
+    {
+      "build": 106,
+      "date": "2026-10-23",
+      "title": "Every window in the style of Settings",
+      "detail": "⌘K, Export, Share, a version from History, the Markdown file, Prepare and every question now look like Settings: a title, groups in cards, buttons at the foot. Focus and typewriter mode left the top bar (they are in Settings and ⌘K), and About folia comes first in Settings."
+    },
+    {
+      "build": 105,
+      "date": "2026-10-23",
+      "title": "Where your notes live, exactly",
+      "detail": "Settings › About folia now says it in full: your pages are stored by Supabase in Zurich, and while you edit or import and export, they pass through folia's sync server in Frankfurt, which keeps nothing."
+    },
+    {
+      "build": 104,
+      "date": "2026-10-23",
+      "title": "Pictures stay pictures in Markdown",
+      "detail": "A picture at the start of a list item, or with a bracket in its caption, and an empty line in a list stay as they are when a page's Markdown is read again: in the Markdown copy, and in a version restored from History."
+    },
+    {
+      "build": 103,
+      "date": "2026-10-23",
+      "title": "A second update counts right",
+      "detail": "Update pages from a folder, run again, no longer names pages it updated before as changed by you."
+    },
+    {
+      "build": 102,
+      "date": "2026-10-23",
+      "title": "Import & Export",
+      "detail": "File › Export… (⇧⌘E) saves the open page as PDF, with its headings as bookmarks, or as Word, OpenDocument, HTML, LaTeX, EPUB, RTF, Markdown and more, pictures included. File › Import File… (⇧⌘I) makes a page from a Word, OpenDocument, LaTeX, HTML or other file, with its pictures."
+    },
+    {
+      "build": 101,
+      "date": "2026-10-23",
+      "title": "Updating leaves page groups alone",
+      "detail": "Update pages from a folder no longer adds a page group's page from the folder as a new, empty page."
+    },
+    {
+      "build": 100,
+      "date": "2026-10-23",
+      "title": "Updating finds renamed pages",
+      "detail": "Update pages from a folder now also finds a page you renamed in folia, by its words. A file it cannot match to one page is named, not added twice."
+    },
+    {
+      "build": 99,
+      "date": "2026-10-22",
+      "title": "New Settings",
+      "detail": "Settings has a new look: pick light or dark from small pictures, switch focus and typewriter mode, see your keys as key caps, and find your library and folia's version under Account and About folia."
+    },
+    {
+      "build": 98,
+      "date": "2026-10-22",
+      "title": "Update pages from a folder",
+      "detail": "⌘K › Update pages from a folder… brings an imported notebook up to date with the folder it came from: longer pages get their full text, new pages come in. A page you changed in folia stays as it is and is named."
+    },
+    {
+      "build": 97,
+      "date": "2026-10-22",
+      "title": "More pictures found when importing",
+      "detail": "Import Markdown Folder now also finds pictures and files that a page names only by their file name, or by a path from a folder above the one you picked."
+    },
+    {
+      "build": 96,
+      "date": "2026-10-22",
+      "title": "Long page titles wrap",
+      "detail": "A page title that is longer than the page is wide goes on to a second line, so you see all of it. Before, its end was cut off."
+    },
+    {
+      "build": 95,
+      "date": "2026-10-22",
+      "title": "Task boxes in line with their text",
+      "detail": "A task's checkbox now sits in the middle of the task's first line. In the Mac app it sat a little too low."
+    },
+    {
+      "build": 94,
+      "date": "2026-10-22",
+      "title": "Names for the page list's buttons",
+      "detail": "Point at the sort or the template button above the pages to see what it does: Sort pages, or New page from a template (a Meeting or 1:1 page)."
+    },
+    {
+      "build": 93,
+      "date": "2026-10-22",
+      "title": "Line marks in the margin",
+      "detail": "The ?, ★ and ! marks stand in the page's left margin, left of the six dots, out of the text. In a table they stay in front of the text."
+    }
+  ]
 }
