@@ -1,9 +1,251 @@
 {
   "app": "scripta",
-  "build": 167,
-  "commit": "6440bc4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-167/scripta.dmg",
-  "sha256": "c7cd284814479f31c0d8b7d2384365739832445b66aeca0c0627ba085b691d7f",
+  "build": 169,
+  "commit": "1b85d3a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-169/scripta.dmg",
+  "sha256": "d5406b1bdd9bdb80e9adb87072d242c45194313888db35a3cd02a0c21c1b729a",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs, from About"
+  "notes": "What's New looks like j4k's",
+  "entries": [
+    {
+      "build": 169,
+      "date": "2026-10-24",
+      "title": "What's New looks like j4k's",
+      "detail": "What's New shows a card for each day, as in j4k. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch."
+    },
+    {
+      "build": 167,
+      "date": "2026-10-23",
+      "title": "Docs, from About",
+      "detail": "About scripta has a Docs button, on the left. It opens the scripta Field Manual in your browser."
+    },
+    {
+      "build": 165,
+      "date": "2026-10-23",
+      "title": "\"folia note\" opens the page with the minutes",
+      "detail": "Once a meeting's minutes are in folia, \"folia note\" opens that page in folia's app (it needs folia build 120). Before that, the link says \"Note\" and opens the note with the transcript, as before."
+    },
+    {
+      "build": 163,
+      "date": "2026-10-23",
+      "title": "scripta no longer looks for an Obsidian vault",
+      "detail": "On a Mac where no notes folder is chosen yet, the notes go to 00_Cerebrum/scripta in iCloud Drive when it is there, else to Documents/scripta. A folder you already use stays as it is."
+    },
+    {
+      "build": 162,
+      "date": "2026-10-23",
+      "title": "The notes folder is back in General",
+      "detail": "Settings › General has the Notes folder again, where it was before, with a shorter text. The texts of Tasks to j4k and Minutes to folia are shorter too; Minutes to folia stays in Settings › Brain. scripta's texts speak of your notes folder now, no longer of Obsidian."
+    },
+    {
+      "build": 161,
+      "date": "2026-10-23",
+      "title": "A meeting's note opens in folia",
+      "detail": "The link under a meeting's title is folia note now: it opens the note in folia, where Obsidian note opened it in Obsidian. The note stays on this Mac. In Settings › Brain, the folder row is called Notes folder."
+    },
+    {
+      "build": 160,
+      "date": "2026-10-23",
+      "title": "Where the minutes go is in Settings › Brain",
+      "detail": "Settings › Brain now ends with where the minutes go: Minutes to Obsidian (the folder for the notes, called Obsidian folder before) and Minutes to folia. Both left Settings › General."
+    },
+    {
+      "build": 158,
+      "date": "2026-10-22",
+      "title": "Your notes are in a folder named scripta",
+      "detail": "The folder for the meeting notes is scripta now, not Meetings: scripta/2026/… in your Obsidian vault. scripta renamed it by itself, with every note and the meeting list in it. Your other Mac does the same when it has this update; until then its list of meetings looks empty, and nothing is lost."
+    },
+    {
+      "build": 157,
+      "date": "2026-10-20",
+      "title": "Minutes into folia",
+      "detail": "Switch on Minutes to folia in Settings › General, and each meeting's minutes also go into its page in folia: the page you prepared there, or a new one. The note in Obsidian stays as it is. Written again, scripta changes only its own lines; what you typed in folia stays."
+    },
+    {
+      "build": 156,
+      "date": "2026-10-20",
+      "title": "The whole task at the end of the description",
+      "detail": "In a task sent to j4k, the description now begins with the meeting, its day and the due date; the whole task follows them."
+    },
+    {
+      "build": 155,
+      "date": "2026-10-20",
+      "title": "Short task titles in j4k",
+      "detail": "A task sent to j4k now has a short title of a few words, written with the minutes. The whole task, as the minutes say it, is the first thing in its description."
+    },
+    {
+      "build": 152,
+      "date": "2026-10-16",
+      "title": "The local model's tasks to j4k",
+      "detail": "A meeting with only the local model's minutes now sends your tasks, and those of nobody, to j4k too. When a meeting has Claude's minutes as well, Claude's tasks go."
+    },
+    {
+      "build": 151,
+      "date": "2026-10-16",
+      "title": "Your tasks go to j4k",
+      "detail": "Switch on \"Tasks to j4k\" in Settings › General and sign in to j4k. After a meeting, the tasks Claude's minutes give to you, and those they give to nobody, arrive in j4k's Review. A task of a voice you name later goes when you name it. Each task arrives once."
+    },
+    {
+      "build": 150,
+      "date": "2026-10-16",
+      "title": "A recognised voice is checked again",
+      "detail": "A name scripta gave a voice by itself early in a meeting could stay on the wrong voice, so two people shared one name. Now every name scripta gave by itself is checked again as the meeting goes on and when it stops. Names you typed are never changed."
+    },
+    {
+      "build": 146,
+      "date": "2026-10-15",
+      "title": "No crash when two voices get one name",
+      "detail": "scripta closed itself when a voice you had clicked was given a name another voice already had. Now the two become one person, as they should, and the transcript shows that person's words."
+    },
+    {
+      "build": 145,
+      "date": "2026-10-15",
+      "title": "The call is recorded at the right speed with AirPods",
+      "detail": "With AirPods (or another headset) in a call, the call's sound was recorded twice as fast and high, with gaps between. scripta now takes the speed from the device the sound comes through, also when it changes during the meeting."
+    },
+    {
+      "build": 144,
+      "date": "2026-10-15",
+      "title": "Minutes from a transcript Teams made",
+      "detail": "Drop Teams' transcript on the window, or open it with Transcribe… — the .docx from \"Download transcript\", or the text copied from Teams' transcript pane saved as .rtf. scripta makes the meeting from it, names the voices as Teams did, and writes the minutes as for a recording. For an .rtf it first asks for the title and when the meeting began."
+    },
+    {
+      "build": 143,
+      "date": "2026-10-15",
+      "title": "Updates look the same in every app",
+      "detail": "Settings › General ends with Updates now, the same in all four apps: Check Now and an Automatic switch in one row, and under it what the last check found."
+    },
+    {
+      "build": 141,
+      "date": "2026-10-15",
+      "title": "A Dock icon, and a choice where scripta shows itself",
+      "detail": "scripta now has an icon in the Dock as well as in the menu bar. Settings › General › Show scripta in chooses: the menu bar and the Dock, the menu bar alone as before, or the Dock alone. A click on the Dock icon opens the meetings window, and its menu holds the menu bar menu's items."
+    },
+    {
+      "build": 138,
+      "date": "2026-10-14",
+      "title": "Only real microphones in the Microphone menu",
+      "detail": "The menu no longer lists Microsoft Teams Audio or other virtual devices that apps install. They carry an app's sound, never your voice: picked by mistake, your words would be missing from the meeting."
+    },
+    {
+      "build": 137,
+      "date": "2026-10-14",
+      "title": "Choose the microphone when you record",
+      "detail": "The Record sheet has the Microphone menu of Settings › General. It is the same choice: pick one in either place and the other shows it. As before, every start of scripta begins with the Mac's own microphone."
+    },
+    {
+      "build": 136,
+      "date": "2026-10-14",
+      "title": "Fold the meeting list by month",
+      "detail": "Each month in the list is headed like 202610 now. Point at a heading and click the arrow that appears: the month folds, and a second click opens it again. A folded month stays folded the next time you open scripta. While you search, every month is open, so no meeting found is hidden."
+    },
+    {
+      "build": 135,
+      "date": "2026-10-14",
+      "title": "Speakers can be named again",
+      "detail": "A click on a trackpad did not put the cursor into a speaker's name field, so no voice could be named. It does now, in every meeting."
+    },
+    {
+      "build": 134,
+      "date": "2026-10-07",
+      "title": "Haiku 5.5 takes the place of Haiku 4.5",
+      "detail": "Settings › Brain › Model now offers Haiku 5.5, Anthropic's new small and fast model, where Haiku 4.5 was. It takes an effort, as the other models do. If you had chosen Haiku 4.5, scripta uses Haiku 5.5 from now on."
+    },
+    {
+      "build": 133,
+      "date": "2026-10-06",
+      "title": "The menu bar icon moves while scripta works",
+      "detail": "While a recording is transcribed, a wave runs through the icon's bars and its lines are written again. While a meeting is recorded it moves the same way, beside a small orange dot that breathes: the microphone is on. A paused meeting keeps a still dot. When nothing runs, the icon is still."
+    },
+    {
+      "build": 131,
+      "date": "2026-10-06",
+      "title": "OneNote is gone: your calendar gives the title and the people",
+      "detail": "scripta no longer reads your OneNote. Its row is out of Settings, the Record sheet lists no OneNote pages, and a meeting has no OneNote link. A meeting's title and its invited people come from your calendar (Settings › General › Meeting from Calendar). A note written before keeps its OneNote link until scripta writes that note again."
+    },
+    {
+      "build": 124,
+      "date": "2026-10-05",
+      "title": "After an update, What's New opens once",
+      "detail": "When scripta has updated itself, the What's New window opens one time, so you see what changed without looking for it."
+    },
+    {
+      "build": 122,
+      "date": "2026-10-05",
+      "title": "An imported recording finds its meeting in your calendar",
+      "detail": "With Meeting from Calendar on, a recording you import now takes the invited people from the event in your calendar at the recording's hour, and the title as the calendar writes it. The event must have the recording's title, so another meeting at that hour is not taken. The OneNote page still gives its link, and its people are added."
+    },
+    {
+      "build": 118,
+      "date": "2026-10-05",
+      "title": "An update says what is new, and a bad one is undone",
+      "detail": "When a new build is offered, the message lists what changed for you, from What's New. And when a new build does not stay open after an update, scripta puts the build you had back and tells you."
+    },
+    {
+      "build": 116,
+      "date": "2026-10-05",
+      "title": "A few words are not named by themselves",
+      "detail": "scripta named a remembered voice by itself also when the voice said only a few words, and a short remark of another person could get your name. Now a voice must speak six seconds at a stretch before scripta names it by itself, or remembers it. You can still name any voice by hand."
+    },
+    {
+      "build": 113,
+      "date": "2026-10-05",
+      "title": "scripta guesses who a voice is",
+      "detail": "People say names in a meeting. When Claude writes the minutes, it now also notes who a speaker may be. The name stands under the voice with a question mark, and with the moment that shows it — click the time to hear it. Click the name to take it, or the cross to say no. scripta never names a voice by itself this way."
+    },
+    {
+      "build": 112,
+      "date": "2026-10-05",
+      "title": "The meeting's title and people from your calendar",
+      "detail": "Switch on Meeting from Calendar in Settings › General; macOS asks you once. At Record, scripta then offers the meeting that is in your calendar at that time: its title is filled in, and the invited people are suggested when you name a voice. It reads the Calendar app on this Mac, and only reads."
+    },
+    {
+      "build": 111,
+      "date": "2026-10-05",
+      "title": "Hear a moment of the meeting",
+      "detail": "Click a time — beside a paragraph of the transcript, or at the end of a decision, a task or an open point in the minutes — and scripta plays that moment from the recording. So you can hear what was said there. Click again to stop. It works while the recording is on this Mac: a week for a meeting scripta recorded."
+    },
+    {
+      "build": 110,
+      "date": "2026-10-05",
+      "title": "The search finds what was said",
+      "detail": "The search field over the list found a meeting by its title or a speaker's name. It now also finds the words said in a meeting. The row shows the first place with its time. Open the meeting, and the transcript goes to that place; ⌘↓ and ⌘↑ step through the others."
+    },
+    {
+      "build": 109,
+      "date": "2026-10-05",
+      "title": "A meeting comes back after a crash",
+      "detail": "When scripta or the Mac stops in the middle of a recording, the sound is still on this Mac. The list now shows such a recording at its top: Finish Meeting makes the transcript and the note from the sound, Delete removes it. One cause of such a stop is also gone: scripta no longer goes away at Record when the microphone sends three channels."
+    },
+    {
+      "build": 108,
+      "date": "2026-10-05",
+      "title": "About shows the kit version",
+      "detail": "The About window has a new row, Kit. It names the version of the code that scripta shares with murmur, unus and GLaDOS."
+    },
+    {
+      "build": 105,
+      "date": "2026-10-05",
+      "title": "Settings is as wide as in murmur and GLaDOS",
+      "detail": "The Settings window is wider, in all four tabs. The Dictionary tab, which is the same in the three apps, now also has the same size in the three."
+    },
+    {
+      "build": 104,
+      "date": "2026-10-05",
+      "title": "The Dictionary tab is taller",
+      "detail": "The Dictionary tab in Settings shows about fourteen entries at a time, where it showed nine. The same in murmur and GLaDOS."
+    },
+    {
+      "build": 103,
+      "date": "2026-10-05",
+      "title": "A Dictionary tab in Settings",
+      "detail": "Settings has a new Dictionary tab: each word and each correction is a row you can change, with a search field and buttons to add one. It is the same tab as in murmur and GLaDOS, and an entry made in one app works in all three. The Dictionary row in Recognition is gone."
+    },
+    {
+      "build": 101,
+      "date": "2026-10-05",
+      "title": "One dictionary for scripta, murmur and GLaDOS",
+      "detail": "The three apps now read the same dictionary file, so you teach a word one time. scripta moved its entries into that file; the old file is kept beside it as dictionary-before-sharing.txt. An entry now works in all three apps, and the minutes get the spellings of all of them."
+    }
+  ]
 }
