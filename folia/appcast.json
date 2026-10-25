@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 173,
-  "commit": "2c83a17",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-173/folia.dmg",
-  "sha256": "39866bbb50b35ec8515bcff264263af28e9a63888f78336a33feb6169f1b9041",
+  "build": 177,
+  "commit": "e1c3781",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-177/folia.dmg",
+  "sha256": "f571c8a9f15c3b195bedfeb8123373c03ce6dd87c6789f447bfc3f808a5887d8",
   "minimumSystemVersion": "26.0",
-  "notes": "ETH daily update in Settings",
+  "notes": "Pictures with brackets in their caption kept\nPictures in OneNote tables kept",
   "entries": [
+    {
+      "build": 176,
+      "date": "2026-10-25",
+      "title": "Pictures with brackets in their caption kept",
+      "detail": "Copy fresh from OneNote keeps a picture whose caption has a lone \"[\" or \"]\". OneNote writes the text it reads in a picture into its caption. Before, such a picture became text."
+    },
+    {
+      "build": 175,
+      "date": "2026-10-25",
+      "title": "Pictures in OneNote tables kept",
+      "detail": "Copy fresh from OneNote keeps a picture in a table cell whose caption has a \"|\", and text with a \"|\" stays in its cell. Before, the picture became text."
+    },
     {
       "build": 173,
       "date": "2026-10-24",
@@ -234,18 +246,6 @@
       "date": "2026-10-23",
       "title": "Prepared meetings without last time's tasks",
       "detail": "Prepare no longer copies the open tasks of the meeting before. The template \"Meeting page with open tasks\" still does; it was called \"1:1 page, with open tasks\"."
-    },
-    {
-      "build": 114,
-      "date": "2026-10-23",
-      "title": "Join the call in the Teams web app",
-      "detail": "Join the call, and any other Teams link, opens in the Microsoft Teams web app (PWA) when you have it installed. The first time, Chrome asks whether it may open it."
-    },
-    {
-      "build": 111,
-      "date": "2026-10-23",
-      "title": "Markdown copies in your order",
-      "detail": "Settings › Markdown copies lists the notebooks in the order of your notebook list."
     }
   ]
 }
