@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 28,
-  "commit": "4ad6abd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-28/specula.dmg",
-  "sha256": "30d7f618fac97660829f42253c4c5ee0de937bdf08b2490737e3270adfcab228",
+  "build": 29,
+  "commit": "d6b8472",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-29/specula.dmg",
+  "sha256": "08a8cecafbf1bf0489f931b3ee32bc46f201ec24c2ce648b5bfd478aa633040a",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "⌘H gives the menu bar back",
   "entries": [
+    {
+      "build": 29,
+      "date": "2026-10-25",
+      "title": "⌘H gives the menu bar back",
+      "detail": "After ⌘H, the app behind specula comes to the front, with its name in the menu bar, as in other apps. Before, the menu bar still said specula."
+    },
     {
       "build": 27,
       "date": "2026-10-25",
