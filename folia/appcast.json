@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 186,
-  "commit": "944247b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-186/folia.dmg",
-  "sha256": "fc268d64943ed5fa91fa1afb1dea656cc76bae03d93fd71d5069ba14f38e0925",
+  "build": 188,
+  "commit": "f5a8678",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-188/folia.dmg",
+  "sha256": "852414cbd38f5a867a89fb92da51176e8e0738cd6658114742e855c3d1206c5b",
   "minimumSystemVersion": "26.0",
-  "notes": "⌘H hides folia again",
+  "notes": "New versions arrive while folia stays open",
   "entries": [
+    {
+      "build": 187,
+      "date": "2026-10-25",
+      "title": "New versions arrive while folia stays open",
+      "detail": "folia looks for a new version each time it comes back into view, so the menu bar app does not keep an old one for days. In Settings, Done has the size and font of the other buttons."
+    },
     {
       "build": 186,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "Your account picture in j4k's amber",
       "detail": "The round picture with your initials in Settings has the same amber as in j4k."
-    },
-    {
-      "build": 127,
-      "date": "2026-10-23",
-      "title": "folia for Mac from the website",
-      "detail": "In a browser, Settings › Mac app offers the newest folia for Mac to download, as j4k does."
     }
   ]
 }
