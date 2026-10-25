@@ -1,12 +1,24 @@
 {
   "app": "specula",
-  "build": 17,
-  "commit": "b183ec2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-17/specula.dmg",
-  "sha256": "02cb4ba2cb77869f906b73f432755d5d1fc2b30631cb239bd4fa3aef4ebaae81",
+  "build": 21,
+  "commit": "3097057",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-21/specula.dmg",
+  "sha256": "a4d18b7a618c6be1b473aafda59e21376958cd78925434da46f638f00ce9289f",
   "minimumSystemVersion": "26.0",
-  "notes": "Check for Updates in the specula menu again",
+  "notes": "Full screen in the Timelapse, in the app\nWarp speed at the end of the Timelapse",
   "entries": [
+    {
+      "build": 21,
+      "date": "2026-10-25",
+      "title": "Full screen in the Timelapse, in the app",
+      "detail": "The Timelapse's full-screen button works in the specula app too, not only in the browser."
+    },
+    {
+      "build": 19,
+      "date": "2026-10-25",
+      "title": "Warp speed at the end of the Timelapse",
+      "detail": "When the Timelapse has built the whole vault, the camera comes round behind it: the vault is the starship NCC-1701. Its nacelles glow, it draws out, and it goes to warp in a flash, the stars streaming past. Then the vault is back, at rest. With sound when you start the Timelapse yourself; not with reduced motion."
+    },
     {
       "build": 17,
       "date": "2026-10-25",
