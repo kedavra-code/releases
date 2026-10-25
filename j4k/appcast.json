@@ -1,12 +1,24 @@
 {
   "app": "j4k",
-  "build": 445,
-  "commit": "b90345a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-445/j4k.dmg",
-  "sha256": "6c4ff207389bb79203a02118dbe9e24edc1ed74a537ff0b954e63f13d893ce90",
+  "build": 448,
+  "commit": "8e00f4a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-448/j4k.dmg",
+  "sha256": "0469559293cab1f648e8393cf51c9e0ff0e9e88457332450507f9116ec994659",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Command-H hides j4k again · the download in Settings · The buttons in Settings look alike\nA menu bar icon and a hotkey",
   "entries": [
+    {
+      "build": 447,
+      "date": "2026-10-25",
+      "title": "Command-H hides j4k again · the download in Settings · The buttons in Settings look alike",
+      "detail": "Command-H hides j4k again · the download in Settings: Command-H hides j4k also when it shows in the menu bar alone. Settings › Mac app offers the download of the Mac app, for another Mac. The buttons in Settings look alike: Every button, menu and field in Settings and the other windows has the same size, height and type."
+    },
+    {
+      "build": 446,
+      "date": "2026-10-25",
+      "title": "A menu bar icon and a hotkey",
+      "detail": "j4k has an icon in the menu bar: it opens j4k, or j4k in the browser, and holds Settings…, Check for Updates… and Quit. Control-Option-Command-K shows j4k from any app; pressed again, it hides it. Settings › Mac app holds the hotkey, Start j4k at login (it was Open at login) and Show j4k in: the menu bar, the Dock, or both."
+    },
     {
       "build": 441,
       "date": "2026-10-25",
@@ -234,18 +246,6 @@
       "date": "2026-09-08",
       "title": "A task you dictate is marked as new when it arrives",
       "detail": "A task created by voice now gets the same violet outline for ten seconds that a task you type gets, so it is easy to spot when it lands in a list you are already looking at. It only marks a task as it arrives, never one that was already there — opening the app does not light up everything dictated earlier. Tasks arriving from Gmail or handed over by another user are unchanged: they already carry the pink Review edge."
-    },
-    {
-      "build": 353,
-      "date": "2026-09-08",
-      "title": "The Status menu opens with All, New and Star",
-      "detail": "The Status filter now leads with a small Filter section holding All, New and the star, above the list of states. New is the same filter as the New button under the chips — set it in either place and both light up. None of the three is a state: New and the star narrow whatever you have picked, so a starred Doing view means the starred Doing tasks rather than everything that is either, and All means nothing narrowing at all — it lights up only when none of the three is on, and pressing it switches the other two off as well. The Status chip now names them the way it already named the star — reading New, or a star, or both, and adding the states when you tick any. It no longer tacks All onto the end, which claimed to be showing everything next to the very thing narrowing it. Clear filter switches both off. The Tags menu also stopped showing a scrollbar with a full tag list, which it should not have had."
-    },
-    {
-      "build": 351,
-      "date": "2026-09-07",
-      "title": "Two new buttons: New and Review",
-      "detail": "Under the filter rows there are now two one-press views, each showing how many tasks it holds. New shows only what you created in the last 24 hours; Review shows only what arrived from somewhere else and has not been triaged yet. Each is drawn in the colour its cards already wear — violet for a task you just made, pink for an arrival — so the button matches the outline you are hunting for. Press again to switch it off. They stack with everything else rather than replacing it, so New while a tag is selected means the recent tasks with that tag, and each button's number tells you what pressing it would actually give you."
     }
   ]
 }
