@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 25,
-  "commit": "22f63d6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-25/specula.dmg",
-  "sha256": "89b5054feef65cda0841488b91b8cd185c40058ec196ba67a87399705f430da4",
+  "build": 26,
+  "commit": "85916eb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-26/specula.dmg",
+  "sha256": "6c1322bcbf6f4ea6f0a1ba1b02b110babac11e2e6639e48b40fa8331b9177f78",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings › Mac app, tidied\nSettings opens on General",
+  "notes": "Download specula for another Mac",
   "entries": [
+    {
+      "build": 26,
+      "date": "2026-10-25",
+      "title": "Download specula for another Mac",
+      "detail": "Settings › Mac app in the app offers the newest build as a download too, for another Mac. The download opens in your browser."
+    },
     {
       "build": 25,
       "date": "2026-10-25",
