@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 450,
-  "commit": "b09366e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-450/j4k.dmg",
-  "sha256": "e51102adbed8e49fbc94d5ef76f3815d4eacb6bbe1f1c70f85aa21a3b61fb73f",
+  "build": 452,
+  "commit": "ebfb27d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-452/j4k.dmg",
+  "sha256": "6670576a3e664e1b97d71191e70fa0f622a3b34dfb74eaf54a2e2901b5753f70",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The Dock icon's menu holds the menu bar menu",
   "entries": [
+    {
+      "build": 451,
+      "date": "2026-10-25",
+      "title": "The Dock icon's menu holds the menu bar menu",
+      "detail": "A right click on j4k's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open j4k and Open in Browser."
+    },
     {
       "build": 447,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-09-08",
       "title": "Deleted and Archived now order by the minute, not the day · The new-task outline lasts a minute",
       "detail": "Deleted and Archived now order by the minute, not the day: The Deleted and Archived views have always put the newest first, but only to the day — everything parked on the same day fell back to priority order, which with a dozen deletions a day was most of what you saw. They now order by the actual moment a task was deleted or archived. Tasks parked from now on are exact; for older ones the time was recovered where the task had not been touched since, which covers everything from the last couple of weeks, and anything older keeps ordering by day as before. Review already ordered to the minute and is unchanged. The new-task outline lasts a minute: The violet outline on a newly created task now stays for a minute instead of ten seconds, which matters most for a task dictated by voice — it arrives while you are not looking at the screen, so ten seconds was rarely enough to see it. The outline also fades out properly again at the end; it had been disappearing abruptly."
-    },
-    {
-      "build": 363,
-      "date": "2026-09-08",
-      "title": "A task you dictate is marked as new when it arrives",
-      "detail": "A task created by voice now gets the same violet outline for ten seconds that a task you type gets, so it is easy to spot when it lands in a list you are already looking at. It only marks a task as it arrives, never one that was already there — opening the app does not light up everything dictated earlier. Tasks arriving from Gmail or handed over by another user are unchanged: they already carry the pink Review edge."
     }
   ]
 }
