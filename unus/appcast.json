@@ -1,12 +1,18 @@
 {
   "app": "unus",
-  "build": 198,
-  "commit": "64fed1c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-198/unus.dmg",
-  "sha256": "46f330c64dae3c9a3b9855f6cbfe538a763bf1616e9e8b16de22cc31f1104ce1",
+  "build": 201,
+  "commit": "2895145",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-201/unus.dmg",
+  "sha256": "caa3c722b7191d1c8103233c214f33fb605349905e7877f1939224af871b2ebf",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Check for Updates in the app menu",
   "entries": [
+    {
+      "build": 199,
+      "date": "2026-10-25",
+      "title": "Check for Updates in the app menu",
+      "detail": "The unus menu, at the left of the menu bar, has Check for Updates… under Settings…, in the same order as the menu bar icon's menu."
+    },
     {
       "build": 190,
       "date": "2026-10-24",
