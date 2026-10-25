@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 185,
-  "commit": "4c8ce35",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-185/folia.dmg",
-  "sha256": "28a4e2928d7b705eb6dd2611836497712db45835a69d7d53f2f5e60449ca17b5",
+  "build": 186,
+  "commit": "944247b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-186/folia.dmg",
+  "sha256": "fc268d64943ed5fa91fa1afb1dea656cc76bae03d93fd71d5069ba14f38e0925",
   "minimumSystemVersion": "26.0",
-  "notes": "The Mac app to download, also in the Mac app\nfolia in the menu bar, with a hotkey\nLeft pages leave the list once fixed",
+  "notes": "⌘H hides folia again",
   "entries": [
+    {
+      "build": 186,
+      "date": "2026-10-25",
+      "title": "⌘H hides folia again",
+      "detail": "⌘H hides folia, ⌥⌘H hides the other apps. And every button and choice in Settings now has the same size, colours and type."
+    },
     {
       "build": 185,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "folia for Mac from the website",
       "detail": "In a browser, Settings › Mac app offers the newest folia for Mac to download, as j4k does."
-    },
-    {
-      "build": 126,
-      "date": "2026-10-23",
-      "title": "The leaf on the iPhone too",
-      "detail": "Adding folia to an iPhone's home screen now gives it the leaf. An icon added before keeps the old one: remove it and add folia again."
     }
   ]
 }
