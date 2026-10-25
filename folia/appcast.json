@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 195,
-  "commit": "990463e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-195/folia.dmg",
-  "sha256": "08b95881426ea9985b9bef87b2fffcf6d8e09f126469a8229656eedf3c6325ef",
+  "build": 197,
+  "commit": "951db2a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-197/folia.dmg",
+  "sha256": "f3f9d034cec94ea1bf485ff702a67c4f7e67c29df7ab87eeb700b1544b9ac2ec",
   "minimumSystemVersion": "26.0",
-  "notes": "A YouTube video from OneNote keeps its title\nEvery copy from OneNote checks itself",
+  "notes": "The check of a copy reads a \"*\" right",
   "entries": [
+    {
+      "build": 196,
+      "date": "2026-10-25",
+      "title": "The check of a copy reads a \"*\" right",
+      "detail": "A page with a \"*\" between two words or numbers, as in 123*4, is no longer listed as not good after the copy. Its text was right."
+    },
     {
       "build": 195,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "More pages find their place when updating",
       "detail": "Copies of one page, pages renamed in folia and OneNote’s empty year pages now find their folia page: in ⌘K › Update pages from a folder, and in the daily OneNote import."
-    },
-    {
-      "build": 132,
-      "date": "2026-10-23",
-      "title": "Update pages from a folder ignores list numbers",
-      "detail": "A page whose numbered list folia renumbered is no longer left as changed by you."
     }
   ]
 }
