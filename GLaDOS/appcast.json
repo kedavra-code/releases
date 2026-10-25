@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 407,
-  "commit": "cf44ce5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-407/GLaDOS.dmg",
-  "sha256": "a0db6f0b8f92956723bad0aff5157918c2b252f19fbbd7539ceb498b7def9abb",
+  "build": 409,
+  "commit": "c191de7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-409/GLaDOS.dmg",
+  "sha256": "0311da98925d8542633f0a475cd0b1037ca739382bd7058b7eb969d1c69a73fd",
   "minimumSystemVersion": "26.0",
-  "notes": "A new menu bar icon that moves for the one who speaks",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 407,
