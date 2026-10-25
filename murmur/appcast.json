@@ -1,12 +1,18 @@
 {
   "app": "murmur",
-  "build": 178,
-  "commit": "7bf6c10",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-178/murmur.dmg",
-  "sha256": "f449386426588747c7e5002dc8e9fc65d12eef3657ec56d29df444826e323c1b",
+  "build": 181,
+  "commit": "820cd34",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-181/murmur.dmg",
+  "sha256": "e3d78a34f313f14b2965112d4947ae1e028b7608b777d3bc0a570f58dc7093c7",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Check for Updates in the app menu",
   "entries": [
+    {
+      "build": 179,
+      "date": "2026-10-25",
+      "title": "Check for Updates in the app menu",
+      "detail": "The murmur menu, at the left of the menu bar, has Check for Updates… under Settings…, in the same order as the menu bar icon's menu."
+    },
     {
       "build": 171,
       "date": "2026-10-24",
