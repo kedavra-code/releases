@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 178,
-  "commit": "078b73d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-178/scripta.dmg",
-  "sha256": "64d699d2c55ca8cc53fd09d7f4e5f4308f1f295c1c0d7c357fc72c4bd4a15b0a",
+  "build": 181,
+  "commit": "db203c0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-181/scripta.dmg",
+  "sha256": "0b8acb5430c7eedfd009e1e05f438bcdc57ad70a73bf4f7f4bae6d4fe2044187",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Check for Updates in the app menu",
   "entries": [
+    {
+      "build": 179,
+      "date": "2026-10-25",
+      "title": "Check for Updates in the app menu",
+      "detail": "The scripta menu, at the left of the menu bar, has Check for Updates… under Settings…, in the same order as the menu bar icon's menu."
+    },
     {
       "build": 169,
       "date": "2026-10-24",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "A Dictionary tab in Settings",
       "detail": "Settings has a new Dictionary tab: each word and each correction is a row you can change, with a search field and buttons to add one. It is the same tab as in murmur and GLaDOS, and an entry made in one app works in all three. The Dictionary row in Recognition is gone."
-    },
-    {
-      "build": 101,
-      "date": "2026-10-05",
-      "title": "One dictionary for scripta, murmur and GLaDOS",
-      "detail": "The three apps now read the same dictionary file, so you teach a word one time. scripta moved its entries into that file; the old file is kept beside it as dictionary-before-sharing.txt. An entry now works in all three apps, and the minutes get the spellings of all of them."
     }
   ]
 }
