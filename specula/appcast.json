@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 31,
-  "commit": "f1115e2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-31/specula.dmg",
-  "sha256": "d615945353e918530adf09cb21d2993b5d624988db7cf1eb87ca30631d75490f",
+  "build": 32,
+  "commit": "c81fc65",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-32/specula.dmg",
+  "sha256": "59e9084ad7ccf82cc8637cf85a537e01819078ec2db5682c91f073762406f1f5",
   "minimumSystemVersion": "26.0",
-  "notes": "⌘H hides specula as in other apps",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 31,
