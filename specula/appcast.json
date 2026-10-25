@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 30,
-  "commit": "106c046",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-30/specula.dmg",
-  "sha256": "511ea07f5330f4dad7e4094f8aaac8852e30f2011ab3a0d1dcc877597b34b531",
+  "build": 31,
+  "commit": "f1115e2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-31/specula.dmg",
+  "sha256": "d615945353e918530adf09cb21d2993b5d624988db7cf1eb87ca30631d75490f",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "⌘H hides specula as in other apps",
   "entries": [
+    {
+      "build": 31,
+      "date": "2026-10-25",
+      "title": "⌘H hides specula as in other apps",
+      "detail": "⌘H hides specula with macOS's own Hide, as in scripta and unus. The hotkey brings it back."
+    },
     {
       "build": 29,
       "date": "2026-10-25",
