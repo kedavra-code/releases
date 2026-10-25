@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 400,
-  "commit": "bc1c3af",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-400/GLaDOS.dmg",
-  "sha256": "350a59e8bebe9c8a72bb0ee012c4626e04900fd832336e5f38726c7b51356011",
+  "build": 405,
+  "commit": "b16863c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-405/GLaDOS.dmg",
+  "sha256": "186b8cb6b43c3ea15d1b5a887189705ca334b3876c18a6f164bc9f8343e00e2c",
   "minimumSystemVersion": "26.0",
-  "notes": "Your AirPods keep their music when she quits",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 400,
