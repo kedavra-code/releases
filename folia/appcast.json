@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 197,
-  "commit": "951db2a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-197/folia.dmg",
-  "sha256": "f3f9d034cec94ea1bf485ff702a67c4f7e67c29df7ab87eeb700b1544b9ac2ec",
+  "build": 199,
+  "commit": "7d30087",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-199/folia.dmg",
+  "sha256": "7cf6e9980bd45a4eda70f71f7944db4035142b82fa0fe5583e26519f60a87963",
   "minimumSystemVersion": "26.0",
-  "notes": "The check of a copy reads a \"*\" right",
+  "notes": "The Dock icon's menu holds the menu bar menu",
   "entries": [
+    {
+      "build": 198,
+      "date": "2026-10-25",
+      "title": "The Dock icon's menu holds the menu bar menu",
+      "detail": "A right click on folia's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open folia and Open in Browser."
+    },
     {
       "build": 196,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "No more freezes from the Markdown copy",
       "detail": "A page with a very wide table made folia stop answering for about a minute each time it saved its Markdown copy. It now saves such a page at once."
-    },
-    {
-      "build": 135,
-      "date": "2026-10-24",
-      "title": "More pages find their place when updating",
-      "detail": "Copies of one page, pages renamed in folia and OneNote’s empty year pages now find their folia page: in ⌘K › Update pages from a folder, and in the daily OneNote import."
     }
   ]
 }
