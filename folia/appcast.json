@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 177,
-  "commit": "e1c3781",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-177/folia.dmg",
-  "sha256": "f571c8a9f15c3b195bedfeb8123373c03ce6dd87c6789f447bfc3f808a5887d8",
+  "build": 179,
+  "commit": "4a151bc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-179/folia.dmg",
+  "sha256": "22e114f6a113c80544e72a893481b7aae5cd96795fd95713b5b04d085b8fd837",
   "minimumSystemVersion": "26.0",
-  "notes": "Pictures with brackets in their caption kept\nPictures in OneNote tables kept",
+  "notes": "Tables inside OneNote tables",
   "entries": [
+    {
+      "build": 178,
+      "date": "2026-10-25",
+      "title": "Tables inside OneNote tables",
+      "detail": "Copy fresh from OneNote keeps a table that OneNote has inside a table cell: its cells become lines of that cell, pictures too. Before, the row broke apart and \"<br>\" showed as text. Settings › OneNote › Broken tables counts and repairs such pages too."
+    },
     {
       "build": 176,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "One name for the meeting page with open tasks",
       "detail": "In ⌘K, \"New 1:1 page\" is now \"New meeting page with open tasks\", as in the template menu."
-    },
-    {
-      "build": 118,
-      "date": "2026-10-23",
-      "title": "Prepared meetings without last time's tasks",
-      "detail": "Prepare no longer copies the open tasks of the meeting before. The template \"Meeting page with open tasks\" still does; it was called \"1:1 page, with open tasks\"."
     }
   ]
 }
