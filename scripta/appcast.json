@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 183,
-  "commit": "c742855",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-183/scripta.dmg",
-  "sha256": "fbec8237666e5c26b9a97b5d39cbde1d77edcfd4ead6701cbf970f8d65d96968",
+  "build": 185,
+  "commit": "5af8fa6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-185/scripta.dmg",
+  "sha256": "248c1506ddcfa0022748c4105b894835acbe5e1c2f530ed767fbc9ecd3ee29fd",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "⌘H hides scripta",
   "entries": [
+    {
+      "build": 184,
+      "date": "2026-10-25",
+      "title": "⌘H hides scripta",
+      "detail": "⌘H hides scripta as it hides any other app. The app you used before comes back to the front, with its name at the left of the menu bar. The hotkey brings scripta back."
+    },
     {
       "build": 179,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "The Dictionary tab is taller",
       "detail": "The Dictionary tab in Settings shows about fourteen entries at a time, where it showed nine. The same in murmur and GLaDOS."
-    },
-    {
-      "build": 103,
-      "date": "2026-10-05",
-      "title": "A Dictionary tab in Settings",
-      "detail": "Settings has a new Dictionary tab: each word and each correction is a row you can change, with a search field and buttons to add one. It is the same tab as in murmur and GLaDOS, and an entry made in one app works in all three. The Dictionary row in Recognition is gone."
     }
   ]
 }
