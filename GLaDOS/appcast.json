@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 392,
-  "commit": "6bd0efe",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-392/GLaDOS.dmg",
-  "sha256": "7e5a0084ee656513ce6fbbc7e7c90d3133e3be79d0cab5586a92eb3e81ba027c",
+  "build": 397,
+  "commit": "dd8f189",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-397/GLaDOS.dmg",
+  "sha256": "c2c5ebdf43db317e888732f25ef18570caf57b97066af4180e23b4c58703ed14",
   "minimumSystemVersion": "26.0",
-  "notes": "She opens Cerebrum in specula",
+  "notes": "Check for Updates in the app menu",
   "entries": [
+    {
+      "build": 395,
+      "date": "2026-10-25",
+      "title": "Check for Updates in the app menu",
+      "detail": "The GLaDOS menu, at the left of the menu bar, has Check for Updates… under Settings…, in the same order as the menu bar icon's menu."
+    },
     {
       "build": 390,
       "date": "2026-10-24",
@@ -240,12 +246,6 @@
       "date": "2026-10-04",
       "title": "About counts her voices right",
       "detail": "The Voices row in About GLaDOS said “1 of 2 installed” with both of her voices installed. It now counts the two voices that Settings › Voice shows."
-    },
-    {
-      "build": 286,
-      "date": "2026-10-04",
-      "title": "What's New, and three buttons in About",
-      "detail": "This window. About GLaDOS opens it, and has a button for Setup and one for Settings beside it."
     }
   ]
 }
