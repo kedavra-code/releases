@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 179,
-  "commit": "4a151bc",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-179/folia.dmg",
-  "sha256": "22e114f6a113c80544e72a893481b7aae5cd96795fd95713b5b04d085b8fd837",
+  "build": 181,
+  "commit": "51b1b6b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-181/folia.dmg",
+  "sha256": "ad8a3ccf664ac7835aac0dcf13855eac46bb59e2afc44b543755bee2e748bd14",
   "minimumSystemVersion": "26.0",
-  "notes": "Tables inside OneNote tables",
+  "notes": "Text after a OneNote video kept",
   "entries": [
+    {
+      "build": 181,
+      "date": "2026-10-25",
+      "title": "Text after a OneNote video kept",
+      "detail": "Copy fresh from OneNote keeps the text that follows a video embedded in OneNote as text. Before, it showed as HTML code."
+    },
     {
       "build": 178,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "scripta opens its meeting's page in folia",
       "detail": "scripta's \"folia note\" link opens the page with the meeting's minutes right here, in folia's window — also when folia was closed."
-    },
-    {
-      "build": 119,
-      "date": "2026-10-23",
-      "title": "One name for the meeting page with open tasks",
-      "detail": "In ⌘K, \"New 1:1 page\" is now \"New meeting page with open tasks\", as in the template menu."
     }
   ]
 }
