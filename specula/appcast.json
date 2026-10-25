@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 32,
-  "commit": "c81fc65",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-32/specula.dmg",
-  "sha256": "59e9084ad7ccf82cc8637cf85a537e01819078ec2db5682c91f073762406f1f5",
+  "build": 34,
+  "commit": "5cc002c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-34/specula.dmg",
+  "sha256": "f9c1ebf9e5a9db8155b8235debdf2fe922fc41c2e8ec2c006e4019d29a88bd6a",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The Dock icon's menu holds the menu bar menu",
   "entries": [
+    {
+      "build": 33,
+      "date": "2026-10-25",
+      "title": "The Dock icon's menu holds the menu bar menu",
+      "detail": "A right click on specula's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open specula and Open in Browser."
+    },
     {
       "build": 31,
       "date": "2026-10-25",
