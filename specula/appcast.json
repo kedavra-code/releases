@@ -1,17 +1,23 @@
 {
   "app": "specula",
-  "build": 14,
-  "commit": "6a08790",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-14/specula.dmg",
-  "sha256": "d076946a65e1418ed2e0999aa181e625e053db0030222c9830e49ee4dbbfc744",
+  "build": 16,
+  "commit": "6fb3ee4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-16/specula.dmg",
+  "sha256": "1d713b6bccf6cc52b3a7fa9eec3aa54a784c97257edc4c72ae81a901ab432563",
   "minimumSystemVersion": "26.0",
-  "notes": "About specula first in the menu bar\nThe vault's newest commit in About\nspecula is the vault's viewer\nReports as in folia · The Brain's controls, one size\niCloud Drive's question, said\nspecula for Mac\nLight, dark or the system's and 3 more\nAsk Claude and the reports in specula\nand 1 more — see What's New",
+  "notes": "The icon's menu in murmur's order\nThe specula menu as in scripta",
   "entries": [
     {
-      "build": 14,
-      "date": "2026-10-24",
-      "title": "About specula first in the menu bar",
-      "detail": "The menu of specula's icon in the menu bar starts with About specula, a line under it."
+      "build": 16,
+      "date": "2026-10-25",
+      "title": "The icon's menu in murmur's order",
+      "detail": "The menu of specula's icon starts with About specula. Under a line follow Settings… and Check for Updates…, then Open specula and Open in Browser, then Show in Finder and Quit."
+    },
+    {
+      "build": 15,
+      "date": "2026-10-25",
+      "title": "The specula menu as in scripta",
+      "detail": "The specula menu at the top left starts with About specula, a line under it, then Settings…, as scripta's. Check for Updates… is in the menu of specula's icon."
     },
     {
       "build": 13,
