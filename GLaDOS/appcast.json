@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 406,
-  "commit": "c5c43fd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-406/GLaDOS.dmg",
-  "sha256": "702a1393b91d3b51d1c63e16f5815633e93ed0a619f714bf71b759d9528e7940",
+  "build": 407,
+  "commit": "cf44ce5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-407/GLaDOS.dmg",
+  "sha256": "a0db6f0b8f92956723bad0aff5157918c2b252f19fbbd7539ceb498b7def9abb",
   "minimumSystemVersion": "26.0",
-  "notes": "A new icon, in the style of your other apps",
+  "notes": "A new menu bar icon that moves for the one who speaks",
   "entries": [
+    {
+      "build": 407,
+      "date": "2026-10-25",
+      "title": "A new menu bar icon that moves for the one who speaks",
+      "detail": "The menu bar icon is the new app icon in one colour: J.A.R.V.I.S.'s ring, a dot and her three bars. It stands still, as before, and moves while one of them speaks: her bars while GLaDOS speaks, his ring while J.A.R.V.I.S. speaks. The dot looks toward the one who speaks."
+    },
     {
       "build": 406,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "One dictionary for GLaDOS, murmur and scripta",
       "detail": "The three apps now read the same dictionary file, so you teach a word one time. GLaDOS put the names she knew into that file. You can now change them: in murmur's Settings, under Dictionary, or in the file itself. An entry works in all three apps."
-    },
-    {
-      "build": 292,
-      "date": "2026-10-04",
-      "title": "What's New shows its scroll bar",
-      "detail": "When this window opens, the list shows its scroll bar, so you see that it goes on below."
     }
   ]
 }
