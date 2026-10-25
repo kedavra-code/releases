@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 29,
-  "commit": "d6b8472",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-29/specula.dmg",
-  "sha256": "08a8cecafbf1bf0489f931b3ee32bc46f201ec24c2ce648b5bfd478aa633040a",
+  "build": 30,
+  "commit": "106c046",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-30/specula.dmg",
+  "sha256": "511ea07f5330f4dad7e4094f8aaac8852e30f2011ab3a0d1dcc877597b34b531",
   "minimumSystemVersion": "26.0",
-  "notes": "⌘H gives the menu bar back",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 29,
