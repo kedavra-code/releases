@@ -1,11 +1,11 @@
 {
   "app": "j4k",
-  "build": 448,
-  "commit": "8e00f4a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-448/j4k.dmg",
-  "sha256": "0469559293cab1f648e8393cf51c9e0ff0e9e88457332450507f9116ec994659",
+  "build": 449,
+  "commit": "7e02dfb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-449/j4k.dmg",
+  "sha256": "6c57441c2cd938db49a7a50940007dd68cec9e708ca9b3233e1cab2f40fa48ac",
   "minimumSystemVersion": "26.0",
-  "notes": "Command-H hides j4k again · the download in Settings · The buttons in Settings look alike\nA menu bar icon and a hotkey",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 447,
