@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 399,
-  "commit": "9780453",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-399/GLaDOS.dmg",
-  "sha256": "b887452de6965766f4062f0380c5a587efd0e7c1a7af156e34bb1699b0e769bb",
+  "build": 400,
+  "commit": "bc1c3af",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-400/GLaDOS.dmg",
+  "sha256": "350a59e8bebe9c8a72bb0ee012c4626e04900fd832336e5f38726c7b51356011",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Your AirPods keep their music when she quits",
   "entries": [
+    {
+      "build": 400,
+      "date": "2026-10-25",
+      "title": "Your AirPods keep their music when she quits",
+      "detail": "Quitting or updating GLaDOS while she is powered down no longer switches AirPods to call mode for a moment. That switch could leave a paused video in Chrome without sound."
+    },
     {
       "build": 395,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-04",
       "title": "J.A.R.V.I.S. is as loud as GLaDOS",
       "detail": "Through the Mac's speakers he arrived about one decibel quieter than she did in German, and nearly two in English: the Mac's echo cancelling takes more from his voice than from hers. His level now follows her voice in each language and makes up for that, so both arrive equally loud. On headphones, where nothing is taken, he is no longer louder than she is in German."
-    },
-    {
-      "build": 287,
-      "date": "2026-10-04",
-      "title": "About counts her voices right",
-      "detail": "The Voices row in About GLaDOS said “1 of 2 installed” with both of her voices installed. It now counts the two voices that Settings › Voice shows."
     }
   ]
 }
