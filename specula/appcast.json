@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 26,
-  "commit": "85916eb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-26/specula.dmg",
-  "sha256": "6c1322bcbf6f4ea6f0a1ba1b02b110babac11e2e6639e48b40fa8331b9177f78",
+  "build": 27,
+  "commit": "a416bcb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-27/specula.dmg",
+  "sha256": "ace4da9457adaccd5fa75145bac3bff524595cb451d18fcede2a0721dab2bbb3",
   "minimumSystemVersion": "26.0",
-  "notes": "Download specula for another Mac",
+  "notes": "⌘H hides specula; one look for the buttons",
   "entries": [
+    {
+      "build": 27,
+      "date": "2026-10-25",
+      "title": "⌘H hides specula; one look for the buttons",
+      "detail": "⌘H hides the specula window, as in other apps. Every button in Settings and in specula's windows has one size and one type, and a link looks like the buttons beside it."
+    },
     {
       "build": 26,
       "date": "2026-10-25",
