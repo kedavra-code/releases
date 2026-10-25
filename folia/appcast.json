@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 189,
-  "commit": "94d42af",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-189/folia.dmg",
-  "sha256": "e3cb43611f5ab34d4eef382a3be7fa6fe239c873fba938c9f04741d19860e009",
+  "build": 195,
+  "commit": "990463e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-195/folia.dmg",
+  "sha256": "08b95881426ea9985b9bef87b2fffcf6d8e09f126469a8229656eedf3c6325ef",
   "minimumSystemVersion": "26.0",
-  "notes": "Repair from OneNote has a clear name",
+  "notes": "A YouTube video from OneNote keeps its title\nEvery copy from OneNote checks itself",
   "entries": [
+    {
+      "build": 195,
+      "date": "2026-10-25",
+      "title": "A YouTube video from OneNote keeps its title",
+      "detail": "OneNote names an embedded video with a link. A copy from OneNote now puts that name on a line above the player, so it is no longer lost. The check of a copy also reads a path with \"\\\" right."
+    },
+    {
+      "build": 191,
+      "date": "2026-10-25",
+      "title": "Every copy from OneNote checks itself",
+      "detail": "After Copy fresh from OneNote and each page of a repair, folia checks the page: every word of OneNote's page is there, every picture and file is stored, and none of the known faults shows. The message says what the check found, and Settings › OneNote lists the pages that need a look."
+    },
     {
       "build": 189,
       "date": "2026-10-25",
@@ -234,18 +246,6 @@
       "date": "2026-10-23",
       "title": "Update pages from a folder ignores list numbers",
       "detail": "A page whose numbered list folia renumbered is no longer left as changed by you."
-    },
-    {
-      "build": 131,
-      "date": "2026-10-23",
-      "title": "Docs and What's new in About folia",
-      "detail": "Settings › About folia opens the folia Field Manual, on what folia is and how it works, and lists what changed in folia, newest first, as j4k does."
-    },
-    {
-      "build": 129,
-      "date": "2026-10-23",
-      "title": "St., ca. and Mo. stay at a line start",
-      "detail": "A line that starts with a short word and a dot, like \"St. Gallen\" or \"ca. 40\", no longer turns into a numbered list that drops the word."
     }
   ]
 }
