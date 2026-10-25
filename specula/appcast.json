@@ -1,12 +1,24 @@
 {
   "app": "specula",
-  "build": 22,
-  "commit": "79e8e0f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-22/specula.dmg",
-  "sha256": "87cc4af2588e244d347fc4dc17c438c15fbb1d9ae3b8c264d62c82c7963ca83a",
+  "build": 25,
+  "commit": "22f63d6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-25/specula.dmg",
+  "sha256": "89b5054feef65cda0841488b91b8cd185c40058ec196ba67a87399705f430da4",
   "minimumSystemVersion": "26.0",
-  "notes": "A hotkey for specula",
+  "notes": "Settings › Mac app, tidied\nSettings opens on General",
   "entries": [
+    {
+      "build": 25,
+      "date": "2026-10-25",
+      "title": "Settings › Mac app, tidied",
+      "detail": "Open at login is called \"Start specula at login\" now. The switch for update checks is gone: specula still checks once a day, and Check for Updates… is in the menus."
+    },
+    {
+      "build": 23,
+      "date": "2026-10-25",
+      "title": "Settings opens on General",
+      "detail": "The gear, ⌘, and Settings… in the menus open Settings on General."
+    },
     {
       "build": 22,
       "date": "2026-10-25",
