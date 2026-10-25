@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 440,
-  "commit": "9f70a5b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-440/j4k.dmg",
-  "sha256": "e7efa908591de68c6ed76e98fa0ca0cc4a37c10ea46efce3eeb214335bb873b2",
+  "build": 442,
+  "commit": "5ce872e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-442/j4k.dmg",
+  "sha256": "8867d5db217cd640c55c5f04b5f855b29a6ef496791a71762a06652d1290111a",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings › Assistant is now called Brain",
+  "notes": "Check for Updates is under Settings",
   "entries": [
+    {
+      "build": 441,
+      "date": "2026-10-25",
+      "title": "Check for Updates is under Settings",
+      "detail": "In the j4k menu, at the left of the menu bar, Check for Updates… is now under Settings…, no longer under About j4k."
+    },
     {
       "build": 439,
       "date": "2026-10-24",
@@ -240,12 +246,6 @@
       "date": "2026-09-07",
       "title": "Two new buttons: New and Review",
       "detail": "Under the filter rows there are now two one-press views, each showing how many tasks it holds. New shows only what you created in the last 24 hours; Review shows only what arrived from somewhere else and has not been triaged yet. Each is drawn in the colour its cards already wear — violet for a task you just made, pink for an arrival — so the button matches the outline you are hunting for. Press again to switch it off. They stack with everything else rather than replacing it, so New while a tag is selected means the recent tasks with that tag, and each button's number tells you what pressing it would actually give you."
-    },
-    {
-      "build": 349,
-      "date": "2026-09-07",
-      "title": "Deleting a task no longer clears your filters",
-      "detail": "Filtering to Review and working down the list used to throw you back to all active tasks the moment you deleted one, so the filter had to be set again for every single task. Deleting now leaves the view exactly as you set it — the status you picked, the tags, the priority, the sort, the search box — and the deleted task simply drops out of the list. Everything else already behaved this way: renaming a task, or moving one out of Review, has always kept you where you were."
     }
   ]
 }
