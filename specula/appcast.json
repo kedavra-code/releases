@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 21,
-  "commit": "3097057",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-21/specula.dmg",
-  "sha256": "a4d18b7a618c6be1b473aafda59e21376958cd78925434da46f638f00ce9289f",
+  "build": 22,
+  "commit": "79e8e0f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-22/specula.dmg",
+  "sha256": "87cc4af2588e244d347fc4dc17c438c15fbb1d9ae3b8c264d62c82c7963ca83a",
   "minimumSystemVersion": "26.0",
-  "notes": "Full screen in the Timelapse, in the app\nWarp speed at the end of the Timelapse",
+  "notes": "A hotkey for specula",
   "entries": [
+    {
+      "build": 22,
+      "date": "2026-10-25",
+      "title": "A hotkey for specula",
+      "detail": "⌃⌥⌘S shows the specula window from any app; pressed again, it hides it. Settings › Mac app shows the hotkey and records new keys."
+    },
     {
       "build": 21,
       "date": "2026-10-25",
