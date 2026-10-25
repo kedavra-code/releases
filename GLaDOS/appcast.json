@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 405,
-  "commit": "b16863c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-405/GLaDOS.dmg",
-  "sha256": "186b8cb6b43c3ea15d1b5a887189705ca334b3876c18a6f164bc9f8343e00e2c",
+  "build": 406,
+  "commit": "c5c43fd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-406/GLaDOS.dmg",
+  "sha256": "702a1393b91d3b51d1c63e16f5815633e93ed0a619f714bf71b759d9528e7940",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A new icon, in the style of your other apps",
   "entries": [
+    {
+      "build": 406,
+      "date": "2026-10-25",
+      "title": "A new icon, in the style of your other apps",
+      "detail": "The app icon and the disk icon are the split eye again, drawn as murmur, scripta, unus, j4k, folia and specula are: round bars and dots on white. J.A.R.V.I.S.'s rings are on the left, her waveform on the right. The eye in the menu bar has not changed."
+    },
     {
       "build": 400,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-04",
       "title": "What's New shows its scroll bar",
       "detail": "When this window opens, the list shows its scroll bar, so you see that it goes on below."
-    },
-    {
-      "build": 288,
-      "date": "2026-10-04",
-      "title": "J.A.R.V.I.S. is as loud as GLaDOS",
-      "detail": "Through the Mac's speakers he arrived about one decibel quieter than she did in German, and nearly two in English: the Mac's echo cancelling takes more from his voice than from hers. His level now follows her voice in each language and makes up for that, so both arrive equally loud. On headphones, where nothing is taken, he is no longer louder than she is in German."
     }
   ]
 }
