@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 16,
-  "commit": "6fb3ee4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-16/specula.dmg",
-  "sha256": "1d713b6bccf6cc52b3a7fa9eec3aa54a784c97257edc4c72ae81a901ab432563",
+  "build": 17,
+  "commit": "b183ec2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-17/specula.dmg",
+  "sha256": "02cb4ba2cb77869f906b73f432755d5d1fc2b30631cb239bd4fa3aef4ebaae81",
   "minimumSystemVersion": "26.0",
-  "notes": "The icon's menu in murmur's order\nThe specula menu as in scripta",
+  "notes": "Check for Updates in the specula menu again",
   "entries": [
+    {
+      "build": 17,
+      "date": "2026-10-25",
+      "title": "Check for Updates in the specula menu again",
+      "detail": "The specula menu at the top left has Check for Updates… under Settings… again, as every app of the family has it: About specula, a line, Settings…, Check for Updates…, a line. In the menu of specula's icon, Settings… shows ⌘,."
+    },
     {
       "build": 16,
       "date": "2026-10-25",
