@@ -1,9 +1,9 @@
 {
   "app": "j4k",
-  "build": 449,
-  "commit": "7e02dfb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-449/j4k.dmg",
-  "sha256": "6c57441c2cd938db49a7a50940007dd68cec9e708ca9b3233e1cab2f40fa48ac",
+  "build": 450,
+  "commit": "b09366e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-450/j4k.dmg",
+  "sha256": "e51102adbed8e49fbc94d5ef76f3815d4eacb6bbe1f1c70f85aa21a3b61fb73f",
   "minimumSystemVersion": "26.0",
   "notes": "Small fixes and improvements.",
   "entries": [
