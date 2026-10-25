@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 181,
-  "commit": "51b1b6b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-181/folia.dmg",
-  "sha256": "ad8a3ccf664ac7835aac0dcf13855eac46bb59e2afc44b543755bee2e748bd14",
+  "build": 185,
+  "commit": "4c8ce35",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-185/folia.dmg",
+  "sha256": "28a4e2928d7b705eb6dd2611836497712db45835a69d7d53f2f5e60449ca17b5",
   "minimumSystemVersion": "26.0",
-  "notes": "Text after a OneNote video kept",
+  "notes": "The Mac app to download, also in the Mac app\nfolia in the menu bar, with a hotkey\nLeft pages leave the list once fixed",
   "entries": [
+    {
+      "build": 185,
+      "date": "2026-10-25",
+      "title": "The Mac app to download, also in the Mac app",
+      "detail": "Settings › Mac app in the Mac app also offers the newest folia for Mac to download, for another Mac."
+    },
+    {
+      "build": 184,
+      "date": "2026-10-25",
+      "title": "folia in the menu bar, with a hotkey",
+      "detail": "The Mac app has an icon in the menu bar, with Open folia and Open in Browser. ⌃⌥⌘F opens folia from any app, and hides it again. Settings › Mac app sets the hotkey, where folia shows its icon (menu bar, Dock, or both), and Open at login."
+    },
+    {
+      "build": 182,
+      "date": "2026-10-25",
+      "title": "Left pages leave the list once fixed",
+      "detail": "Settings › OneNote › Left as they are no longer lists a page once it is copied fresh from OneNote: it goes at once, not only at the next daily update."
+    },
     {
       "build": 181,
       "date": "2026-10-25",
@@ -228,24 +246,6 @@
       "date": "2026-10-23",
       "title": "The leaf on the iPhone too",
       "detail": "Adding folia to an iPhone's home screen now gives it the leaf. An icon added before keeps the old one: remove it and add folia again."
-    },
-    {
-      "build": 124,
-      "date": "2026-10-23",
-      "title": "A new icon: the leaf",
-      "detail": "folia means leaves: the new icon is a leaf of an orange midrib and four veins, in the style of murmur, scripta, unus and j4k. The website and the browser tab show it too."
-    },
-    {
-      "build": 122,
-      "date": "2026-10-23",
-      "title": "Update pages from a folder sees through broken links",
-      "detail": "A page whose old text had a link address broken at a bracket now gets the new text too, instead of being left as changed by you."
-    },
-    {
-      "build": 120,
-      "date": "2026-10-23",
-      "title": "scripta opens its meeting's page in folia",
-      "detail": "scripta's \"folia note\" link opens the page with the meeting's minutes right here, in folia's window — also when folia was closed."
     }
   ]
 }
