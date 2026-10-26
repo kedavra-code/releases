@@ -1,11 +1,11 @@
 {
   "app": "j4k",
-  "build": 452,
-  "commit": "ebfb27d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-452/j4k.dmg",
-  "sha256": "6670576a3e664e1b97d71191e70fa0f622a3b34dfb74eaf54a2e2901b5753f70",
+  "build": 453,
+  "commit": "9f08885",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-453/j4k.dmg",
+  "sha256": "fbb59556d68f985e8cdbc17a222a01d4094b97b87fca59cf11d527223b8f7077",
   "minimumSystemVersion": "26.0",
-  "notes": "The Dock icon's menu holds the menu bar menu",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 451,
