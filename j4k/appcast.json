@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 453,
-  "commit": "9f08885",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-453/j4k.dmg",
-  "sha256": "fbb59556d68f985e8cdbc17a222a01d4094b97b87fca59cf11d527223b8f7077",
+  "build": 455,
+  "commit": "074bb60",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-455/j4k.dmg",
+  "sha256": "41d5de7f9410a8021bf4ca38705985b851cbdbaad242f2cc2ae08b28fd70dead",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The window comes to the front at a start",
   "entries": [
+    {
+      "build": 455,
+      "date": "2026-10-26",
+      "title": "The window comes to the front at a start",
+      "detail": "Started again, j4k now comes to the front with its window, instead of opening it behind the app you were in. Opened at login, it stays in the background."
+    },
     {
       "build": 451,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-09-08",
       "title": "The logo gives back the view a filter took",
       "detail": "Filtering to Deleted, Archived or Review switches to the list, because those views have no board columns. Pressing the j4k logo now returns you to the view you have set under Layout — Kanban, List or Calendar — instead of leaving you in the list the filter borrowed. It only gives back a view a filter took away: if you picked a view yourself with the header buttons, the logo leaves it alone."
-    },
-    {
-      "build": 364,
-      "date": "2026-09-08",
-      "title": "Deleted and Archived now order by the minute, not the day · The new-task outline lasts a minute",
-      "detail": "Deleted and Archived now order by the minute, not the day: The Deleted and Archived views have always put the newest first, but only to the day — everything parked on the same day fell back to priority order, which with a dozen deletions a day was most of what you saw. They now order by the actual moment a task was deleted or archived. Tasks parked from now on are exact; for older ones the time was recovered where the task had not been touched since, which covers everything from the last couple of weeks, and anything older keeps ordering by day as before. Review already ordered to the minute and is unchanged. The new-task outline lasts a minute: The violet outline on a newly created task now stays for a minute instead of ten seconds, which matters most for a task dictated by voice — it arrives while you are not looking at the screen, so ten seconds was rarely enough to see it. The outline also fades out properly again at the end; it had been disappearing abruptly."
     }
   ]
 }
