@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 211,
-  "commit": "0eee444",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-211/folia.dmg",
-  "sha256": "1c86d07121330f3330b3db793d6aba34fd0ac3600c22453064be9de2760c6098",
+  "build": 213,
+  "commit": "36fe7f7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-213/folia.dmg",
+  "sha256": "b30e67e5f60a3aa7647edc418a65125dda0bdb8d4e5e0cff89d39313a2c90e54",
   "minimumSystemVersion": "26.0",
-  "notes": "Table lines stay while you drag; the window comes up at a start\nA moved column line shows at once",
+  "notes": "At login, folia stays in the background",
   "entries": [
+    {
+      "build": 213,
+      "date": "2026-10-26",
+      "title": "At login, folia stays in the background",
+      "detail": "Opened at login, folia now waits in the background instead of coming to the front. Started by you, it still comes to the front with its window."
+    },
     {
       "build": 211,
       "date": "2026-10-26",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "Each notebook opens on your last page",
       "detail": "Switch to another notebook and back: folia opens the page you had open there, as long as it is still there."
-    },
-    {
-      "build": 144,
-      "date": "2026-10-24",
-      "title": "Pinch to zoom on every page; the page alone, with the bars",
-      "detail": "Pinch on the trackpad to make any page larger or smaller. The button in the top bar now hides the side columns and keeps the top bar and the status bar; click it again to bring them back. No more full screen."
     }
   ]
 }
