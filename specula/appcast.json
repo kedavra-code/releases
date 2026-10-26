@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 34,
-  "commit": "5cc002c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-34/specula.dmg",
-  "sha256": "f9c1ebf9e5a9db8155b8235debdf2fe922fc41c2e8ec2c006e4019d29a88bd6a",
+  "build": 36,
+  "commit": "0629046",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-36/specula.dmg",
+  "sha256": "d830d3fdee7436242a2aa666582e1ddd09b90f84b485a915783472d51d92b38c",
   "minimumSystemVersion": "26.0",
-  "notes": "The Dock icon's menu holds the menu bar menu",
+  "notes": "The window comes to the front at a start",
   "entries": [
+    {
+      "build": 36,
+      "date": "2026-10-26",
+      "title": "The window comes to the front at a start",
+      "detail": "Started again, specula now comes to the front with its window, instead of opening it behind the app you were in. Opened at login, it stays in the background."
+    },
     {
       "build": 33,
       "date": "2026-10-25",
