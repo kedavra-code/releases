@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 208,
-  "commit": "532aaa0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-208/folia.dmg",
-  "sha256": "86e96dd0000ebb608e34cdb9f47cecee8818202d6a009871308ad2eec152cc7b",
+  "build": 211,
+  "commit": "0eee444",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-211/folia.dmg",
+  "sha256": "1c86d07121330f3330b3db793d6aba34fd0ac3600c22453064be9de2760c6098",
   "minimumSystemVersion": "26.0",
-  "notes": "Column lines of a fitted table move smoothly\nTables fit the page, also with new columns",
+  "notes": "Table lines stay while you drag; the window comes up at a start\nA moved column line shows at once",
   "entries": [
+    {
+      "build": 211,
+      "date": "2026-10-26",
+      "title": "Table lines stay while you drag; the window comes up at a start",
+      "detail": "While you drag a column line, the table keeps all its lines instead of losing them until you let go. And started again, folia now comes to the front with its window, instead of opening it behind the app you were in."
+    },
+    {
+      "build": 209,
+      "date": "2026-10-26",
+      "title": "A moved column line shows at once",
+      "detail": "After you let go of a column line in a fitted table, the table is drawn anew at once, without moving the mouse away from the line first."
+    },
     {
       "build": 208,
       "date": "2026-10-26",
@@ -234,18 +246,6 @@
       "date": "2026-10-24",
       "title": "Pinch to zoom on every page; the page alone, with the bars",
       "detail": "Pinch on the trackpad to make any page larger or smaller. The button in the top bar now hides the side columns and keeps the top bar and the status bar; click it again to bring them back. No more full screen."
-    },
-    {
-      "build": 142,
-      "date": "2026-10-24",
-      "title": "Notebooks start in their right order and colours",
-      "detail": "At the start folia showed an old copy of your notebooks for a moment, in an old order and old colours. It now keeps that copy where there is room, and never shows an old one."
-    },
-    {
-      "build": 141,
-      "date": "2026-10-24",
-      "title": "Pictures in tables can grow past their cell",
-      "detail": "Drag a picture’s corner in a table: it may pass its cell, and its column widens to hold it when you let go."
     }
   ]
 }
