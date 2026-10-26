@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 187,
-  "commit": "1bc9692",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-187/scripta.dmg",
-  "sha256": "aa1ca7bdd38b86359e37705a83f3f6c7db8ac6d69d64aa25564668c1bda40c68",
+  "build": 188,
+  "commit": "701b8c7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-188/scripta.dmg",
+  "sha256": "e30dbdef226083134ac082787c96b37e58389dba1edb9f2dc4721f38c1999ff1",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The calendar's meeting is found again when its title ends in a space",
   "entries": [
+    {
+      "build": 188,
+      "date": "2026-10-26",
+      "title": "The calendar's meeting is found again when its title ends in a space",
+      "detail": "Some calendar entries have a space at the end of their title. scripta did not find such a meeting when you started recording: it suggested no names, and its minutes went to a new page in folia, not to the page you prepared. Now it finds it."
+    },
     {
       "build": 184,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "Settings is as wide as in murmur and GLaDOS",
       "detail": "The Settings window is wider, in all four tabs. The Dictionary tab, which is the same in the three apps, now also has the same size in the three."
-    },
-    {
-      "build": 104,
-      "date": "2026-10-05",
-      "title": "The Dictionary tab is taller",
-      "detail": "The Dictionary tab in Settings shows about fourteen entries at a time, where it showed nine. The same in murmur and GLaDOS."
     }
   ]
 }
