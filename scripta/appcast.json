@@ -1,11 +1,11 @@
 {
   "app": "scripta",
-  "build": 188,
-  "commit": "701b8c7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-188/scripta.dmg",
-  "sha256": "e30dbdef226083134ac082787c96b37e58389dba1edb9f2dc4721f38c1999ff1",
+  "build": 189,
+  "commit": "29efa1e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-189/scripta.dmg",
+  "sha256": "a5227ff4fd7e38c27474ba7a582686732f5748d92d23f56a3a4c5f8910c6dbbc",
   "minimumSystemVersion": "26.0",
-  "notes": "The calendar's meeting is found again when its title ends in a space",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 188,
