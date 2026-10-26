@@ -1,12 +1,18 @@
 {
   "app": "unus",
-  "build": 206,
-  "commit": "a02266e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-206/unus.dmg",
-  "sha256": "76c8b055633bc845801afc5619162885131a11022275b0500294d8e99b790383",
+  "build": 207,
+  "commit": "96f6e6b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-207/unus.dmg",
+  "sha256": "340058e1ac93dac0db6664d648c7aa2e9a34ab6531a2df61234f771b99eb7336",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A new icon",
   "entries": [
+    {
+      "build": 207,
+      "date": "2026-10-26",
+      "title": "A new icon",
+      "detail": "unus wears four signs now — plus, minus, times and equals — in the colours of its sibling apps. The equals sign is orange, like every answer on the sheet. The menu bar icon has the same four signs."
+    },
     {
       "build": 199,
       "date": "2026-10-25",
