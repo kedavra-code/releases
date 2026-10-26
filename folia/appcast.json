@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 205,
-  "commit": "623afca",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-205/folia.dmg",
-  "sha256": "bf01940b451020d3e5ca96d3c1494b96ce5c6841f507ee67584c0fc6f124d9fd",
+  "build": 208,
+  "commit": "532aaa0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-208/folia.dmg",
+  "sha256": "86e96dd0000ebb608e34cdb9f47cecee8818202d6a009871308ad2eec152cc7b",
   "minimumSystemVersion": "26.0",
-  "notes": "Typing into a new heading works again\nNo black window after an update\nA page to the top or bottom; the list scrolls while you drag",
+  "notes": "Column lines of a fitted table move smoothly\nTables fit the page, also with new columns",
   "entries": [
+    {
+      "build": 208,
+      "date": "2026-10-26",
+      "title": "Column lines of a fitted table move smoothly",
+      "detail": "In a table with Fit width on, dragging a line between two columns now moves only those two columns, and the table stays as wide as the page. A press on a line without moving it no longer makes the table jump."
+    },
+    {
+      "build": 207,
+      "date": "2026-10-26",
+      "title": "Tables fit the page, also with new columns",
+      "detail": "Fit width is now a switch above each table, and on by default: the table spans the page, its columns keep their proportions, and a new column takes its share instead of pushing the table past the page. Switched off, a table keeps the widths it shows and has its own from then on."
+    },
     {
       "build": 205,
       "date": "2026-10-26",
@@ -234,18 +246,6 @@
       "date": "2026-10-24",
       "title": "Pictures in tables can grow past their cell",
       "detail": "Drag a picture’s corner in a table: it may pass its cell, and its column widens to hold it when you let go."
-    },
-    {
-      "build": 140,
-      "date": "2026-10-24",
-      "title": "Copy a page’s link with a right click",
-      "detail": "A right click on a page in the list opens its menu; Copy link puts the page’s address on the clipboard, to paste anywhere."
-    },
-    {
-      "build": 139,
-      "date": "2026-10-24",
-      "title": "Page only, on the whole screen",
-      "detail": "The new button in the top bar shows the page alone, without the side columns and bars, on the whole screen. Pinch on the trackpad to make it larger or smaller; Esc leaves."
     }
   ]
 }
