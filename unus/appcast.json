@@ -1,12 +1,18 @@
 {
   "app": "unus",
-  "build": 208,
-  "commit": "e555837",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-208/unus.dmg",
-  "sha256": "6ae26e0f2ee6c7cd32151b9817b4037361a6bac702a5a116db2984f8d0020ade",
+  "build": 210,
+  "commit": "d02c963",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-210/unus.dmg",
+  "sha256": "25de4f599b75d5c7c961605d20434c0f19aa34f09d26281bf60285c8ae73754d",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The sheet comes to the front at a start",
   "entries": [
+    {
+      "build": 210,
+      "date": "2026-10-26",
+      "title": "The sheet comes to the front at a start",
+      "detail": "Started again, unus now comes to the front with its sheet, instead of opening it behind the app you were in. Opened at login, it stays in the background."
+    },
     {
       "build": 207,
       "date": "2026-10-26",
