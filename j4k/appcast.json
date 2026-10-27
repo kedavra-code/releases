@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 456,
-  "commit": "92c3c37",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-456/j4k.dmg",
-  "sha256": "0d0e7e983d80d8752e4f225de1a7baa0a970a0c51630c536e002b405370eb1c9",
+  "build": 457,
+  "commit": "547d3de",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-457/j4k.dmg",
+  "sha256": "6d7d85d6305528b52e0514f3a76a19075770ee05a97dcad8117fda5c3aeba3d9",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs opens the manual inside j4k",
+  "notes": "About j4k has Settings…",
   "entries": [
+    {
+      "build": 457,
+      "date": "2026-10-27",
+      "title": "About j4k has Settings…",
+      "detail": "About j4k now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens j4k's Settings the way the menu does."
+    },
     {
       "build": 456,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-09-08",
       "title": "The scrollbar that was always there is gone",
       "detail": "Every page had about 14 pixels of scroll it did not need — a scrollbar on the right even with a single task on screen and plenty of empty space below it. The page is now exactly as tall as what is on it, so a scrollbar means there is genuinely more to see. Nothing moved: the header and everything under it sit where they always did."
-    },
-    {
-      "build": 371,
-      "date": "2026-09-08",
-      "title": "The tag list in a task no longer runs off the screen · The New button is gone; Review keeps its place",
-      "detail": "The tag list in a task no longer runs off the screen: Picking a tag while editing a task opened a tall single column that ran past the bottom of the window and put a scrollbar on the page — it had fitted until the editor was enlarged last week, which made it a quarter taller. The tags now sit in two columns, with No tag across the top, so the whole list is visible at once without scrolling anything. Nothing about tags themselves changed. The New button is gone; Review keeps its place: The row under the filter chips carried two buttons for a day, New and Review. New has been removed and Review is on its own there now, the same size, colour and count it always had. The New filter itself has not gone anywhere — it is in the Status menu's Filter section, next to All and the star, where it does exactly what the button did: show only what you created in the last 24 hours, narrowing whatever else you have picked."
     }
   ]
 }
