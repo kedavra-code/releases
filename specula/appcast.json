@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 37,
-  "commit": "e820104",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-37/specula.dmg",
-  "sha256": "e5a1aaab125dd1b849a202a26689dbfe90c537e8916f550cd895c3fbd392fbff",
+  "build": 38,
+  "commit": "17a5b69",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-38/specula.dmg",
+  "sha256": "bffb1f6a21731fc02aa1a2cf1153355efc2a76c01f9843489d265d1f022e05f6",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs opens the manual inside specula",
+  "notes": "About specula has Settings…",
   "entries": [
+    {
+      "build": 38,
+      "date": "2026-10-27",
+      "title": "About specula has Settings…",
+      "detail": "About specula now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens specula's Settings the way the menu does."
+    },
     {
       "build": 37,
       "date": "2026-10-27",
