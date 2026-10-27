@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 228,
-  "commit": "ee7d8d9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-228/folia.dmg",
-  "sha256": "f7c9dfafcfd9f56b08772ef0996459311aa0f94f6d237454b49383a714405bfc",
+  "build": 230,
+  "commit": "c19c7de",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-230/folia.dmg",
+  "sha256": "b5d7f3b3115e1d5b367dd9386edf1db985d4c26840e9e904bada804474c61c6f",
   "minimumSystemVersion": "26.0",
-  "notes": "Your meeting tasks go to j4k, and come back ticked\nThe meetings panel keeps its arrows, and has Today",
+  "notes": "Tasks go to j4k from every page, once you stop typing\nThe j4k switch waits until it knows",
   "entries": [
+    {
+      "build": 230,
+      "date": "2026-10-27",
+      "title": "Tasks go to j4k from every page, once you stop typing",
+      "detail": "Tasks to j4k now takes the Tasks of every page you make after switching it on, not only meeting pages. A page's tasks go once it has had no change for two minutes, so a task you are still typing never arrives half-written."
+    },
+    {
+      "build": 229,
+      "date": "2026-10-27",
+      "title": "The j4k switch waits until it knows",
+      "detail": "Settings › j4k › Tasks to j4k is greyed out for a moment while folia reads whether it is on. Before, it showed off and then jumped to on, which looked as if opening the part switched it on. The setting itself was always kept."
+    },
     {
       "build": 228,
       "date": "2026-10-27",
@@ -234,18 +246,6 @@
       "date": "2026-10-24",
       "title": "Files in table cells as file cards",
       "detail": "A file that OneNote keeps in a table cell now shows as a file card in that cell, with its size, like any file on a page. A file within a sentence stays a link."
-    },
-    {
-      "build": 169,
-      "date": "2026-10-24",
-      "title": "Files in table cells open",
-      "detail": "A file that stands in a table cell, as OneNote puts files in tables, opens with a click, like a file card. Wide tables are saved without padding, so their Markdown stays small."
-    },
-    {
-      "build": 168,
-      "date": "2026-10-24",
-      "title": "Tables from OneNote keep their rows",
-      "detail": "A OneNote table whose cells hold several lines or a list now comes in as a table, each line of a cell on its own line. A line break you make in a table cell stays after saving."
     }
   ]
 }
