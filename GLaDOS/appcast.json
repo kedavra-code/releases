@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 416,
-  "commit": "a4efc78",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-416/GLaDOS.dmg",
-  "sha256": "61a4c70a8e4d7b43c277565c76100483937a12d313fef024b341c8a503265b16",
+  "build": 421,
+  "commit": "3d0b428",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-421/GLaDOS.dmg",
+  "sha256": "26719988647dfda4e987ac1f55a6881da1619ea2eef85c673422400b5f443240",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs opens the manual inside GLaDOS",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 416,
