@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 225,
-  "commit": "1890c85",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-225/folia.dmg",
-  "sha256": "8f767f5dd0e2162c5410e2f90f753ff5268a97463c6d445264983ece3dc9b1ea",
+  "build": 226,
+  "commit": "56d85ef",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-226/folia.dmg",
+  "sha256": "bf4520b4ec06628494b24f51d1c3cf60171924ad0c69b89b8d61403907a76314",
   "minimumSystemVersion": "26.0",
-  "notes": "About folia has Settings…",
+  "notes": "The … menus in groups",
   "entries": [
+    {
+      "build": 226,
+      "date": "2026-10-27",
+      "title": "The … menus in groups",
+      "detail": "A page's … menu shows its entries in groups with a small heading: Open, Copy, Move and Page group, with Delete apart at the end. The menus of notebooks and sections are grouped the same way: New, On this Mac, Colour."
+    },
     {
       "build": 225,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "Copy fresh from OneNote, also for NZZ and SRG SSR",
       "detail": "Pages of your NZZ and SRG SSR notebooks can be copied fresh from OneNote too, as ETH pages are. Connect your private OneNote once in Settings › OneNote. folia reads a page there only when you ask; nothing comes in by itself."
-    },
-    {
-      "build": 162,
-      "date": "2026-10-24",
-      "title": "Copy a page fresh from OneNote",
-      "detail": "A page from your ETH notebooks has “Copy fresh from OneNote” in its menu in the page list. It brings the page as OneNote has it now, with its pictures and files where they stand. If the page has lines OneNote does not have, folia asks first. History keeps the page as it was."
     }
   ]
 }
