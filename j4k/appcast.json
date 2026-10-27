@@ -1,12 +1,36 @@
 {
   "app": "j4k",
-  "build": 470,
-  "commit": "a490469",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-470/j4k.dmg",
-  "sha256": "ba82cf9eb90b9ee8009115502dcb3bdee419a499ad3c3b90a8e9fa1456665261",
+  "build": 476,
+  "commit": "559ca8b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-476/j4k.dmg",
+  "sha256": "404dfa5820340bbde96dbc688c8c99f8d61d9f632e1a70c4fa817a7408f5c325",
   "minimumSystemVersion": "26.0",
-  "notes": "The search field is in the top bar, as in folia\nDocs in Settings opens the manual in a window\nNo Done bar on an open task\nA gold frame around j4k shows the way back",
+  "notes": "A mail conversation dragged in becomes one task\nDragging a mail conversation no longer crashes the Mac app\nNo What's New bar; the message bar is amber\nThe search field sits exactly where folia's does",
   "entries": [
+    {
+      "build": 475,
+      "date": "2026-10-27",
+      "title": "A mail conversation dragged in becomes one task",
+      "detail": "Drag a whole conversation from Apple Mail onto j4k and it becomes one task, made from its latest mail: that mail's subject, sender and link. Mails of different conversations, dragged together, still become one task each."
+    },
+    {
+      "build": 474,
+      "date": "2026-10-27",
+      "title": "Dragging a mail conversation no longer crashes the Mac app",
+      "detail": "A conversation dragged from Apple Mail onto j4k crashed the app. It no longer does. A calendar event dragged in from Calendar had the same fault and is fixed too."
+    },
+    {
+      "build": 472,
+      "date": "2026-10-27",
+      "title": "No What's New bar; the message bar is amber",
+      "detail": "The What's New bar above the task list is gone. What's new is in Settings › About j4k, which still counts what you have not read. The bar that says what you just did, or what another device changed, is now amber instead of green."
+    },
+    {
+      "build": 471,
+      "date": "2026-10-27",
+      "title": "The search field sits exactly where folia's does",
+      "detail": "The search field is now in the exact centre of the top bar, as in folia, and its magnifier is folia's plain icon, with no yellow behind it. In Ask Claude mode the sparkle turns gold."
+    },
     {
       "build": 470,
       "date": "2026-10-27",
@@ -222,30 +246,6 @@
       "date": "2026-10-21",
       "title": "Meetings on the day you pick and 2 more",
       "detail": "Meetings on the day you pick: In Calendar view, the column of a day you pick in the month lists that day's meetings too, and meetings look like task cards. The Gmail import is gone: Starred Gmail mail no longer becomes a task, and the Gmail group has left the ... menu. The tasks it made earlier stay where they are. In the j4k Mac app a mail can still become a task: drag it from Apple Mail onto the window, or flag it in Mail. No scroll bar over a short text box: In Safari and in the j4k Mac app, on a Mac set to always show scroll bars, a one-line text box in the task editor — Write a new subtask, the description — drew a sideways scroll bar over its own text and cut it in half. It no longer does."
-    },
-    {
-      "build": 400,
-      "date": "2026-10-21",
-      "title": "The view you pick stays picked",
-      "detail": "In a freshly opened tab, a view you picked — List, Kanban or Calendar — could jump back to your default view when you came back to the tab from another one, or when the window got narrower or wider than a phone screen. It now stays until you pick another. The default view still applies when you open j4k, and at once when you change it under ... -> View."
-    },
-    {
-      "build": 398,
-      "date": "2026-10-21",
-      "title": "Flagged mails become tasks",
-      "detail": "Switch it on in Settings › Mail: every mail you flag in Apple Mail after that becomes a task in Review, once. Mails flagged before stay as they are. j4k looks every five minutes while it runs and Mail is open."
-    },
-    {
-      "build": 397,
-      "date": "2026-10-21",
-      "title": "Drag a mail onto j4k",
-      "detail": "Drag a mail from Apple Mail onto j4k's window and it becomes a task in Review, with a link that opens the mail again. It works for every account in Mail, and the same mail never becomes two tasks."
-    },
-    {
-      "build": 396,
-      "date": "2026-10-20",
-      "title": "Today's meetings next to today's tasks",
-      "detail": "In Calendar view, Today's Agenda lists today's meetings from your Mac's Calendar. The + beside a meeting makes it a task for that day, with its time, room and join link. j4k asks once to read your calendars."
     }
   ]
 }
