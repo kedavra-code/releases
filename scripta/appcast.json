@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 191,
-  "commit": "7f5d104",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-191/scripta.dmg",
-  "sha256": "70036b4a1b16e2a9264d0c3304928c72604c4ba9b80e4571812442043878cdd9",
+  "build": 192,
+  "commit": "4236c79",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-192/scripta.dmg",
+  "sha256": "26d44148e964fa8b33aeb56be2ba917810ebbbeb68676b72ecdb580c1ca454ac",
   "minimumSystemVersion": "26.0",
-  "notes": "\"folia note\" for every meeting",
+  "notes": "Docs opens the manual inside scripta",
   "entries": [
+    {
+      "build": 192,
+      "date": "2026-10-27",
+      "title": "Docs opens the manual inside scripta",
+      "detail": "About scripta › Docs now shows the scripta Field Manual in a window of scripta's own, from the copy scripta carries. It needs no claude.ai account and no internet, so anyone who has scripta can read it. A link to the web in the manual opens in your browser."
+    },
     {
       "build": 191,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "A meeting comes back after a crash",
       "detail": "When scripta or the Mac stops in the middle of a recording, the sound is still on this Mac. The list now shows such a recording at its top: Finish Meeting makes the transcript and the note from the sound, Delete removes it. One cause of such a stop is also gone: scripta no longer goes away at Record when the microphone sends three channels."
-    },
-    {
-      "build": 108,
-      "date": "2026-10-05",
-      "title": "About shows the kit version",
-      "detail": "The About window has a new row, Kit. It names the version of the code that scripta shares with murmur, unus and GLaDOS."
     }
   ]
 }
