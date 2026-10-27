@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 455,
-  "commit": "074bb60",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-455/j4k.dmg",
-  "sha256": "41d5de7f9410a8021bf4ca38705985b851cbdbaad242f2cc2ae08b28fd70dead",
+  "build": 456,
+  "commit": "92c3c37",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-456/j4k.dmg",
+  "sha256": "0d0e7e983d80d8752e4f225de1a7baa0a970a0c51630c536e002b405370eb1c9",
   "minimumSystemVersion": "26.0",
-  "notes": "The window comes to the front at a start",
+  "notes": "Docs opens the manual inside j4k",
   "entries": [
+    {
+      "build": 456,
+      "date": "2026-10-27",
+      "title": "Docs opens the manual inside j4k",
+      "detail": "About j4k › Docs now shows the j4k Field Manual in a window of j4k's own, from the copy j4k carries. It needs no claude.ai account and no internet, so anyone who has j4k can read it. A link to the web in the manual opens in your browser."
+    },
     {
       "build": 455,
       "date": "2026-10-26",
@@ -240,12 +246,6 @@
       "date": "2026-09-08",
       "title": "The tag list in a task no longer runs off the screen · The New button is gone; Review keeps its place",
       "detail": "The tag list in a task no longer runs off the screen: Picking a tag while editing a task opened a tall single column that ran past the bottom of the window and put a scrollbar on the page — it had fitted until the editor was enlarged last week, which made it a quarter taller. The tags now sit in two columns, with No tag across the top, so the whole list is visible at once without scrolling anything. Nothing about tags themselves changed. The New button is gone; Review keeps its place: The row under the filter chips carried two buttons for a day, New and Review. New has been removed and Review is on its own there now, the same size, colour and count it always had. The New filter itself has not gone anywhere — it is in the Status menu's Filter section, next to All and the star, where it does exactly what the button did: show only what you created in the last 24 hours, narrowing whatever else you have picked."
-    },
-    {
-      "build": 365,
-      "date": "2026-09-08",
-      "title": "The logo gives back the view a filter took",
-      "detail": "Filtering to Deleted, Archived or Review switches to the list, because those views have no board columns. Pressing the j4k logo now returns you to the view you have set under Layout — Kanban, List or Calendar — instead of leaving you in the list the filter borrowed. It only gives back a view a filter took away: if you picked a view yourself with the header buttons, the logo leaves it alone."
     }
   ]
 }
