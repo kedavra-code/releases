@@ -1,12 +1,24 @@
 {
   "app": "j4k",
-  "build": 461,
-  "commit": "b21f3d3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-461/j4k.dmg",
-  "sha256": "e03bd195ed82565a79cad320116abdad54573b2b55beff755f3298d60c402409",
+  "build": 464,
+  "commit": "a4db368",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-464/j4k.dmg",
+  "sha256": "a8ab2f03a696152cd47d34710a0596f5deb24a96ec5291d9fa96ad76124dab22",
   "minimumSystemVersion": "26.0",
-  "notes": "Comments on a task\nThe Done bar shows once you change the task\nA gold Done bar on top of the open task",
+  "notes": "No scrollbar on the main screen\nMail integration and Calendar integration",
   "entries": [
+    {
+      "build": 464,
+      "date": "2026-10-27",
+      "title": "No scrollbar on the main screen",
+      "detail": "The main screen no longer shows a scrollbar or keeps an empty strip for one on the right. It still scrolls with the trackpad, the mouse wheel and the keys."
+    },
+    {
+      "build": 463,
+      "date": "2026-10-27",
+      "title": "Mail integration and Calendar integration",
+      "detail": "In Settings › Mac app, Flagged mails as tasks is now Mail integration and Calendar meetings is now Calendar integration. Each switch now covers everything for its app: a mail dragged from Mail becomes a task only with Mail integration on, and an event dragged from Calendar only with Calendar integration on. With the switch off, a message tells you which one to turn on."
+    },
     {
       "build": 461,
       "date": "2026-10-27",
@@ -234,18 +246,6 @@
       "date": "2026-10-05",
       "title": "Cards show how many subtasks are done",
       "detail": "A task with subtasks now shows a small count under the three dots, such as 2/5: two of its five subtasks are done. You see it on a closed card, without opening the task, and it changes at once when you tick a subtask. Hover it to read it in words. A task with no subtasks shows nothing."
-    },
-    {
-      "build": 386,
-      "date": "2026-10-05",
-      "title": "Swimlanes by priority and by week",
-      "detail": "The Swimlanes button on the Kanban board has two more choices. Priority gives one row each for No prio, High, Medium and Low; drag a card into another row to change its priority. Week gives a row for this week and each of the next three, plus a row for any other week a task is planned for, and No week last. Drag a card onto a week row to plan it for that week: the week is set and the start date moves to that week’s Monday, exactly as when you pick a week in the editor. Dropping a card on No week takes the week off and leaves the start date alone. As before, one Undo takes back a drop."
-    },
-    {
-      "build": 384,
-      "date": "2026-10-04",
-      "title": "The filter menus look the same in light and dark mode",
-      "detail": "In light mode the small headings inside the filter menus (Show, Sort) were too pale to read comfortably, and Clear filter was missing the bold text and the line under it that dark mode has always shown. Both themes now draw the menus the same way. Nothing about how the filters work has changed."
     }
   ]
 }
