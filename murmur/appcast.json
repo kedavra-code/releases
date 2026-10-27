@@ -1,12 +1,24 @@
 {
   "app": "murmur",
-  "build": 189,
-  "commit": "a3022ca",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-189/murmur.dmg",
-  "sha256": "b5f4c1378ca8994de448c12455a0570a1aef4f6e39642fe3e06979a2bce4c633",
+  "build": 191,
+  "commit": "ee69922",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-191/murmur.dmg",
+  "sha256": "7f67f4f060e310644b9fdee04c464bd2934585317ce1ee71325b4ec6a401a5d7",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs opens the manual inside murmur",
+  "notes": "Live text in hands-free, the same in every app\nLive text works in hands-free again",
   "entries": [
+    {
+      "build": 191,
+      "date": "2026-10-27",
+      "title": "Live text in hands-free, the same in every app",
+      "detail": "Write the text while I speak now writes as you speak only in hands-free (tap the key twice). With the key held, the text comes when you let go, in every app. Before, it depended on the app."
+    },
+    {
+      "build": 190,
+      "date": "2026-10-27",
+      "title": "Live text works in hands-free again",
+      "detail": "With Write the text while I speak on, hands-free (tap the key twice) wrote nothing until the end, in every app. The first tap's clean-up wiped where the words had to go. Now the words appear while you speak, also in folia."
+    },
     {
       "build": 189,
       "date": "2026-10-27",
@@ -234,18 +246,6 @@
       "date": "2026-08-29",
       "title": "Cancel a model download, and confirm a delete",
       "detail": "The Parakeet download has a Cancel button, and Download continues later where it stopped. Delete Model asks first, and says what it frees."
-    },
-    {
-      "build": 70,
-      "date": "2026-08-29",
-      "title": "Delete the Parakeet model",
-      "detail": "Settings shows how much disk space Parakeet uses, with its compiled copies. Delete Model frees all of it and switches dictation back to Apple's engine."
-    },
-    {
-      "build": 65,
-      "date": "2026-08-29",
-      "title": "murmur updates itself",
-      "detail": "murmur looks for a new build once a day and offers it in the menu; it installs when you choose it. “Check for updates automatically” in Settings › General switches the daily look off."
     }
   ]
 }
