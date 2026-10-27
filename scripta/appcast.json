@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 193,
-  "commit": "d9025b8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-193/scripta.dmg",
-  "sha256": "be08300f81436302d35668bdf9bde87435f56ae1e33ddc60b214fac3c02f4893",
+  "build": 194,
+  "commit": "f3b5a0f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-194/scripta.dmg",
+  "sha256": "16d65e6ab364b5227c80742633c4e13616929ae822a1539e63449d81c9f9cbc3",
   "minimumSystemVersion": "26.0",
-  "notes": "Tasks to j4k moved to folia",
+  "notes": "Calendar integration",
   "entries": [
+    {
+      "build": 194,
+      "date": "2026-10-27",
+      "title": "Calendar integration",
+      "detail": "The switch in Settings › General that was called Meeting from Calendar is now called Calendar integration. It does the same as before."
+    },
     {
       "build": 193,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "Hear a moment of the meeting",
       "detail": "Click a time — beside a paragraph of the transcript, or at the end of a decision, a task or an open point in the minutes — and scripta plays that moment from the recording. So you can hear what was said there. Click again to stop. It works while the recording is on this Mac: a week for a meeting scripta recorded."
-    },
-    {
-      "build": 110,
-      "date": "2026-10-05",
-      "title": "The search finds what was said",
-      "detail": "The search field over the list found a meeting by its title or a speaker's name. It now also finds the words said in a meeting. The row shows the first place with its time. Open the meeting, and the transcript goes to that place; ⌘↓ and ⌘↑ step through the others."
     }
   ]
 }
