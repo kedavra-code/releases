@@ -1,12 +1,30 @@
 {
   "app": "j4k",
-  "build": 457,
-  "commit": "547d3de",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-457/j4k.dmg",
-  "sha256": "6d7d85d6305528b52e0514f3a76a19075770ee05a97dcad8117fda5c3aeba3d9",
+  "build": 461,
+  "commit": "b21f3d3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-461/j4k.dmg",
+  "sha256": "e03bd195ed82565a79cad320116abdad54573b2b55beff755f3298d60c402409",
   "minimumSystemVersion": "26.0",
-  "notes": "About j4k has Settings…",
+  "notes": "Comments on a task\nThe Done bar shows once you change the task\nA gold Done bar on top of the open task",
   "entries": [
+    {
+      "build": 461,
+      "date": "2026-10-27",
+      "title": "Comments on a task",
+      "detail": "An open task has a Comments section below its subtasks. Write a comment and press Enter; it goes on top with its date and time. Add as many as you like, change one in its box, or remove it with its bin. The card shows them too, under the subtasks."
+    },
+    {
+      "build": 460,
+      "date": "2026-10-27",
+      "title": "The Done bar shows once you change the task",
+      "detail": "The gold Done bar on top of an open task now appears only after you create or change it. The j4k name no longer gets a gold ring while you edit."
+    },
+    {
+      "build": 459,
+      "date": "2026-10-27",
+      "title": "A gold Done bar on top of the open task",
+      "detail": "As soon as you create or change a task, a wide gold Done — back to the list bar appears at its top. It takes you back to where you opened the task. Your changes are already saved as you type, so it says Done, not Save. The j4k name and Esc still work too."
+    },
     {
       "build": 457,
       "date": "2026-10-27",
@@ -228,24 +246,6 @@
       "date": "2026-10-04",
       "title": "The filter menus look the same in light and dark mode",
       "detail": "In light mode the small headings inside the filter menus (Show, Sort) were too pale to read comfortably, and Clear filter was missing the bold text and the line under it that dark mode has always shown. Both themes now draw the menus the same way. Nothing about how the filters work has changed."
-    },
-    {
-      "build": 382,
-      "date": "2026-10-04",
-      "title": "The small filter line now says how much each filter cuts",
-      "detail": "The line under the filter buttons used to show a number on every chip, and all four were always the same number — the tasks on screen. Now a chip shows a number only when its filter is on, as two numbers: 12 of 34 means that filter keeps 12 of the 34 tasks the other filters allow. So you can see which filter removes the most. A filter that is off shows nothing, and a sort alone does not count."
-    },
-    {
-      "build": 378,
-      "date": "2026-10-04",
-      "title": "Swimlanes on the Kanban board",
-      "detail": "A fifth button beside the four filters, Swimlanes, cuts the Kanban board into rows: one row per tag, or one row per size. Each row has the usual four columns, so you see at a glance what is in Backlog, Doing, Pending and Done for every tag. Every tag and every size gets a row, empty ones too, so you can drag a card onto a tag nothing uses yet; tasks without one sit in a last row. In the browser, dragging a card into another row changes its tag or size — and its status too if you drop it in another column — as one change that a single Undo takes back. The menu also has a Sort section for the order of the rows: the usual order, reversed, most tasks first or fewest tasks first — most tasks first puts the full rows on top and the empty ones at the bottom. The small line under the buttons reports the swimlanes too, with the number of rows, and in the menu Tags and Size each show how many rows they would give. Clear filter in the menu, None, or the j4k logo puts the plain board back. The button shows on the Kanban board only."
-    },
-    {
-      "build": 372,
-      "date": "2026-09-08",
-      "title": "The scrollbar that was always there is gone",
-      "detail": "Every page had about 14 pixels of scroll it did not need — a scrollbar on the right even with a single task on screen and plenty of empty space below it. The page is now exactly as tall as what is on it, so a scrollbar means there is genuinely more to see. Nothing moved: the header and everything under it sit where they always did."
     }
   ]
 }
