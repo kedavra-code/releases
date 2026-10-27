@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 36,
-  "commit": "0629046",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-36/specula.dmg",
-  "sha256": "d830d3fdee7436242a2aa666582e1ddd09b90f84b485a915783472d51d92b38c",
+  "build": 37,
+  "commit": "e820104",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-37/specula.dmg",
+  "sha256": "e5a1aaab125dd1b849a202a26689dbfe90c537e8916f550cd895c3fbd392fbff",
   "minimumSystemVersion": "26.0",
-  "notes": "The window comes to the front at a start",
+  "notes": "Docs opens the manual inside specula",
   "entries": [
+    {
+      "build": 37,
+      "date": "2026-10-27",
+      "title": "Docs opens the manual inside specula",
+      "detail": "About specula › Docs now shows the specula Field Manual in a window of specula's own, from the copy specula carries. It needs no claude.ai account and no internet, so anyone who has specula can read it. A link to the web in the manual opens in your browser."
+    },
     {
       "build": 36,
       "date": "2026-10-26",
