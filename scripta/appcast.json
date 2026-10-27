@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 192,
-  "commit": "4236c79",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-192/scripta.dmg",
-  "sha256": "26d44148e964fa8b33aeb56be2ba917810ebbbeb68676b72ecdb580c1ca454ac",
+  "build": 193,
+  "commit": "d9025b8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-193/scripta.dmg",
+  "sha256": "be08300f81436302d35668bdf9bde87435f56ae1e33ddc60b214fac3c02f4893",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs opens the manual inside scripta",
+  "notes": "Tasks to j4k moved to folia",
   "entries": [
+    {
+      "build": 193,
+      "date": "2026-10-27",
+      "title": "Tasks to j4k moved to folia",
+      "detail": "scripta no longer sends the tasks of a meeting to j4k, and Settings › General has no Tasks to j4k and no j4k sign-in any more. folia does it now: switch it on in folia's Settings. scripta still writes the minutes into folia, so your tasks still reach j4k's Review."
+    },
     {
       "build": 192,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "The search finds what was said",
       "detail": "The search field over the list found a meeting by its title or a speaker's name. It now also finds the words said in a meeting. The row shows the first place with its time. Open the meeting, and the transcript goes to that place; ⌘↓ and ⌘↑ step through the others."
-    },
-    {
-      "build": 109,
-      "date": "2026-10-05",
-      "title": "A meeting comes back after a crash",
-      "detail": "When scripta or the Mac stops in the middle of a recording, the sound is still on this Mac. The list now shows such a recording at its top: Finish Meeting makes the transcript and the note from the sound, Delete removes it. One cause of such a stop is also gone: scripta no longer goes away at Record when the microphone sends three channels."
     }
   ]
 }
