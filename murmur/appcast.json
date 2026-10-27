@@ -1,12 +1,18 @@
 {
   "app": "murmur",
-  "build": 187,
-  "commit": "18db8b3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-187/murmur.dmg",
-  "sha256": "78ad56b17321908d09ede67ed3685e806c6ddf7e1e09bfa93a22d5136e8a303b",
+  "build": 189,
+  "commit": "a3022ca",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-189/murmur.dmg",
+  "sha256": "b5f4c1378ca8994de448c12455a0570a1aef4f6e39642fe3e06979a2bce4c633",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Docs opens the manual inside murmur",
   "entries": [
+    {
+      "build": 189,
+      "date": "2026-10-27",
+      "title": "Docs opens the manual inside murmur",
+      "detail": "About murmur › Docs now shows the murmur Field Manual in a window of murmur's own, from the copy murmur carries. It needs no claude.ai account and no internet, so anyone who has murmur can read it. A link to the web in the manual opens in your browser."
+    },
     {
       "build": 179,
       "date": "2026-10-25",
