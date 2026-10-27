@@ -1,11 +1,11 @@
 {
   "app": "scripta",
-  "build": 194,
-  "commit": "f3b5a0f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-194/scripta.dmg",
-  "sha256": "16d65e6ab364b5227c80742633c4e13616929ae822a1539e63449d81c9f9cbc3",
+  "build": 196,
+  "commit": "bc474c5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-196/scripta.dmg",
+  "sha256": "cf6df4da968f03ba4ac4386ca736a23c7fd799bcd1e0589f04ad03fd7763d4f6",
   "minimumSystemVersion": "26.0",
-  "notes": "Calendar integration",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 194,
