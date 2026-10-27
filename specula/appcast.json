@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 38,
-  "commit": "17a5b69",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-38/specula.dmg",
-  "sha256": "bffb1f6a21731fc02aa1a2cf1153355efc2a76c01f9843489d265d1f022e05f6",
+  "build": 39,
+  "commit": "a455a7a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-39/specula.dmg",
+  "sha256": "68a3d121233c918d51c939e06fc6727c25c270431b790d758f43c83421129807",
   "minimumSystemVersion": "26.0",
-  "notes": "About specula has Settings…",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 38,
