@@ -1,11 +1,11 @@
 {
   "app": "folia",
-  "build": 235,
-  "commit": "1aef06b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-235/folia.dmg",
-  "sha256": "208de967bb3d46c56193a02bb7c8156f5ddede789d64791524d6974d067da56c",
+  "build": 236,
+  "commit": "d8e0eb0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-236/folia.dmg",
+  "sha256": "4a404c9ddbb699c40f3cb61ac7ac28b154d13ef4d3bdef752e2a06a21d6d09c2",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs in Settings opens the manual in a window\nA wider search bar",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 235,
