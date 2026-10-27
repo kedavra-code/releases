@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 413,
-  "commit": "03df299",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-413/GLaDOS.dmg",
-  "sha256": "6c37c569ece5e88b979418a3dd353c5134f3df79c6fd73aa67b0ba9c959d0153",
+  "build": 415,
+  "commit": "f97200a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-415/GLaDOS.dmg",
+  "sha256": "cd9961f0672c011e28c3b3f761f58bd05d29433e2a588456d8f41635576577f3",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "GLaDOS is a little larger",
   "entries": [
+    {
+      "build": 415,
+      "date": "2026-10-27",
+      "title": "GLaDOS is a little larger",
+      "detail": "Her eye is five percent larger everywhere: small in her corner, big alone, and big beside J.A.R.V.I.S. He stays the same size. In the big views her lines can now reach a little past the edge of the screen when she speaks loudly."
+    },
     {
       "build": 407,
       "date": "2026-10-25",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "J.A.R.V.I.S.'s German voice is less deep",
       "detail": "His German voice played two semitones lower than its model speaks. It now plays one semitone lower. The light metallic ring is the same, and he is as loud as before."
-    },
-    {
-      "build": 297,
-      "date": "2026-10-05",
-      "title": "One dictionary for GLaDOS, murmur and scripta",
-      "detail": "The three apps now read the same dictionary file, so you teach a word one time. GLaDOS put the names she knew into that file. You can now change them: in murmur's Settings, under Dictionary, or in the file itself. An entry works in all three apps."
     }
   ]
 }
