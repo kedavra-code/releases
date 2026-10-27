@@ -1,11 +1,11 @@
 {
   "app": "unus",
-  "build": 211,
-  "commit": "632f652",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-211/unus.dmg",
-  "sha256": "58f37f6b44ad4b0aad2fd70e9b48da81d1494de526a8ab482fb18e6d36fd6f52",
+  "build": 212,
+  "commit": "45c4e95",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-212/unus.dmg",
+  "sha256": "c4ad8207a398cafa25cef202fe6e8edc5d8483b5238c062f83b959343f6d3361",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs opens the manual inside unus",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 211,
