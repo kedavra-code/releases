@@ -1,12 +1,36 @@
 {
   "app": "j4k",
-  "build": 464,
-  "commit": "a4db368",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-464/j4k.dmg",
-  "sha256": "a8ab2f03a696152cd47d34710a0596f5deb24a96ec5291d9fa96ad76124dab22",
+  "build": 470,
+  "commit": "a490469",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-470/j4k.dmg",
+  "sha256": "ba82cf9eb90b9ee8009115502dcb3bdee419a499ad3c3b90a8e9fa1456665261",
   "minimumSystemVersion": "26.0",
-  "notes": "No scrollbar on the main screen\nMail integration and Calendar integration",
+  "notes": "The search field is in the top bar, as in folia\nDocs in Settings opens the manual in a window\nNo Done bar on an open task\nA gold frame around j4k shows the way back",
   "entries": [
+    {
+      "build": 470,
+      "date": "2026-10-27",
+      "title": "The search field is in the top bar, as in folia",
+      "detail": "The search field moved from above the task list into the centre of the top bar, and looks like folia's. On a phone it fills the top bar's second row. In Ask Claude mode the field no longer has a microphone or a conversation button; Settings › Brain still opens the conversation."
+    },
+    {
+      "build": 469,
+      "date": "2026-10-27",
+      "title": "Docs in Settings opens the manual in a window",
+      "detail": "In the j4k Mac app, Settings › About j4k › Docs opens the j4k Field Manual in a window of the app, as the Docs button in the About j4k window does. In a browser it still opens the page online."
+    },
+    {
+      "build": 467,
+      "date": "2026-10-27",
+      "title": "No Done bar on an open task",
+      "detail": "The gold Done bar on top of a task you create or edit is gone. To go back to the list, press j4k in its gold frame, or press Esc. Your changes are saved as you type."
+    },
+    {
+      "build": 466,
+      "date": "2026-10-27",
+      "title": "A gold frame around j4k shows the way back",
+      "detail": "The j4k name in the header wears a gold frame whenever pressing it does something: a task is open, a filter, sort or search is set, or the board has swimlanes. Gold rings ripple out from it each time you change a filter. Press j4k to clear them all. With Reduce motion on, the frame stays and the rings do not move."
+    },
     {
       "build": 464,
       "date": "2026-10-27",
@@ -29,7 +53,7 @@
       "build": 460,
       "date": "2026-10-27",
       "title": "The Done bar shows once you change the task",
-      "detail": "The gold Done bar on top of an open task now appears only after you create or change it. The j4k name no longer gets a gold ring while you edit."
+      "detail": "The gold Done bar on top of an open task now appears only after you create or change it."
     },
     {
       "build": 459,
@@ -222,30 +246,6 @@
       "date": "2026-10-20",
       "title": "Today's meetings next to today's tasks",
       "detail": "In Calendar view, Today's Agenda lists today's meetings from your Mac's Calendar. The + beside a meeting makes it a task for that day, with its time, room and join link. j4k asks once to read your calendars."
-    },
-    {
-      "build": 395,
-      "date": "2026-10-20",
-      "title": "The j4k Mac app",
-      "detail": "j4k in its own window, with menus and its own updates. Sign in with Google in a system window. Settings (⌘,) opens j4k's settings. Reload Page (⌘R) loads j4k again."
-    },
-    {
-      "build": 392,
-      "date": "2026-10-07",
-      "title": "Choose how much the assistant thinks",
-      "detail": "Under ... -> Assistant there is now an effort selector beside the model: Low, Medium or High. Low is the default and the fastest. High makes Claude think longer before it answers, which helps with a request that is hard to understand, and it takes more time. Your choice is remembered on this device. The Assistant button, the model and the effort now sit in one line."
-    },
-    {
-      "build": 391,
-      "date": "2026-10-07",
-      "title": "The assistant runs on the newest Claude models",
-      "detail": "The Model picker beside the Assistant button under ... now offers Haiku 5.5, Sonnet 5.5 and Opus 5.5, in place of Haiku 4.5, Sonnet 5 and Opus 5. Haiku 5.5 is the default and the fastest; Opus 5.5 understands the most. If you had picked Sonnet or Opus before, pick it again once: an old choice falls back to Haiku 5.5."
-    },
-    {
-      "build": 387,
-      "date": "2026-10-05",
-      "title": "Cards show how many subtasks are done",
-      "detail": "A task with subtasks now shows a small count under the three dots, such as 2/5: two of its five subtasks are done. You see it on a closed card, without opening the task, and it changes at once when you tick a subtask. Hover it to read it in words. A task with no subtasks shows nothing."
     }
   ]
 }
