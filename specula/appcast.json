@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 39,
-  "commit": "a455a7a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-39/specula.dmg",
-  "sha256": "68a3d121233c918d51c939e06fc6727c25c270431b790d758f43c83421129807",
+  "build": 41,
+  "commit": "620652e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-41/specula.dmg",
+  "sha256": "d8f654d84cd3a5d21aaca15a2f1fdb4dc70eb74f36532692be750d14de6f0d9c",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Docs in Settings opens the manual in a window",
   "entries": [
+    {
+      "build": 41,
+      "date": "2026-10-27",
+      "title": "Docs in Settings opens the manual in a window",
+      "detail": "In the specula Mac app, Settings › About specula › Docs opens the specula Field Manual in a window of the app, as the Docs button in the About specula window does. In a browser it still opens the page online."
+    },
     {
       "build": 38,
       "date": "2026-10-27",
