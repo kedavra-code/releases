@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 221,
-  "commit": "232d9a5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-221/folia.dmg",
-  "sha256": "ead965c737502c05a3d724c6497e90ce2a8aa728cc6a6b44549c99897b49ba02",
+  "build": 222,
+  "commit": "22a43fc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-222/folia.dmg",
+  "sha256": "d4d641fbb0e85844410adb1db71e8464e9cb80a06f5086230ae82b4c11e6e068",
   "minimumSystemVersion": "26.0",
-  "notes": "A page title is no longer cut when you zoom\nA click on a picture shows it at its own size\nscripta's folia note finds a day's page in a person's notebook\nscripta's folia note finds the meeting's page\nMove and copy pages to any section, in any notebook",
+  "notes": "folia asks before a moved page replaces one of the same name",
   "entries": [
+    {
+      "build": 222,
+      "date": "2026-10-27",
+      "title": "folia asks before a moved page replaces one of the same name",
+      "detail": "When you move or copy a page to a section that already has a page with its name, folia asks whether to replace it. Replace puts the page that was there into the trash, and undo brings it back. Cancel moves nothing. Dropping a page on a section in the sidebar asks too."
+    },
     {
       "build": 221,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "Zooming keeps the page’s width",
       "detail": "A pinch, ⌘+ or ⌘− makes the page’s text larger or smaller; the page itself keeps filling its width. Before, it became narrower or wider with the zoom."
-    },
-    {
-      "build": 154,
-      "date": "2026-10-24",
-      "title": "The page uses its whole width",
-      "detail": "The text and tables of a page now fill the space they have: more when a side panel is closed, and all of it when the page is shown alone, so wide tables show whole."
     }
   ]
 }
