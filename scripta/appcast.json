@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 189,
-  "commit": "29efa1e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-189/scripta.dmg",
-  "sha256": "a5227ff4fd7e38c27474ba7a582686732f5748d92d23f56a3a4c5f8910c6dbbc",
+  "build": 191,
+  "commit": "7f5d104",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-191/scripta.dmg",
+  "sha256": "70036b4a1b16e2a9264d0c3304928c72604c4ba9b80e4571812442043878cdd9",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "\"folia note\" for every meeting",
   "entries": [
+    {
+      "build": 191,
+      "date": "2026-10-27",
+      "title": "\"folia note\" for every meeting",
+      "detail": "Every meeting now has \"folia note\" under its title, and the \"Note\" link is gone (Show in Finder does the same). folia finds the meeting's page: the page with the minutes, else the page you prepared, else the page of that day with the meeting's name — also in a notebook named for the person. If there is none, folia says so. It needs folia build 219."
+    },
     {
       "build": 188,
       "date": "2026-10-26",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "About shows the kit version",
       "detail": "The About window has a new row, Kit. It names the version of the code that scripta shares with murmur, unus and GLaDOS."
-    },
-    {
-      "build": 105,
-      "date": "2026-10-05",
-      "title": "Settings is as wide as in murmur and GLaDOS",
-      "detail": "The Settings window is wider, in all four tabs. The Dictionary tab, which is the same in the three apps, now also has the same size in the three."
     }
   ]
 }
