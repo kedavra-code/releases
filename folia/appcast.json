@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 224,
-  "commit": "9709e64",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-224/folia.dmg",
-  "sha256": "2b14b3a7c1079c085e485d1cf6cda302020e622ad750c66da779f076fc3a3029",
+  "build": 225,
+  "commit": "1890c85",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-225/folia.dmg",
+  "sha256": "8f767f5dd0e2162c5410e2f90f753ff5268a97463c6d445264983ece3dc9b1ea",
   "minimumSystemVersion": "26.0",
-  "notes": "Split view: two pages side by side or one above the other\nDocs opens the manual inside folia",
+  "notes": "About folia has Settings…",
   "entries": [
+    {
+      "build": 225,
+      "date": "2026-10-27",
+      "title": "About folia has Settings…",
+      "detail": "About folia now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens folia's Settings the way the menu does."
+    },
     {
       "build": 224,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "Copy a page fresh from OneNote",
       "detail": "A page from your ETH notebooks has “Copy fresh from OneNote” in its menu in the page list. It brings the page as OneNote has it now, with its pictures and files where they stand. If the page has lines OneNote does not have, folia asks first. History keeps the page as it was."
-    },
-    {
-      "build": 159,
-      "date": "2026-10-24",
-      "title": "The opened page at the top of the page list",
-      "detail": "A page opened by a link, by search or by ⌘O now stands at the top of the page list, not at its bottom. A page you click in the list stays where it is."
     }
   ]
 }
