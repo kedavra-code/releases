@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 213,
-  "commit": "36fe7f7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-213/folia.dmg",
-  "sha256": "b30e67e5f60a3aa7647edc418a65125dda0bdb8d4e5e0cff89d39313a2c90e54",
+  "build": 216,
+  "commit": "4f45ea3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-216/folia.dmg",
+  "sha256": "048831abee844e82e9300af7df493e0224b2c2f5a6a2458467c7cf5f65f5fe26",
   "minimumSystemVersion": "26.0",
-  "notes": "At login, folia stays in the background",
+  "notes": "Numbered sub-lists keep every item",
   "entries": [
+    {
+      "build": 215,
+      "date": "2026-10-27",
+      "title": "Numbered sub-lists keep every item",
+      "detail": "A numbered sub-list whose first item is indented more than the next, as some pages from OneNote have it, lost that first item. Now it keeps every item. Copies from OneNote also keep a word that OneNote wrote bold or italic in two pieces. Settings › OneNote no longer has \"Repair them\": no page has a broken table any more."
+    },
     {
       "build": 213,
       "date": "2026-10-26",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "The Mac app's What's New looks like this one, and its About has Docs",
       "detail": "In the Mac app, What's New shows a card for each day, as here. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch. About folia has a Docs button: it opens the folia Field Manual."
-    },
-    {
-      "build": 145,
-      "date": "2026-10-24",
-      "title": "Each notebook opens on your last page",
-      "detail": "Switch to another notebook and back: folia opens the page you had open there, as long as it is still there."
     }
   ]
 }
