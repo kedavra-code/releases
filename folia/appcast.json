@@ -1,12 +1,42 @@
 {
   "app": "folia",
-  "build": 216,
-  "commit": "4f45ea3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-216/folia.dmg",
-  "sha256": "048831abee844e82e9300af7df493e0224b2c2f5a6a2458467c7cf5f65f5fe26",
+  "build": 221,
+  "commit": "232d9a5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-221/folia.dmg",
+  "sha256": "ead965c737502c05a3d724c6497e90ce2a8aa728cc6a6b44549c99897b49ba02",
   "minimumSystemVersion": "26.0",
-  "notes": "Numbered sub-lists keep every item",
+  "notes": "A page title is no longer cut when you zoom\nA click on a picture shows it at its own size\nscripta's folia note finds a day's page in a person's notebook\nscripta's folia note finds the meeting's page\nMove and copy pages to any section, in any notebook",
   "entries": [
+    {
+      "build": 221,
+      "date": "2026-10-27",
+      "title": "A page title is no longer cut when you zoom",
+      "detail": "When you zoom a page in or out, its title grows or shrinks with it and wraps onto more lines when it needs them. Before, a zoomed title was cut off at the line below it."
+    },
+    {
+      "build": 220,
+      "date": "2026-10-27",
+      "title": "A click on a picture shows it at its own size",
+      "detail": "Click a picture in a page and it opens over the window at its own size. A picture larger than the window scrolls. Esc or a click closes it. The corners still resize the picture in the page."
+    },
+    {
+      "build": 219,
+      "date": "2026-10-27",
+      "title": "scripta's folia note finds a day's page in a person's notebook",
+      "detail": "A page titled with the day alone, as in a notebook kept for one person, is found by the notebook's name: scripta's folia note for \"20261014 JF Anna\" opens the page \"20261014\" in the notebook \"JF Anna\"."
+    },
+    {
+      "build": 218,
+      "date": "2026-10-27",
+      "title": "scripta's folia note finds the meeting's page",
+      "detail": "scripta's folia note opens the meeting's page in folia: the page scripta wrote the minutes into, else the page prepared for the meeting, else the page of that day with the meeting's title. If there is none, folia says so. A meeting page you put in the trash stays there: scripta no longer makes a new one in its place."
+    },
+    {
+      "build": 217,
+      "date": "2026-10-27",
+      "title": "Move and copy pages to any section, in any notebook",
+      "detail": "A page's … menu has Move to section… and Copy to section…, also for several picked pages, and so has the bar at the foot of the page list. A window lists every notebook with its sections. Into another notebook, a page's pictures and files go along, so the people of that notebook can open them. A copy is a new page with the same title, text, pictures and files."
+    },
     {
       "build": 215,
       "date": "2026-10-27",
@@ -216,36 +246,6 @@
       "date": "2026-10-24",
       "title": "The page uses its whole width",
       "detail": "The text and tables of a page now fill the space they have: more when a side panel is closed, and all of it when the page is shown alone, so wide tables show whole."
-    },
-    {
-      "build": 151,
-      "date": "2026-10-24",
-      "title": "A click on a link opens it",
-      "detail": "In a page, a click on a web link opens it in your default browser, a mail link in your mail app, and a link to a folia page opens that page. Before, a click only placed the cursor."
-    },
-    {
-      "build": 150,
-      "date": "2026-10-24",
-      "title": "YouTube videos play in the page",
-      "detail": "Paste a YouTube link on a line of its own and it becomes a player. The Markdown copy keeps the video as its link."
-    },
-    {
-      "build": 148,
-      "date": "2026-10-24",
-      "title": "The page back to 100%",
-      "detail": "⌘0 sets the page back to 100%; ⌘+ and ⌘− make it larger and smaller, as in Safari. When the page is not at 100%, the status bar shows its size: a click on it sets it back."
-    },
-    {
-      "build": 147,
-      "date": "2026-10-24",
-      "title": "Updates show at once",
-      "detail": "When a new version of folia has come, folia reloads once and uses it. Before, the new version showed only from the second start."
-    },
-    {
-      "build": 146,
-      "date": "2026-10-24",
-      "title": "The Mac app's What's New looks like this one, and its About has Docs",
-      "detail": "In the Mac app, What's New shows a card for each day, as here. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch. About folia has a Docs button: it opens the folia Field Manual."
     }
   ]
 }
