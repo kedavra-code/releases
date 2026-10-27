@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 415,
-  "commit": "f97200a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-415/GLaDOS.dmg",
-  "sha256": "cd9961f0672c011e28c3b3f761f58bd05d29433e2a588456d8f41635576577f3",
+  "build": 416,
+  "commit": "a4efc78",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-416/GLaDOS.dmg",
+  "sha256": "61a4c70a8e4d7b43c277565c76100483937a12d313fef024b341c8a503265b16",
   "minimumSystemVersion": "26.0",
-  "notes": "GLaDOS is a little larger",
+  "notes": "Docs opens the manual inside GLaDOS",
   "entries": [
+    {
+      "build": 416,
+      "date": "2026-10-27",
+      "title": "Docs opens the manual inside GLaDOS",
+      "detail": "About GLaDOS › Docs now shows the GLaDOS Field Manual in a window of GLaDOS's own, from the copy GLaDOS carries. It needs no claude.ai account and no internet, so anyone who has GLaDOS can read it. A link to the web in the manual opens in your browser."
+    },
     {
       "build": 415,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "A Dictionary tab in Settings",
       "detail": "Settings has a new Dictionary tab: each word and each correction is a row you can change, with a search field and buttons to add one. It is the same tab as in murmur and scripta, and an entry made in one app works in all three. GLaDOS uses a change in her next answer."
-    },
-    {
-      "build": 299,
-      "date": "2026-10-05",
-      "title": "J.A.R.V.I.S.'s German voice is less deep",
-      "detail": "His German voice played two semitones lower than its model speaks. It now plays one semitone lower. The light metallic ring is the same, and he is as loud as before."
     }
   ]
 }
