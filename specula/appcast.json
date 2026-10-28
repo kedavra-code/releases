@@ -1,12 +1,24 @@
 {
   "app": "specula",
-  "build": 48,
-  "commit": "0afd251",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-48/specula.dmg",
-  "sha256": "78c912a7df52cee5bb73e91dc648bd774b670e88af8fe899bb5ffd80915d36aa",
+  "build": 52,
+  "commit": "7b56d6a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-52/specula.dmg",
+  "sha256": "5a55f3158e3c981f2d7e95dcef163600b3b0c6d0ff7beaab22c3a04460d00816",
   "minimumSystemVersion": "26.0",
-  "notes": "About and What's New in the family's style",
+  "notes": "3D opens behind the ship\nOther apps can open specula on a view",
   "entries": [
+    {
+      "build": 52,
+      "date": "2026-10-28",
+      "title": "3D opens behind the ship",
+      "detail": "Switched to 3D, the vault now turns to the view from behind the ship and a little above, as in the warp: ITAKB and ITKB at the top, ETH and kedavra in the middle, SRG SSR and NZZ at the bottom. The Timelapse keeps its own view."
+    },
+    {
+      "build": 50,
+      "date": "2026-10-28",
+      "title": "Other apps can open specula on a view",
+      "detail": "A link specula://show with a view of the vault brings the specula Mac app to the front on that view. GLaDOS uses it to show you the Cerebrum in specula, not in a browser tab."
+    },
     {
       "build": 47,
       "date": "2026-10-28",
