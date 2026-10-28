@@ -1,12 +1,30 @@
 {
   "app": "GLaDOS",
-  "build": 428,
-  "commit": "d307c09",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-428/GLaDOS.dmg",
-  "sha256": "fd8094c1f3adea7b37f55cb6c6fce72bcf81037b82f64479ef72f669d3bb0b27",
+  "build": 434,
+  "commit": "c1fb281",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-434/GLaDOS.dmg",
+  "sha256": "60ee88c7fa227dc86628b42e8a0cd844212e2211e8a12869c1292a2fd8fa4252",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings from Setup\nSetup in the family's style\nSettings, About and What's New in the family's style",
+  "notes": "j4k and Cerebrum open in their own apps\nClearer names for the switches in Armarium\nArmarium, a new tab in Settings",
   "entries": [
+    {
+      "build": 434,
+      "date": "2026-10-28",
+      "title": "j4k and Cerebrum open in their own apps",
+      "detail": "When the j4k and specula Mac apps are installed, GLaDOS and J.A.R.V.I.S. open them instead of a Chrome tab: \"show me my Doing tasks\" brings j4k to the front on that view, and \"open Cerebrum in 3D\", a search or \"start the film\" do it in specula's window. Without the apps, Chrome as before."
+    },
+    {
+      "build": 433,
+      "date": "2026-10-28",
+      "title": "Clearer names for the switches in Armarium",
+      "detail": "In Settings › Armarium the switches are called “Let GLaDOS and J.A.R.V.I.S. read in j4k”, “Let GLaDOS and J.A.R.V.I.S. read in Cerebrum” and “Let GLaDOS and J.A.R.V.I.S. generate reports in Cerebrum”. They work as before."
+    },
+    {
+      "build": 431,
+      "date": "2026-10-28",
+      "title": "Armarium, a new tab in Settings",
+      "detail": "Settings has a new tab, Armarium, for j4k and Cerebrum: their switches and the j4k sign-in moved there from Brain. “Only obey my voice” moved from Brain to Voice, and the Say Something test is gone. So the Brain tab fits on the screen again."
+    },
     {
       "build": 427,
       "date": "2026-10-28",
@@ -228,24 +246,6 @@
       "date": "2026-10-05",
       "title": "About shows the kit version",
       "detail": "The About window has a new row, Kit. It names the version of the code that GLaDOS shares with murmur, unus and scripta."
-    },
-    {
-      "build": 306,
-      "date": "2026-10-05",
-      "title": "Say \"think hard\" for one deep answer",
-      "detail": "Say \"think hard\", \"take your time\" or \"denk nach\" in a question, and that one answer comes from Opus at high effort, whatever brain you chose in Settings. The next answer is your own brain's again. So you can set a fast brain for every day, for example Sonnet at Low, and still get a careful answer when you ask for one."
-    },
-    {
-      "build": 305,
-      "date": "2026-10-05",
-      "title": "She hears again by herself",
-      "detail": "When the Mac's audio changed under her, for example with earbuds whose connection changed, she could stop hearing until you restarted her. She now notices that her audio stopped and starts it again, in about two seconds."
-    },
-    {
-      "build": 304,
-      "date": "2026-10-05",
-      "title": "She knows the section she presents",
-      "detail": "While a page is presented or read, you can ask about the part in front of you: \"what does this section say about…\". She answers from its own words. For that, the words of that one section go to the model with your question."
     }
   ]
 }
