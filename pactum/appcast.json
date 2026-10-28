@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 2,
-  "commit": "e674c1e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-2/pactum.dmg",
-  "sha256": "b8c208302647ce275a2d306f9fcaa78e5f36e6174e5a5d057aedbbf728015b3e",
+  "build": 3,
+  "commit": "423eab2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-3/pactum.dmg",
+  "sha256": "2b5c2f68258d338e179b09f5df46b7bac4a6f020d53a83a806552c844f03b9c4",
   "minimumSystemVersion": "26.0",
-  "notes": "Ein eigenes Symbol\npactum 1",
+  "notes": "Startet auch ohne Ordner Input",
   "entries": [
+    {
+      "build": 3,
+      "date": "2026-10-28",
+      "title": "Startet auch ohne Ordner Input",
+      "detail": "Fehlt der Ordner Input, legt pactum ihn an und zeigt eine leere Seite. Vorher brach der Server dann ab."
+    },
     {
       "build": 2,
       "date": "2026-10-28",
