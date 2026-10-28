@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 46,
-  "commit": "1541cfd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-46/specula.dmg",
-  "sha256": "3cca7a2f7ef6ecc23b4402cead8699b55fd9034b3a25e9272f1492029618b21d",
+  "build": 48,
+  "commit": "0afd251",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-48/specula.dmg",
+  "sha256": "78c912a7df52cee5bb73e91dc648bd774b670e88af8fe899bb5ffd80915d36aa",
   "minimumSystemVersion": "26.0",
-  "notes": "A concept page uses its width, in the style guide's colours\nThe whole of specula follows the family's style guide\nSettings and the windows follow the family's style guide",
+  "notes": "About and What's New in the family's style",
   "entries": [
+    {
+      "build": 47,
+      "date": "2026-10-28",
+      "title": "About and What's New in the family's style",
+      "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
+    },
     {
       "build": 46,
       "date": "2026-10-28",
