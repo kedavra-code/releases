@@ -1,12 +1,24 @@
 {
   "app": "murmur",
-  "build": 193,
-  "commit": "18435b6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-193/murmur.dmg",
-  "sha256": "ad6f1a3f54cdd98b74bfe9570324c8e183e46ac362509d83ad93f01eefa5aa86",
+  "build": 200,
+  "commit": "481dc13",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-200/murmur.dmg",
+  "sha256": "7cba297658f60834f2a93ed2c6d1970fabd1e12e51be0bb6430523d851be1856",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Setup in the family's style\nSettings, About and What's New in the family's style",
   "entries": [
+    {
+      "build": 198,
+      "date": "2026-10-28",
+      "title": "Setup in the family's style",
+      "detail": "The Setup window follows the folia style guide now, like Settings and About. The checklist sits on one soft card, a row for each step, with a green tick for what is done and a green line when murmur is ready."
+    },
+    {
+      "build": 196,
+      "date": "2026-10-28",
+      "title": "Settings, About and What's New in the family's style",
+      "detail": "Settings, About and What's New follow the folia style guide now, like the rest of the family. Each setting sits on a soft card with its note under it, switches are amber when on, and buttons have a thin frame. About and What's New have a head, a body and a foot with the buttons on the right."
+    },
     {
       "build": 191,
       "date": "2026-10-27",
@@ -234,18 +246,6 @@
       "date": "2026-09-06",
       "title": "A Brain tab in Settings",
       "detail": "Settings › Brain holds what does the listening and the thinking: the recognition engine, the language and Apple Intelligence. They were on the General and Text tabs before."
-    },
-    {
-      "build": 82,
-      "date": "2026-09-06",
-      "title": "History is now Transcript",
-      "detail": "The Settings tab that lists what you dictated is named Transcript."
-    },
-    {
-      "build": 77,
-      "date": "2026-08-29",
-      "title": "Cancel a model download, and confirm a delete",
-      "detail": "The Parakeet download has a Cancel button, and Download continues later where it stopped. Delete Model asks first, and says what it frees."
     }
   ]
 }
