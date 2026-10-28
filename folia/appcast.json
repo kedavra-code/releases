@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 245,
-  "commit": "d1bde79",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-245/folia.dmg",
-  "sha256": "f0ff59914f48c8c918977ceb7ddea641f45483b613058523a24ab9649e7fa059",
+  "build": 249,
+  "commit": "79f76db",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-249/folia.dmg",
+  "sha256": "7809cb4298e772393b5eacad34d651a5b155e33ce532469efef88672065e2dec",
   "minimumSystemVersion": "26.0",
-  "notes": "Files and Bin look alike\nBin lines up with the notebooks",
+  "notes": "About and What's New in the family's style",
   "entries": [
+    {
+      "build": 248,
+      "date": "2026-10-28",
+      "title": "About and What's New in the family's style",
+      "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
+    },
     {
       "build": 245,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-25",
       "title": "⌘H hides folia again",
       "detail": "⌘H hides folia, ⌥⌘H hides the other apps. And every button and choice in Settings now has the same size, colours and type."
-    },
-    {
-      "build": 185,
-      "date": "2026-10-25",
-      "title": "The Mac app to download, also in the Mac app",
-      "detail": "Settings › Mac app in the Mac app also offers the newest folia for Mac to download, for another Mac."
     }
   ]
 }
