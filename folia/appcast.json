@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 236,
-  "commit": "d8e0eb0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-236/folia.dmg",
-  "sha256": "4a404c9ddbb699c40f3cb61ac7ac28b154d13ef4d3bdef752e2a06a21d6d09c2",
+  "build": 238,
+  "commit": "832bdc3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-238/folia.dmg",
+  "sha256": "a63d7fe97412c9fec05ac4a61019de9f2e74a0f7e3bf67dd5a6c1653e0e96485",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The red Delete button reads well in dark mode\nOne text size, easier to read",
   "entries": [
+    {
+      "build": 238,
+      "date": "2026-10-28",
+      "title": "The red Delete button reads well in dark mode",
+      "detail": "In dark mode the word on a red Delete button is dark now. White on that light red was hard to read."
+    },
+    {
+      "build": 237,
+      "date": "2026-10-28",
+      "title": "One text size, easier to read",
+      "detail": "A question's text and its buttons now have the size of the text around them, not a larger one. Links, chosen rows and the keyboard ring are a little darker in light mode, so they read better. A notebook's letter is dark on the light colours. Small labels, titles and corners all follow one scale."
+    },
     {
       "build": 235,
       "date": "2026-10-27",
@@ -234,18 +246,6 @@
       "date": "2026-10-25",
       "title": "Pictures with brackets in their caption kept",
       "detail": "Copy fresh from OneNote keeps a picture whose caption has a lone \"[\" or \"]\". OneNote writes the text it reads in a picture into its caption. Before, such a picture became text."
-    },
-    {
-      "build": 175,
-      "date": "2026-10-25",
-      "title": "Pictures in OneNote tables kept",
-      "detail": "Copy fresh from OneNote keeps a picture in a table cell whose caption has a \"|\", and text with a \"|\" stays in its cell. Before, the picture became text."
-    },
-    {
-      "build": 173,
-      "date": "2026-10-24",
-      "title": "ETH daily update in Settings",
-      "detail": "Settings › OneNote calls the daily 20:00 update of your ETH notebooks \"ETH daily update\", with \"Update now\", in place of \"Runs\"."
     }
   ]
 }
