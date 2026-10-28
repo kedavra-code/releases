@@ -1,12 +1,30 @@
 {
   "app": "GLaDOS",
-  "build": 421,
-  "commit": "3d0b428",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-421/GLaDOS.dmg",
-  "sha256": "26719988647dfda4e987ac1f55a6881da1619ea2eef85c673422400b5f443240",
+  "build": 428,
+  "commit": "d307c09",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-428/GLaDOS.dmg",
+  "sha256": "fd8094c1f3adea7b37f55cb6c6fce72bcf81037b82f64479ef72f669d3bb0b27",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Settings from Setup\nSetup in the family's style\nSettings, About and What's New in the family's style",
   "entries": [
+    {
+      "build": 427,
+      "date": "2026-10-28",
+      "title": "Settings from Setup",
+      "detail": "The Setup window has a Settings button in its lower right corner, as murmur's has. It opens Settings, where the key, the voices and the switches are."
+    },
+    {
+      "build": 426,
+      "date": "2026-10-28",
+      "title": "Setup in the family's style",
+      "detail": "The Setup window follows the folia style guide now, like Settings and About. The checklist sits on one soft card, a row for each step, with a green tick for what is done and a green line when GLaDOS is ready."
+    },
+    {
+      "build": 424,
+      "date": "2026-10-28",
+      "title": "Settings, About and What's New in the family's style",
+      "detail": "Settings, About and What's New follow the folia style guide now, like the rest of the family. Each setting sits on a soft card with its note under it, switches are amber when on, and buttons have a thin frame. About and What's New have a head, a body and a foot with the buttons on the right."
+    },
     {
       "build": 416,
       "date": "2026-10-27",
@@ -228,24 +246,6 @@
       "date": "2026-10-05",
       "title": "She knows the section she presents",
       "detail": "While a page is presented or read, you can ask about the part in front of you: \"what does this section say about…\". She answers from its own words. For that, the words of that one section go to the model with your question."
-    },
-    {
-      "build": 303,
-      "date": "2026-10-05",
-      "title": "A turn never ends in silence",
-      "detail": "When a brain kept asking for its tools and never got to an answer, she said nothing at all. Now she says that she ran out of steps and that some of the work may be done. When a reply comes back empty, she says that too. J.A.R.V.I.S. has his own lines for both."
-    },
-    {
-      "build": 302,
-      "date": "2026-10-05",
-      "title": "The Dictionary tab is taller",
-      "detail": "The Dictionary tab in Settings shows about thirteen entries at a time, where it showed eight. The same in murmur and scripta."
-    },
-    {
-      "build": 301,
-      "date": "2026-10-05",
-      "title": "A Dictionary tab in Settings",
-      "detail": "Settings has a new Dictionary tab: each word and each correction is a row you can change, with a search field and buttons to add one. It is the same tab as in murmur and scripta, and an entry made in one app works in all three. GLaDOS uses a change in her next answer."
     }
   ]
 }
