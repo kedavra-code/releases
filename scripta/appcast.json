@@ -1,11 +1,11 @@
 {
   "app": "scripta",
-  "build": 204,
-  "commit": "4056d5f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-204/scripta.dmg",
-  "sha256": "2a7a0b8b353beab1383845c6b71eb450932b699213cafd867e3cdf98e6e02b7b",
+  "build": 206,
+  "commit": "2f2932a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-206/scripta.dmg",
+  "sha256": "c56de97f160c3e527a92101378c91f83187b0d80156d4e4b6d57e60978db98ca",
   "minimumSystemVersion": "26.0",
-  "notes": "A calmer meeting list\nThe meeting window in folia's style\nSettings, About and What's New in the family's style",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 203,
