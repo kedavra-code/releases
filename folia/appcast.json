@@ -1,11 +1,11 @@
 {
   "app": "folia",
-  "build": 249,
-  "commit": "79f76db",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-249/folia.dmg",
-  "sha256": "7809cb4298e772393b5eacad34d651a5b155e33ce532469efef88672065e2dec",
+  "build": 251,
+  "commit": "a05b627",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-251/folia.dmg",
+  "sha256": "e0710e7ec29d90ab19368bceb7b681710b9ab2d26b07e8a59e42a0f0611940f3",
   "minimumSystemVersion": "26.0",
-  "notes": "About and What's New in the family's style",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 248,
