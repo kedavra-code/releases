@@ -1,12 +1,36 @@
 {
   "app": "j4k",
-  "build": 477,
-  "commit": "45e3495",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-477/j4k.dmg",
-  "sha256": "b8f7f7d39784837725a11fe318cbaf083ec4b7c99bfb5e493c71a022f06d8c24",
+  "build": 481,
+  "commit": "2ab7c94",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-481/j4k.dmg",
+  "sha256": "abfe4bee96eee0e64f1e5ba338f16a3d2633111b04db56f39cb856aa1c551dc6",
   "minimumSystemVersion": "26.0",
-  "notes": "Mail no longer freezes while j4k looks for flagged mails",
+  "notes": "Deleted tasks are kept 30 days, with no setting\nDark task cards have no bright white any more\nA task's description reads in folia's softer text colour\nj4k follows the folia style guide",
   "entries": [
+    {
+      "build": 481,
+      "date": "2026-10-28",
+      "title": "Deleted tasks are kept 30 days, with no setting",
+      "detail": "Settings › Data no longer has Keep deleted tasks. A deleted task can always be restored for 30 days, on every device, and is then removed for good."
+    },
+    {
+      "build": 480,
+      "date": "2026-10-28",
+      "title": "Dark task cards have no bright white any more",
+      "detail": "In dark mode, a task's title, the count of done subtasks, the subtasks, the comments, the headings and the icons are now the same soft grey as folia's text, on the card and while you edit it. A link in a description is gold again in dark mode; it was a dark brown that was hard to read."
+    },
+    {
+      "build": 479,
+      "date": "2026-10-28",
+      "title": "A task's description reads in folia's softer text colour",
+      "detail": "The text of a description is now the same soft grey as a page in folia, in light and dark mode. In dark mode it was nearly white before, which was harder on the eyes."
+    },
+    {
+      "build": 478,
+      "date": "2026-10-28",
+      "title": "j4k follows the folia style guide",
+      "detail": "Text uses your system font at folia's sizes, and gold text and focus lines use folia's slightly darker gold, which is easier to read. In Settings and the other windows, the buttons, selects and fields in a row are 30 pixels high with smaller text, and the buttons at the foot of a window are 34 pixels high, as in folia."
+    },
     {
       "build": 477,
       "date": "2026-10-28",
@@ -222,30 +246,6 @@
       "date": "2026-10-21",
       "title": "A gear for the settings",
       "detail": "The ... button at the right of the header shows a gear now, as in folia, since every setting is in that menu. It opens the same menu as before."
-    },
-    {
-      "build": 412,
-      "date": "2026-10-21",
-      "title": "All settings are in the ... menu again",
-      "detail": "The Mac app has no Settings window any more: every setting is in the ... menu, as in a browser, and j4k -> Settings... (Cmd+,) opens that menu. Its Mac app part holds the app's own switches: Calendar meetings, Flagged mails as tasks, Open at login and Automatic updates."
-    },
-    {
-      "build": 409,
-      "date": "2026-10-21",
-      "title": "One What's new for the browser and the Mac app",
-      "detail": "The Mac app's What's New window now shows the same list as ... -> What's new in the browser: every change to j4k, newest first. A change only the Mac app has is marked Mac app here. Where one build brought several changes, the Mac window shows them as one entry."
-    },
-    {
-      "build": 407,
-      "date": "2026-10-21",
-      "title": "A dragged mail is a normal task",
-      "detail": "A mail you drag from Apple Mail onto j4k now becomes a task in Backlog and opens, like a dragged calendar event: you chose it, so it skips Review. Mails you flag in Mail still arrive in Review."
-    },
-    {
-      "build": 405,
-      "date": "2026-10-21",
-      "title": "Drag a calendar event onto j4k",
-      "detail": "Drag an event from the Calendar app onto j4k's window and it becomes a task for that day, with its time, room and join link. Settings now has a Calendar tab: switch the meetings in Calendar view off, and j4k does not read your calendar at all. The meeting rows are tighter."
     }
   ]
 }
