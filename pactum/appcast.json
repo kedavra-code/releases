@@ -1,11 +1,11 @@
 {
   "app": "pactum",
-  "build": 3,
-  "commit": "423eab2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-3/pactum.dmg",
-  "sha256": "2b5c2f68258d338e179b09f5df46b7bac4a6f020d53a83a806552c844f03b9c4",
+  "build": 5,
+  "commit": "37f5563",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-5/pactum.dmg",
+  "sha256": "ec3589a812e075b1e308ca2a60eafdfd0c32cb86aed42d61ac16524a91fd9697",
   "minimumSystemVersion": "26.0",
-  "notes": "Startet auch ohne Ordner Input",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 3,
