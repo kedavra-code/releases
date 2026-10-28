@@ -1,12 +1,30 @@
 {
   "app": "scripta",
-  "build": 197,
-  "commit": "cbdf28c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-197/scripta.dmg",
-  "sha256": "a6d46999d176ff1df9e4acfcd1df71ee66fc5fa66f9bb97f0a788b0892b563bf",
+  "build": 204,
+  "commit": "4056d5f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-204/scripta.dmg",
+  "sha256": "2a7a0b8b353beab1383845c6b71eb450932b699213cafd867e3cdf98e6e02b7b",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A calmer meeting list\nThe meeting window in folia's style\nSettings, About and What's New in the family's style",
   "entries": [
+    {
+      "build": 203,
+      "date": "2026-10-28",
+      "title": "A calmer meeting list",
+      "detail": "In the list of meetings, the titles are a size smaller, as the names in the Speakers column are. Each month stands on the same edge as its meetings, with more room above it."
+    },
+    {
+      "build": 202,
+      "date": "2026-10-28",
+      "title": "The meeting window in folia's style",
+      "detail": "The meeting window follows the folia style guide too: warm paper colours, the chosen meeting in amber, calmer and larger text for the minutes and the transcript, and folia's buttons. Record a meeting and the start page look like folia's windows, with the main button in amber."
+    },
+    {
+      "build": 201,
+      "date": "2026-10-28",
+      "title": "Settings, About and What's New in the family's style",
+      "detail": "Settings, About and What's New follow the folia style guide now, like the rest of the family. Each setting sits on a soft card with its note under it, switches are amber when on, and buttons have a thin frame. About and What's New have a head, a body and a foot with the buttons on the right."
+    },
     {
       "build": 194,
       "date": "2026-10-27",
@@ -228,24 +246,6 @@
       "date": "2026-10-05",
       "title": "A few words are not named by themselves",
       "detail": "scripta named a remembered voice by itself also when the voice said only a few words, and a short remark of another person could get your name. Now a voice must speak six seconds at a stretch before scripta names it by itself, or remembers it. You can still name any voice by hand."
-    },
-    {
-      "build": 113,
-      "date": "2026-10-05",
-      "title": "scripta guesses who a voice is",
-      "detail": "People say names in a meeting. When Claude writes the minutes, it now also notes who a speaker may be. The name stands under the voice with a question mark, and with the moment that shows it — click the time to hear it. Click the name to take it, or the cross to say no. scripta never names a voice by itself this way."
-    },
-    {
-      "build": 112,
-      "date": "2026-10-05",
-      "title": "The meeting's title and people from your calendar",
-      "detail": "Switch on Meeting from Calendar in Settings › General; macOS asks you once. At Record, scripta then offers the meeting that is in your calendar at that time: its title is filled in, and the invited people are suggested when you name a voice. It reads the Calendar app on this Mac, and only reads."
-    },
-    {
-      "build": 111,
-      "date": "2026-10-05",
-      "title": "Hear a moment of the meeting",
-      "detail": "Click a time — beside a paragraph of the transcript, or at the end of a decision, a task or an open point in the minutes — and scripta plays that moment from the recording. So you can hear what was said there. Click again to stop. It works while the recording is on this Mac: a week for a meeting scripta recorded."
     }
   ]
 }
