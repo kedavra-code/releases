@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 239,
-  "commit": "2ff22e2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-239/folia.dmg",
-  "sha256": "604f68348d30aa34bec765ddf4ac0e9b86a5b85e10e53ca8cad38b58cd376294",
+  "build": 240,
+  "commit": "d065904",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-240/folia.dmg",
+  "sha256": "dffa2dbb5465197b6afe85db92a2dd4eedc3d96dbe9f7ac637890380819bce45",
   "minimumSystemVersion": "26.0",
-  "notes": "Bigger text in pages and lists",
+  "notes": "Your name in task lines, for j4k",
   "entries": [
+    {
+      "build": 240,
+      "date": "2026-10-28",
+      "title": "Your name in task lines, for j4k",
+      "detail": "Settings › j4k has a field for the name your task lines give you, such as \"First Last\". Tasks given to that name go to j4k. Left empty, folia takes your account's name, as before. After a change, the tasks of your pages go again within three minutes."
+    },
     {
       "build": 239,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-25",
       "title": "Text after a OneNote video kept",
       "detail": "Copy fresh from OneNote keeps the text that follows a video embedded in OneNote as text. Before, it showed as HTML code."
-    },
-    {
-      "build": 178,
-      "date": "2026-10-25",
-      "title": "Tables inside OneNote tables",
-      "detail": "Copy fresh from OneNote keeps a table that OneNote has inside a table cell: its cells become lines of that cell, pictures too. Before, the row broke apart and \"<br>\" showed as text. Settings › OneNote › Broken tables counts and repairs such pages too."
     }
   ]
 }
