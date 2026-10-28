@@ -1,12 +1,24 @@
 {
   "app": "unus",
-  "build": 213,
-  "commit": "c16fa47",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-213/unus.dmg",
-  "sha256": "98c970bf4764ad7370732d12ee03a8dccd06b13309a030b1f9be1f71f4a8e6bb",
+  "build": 218,
+  "commit": "1282544",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-218/unus.dmg",
+  "sha256": "65d70bd6236563c9c3b29d07f8c6da3f2a68162cc905f6cc829555ad7537d63a",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Settings, About and What's New in the family's style\nThe sheet in the family's style",
   "entries": [
+    {
+      "build": 217,
+      "date": "2026-10-28",
+      "title": "Settings, About and What's New in the family's style",
+      "detail": "Settings, About and What's New follow the folia style guide now, like the rest of the family. Each setting sits on a soft card with its note under it, switches are amber when on, and buttons have a thin frame. About and What's New have a head, a body and a foot with the buttons on the right."
+    },
+    {
+      "build": 214,
+      "date": "2026-10-28",
+      "title": "The sheet in the family's style",
+      "detail": "The sheet uses the folia style guide now: warmer greys that are easy to read, a little more room between lines, and answers in a gold that stands out on white as well as on black. Answers sit on the same line as their words, and a selection is amber."
+    },
     {
       "build": 211,
       "date": "2026-10-27",
