@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 238,
-  "commit": "832bdc3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-238/folia.dmg",
-  "sha256": "a63d7fe97412c9fec05ac4a61019de9f2e74a0f7e3bf67dd5a6c1653e0e96485",
+  "build": 239,
+  "commit": "2ff22e2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-239/folia.dmg",
+  "sha256": "604f68348d30aa34bec765ddf4ac0e9b86a5b85e10e53ca8cad38b58cd376294",
   "minimumSystemVersion": "26.0",
-  "notes": "The red Delete button reads well in dark mode\nOne text size, easier to read",
+  "notes": "Bigger text in pages and lists",
   "entries": [
+    {
+      "build": 239,
+      "date": "2026-10-28",
+      "title": "Bigger text in pages and lists",
+      "detail": "The text of a page and the rows of the notebook, section and page lists are a little bigger, 14.5 instead of 13.5 pixels. Headings grow with the text. Code blocks and formulas have the same rounded corners as the rest."
+    },
     {
       "build": 238,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-25",
       "title": "Tables inside OneNote tables",
       "detail": "Copy fresh from OneNote keeps a table that OneNote has inside a table cell: its cells become lines of that cell, pictures too. Before, the row broke apart and \"<br>\" showed as text. Settings › OneNote › Broken tables counts and repairs such pages too."
-    },
-    {
-      "build": 176,
-      "date": "2026-10-25",
-      "title": "Pictures with brackets in their caption kept",
-      "detail": "Copy fresh from OneNote keeps a picture whose caption has a lone \"[\" or \"]\". OneNote writes the text it reads in a picture into its caption. Before, such a picture became text."
     }
   ]
 }
