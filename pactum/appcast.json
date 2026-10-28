@@ -1,0 +1,23 @@
+{
+  "app": "pactum",
+  "build": 2,
+  "commit": "e674c1e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-2/pactum.dmg",
+  "sha256": "b8c208302647ce275a2d306f9fcaa78e5f36e6174e5a5d057aedbbf728015b3e",
+  "minimumSystemVersion": "26.0",
+  "notes": "Ein eigenes Symbol\npactum 1",
+  "entries": [
+    {
+      "build": 2,
+      "date": "2026-10-28",
+      "title": "Ein eigenes Symbol",
+      "detail": "Die Spinne: fünf Speichen, das KPI-Profil einer Gruppe, in den Farben der App-Familie."
+    },
+    {
+      "build": 1,
+      "date": "2026-10-28",
+      "title": "pactum 1",
+      "detail": "Der KPI-Vergleich der IT Service Gruppen aus dem SLA-Workbook und den eTHIS-Exporten."
+    }
+  ]
+}
