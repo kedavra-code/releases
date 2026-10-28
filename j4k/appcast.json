@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 476,
-  "commit": "559ca8b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-476/j4k.dmg",
-  "sha256": "404dfa5820340bbde96dbc688c8c99f8d61d9f632e1a70c4fa817a7408f5c325",
+  "build": 477,
+  "commit": "45e3495",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-477/j4k.dmg",
+  "sha256": "b8f7f7d39784837725a11fe318cbaf083ec4b7c99bfb5e493c71a022f06d8c24",
   "minimumSystemVersion": "26.0",
-  "notes": "A mail conversation dragged in becomes one task\nDragging a mail conversation no longer crashes the Mac app\nNo What's New bar; the message bar is amber\nThe search field sits exactly where folia's does",
+  "notes": "Mail no longer freezes while j4k looks for flagged mails",
   "entries": [
+    {
+      "build": 477,
+      "date": "2026-10-28",
+      "title": "Mail no longer freezes while j4k looks for flagged mails",
+      "detail": "Mail integration now reads flagged mails from the inbox of each account only, and asks Mail far fewer questions. Searching every folder could keep Mail busy for hours on a large mailbox. A mail you flag in another folder no longer becomes a task. If Mail takes longer than two minutes to answer, j4k waits an hour before it asks again."
+    },
     {
       "build": 475,
       "date": "2026-10-27",
@@ -240,12 +246,6 @@
       "date": "2026-10-21",
       "title": "Drag a calendar event onto j4k",
       "detail": "Drag an event from the Calendar app onto j4k's window and it becomes a task for that day, with its time, room and join link. Settings now has a Calendar tab: switch the meetings in Calendar view off, and j4k does not read your calendar at all. The meeting rows are tighter."
-    },
-    {
-      "build": 404,
-      "date": "2026-10-21",
-      "title": "Meetings on the day you pick and 2 more",
-      "detail": "Meetings on the day you pick: In Calendar view, the column of a day you pick in the month lists that day's meetings too, and meetings look like task cards. The Gmail import is gone: Starred Gmail mail no longer becomes a task, and the Gmail group has left the ... menu. The tasks it made earlier stay where they are. In the j4k Mac app a mail can still become a task: drag it from Apple Mail onto the window, or flag it in Mail. No scroll bar over a short text box: In Safari and in the j4k Mac app, on a Mac set to always show scroll bars, a one-line text box in the task editor — Write a new subtask, the description — drew a sideways scroll bar over its own text and cut it in half. It no longer does."
     }
   ]
 }
