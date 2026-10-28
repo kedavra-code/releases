@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 481,
-  "commit": "2ab7c94",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-481/j4k.dmg",
-  "sha256": "abfe4bee96eee0e64f1e5ba338f16a3d2633111b04db56f39cb856aa1c551dc6",
+  "build": 485,
+  "commit": "525cb2d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-485/j4k.dmg",
+  "sha256": "3c5ac751839c31e516be27b4ac519b27cebbfe8638913a6dfa8c6e1adfeb11f5",
   "minimumSystemVersion": "26.0",
-  "notes": "Deleted tasks are kept 30 days, with no setting\nDark task cards have no bright white any more\nA task's description reads in folia's softer text colour\nj4k follows the folia style guide",
+  "notes": "About and What's New in the family's style",
   "entries": [
+    {
+      "build": 484,
+      "date": "2026-10-28",
+      "title": "About and What's New in the family's style",
+      "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
+    },
     {
       "build": 481,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "A Settings window, and every window in one style",
       "detail": "The gear opens a Settings window like folia's: its parts on the left — About j4k, General, Tags, Users, Assistant, Data, Mac app and Account — and on the right each setting in a row that says what it does, with a switch for anything on or off. It replaces the ... menu and the Tags, Users and About windows. Docs, What's new, Backups, the assistant's chat and the Recurrence window have the same look now, and Escape closes only the window on top."
-    },
-    {
-      "build": 413,
-      "date": "2026-10-21",
-      "title": "A gear for the settings",
-      "detail": "The ... button at the right of the header shows a gear now, as in folia, since every setting is in that menu. It opens the same menu as before."
     }
   ]
 }
