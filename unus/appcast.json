@@ -1,11 +1,11 @@
 {
   "app": "unus",
-  "build": 218,
-  "commit": "1282544",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-218/unus.dmg",
-  "sha256": "65d70bd6236563c9c3b29d07f8c6da3f2a68162cc905f6cc829555ad7537d63a",
+  "build": 220,
+  "commit": "01177af",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-220/unus.dmg",
+  "sha256": "5578dadc2262b76a6ce068bcf336c02103779cf0097329e7b222dac573d8a5c1",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings, About and What's New in the family's style\nThe sheet in the family's style",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 217,
