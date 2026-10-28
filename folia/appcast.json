@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 241,
-  "commit": "1beb8b0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-241/folia.dmg",
-  "sha256": "b0371028cfcf1ec7b9f6abfa9ad570aa27cc9f1a8ae8a87f8ff794f49c02b1b6",
+  "build": 245,
+  "commit": "d1bde79",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-245/folia.dmg",
+  "sha256": "f0ff59914f48c8c918977ceb7ddea641f45483b613058523a24ab9649e7fa059",
   "minimumSystemVersion": "26.0",
-  "notes": "A bin for what you delete",
+  "notes": "Files and Bin look alike\nBin lines up with the notebooks",
   "entries": [
+    {
+      "build": 245,
+      "date": "2026-10-28",
+      "title": "Files and Bin look alike",
+      "detail": "Files and Bin both have an outlined icon with a grey symbol. In the light look the outline is a little stronger, so both icons are as easy to see as in the dark look."
+    },
+    {
+      "build": 242,
+      "date": "2026-10-28",
+      "title": "Bin lines up with the notebooks",
+      "detail": "The Bin row now starts where the notebooks and Files start, and is as wide as they are."
+    },
     {
       "build": 241,
       "date": "2026-10-28",
@@ -234,18 +246,6 @@
       "date": "2026-10-25",
       "title": "The Mac app to download, also in the Mac app",
       "detail": "Settings › Mac app in the Mac app also offers the newest folia for Mac to download, for another Mac."
-    },
-    {
-      "build": 184,
-      "date": "2026-10-25",
-      "title": "folia in the menu bar, with a hotkey",
-      "detail": "The Mac app has an icon in the menu bar, with Open folia and Open in Browser. ⌃⌥⌘F opens folia from any app, and hides it again. Settings › Mac app sets the hotkey, where folia shows its icon (menu bar, Dock, or both), and Open at login."
-    },
-    {
-      "build": 182,
-      "date": "2026-10-25",
-      "title": "Left pages leave the list once fixed",
-      "detail": "Settings › OneNote › Left as they are no longer lists a page once it is copied fresh from OneNote: it goes at once, not only at the next daily update."
     }
   ]
 }
