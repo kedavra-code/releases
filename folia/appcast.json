@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 240,
-  "commit": "d065904",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-240/folia.dmg",
-  "sha256": "dffa2dbb5465197b6afe85db92a2dd4eedc3d96dbe9f7ac637890380819bce45",
+  "build": 241,
+  "commit": "1beb8b0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-241/folia.dmg",
+  "sha256": "b0371028cfcf1ec7b9f6abfa9ad570aa27cc9f1a8ae8a87f8ff794f49c02b1b6",
   "minimumSystemVersion": "26.0",
-  "notes": "Your name in task lines, for j4k",
+  "notes": "A bin for what you delete",
   "entries": [
+    {
+      "build": 241,
+      "date": "2026-10-28",
+      "title": "A bin for what you delete",
+      "detail": "Deleted notebooks, sections and pages now wait 30 days in the bin before they are gone for good. Open it with Bin at the foot of the notebook list: each item says where it was and how many days it has left, and Restore puts it back. A deleted notebook can also be brought back with Undo."
+    },
     {
       "build": 240,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-25",
       "title": "Left pages leave the list once fixed",
       "detail": "Settings › OneNote › Left as they are no longer lists a page once it is copied fresh from OneNote: it goes at once, not only at the next daily update."
-    },
-    {
-      "build": 181,
-      "date": "2026-10-25",
-      "title": "Text after a OneNote video kept",
-      "detail": "Copy fresh from OneNote keeps the text that follows a video embedded in OneNote as text. Before, it showed as HTML code."
     }
   ]
 }
