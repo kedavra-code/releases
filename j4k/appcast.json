@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 485,
-  "commit": "525cb2d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-485/j4k.dmg",
-  "sha256": "3c5ac751839c31e516be27b4ac519b27cebbfe8638913a6dfa8c6e1adfeb11f5",
+  "build": 488,
+  "commit": "f0281eb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-488/j4k.dmg",
+  "sha256": "944ad6a28094fc5cb4f39f018bd382cc3fb5fcdb038613ba971ace9ca7e36e7a",
   "minimumSystemVersion": "26.0",
-  "notes": "About and What's New in the family's style",
+  "notes": "Other apps can open j4k on a view",
   "entries": [
+    {
+      "build": 487,
+      "date": "2026-10-28",
+      "title": "Other apps can open j4k on a view",
+      "detail": "A link j4k://show with the filters of a view brings the j4k Mac app to the front on that view. GLaDOS uses it to show you your tasks in j4k, not in a browser tab."
+    },
     {
       "build": 484,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "Settings without a scrollbar",
       "detail": "The Settings window is as tall as its longest part, so no part needs a scrollbar, and it keeps its size when you switch parts. Your tags stand in two columns. Users no longer marks a Gmail address as unable to sign in: Google lets those accounts in now, when they are test users in Google Cloud."
-    },
-    {
-      "build": 414,
-      "date": "2026-10-23",
-      "title": "A Settings window, and every window in one style",
-      "detail": "The gear opens a Settings window like folia's: its parts on the left — About j4k, General, Tags, Users, Assistant, Data, Mac app and Account — and on the right each setting in a row that says what it does, with a switch for anything on or off. It replaces the ... menu and the Tags, Users and About windows. Docs, What's new, Backups, the assistant's chat and the Recurrence window have the same look now, and Escape closes only the window on top."
     }
   ]
 }
