@@ -1,12 +1,30 @@
 {
   "app": "specula",
-  "build": 41,
-  "commit": "620652e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-41/specula.dmg",
-  "sha256": "d8f654d84cd3a5d21aaca15a2f1fdb4dc70eb74f36532692be750d14de6f0d9c",
+  "build": 46,
+  "commit": "1541cfd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-46/specula.dmg",
+  "sha256": "3cca7a2f7ef6ecc23b4402cead8699b55fd9034b3a25e9272f1492029618b21d",
   "minimumSystemVersion": "26.0",
-  "notes": "Docs in Settings opens the manual in a window",
+  "notes": "A concept page uses its width, in the style guide's colours\nThe whole of specula follows the family's style guide\nSettings and the windows follow the family's style guide",
   "entries": [
+    {
+      "build": 46,
+      "date": "2026-10-28",
+      "title": "A concept page uses its width, in the style guide's colours",
+      "detail": "A concept page's text now fills the page's column, as its tables do, and no table runs past it: a very wide one scrolls sideways inside the page. The colours follow folia's style guide: titles and headings in the text colour, amber only for links and what is selected, and every text easy to read in light and dark."
+    },
+    {
+      "build": 43,
+      "date": "2026-10-28",
+      "title": "The whole of specula follows the family's style guide",
+      "detail": "The header, the list, the concept page, the search bar and the card beside the map now use the sizes, weights and corners of folia's style guide, in the Mac's own font, as Settings does. The concept page's text is 14.5 px. The first row of categories stays on one line again in a 1440 px window, and hiding a knowledge base no longer moves the chips beside it."
+    },
+    {
+      "build": 42,
+      "date": "2026-10-28",
+      "title": "Settings and the windows follow the family's style guide",
+      "detail": "Settings, About, ⌘K and the Reports window now look as folia's style guide says: the Mac's own font, one base size, the small buttons of every Settings row 30 px high, and amber text and focus rings a little darker, so they read well on every light ground. The red Delete button reads well in dark mode too."
+    },
     {
       "build": 41,
       "date": "2026-10-27",
