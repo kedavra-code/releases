@@ -1,12 +1,36 @@
 {
   "app": "folia",
-  "build": 251,
-  "commit": "a05b627",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-251/folia.dmg",
-  "sha256": "e0710e7ec29d90ab19368bceb7b681710b9ab2d26b07e8a59e42a0f0611940f3",
+  "build": 255,
+  "commit": "46dea73",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-255/folia.dmg",
+  "sha256": "4dc2a4255ac6138e24cc568341b579c6944498c997f99ded834545feadee1f07",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "What's New opens once after an update\nA renamed notebook keeps one folder in its Markdown copy\nMarkdown files open by drag and from the Finder\nShow in Finder in the … menus",
   "entries": [
+    {
+      "build": 255,
+      "date": "2026-10-29",
+      "title": "What's New opens once after an update",
+      "detail": "After an update, the Mac app shows What's New once. It no longer opens again each time you open a file from the Finder or the Dock, follow a link to a page, or bring the window back."
+    },
+    {
+      "build": 254,
+      "date": "2026-10-29",
+      "title": "A renamed notebook keeps one folder in its Markdown copy",
+      "detail": "When you rename a notebook, a section group or a section, its folder in the Markdown copy now moves whole, with its pictures, files and archive. Before, its pages moved to a new folder one by one, and the old folder kept the pictures and files, so they were on disk twice."
+    },
+    {
+      "build": 253,
+      "date": "2026-10-29",
+      "title": "Markdown files open by drag and from the Finder",
+      "detail": "Drop a Markdown file or a folder on folia's window, outside a page's text, and folia opens it, as File › Open File or Folder… does. Dropped on a page's text, a file is still attached to the page. A file opened from the Finder or the Dock brings the window back if it was closed. A file folia does not open, such as a file of a Markdown copy, now says why."
+    },
+    {
+      "build": 252,
+      "date": "2026-10-29",
+      "title": "Show in Finder in the … menus",
+      "detail": "In the Mac app, the … menu of a notebook, a section and a page has Show in Finder when the notebook keeps a Markdown copy on this Mac. The Finder opens with the notebook's or section's folder, or the page's file, selected."
+    },
     {
       "build": 248,
       "date": "2026-10-28",
@@ -222,30 +246,6 @@
       "date": "2026-10-25",
       "title": "A YouTube video from OneNote keeps its title",
       "detail": "OneNote names an embedded video with a link. A copy from OneNote now puts that name on a line above the player, so it is no longer lost. The check of a copy also reads a path with \"\\\" right."
-    },
-    {
-      "build": 191,
-      "date": "2026-10-25",
-      "title": "Every copy from OneNote checks itself",
-      "detail": "After Copy fresh from OneNote and each page of a repair, folia checks the page: every word of OneNote's page is there, every picture and file is stored, and none of the known faults shows. The message says what the check found, and Settings › OneNote lists the pages that need a look."
-    },
-    {
-      "build": 189,
-      "date": "2026-10-25",
-      "title": "Repair from OneNote has a clear name",
-      "detail": "In Settings › OneNote, Broken tables is now Repair from OneNote. It says what it repairs: a table that fell apart into loose lines, or \"<br>\" shown as text."
-    },
-    {
-      "build": 187,
-      "date": "2026-10-25",
-      "title": "New versions arrive while folia stays open",
-      "detail": "folia looks for a new version each time it comes back into view, so the menu bar app does not keep an old one for days. In Settings, Done has the size and font of the other buttons."
-    },
-    {
-      "build": 186,
-      "date": "2026-10-25",
-      "title": "⌘H hides folia again",
-      "detail": "⌘H hides folia, ⌥⌘H hides the other apps. And every button and choice in Settings now has the same size, colours and type."
     }
   ]
 }
