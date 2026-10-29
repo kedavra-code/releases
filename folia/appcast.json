@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 255,
-  "commit": "46dea73",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-255/folia.dmg",
-  "sha256": "4dc2a4255ac6138e24cc568341b579c6944498c997f99ded834545feadee1f07",
+  "build": 258,
+  "commit": "a022cf2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-258/folia.dmg",
+  "sha256": "a26259da7acdeaa85717df6e683cfce0d10f4dad3f3339249c5be30d1a44988a",
   "minimumSystemVersion": "26.0",
-  "notes": "What's New opens once after an update\nA renamed notebook keeps one folder in its Markdown copy\nMarkdown files open by drag and from the Finder\nShow in Finder in the … menus",
+  "notes": "Work offline: new pages, renames, moves, deletes and files\nPages written offline reach the cloud by themselves\nSettings › Users, as in j4k",
   "entries": [
+    {
+      "build": 258,
+      "date": "2026-10-29",
+      "title": "Work offline: new pages, renames, moves, deletes and files",
+      "detail": "While folia cannot reach its database, everything you do still works: new pages and sections, renames, moves, deletes, colours, undo, and pictures and files you add. The changes wait on this device, also through a restart, and go in, in the order you made them, as soon as folia is back online. The status bar shows how many changes are waiting."
+    },
+    {
+      "build": 257,
+      "date": "2026-10-29",
+      "title": "Pages written offline reach the cloud by themselves",
+      "detail": "Text you write while folia cannot reach its servers now goes up by itself when they are back, also in pages you have closed since. The status bar says Saved only once your text is in the database; while the database cannot be reached it says Not saved yet, and your text stays safe on this device."
+    },
+    {
+      "build": 256,
+      "date": "2026-10-29",
+      "title": "Settings › Users, as in j4k",
+      "detail": "Only for the admin: everyone who may sign in to folia, each with Remove, and a field to add an address. Before, an address came on the list only when a notebook was shared with it, and nothing took one off."
+    },
     {
       "build": 255,
       "date": "2026-10-29",
@@ -228,24 +246,6 @@
       "date": "2026-10-26",
       "title": "A page to the top or bottom; the list scrolls while you drag",
       "detail": "A page's … menu moves it to the top or the bottom of its section, or of its group. Dragged near the page list's top or bottom, the list scrolls by itself, faster the closer you come, and the dragged page shows half see-through. The bar at the list's foot also moves the open page alone."
-    },
-    {
-      "build": 198,
-      "date": "2026-10-25",
-      "title": "The Dock icon's menu holds the menu bar menu",
-      "detail": "A right click on folia's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open folia and Open in Browser."
-    },
-    {
-      "build": 196,
-      "date": "2026-10-25",
-      "title": "The check of a copy reads a \"*\" right",
-      "detail": "A page with a \"*\" between two words or numbers, as in 123*4, is no longer listed as not good after the copy. Its text was right."
-    },
-    {
-      "build": 195,
-      "date": "2026-10-25",
-      "title": "A YouTube video from OneNote keeps its title",
-      "detail": "OneNote names an embedded video with a link. A copy from OneNote now puts that name on a line above the player, so it is no longer lost. The check of a copy also reads a path with \"\\\" right."
     }
   ]
 }
