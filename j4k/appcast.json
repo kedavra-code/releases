@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 496,
-  "commit": "a41cb47",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-496/j4k.dmg",
-  "sha256": "20e4d0746d0d052e7987016cd6520663e613e4c2c9922f04c164122944b97410",
+  "build": 498,
+  "commit": "8c8b2b7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-498/j4k.dmg",
+  "sha256": "55612c684a1edf69d2a1f8ee9f9294f68090a432b370a25601406fa08f7d47c9",
   "minimumSystemVersion": "26.0",
-  "notes": "The Priority selector is easy to read again",
+  "notes": "Swimlanes by Week Start and by Week Due",
   "entries": [
+    {
+      "build": 498,
+      "date": "2026-10-30",
+      "title": "Swimlanes by Week Start and by Week Due",
+      "detail": "On the Kanban board, Swimlanes has two week groupings now. Week Start makes one row per week that holds a start date, Week Due one row per week that holds a due date. A card dropped on a Week Due row keeps its weekday in that week, or gets the Friday when it has no due date yet."
+    },
     {
       "build": 496,
       "date": "2026-10-30",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "A new j4k icon",
       "detail": "j4k has a new icon: a small task board, an orange rail with three columns, in the colours of scripta, murmur and unus. You see it in the browser tab, on the phone's home screen and in the Mac app's Dock. A browser may need a hard reload to show the new tab icon."
-    },
-    {
-      "build": 416,
-      "date": "2026-10-23",
-      "title": "Move a window by its title bar",
-      "detail": "Drag the Settings window, or any other window of j4k, by its title bar to put it where you want. It stays on the screen, and opens in the middle again next time."
     }
   ]
 }
