@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 261,
-  "commit": "ed357c9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-261/folia.dmg",
-  "sha256": "30e812887dec1b3891b7cf05cfde601424d4411675588767c46a52ce7700365a",
+  "build": 264,
+  "commit": "a07f901",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-264/folia.dmg",
+  "sha256": "d3df5f95ffee2b6fc195f1400124411066f4a5bbb61845813e131b937bf662a4",
   "minimumSystemVersion": "26.0",
-  "notes": "While you search, the columns show where the hits are\nSearch filters: notebook, section, date, open tasks, tag\nSearch shows \"&\" as \"&\"",
+  "notes": "Delete your templates\nPage templates of your own\nA tick in folia finishes the task in j4k",
   "entries": [
+    {
+      "build": 264,
+      "date": "2026-10-30",
+      "title": "Delete your templates",
+      "detail": "New page from a template now has Manage templates…. It lists your templates and where each one is. Delete puts the page into the bin for 30 days. Stop using keeps the page. Pages you made from a template stay as they are."
+    },
+    {
+      "build": 263,
+      "date": "2026-10-30",
+      "title": "Page templates of your own",
+      "detail": "Write a page as you like it, and choose Use as template in its … menu. It then shows under New page from a template, and Prepare offers it for a meeting. A meeting prepared from a template keeps its link, so scripta writes its minutes under the headings of your template, also under German ones such as Aufgaben or Beschlüsse."
+    },
+    {
+      "build": 262,
+      "date": "2026-10-30",
+      "title": "A tick in folia finishes the task in j4k",
+      "detail": "A task that went to j4k and that you tick in folia now goes to Done in j4k, within about three minutes. A task with an open subtask or a repeat in j4k stays open: finish it there."
+    },
     {
       "build": 261,
       "date": "2026-10-30",
@@ -228,24 +246,6 @@
       "date": "2026-10-26",
       "title": "Table lines stay while you drag; the window comes up at a start",
       "detail": "While you drag a column line, the table keeps all its lines instead of losing them until you let go. And started again, folia now comes to the front with its window, instead of opening it behind the app you were in."
-    },
-    {
-      "build": 209,
-      "date": "2026-10-26",
-      "title": "A moved column line shows at once",
-      "detail": "After you let go of a column line in a fitted table, the table is drawn anew at once, without moving the mouse away from the line first."
-    },
-    {
-      "build": 208,
-      "date": "2026-10-26",
-      "title": "Column lines of a fitted table move smoothly",
-      "detail": "In a table with Fit width on, dragging a line between two columns now moves only those two columns, and the table stays as wide as the page. A press on a line without moving it no longer makes the table jump."
-    },
-    {
-      "build": 207,
-      "date": "2026-10-26",
-      "title": "Tables fit the page, also with new columns",
-      "detail": "Fit width is now a switch above each table, and on by default: the table spans the page, its columns keep their proportions, and a new column takes its share instead of pushing the table past the page. Switched off, a table keeps the widths it shows and has its own from then on."
     }
   ]
 }
