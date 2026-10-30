@@ -1,12 +1,18 @@
 {
   "app": "j4k",
-  "build": 488,
-  "commit": "f0281eb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-488/j4k.dmg",
-  "sha256": "944ad6a28094fc5cb4f39f018bd382cc3fb5fcdb038613ba971ace9ca7e36e7a",
+  "build": 496,
+  "commit": "a41cb47",
+  "url": "https://github.com/kedavra-code/releases/releases/download/j4k-496/j4k.dmg",
+  "sha256": "20e4d0746d0d052e7987016cd6520663e613e4c2c9922f04c164122944b97410",
   "minimumSystemVersion": "26.0",
-  "notes": "Other apps can open j4k on a view",
+  "notes": "The Priority selector is easy to read again",
   "entries": [
+    {
+      "build": 496,
+      "date": "2026-10-30",
+      "title": "The Priority selector is easy to read again",
+      "detail": "In dark mode, High, Medium and Low in the task editor had pale grey text on a pale fill. The word is dark again, as it should be."
+    },
     {
       "build": 487,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "Move a window by its title bar",
       "detail": "Drag the Settings window, or any other window of j4k, by its title bar to put it where you want. It stays on the screen, and opens in the middle again next time."
-    },
-    {
-      "build": 415,
-      "date": "2026-10-23",
-      "title": "Settings without a scrollbar",
-      "detail": "The Settings window is as tall as its longest part, so no part needs a scrollbar, and it keeps its size when you switch parts. Your tags stand in two columns. Users no longer marks a Gmail address as unable to sign in: Google lets those accounts in now, when they are test users in Google Cloud."
     }
   ]
 }
