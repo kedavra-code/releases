@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 52,
-  "commit": "7b56d6a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-52/specula.dmg",
-  "sha256": "5a55f3158e3c981f2d7e95dcef163600b3b0c6d0ff7beaab22c3a04460d00816",
+  "build": 53,
+  "commit": "ce168a5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-53/specula.dmg",
+  "sha256": "040fd5226be6c98920986668a8d184dc62cc47f0369592a8e1ac3320db91057a",
   "minimumSystemVersion": "26.0",
-  "notes": "3D opens behind the ship\nOther apps can open specula on a view",
+  "notes": "A new icon: the eye",
   "entries": [
+    {
+      "build": 53,
+      "date": "2026-10-30",
+      "title": "A new icon: the eye",
+      "detail": "specula's app icon, menu bar icon, disk image and browser tab now show an eye: a lookout watching. The old mark was too fine at small sizes; the eye stays clear in the menu bar. Inside specula, the header and Settings › About keep the vault's mark."
+    },
     {
       "build": 52,
       "date": "2026-10-28",
