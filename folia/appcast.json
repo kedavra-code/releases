@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 258,
-  "commit": "a022cf2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-258/folia.dmg",
-  "sha256": "a26259da7acdeaa85717df6e683cfce0d10f4dad3f3339249c5be30d1a44988a",
+  "build": 261,
+  "commit": "ed357c9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-261/folia.dmg",
+  "sha256": "30e812887dec1b3891b7cf05cfde601424d4411675588767c46a52ce7700365a",
   "minimumSystemVersion": "26.0",
-  "notes": "Work offline: new pages, renames, moves, deletes and files\nPages written offline reach the cloud by themselves\nSettings › Users, as in j4k",
+  "notes": "While you search, the columns show where the hits are\nSearch filters: notebook, section, date, open tasks, tag\nSearch shows \"&\" as \"&\"",
   "entries": [
+    {
+      "build": 261,
+      "date": "2026-10-30",
+      "title": "While you search, the columns show where the hits are",
+      "detail": "Each notebook and section shows how many pages it has with your words, and each page how many hits. Notebooks, sections and pages without any turn grey; nothing is hidden. Clear the search and the numbers go."
+    },
+    {
+      "build": 260,
+      "date": "2026-10-30",
+      "title": "Search filters: notebook, section, date, open tasks, tag",
+      "detail": "Under the search field, a row of filters narrows what you find: a notebook or a section (also the one you are in), a time (today, last 7 or 30 days, this year, last year, or between two days), where the words stand (titles, headings, open tasks, pictures and files, meetings), and a tag. Each choice shows how many pages it gives. Sort by best match or newest. Without any words, the filters list their pages, for example every open task of a section from the last week."
+    },
+    {
+      "build": 259,
+      "date": "2026-10-30",
+      "title": "Search shows \"&\" as \"&\"",
+      "detail": "A search hit no longer shows \"&amp;\" where the page has \"&\", for example in \"Q&A\". The same goes for \"<\", \">\", quotes and fixed spaces."
+    },
     {
       "build": 258,
       "date": "2026-10-29",
@@ -228,24 +246,6 @@
       "date": "2026-10-26",
       "title": "Tables fit the page, also with new columns",
       "detail": "Fit width is now a switch above each table, and on by default: the table spans the page, its columns keep their proportions, and a new column takes its share instead of pushing the table past the page. Switched off, a table keeps the widths it shows and has its own from then on."
-    },
-    {
-      "build": 205,
-      "date": "2026-10-26",
-      "title": "Typing into a new heading works again",
-      "detail": "A heading you had just made, empty, took no letters on a page that is kept in sync. Now it does."
-    },
-    {
-      "build": 204,
-      "date": "2026-10-26",
-      "title": "No black window after an update",
-      "detail": "When folia's offline copy holds parts of two versions, folia now drops the copy once and loads afresh, instead of showing a black window. Pictures and files kept for offline use stay."
-    },
-    {
-      "build": 203,
-      "date": "2026-10-26",
-      "title": "A page to the top or bottom; the list scrolls while you drag",
-      "detail": "A page's … menu moves it to the top or the bottom of its section, or of its group. Dragged near the page list's top or bottom, the list scrolls by itself, faster the closer you come, and the dragged page shows half see-through. The bar at the list's foot also moves the open page alone."
     }
   ]
 }
