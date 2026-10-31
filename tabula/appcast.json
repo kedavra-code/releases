@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 499,
-  "commit": "7458984",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-499/tabula.dmg",
-  "sha256": "3da295c58de9f44f0d3df352307432f6bed3628bd36ea005ed25a8568492b42b",
+  "build": 501,
+  "commit": "a93df7e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-501/tabula.dmg",
+  "sha256": "a617ff15bb1500bf3de2ece76da7f310c7d09da0c50cc0ec1c64ea4ab949759a",
   "minimumSystemVersion": "26.0",
-  "notes": "j4k is now tabula\nSwimlanes by Week Start and by Week Due\nThe Priority selector is easy to read again\nOther apps can open j4k on a view\nAbout and What's New in the family's style\nDeleted tasks are kept 30 days, with no setting\nDark task cards have no bright white any more\nA task's description reads in folia's softer text colour\nand 117 more — see What's New",
+  "notes": "The old address now leads to tabula",
   "entries": [
+    {
+      "build": 500,
+      "date": "2026-10-31",
+      "title": "The old address now leads to tabula",
+      "detail": "j4k.pixelina.me sends you to tabula.pixelina.me, and links keep their task or view. The j4k Mac app stops working with this page: install the tabula Mac app from Settings › Mac app in your browser."
+    },
     {
       "build": 499,
       "date": "2026-10-31",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "More room, the same layout as folia",
       "detail": "The page reaches closer to the window's edges, with 10px around and between its bands, like folia. The header has folia's height and button size, so with the two windows side by side j4k and folia line up."
-    },
-    {
-      "build": 420,
-      "date": "2026-10-23",
-      "title": "j4k written in the header",
-      "detail": "The top of the page writes j4k as plain bold text, the way folia writes its name, in light and in dark. It fits every phone without touching the buttons."
     }
   ]
 }
