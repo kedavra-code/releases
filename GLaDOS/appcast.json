@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 434,
-  "commit": "c1fb281",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-434/GLaDOS.dmg",
-  "sha256": "60ee88c7fa227dc86628b42e8a0cd844212e2211e8a12869c1292a2fd8fa4252",
+  "build": 439,
+  "commit": "689d3dc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-439/GLaDOS.dmg",
+  "sha256": "3fceceafd27e224dc9e4d0432242bdcdc0a4e0e9f0b5efc4207d822fe35c6bb6",
   "minimumSystemVersion": "26.0",
-  "notes": "j4k and Cerebrum open in their own apps\nClearer names for the switches in Armarium\nArmarium, a new tab in Settings",
+  "notes": "j4k is now tabula",
   "entries": [
+    {
+      "build": 439,
+      "date": "2026-10-31",
+      "title": "j4k is now tabula",
+      "detail": "The task app has a new name, and GLaDOS and J.A.R.V.I.S. use it: they say tabula, show it in the tabula Mac app or at tabula.pixelina.me, and Settings › Armarium says tabula. You can still say j4k or Jira for Kids."
+    },
     {
       "build": 434,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "She remembers what you tell her to",
       "detail": "Switch it on in Settings, under Transcript. Then say \"remember that…\" or \"merk dir…\", and she keeps that note for every later conversation; J.A.R.V.I.S. has the same notes. \"Forget that…\" removes one. The notes are a text file on this Mac that you can read and edit, and they go to the model with every turn. She keeps nothing you did not ask her to keep."
-    },
-    {
-      "build": 308,
-      "date": "2026-10-05",
-      "title": "About shows the kit version",
-      "detail": "The About window has a new row, Kit. It names the version of the code that GLaDOS shares with murmur, unus and scripta."
     }
   ]
 }
