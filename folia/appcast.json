@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 268,
-  "commit": "a231ddf",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-268/folia.dmg",
-  "sha256": "6dfa6f6182b2bc60c80b47bffb9af26821d6338bcdafb99d0601b64da91d49db",
+  "build": 271,
+  "commit": "9337ca1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-271/folia.dmg",
+  "sha256": "d7580d96ceeddc5ce55c7e5b6f4845ce788169609fd8928828983786a749d528",
   "minimumSystemVersion": "26.0",
-  "notes": "j4k is called tabula now",
+  "notes": "Font colours above a selection, and one list of colours\nSettings › tabula is called Armarium\nFont colours, and orange for notebooks and sections",
   "entries": [
+    {
+      "build": 271,
+      "date": "2026-10-31",
+      "title": "Font colours above a selection, and one list of colours",
+      "detail": "Select words in a page, and the font colours show right above them. Settings › General can switch that off. Font colours are now the same 11 colours as notebooks and sections, in the same order. In text each one is only as much darker or lighter as it needs to read well."
+    },
+    {
+      "build": 270,
+      "date": "2026-10-31",
+      "title": "Settings › tabula is called Armarium",
+      "detail": "The part of Settings that sends your tasks is now called Armarium. Its switch and what it does stay as they were."
+    },
+    {
+      "build": 269,
+      "date": "2026-10-31",
+      "title": "Font colours, and orange for notebooks and sections",
+      "detail": "The toolbar has Font colour where Code stood: select words, press the A with the bar, and pick a colour, or pick one first and type. Each colour reads well in the light and the dark look, and Default colour takes it off. Inline code stays: type it between backticks. Notebooks and sections can now be orange too."
+    },
     {
       "build": 267,
       "date": "2026-10-31",
@@ -228,24 +246,6 @@
       "date": "2026-10-27",
       "title": "scripta's folia note finds the meeting's page",
       "detail": "scripta's folia note opens the meeting's page in folia: the page scripta wrote the minutes into, else the page prepared for the meeting, else the page of that day with the meeting's title. If there is none, folia says so. A meeting page you put in the trash stays there: scripta no longer makes a new one in its place."
-    },
-    {
-      "build": 217,
-      "date": "2026-10-27",
-      "title": "Move and copy pages to any section, in any notebook",
-      "detail": "A page's … menu has Move to section… and Copy to section…, also for several picked pages, and so has the bar at the foot of the page list. A window lists every notebook with its sections. Into another notebook, a page's pictures and files go along, so the people of that notebook can open them. A copy is a new page with the same title, text, pictures and files."
-    },
-    {
-      "build": 215,
-      "date": "2026-10-27",
-      "title": "Numbered sub-lists keep every item",
-      "detail": "A numbered sub-list whose first item is indented more than the next, as some pages from OneNote have it, lost that first item. Now it keeps every item. Copies from OneNote also keep a word that OneNote wrote bold or italic in two pieces. Settings › OneNote no longer has \"Repair them\": no page has a broken table any more."
-    },
-    {
-      "build": 213,
-      "date": "2026-10-26",
-      "title": "At login, folia stays in the background",
-      "detail": "Opened at login, folia now waits in the background instead of coming to the front. Started by you, it still comes to the front with its window."
     }
   ]
 }
