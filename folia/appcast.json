@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 271,
-  "commit": "9337ca1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-271/folia.dmg",
-  "sha256": "d7580d96ceeddc5ce55c7e5b6f4845ce788169609fd8928828983786a749d528",
+  "build": 272,
+  "commit": "3a4499b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-272/folia.dmg",
+  "sha256": "5b606d56f93d3e3bfadb659a4848ee0d4df23bbcfa8337e249a4eeaa3000c004",
   "minimumSystemVersion": "26.0",
-  "notes": "Font colours above a selection, and one list of colours\nSettings › tabula is called Armarium\nFont colours, and orange for notebooks and sections",
+  "notes": "Settings as large as in tabula, with the build facts in About",
   "entries": [
+    {
+      "build": 272,
+      "date": "2026-10-31",
+      "title": "Settings as large as in tabula, with the build facts in About",
+      "detail": "The Settings window has the size of tabula's, and shrinks to fit a smaller window. Settings › About folia shows the build code, build number, build date, when folia started, and the builds of the web app and the Mac app."
+    },
     {
       "build": 271,
       "date": "2026-10-31",
@@ -240,12 +246,6 @@
       "date": "2026-10-27",
       "title": "scripta's folia note finds a day's page in a person's notebook",
       "detail": "A page titled with the day alone, as in a notebook kept for one person, is found by the notebook's name: scripta's folia note for \"20261014 JF Anna\" opens the page \"20261014\" in the notebook \"JF Anna\"."
-    },
-    {
-      "build": 218,
-      "date": "2026-10-27",
-      "title": "scripta's folia note finds the meeting's page",
-      "detail": "scripta's folia note opens the meeting's page in folia: the page scripta wrote the minutes into, else the page prepared for the meeting, else the page of that day with the meeting's title. If there is none, folia says so. A meeting page you put in the trash stays there: scripta no longer makes a new one in its place."
     }
   ]
 }
