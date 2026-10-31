@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 58,
-  "commit": "370723d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-58/specula.dmg",
-  "sha256": "a1b63e59fb6bf6b344f4cd903a0bf87989b828e88fe6730cec80a2cbe050304f",
+  "build": 59,
+  "commit": "ca0834d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-59/specula.dmg",
+  "sha256": "7c5372707c9ae52e63e084aadf41bd346fc71a47101a2b22ac5341bc8f5f28e9",
   "minimumSystemVersion": "26.0",
-  "notes": "No scrollbar in Settings",
+  "notes": "Settings › Mac app as in folia",
   "entries": [
+    {
+      "build": 59,
+      "date": "2026-10-31",
+      "title": "Settings › Mac app as in folia",
+      "detail": "The part has the same groups and words as in folia: Hotkey, This Mac and Get the Mac app. \"Start specula at login\" is called \"Open at login\" again."
+    },
     {
       "build": 58,
       "date": "2026-10-31",
