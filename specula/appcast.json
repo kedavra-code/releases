@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 56,
-  "commit": "c9209dd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-56/specula.dmg",
-  "sha256": "f24f5687f6adf792df08b712f343dd565952c925d11d659ed699673dd516a1c3",
+  "build": 57,
+  "commit": "993987f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-57/specula.dmg",
+  "sha256": "3d9129791315ccbfc337aa37d80044424dce4a1a77471a0a7245fedd4490010a",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Settings as big as tabula's; more in About",
   "entries": [
+    {
+      "build": 57,
+      "date": "2026-10-31",
+      "title": "Settings as big as tabula's; more in About",
+      "detail": "The Settings window has the size of tabula's. About specula lists the build code, build number, build date, the first commit, the web app and the Mac app, and says where your notes live. A new part, Account, shows who uses specula on this Mac and the vault it reads."
+    },
     {
       "build": 53,
       "date": "2026-10-30",
