@@ -1,12 +1,78 @@
 {
   "app": "tabula",
-  "build": 501,
-  "commit": "a93df7e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-501/tabula.dmg",
-  "sha256": "a617ff15bb1500bf3de2ece76da7f310c7d09da0c50cc0ec1c64ea4ab949759a",
+  "build": 523,
+  "commit": "ef7df2e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-523/tabula.dmg",
+  "sha256": "6073d1da138e6802dcd4813bbbee9615ce20e754994bbd73e1cf64e00e8848e6",
   "minimumSystemVersion": "26.0",
-  "notes": "The old address now leads to tabula",
+  "notes": "Share by pressing a face\nShare with one press\nLive typing in shared tasks\nAutomatic updates left Settings\nWork on a task with other people\nNo scrollbar in Settings\nSettings has folia's height\nAbout tabula says where your tasks live\nand 3 more — see What's New",
   "entries": [
+    {
+      "build": 523,
+      "date": "2026-10-31",
+      "title": "Share by pressing a face",
+      "detail": "The Share window shows everyone on the Users list as a face. Press one to share the task. There is no address to type any more, and new people join in Settings › Users."
+    },
+    {
+      "build": 521,
+      "date": "2026-10-31",
+      "title": "Share with one press",
+      "detail": "The Share window shows the people you already share with as faces. Press one to share the task, with no address to type."
+    },
+    {
+      "build": 519,
+      "date": "2026-10-31",
+      "title": "Live typing in shared tasks",
+      "detail": "In a shared task, title and description now change letter by letter, with named cursors, and the task says who else is there. Private tasks stay as they are."
+    },
+    {
+      "build": 516,
+      "date": "2026-10-31",
+      "title": "Automatic updates left Settings",
+      "detail": "Settings › Mac app no longer has the Automatic updates switch. tabula › Check for Updates… stays in the menu."
+    },
+    {
+      "build": 515,
+      "date": "2026-10-31",
+      "title": "Work on a task with other people",
+      "detail": "Open a task and press the person icon to share it. A shared task shows faces on its card. Say who does it, write comments with @names, and see what others did under For you. Your star, tags and archive stay your own. This replaces handing over a copy."
+    },
+    {
+      "build": 509,
+      "date": "2026-10-31",
+      "title": "No scrollbar in Settings",
+      "detail": "The Settings window shows no scrollbar. On a short screen a long part still scrolls with the wheel, the trackpad or a finger."
+    },
+    {
+      "build": 507,
+      "date": "2026-10-31",
+      "title": "Settings has folia's height",
+      "detail": "The Settings window is now as tall as folia's: 925px, less on a shorter screen. A part taller than that scrolls."
+    },
+    {
+      "build": 506,
+      "date": "2026-10-31",
+      "title": "About tabula says where your tasks live",
+      "detail": "Settings › About tabula has a new part, Where your tasks live. This version now also shows when tabula started and the build of the web app. The Armarium part and its task count are gone."
+    },
+    {
+      "build": 504,
+      "date": "2026-10-31",
+      "title": "Two dots under the task number",
+      "detail": "The yellow dot is gone: a card now shows the green start dot and the red due dot. The space between the task number, the dots and the subtask count is even. A due date in the next 3 days still shows in orange on the Due value."
+    },
+    {
+      "build": 503,
+      "date": "2026-10-31",
+      "title": "Task numbers without a line",
+      "detail": "The task number on a card, such as T-123, no longer has a line under it. You still click it to open the card."
+    },
+    {
+      "build": 502,
+      "date": "2026-10-31",
+      "title": "A new name in About tabula",
+      "detail": "In Settings › About tabula, the group with Started and Tasks is now called Armarium."
+    },
     {
       "build": 500,
       "date": "2026-10-31",
@@ -180,72 +246,6 @@
       "date": "2026-10-25",
       "title": "Command-H hides j4k again · the download in Settings · The buttons in Settings look alike",
       "detail": "Command-H hides j4k again · the download in Settings: Command-H hides j4k also when it shows in the menu bar alone. Settings › Mac app offers the download of the Mac app, for another Mac. The buttons in Settings look alike: Every button, menu and field in Settings and the other windows has the same size, height and type."
-    },
-    {
-      "build": 446,
-      "date": "2026-10-25",
-      "title": "A menu bar icon and a hotkey",
-      "detail": "j4k has an icon in the menu bar: it opens j4k, or j4k in the browser, and holds Settings…, Check for Updates… and Quit. Control-Option-Command-K shows j4k from any app; pressed again, it hides it. Settings › Mac app holds the hotkey, Start j4k at login (it was Open at login) and Show j4k in: the menu bar, the Dock, or both."
-    },
-    {
-      "build": 441,
-      "date": "2026-10-25",
-      "title": "Check for Updates is under Settings",
-      "detail": "In the j4k menu, at the left of the menu bar, Check for Updates… is now under Settings…, no longer under About j4k."
-    },
-    {
-      "build": 439,
-      "date": "2026-10-24",
-      "title": "Settings › Assistant is now called Brain",
-      "detail": "The part of the Settings window where you open the chat with Claude and pick its model and effort is now called Brain. Nothing in it changed but the name."
-    },
-    {
-      "build": 431,
-      "date": "2026-10-24",
-      "title": "The Mac app's What's New looks like this one, and its About has Docs",
-      "detail": "In the Mac app, What's New shows a card for each day, as here. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch. About j4k has a Docs button: it opens the j4k Field Manual."
-    },
-    {
-      "build": 429,
-      "date": "2026-10-23",
-      "title": "Docs is the j4k Field Manual",
-      "detail": "Settings › About j4k › Docs now opens the j4k Field Manual in a new tab: one illustrated page on what j4k is and how it works. The old Docs window inside the app is gone."
-    },
-    {
-      "build": 428,
-      "date": "2026-10-23",
-      "title": "About j4k shows the Board icon",
-      "detail": "Settings › About j4k now shows the app's Board icon beside the name, as folia's About shows its own, instead of the old j4k logo."
-    },
-    {
-      "build": 427,
-      "date": "2026-10-23",
-      "title": "Undo and redo lead the top bar's icons, as in folia",
-      "detail": "The undo and redo arrows moved to the start of the top bar's icons, before the plus, where folia has them. They are faded while there is nothing to undo or redo."
-    },
-    {
-      "build": 426,
-      "date": "2026-10-23",
-      "title": "The search bar in the page's colours",
-      "detail": "The search bar now has the same colours and rounded edge as the filter band and the task columns. In dark mode it no longer shows a black box with a grey border inside it."
-    },
-    {
-      "build": 424,
-      "date": "2026-10-23",
-      "title": "The top bar's buttons at its right edge, as in folia",
-      "detail": "The buttons in the top bar moved to its right edge, as in folia; they followed the j4k name before. The search field stays where it was, above the task list."
-    },
-    {
-      "build": 423,
-      "date": "2026-10-23",
-      "title": "Get the Mac app from Settings · The new icon on the iPhone's home screen",
-      "detail": "Get the Mac app from Settings: In a browser, Settings › Mac app now offers the j4k Mac app as a download: always the newest build, with the macOS it needs. Open the file, drag j4k into Applications, and it updates itself from then on. The new icon on the iPhone's home screen: Adding j4k to an iPhone's home screen kept showing the old icon, because the phone had saved it. The icons now have a new address, so the phone fetches the Board icon. An icon already on your home screen stays as it is: remove it and add j4k again."
-    },
-    {
-      "build": 422,
-      "date": "2026-10-23",
-      "title": "More room, the same layout as folia",
-      "detail": "The page reaches closer to the window's edges, with 10px around and between its bands, like folia. The header has folia's height and button size, so with the two windows side by side j4k and folia line up."
     }
   ]
 }
