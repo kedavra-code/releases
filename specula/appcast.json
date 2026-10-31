@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 57,
-  "commit": "993987f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-57/specula.dmg",
-  "sha256": "3d9129791315ccbfc337aa37d80044424dce4a1a77471a0a7245fedd4490010a",
+  "build": 58,
+  "commit": "370723d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-58/specula.dmg",
+  "sha256": "a1b63e59fb6bf6b344f4cd903a0bf87989b828e88fe6730cec80a2cbe050304f",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings as big as tabula's; more in About",
+  "notes": "No scrollbar in Settings",
   "entries": [
+    {
+      "build": 58,
+      "date": "2026-10-31",
+      "title": "No scrollbar in Settings",
+      "detail": "About specula now fits the window: the build facts stand in two columns, what each one means is in its tooltip, and Where your notes live has two short rows. Settings draws no scrollbar."
+    },
     {
       "build": 57,
       "date": "2026-10-31",
