@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 264,
-  "commit": "a07f901",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-264/folia.dmg",
-  "sha256": "d3df5f95ffee2b6fc195f1400124411066f4a5bbb61845813e131b937bf662a4",
+  "build": 268,
+  "commit": "a231ddf",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-268/folia.dmg",
+  "sha256": "6dfa6f6182b2bc60c80b47bffb9af26821d6338bcdafb99d0601b64da91d49db",
   "minimumSystemVersion": "26.0",
-  "notes": "Delete your templates\nPage templates of your own\nA tick in folia finishes the task in j4k",
+  "notes": "j4k is called tabula now",
   "entries": [
+    {
+      "build": 267,
+      "date": "2026-10-31",
+      "title": "j4k is called tabula now",
+      "detail": "Settings › j4k is now Settings › tabula, and its switch Tasks to tabula. Your switch and your name in task lines stay as they were, and your tasks go to Review in tabula as before."
+    },
     {
       "build": 264,
       "date": "2026-10-30",
@@ -240,12 +246,6 @@
       "date": "2026-10-26",
       "title": "At login, folia stays in the background",
       "detail": "Opened at login, folia now waits in the background instead of coming to the front. Started by you, it still comes to the front with its window."
-    },
-    {
-      "build": 211,
-      "date": "2026-10-26",
-      "title": "Table lines stay while you drag; the window comes up at a start",
-      "detail": "While you drag a column line, the table keeps all its lines instead of losing them until you let go. And started again, folia now comes to the front with its window, instead of opening it behind the app you were in."
     }
   ]
 }
