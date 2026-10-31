@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 53,
-  "commit": "ce168a5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-53/specula.dmg",
-  "sha256": "040fd5226be6c98920986668a8d184dc62cc47f0369592a8e1ac3320db91057a",
+  "build": 56,
+  "commit": "c9209dd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-56/specula.dmg",
+  "sha256": "f24f5687f6adf792df08b712f343dd565952c925d11d659ed699673dd516a1c3",
   "minimumSystemVersion": "26.0",
-  "notes": "A new icon: the eye",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 53,
