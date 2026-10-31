@@ -1,29 +1,35 @@
 {
   "app": "pactum",
-  "build": 7,
-  "commit": "3e0575c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-7/pactum.dmg",
-  "sha256": "d6844d3fdc789c55242c86dc4f113a302a8a78f4ed31c2e275b396e69bd3f5ea",
+  "build": 8,
+  "commit": "7013a84",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-8/pactum.dmg",
+  "sha256": "d7b0ebb86bd32bd27554c90bbd0bdd74ea72fe3e07ca6a90a6d5ca261c8fa499",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Settings, and pactum in English",
   "entries": [
+    {
+      "build": 8,
+      "date": "2026-10-31",
+      "title": "Settings, and pactum in English",
+      "detail": "The gear at the top right opens Settings. About pactum says which build this is and where your data lives. The whole app now speaks English."
+    },
     {
       "build": 3,
       "date": "2026-10-28",
-      "title": "Startet auch ohne Ordner Input",
-      "detail": "Fehlt der Ordner Input, legt pactum ihn an und zeigt eine leere Seite. Vorher brach der Server dann ab."
+      "title": "Starts without the Input folder too",
+      "detail": "When the Input folder is missing, pactum makes it and shows an empty page. Before, the server stopped."
     },
     {
       "build": 2,
       "date": "2026-10-28",
-      "title": "Ein eigenes Symbol",
-      "detail": "Die Spinne: fünf Speichen, das KPI-Profil einer Gruppe, in den Farben der App-Familie."
+      "title": "An icon of its own",
+      "detail": "The spider: five spokes, the KPI profile of a group, in the colours of the app family."
     },
     {
       "build": 1,
       "date": "2026-10-28",
       "title": "pactum 1",
-      "detail": "Der KPI-Vergleich der IT Service Gruppen aus dem SLA-Workbook und den eTHIS-Exporten."
+      "detail": "The KPI comparison of the IT service groups, from the SLA workbook and the eTHIS exports."
     }
   ]
 }
