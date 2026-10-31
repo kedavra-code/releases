@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 9,
-  "commit": "5a20e12",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-9/pactum.dmg",
-  "sha256": "102901ef76e200a5dc094c1059c35977793dd10268d8c5ed9176ac91321149c9",
+  "build": 10,
+  "commit": "7fbd1fa",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-10/pactum.dmg",
+  "sha256": "1c424347b6d2c76fd05a77165b5e5e4d6dd6eb7f307644c31e13f15a583e0ea6",
   "minimumSystemVersion": "26.0",
-  "notes": "Account, Docs and What's New in Settings",
+  "notes": "A hotkey, and Settings › Mac app",
   "entries": [
+    {
+      "build": 10,
+      "date": "2026-10-31",
+      "title": "A hotkey, and Settings › Mac app",
+      "detail": "⌃⌥⌘P shows or hides pactum from any app, and you can record other keys. Settings › Mac app also holds where the icon shows, opening at login, and the download."
+    },
     {
       "build": 9,
       "date": "2026-10-31",
