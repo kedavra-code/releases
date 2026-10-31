@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 8,
-  "commit": "7013a84",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-8/pactum.dmg",
-  "sha256": "d7b0ebb86bd32bd27554c90bbd0bdd74ea72fe3e07ca6a90a6d5ca261c8fa499",
+  "build": 9,
+  "commit": "5a20e12",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-9/pactum.dmg",
+  "sha256": "102901ef76e200a5dc094c1059c35977793dd10268d8c5ed9176ac91321149c9",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings, and pactum in English",
+  "notes": "Account, Docs and What's New in Settings",
   "entries": [
+    {
+      "build": 9,
+      "date": "2026-10-31",
+      "title": "Account, Docs and What's New in Settings",
+      "detail": "Settings has an Account part: who uses this Mac, and what pactum holds. About has a Read group. Docs waits for a Field Manual."
+    },
     {
       "build": 8,
       "date": "2026-10-31",
