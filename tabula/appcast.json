@@ -1,0 +1,251 @@
+{
+  "app": "tabula",
+  "build": 499,
+  "commit": "7458984",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-499/tabula.dmg",
+  "sha256": "3da295c58de9f44f0d3df352307432f6bed3628bd36ea005ed25a8568492b42b",
+  "minimumSystemVersion": "26.0",
+  "notes": "j4k is now tabula\nSwimlanes by Week Start and by Week Due\nThe Priority selector is easy to read again\nOther apps can open j4k on a view\nAbout and What's New in the family's style\nDeleted tasks are kept 30 days, with no setting\nDark task cards have no bright white any more\nA task's description reads in folia's softer text colour\nand 117 more — see What's New",
+  "entries": [
+    {
+      "build": 499,
+      "date": "2026-10-31",
+      "title": "j4k is now tabula",
+      "detail": "A new name, tabula: Latin for a board or a writing tablet. The address is tabula.pixelina.me, and the old one still works for now. Your tasks and settings came along, and they are now stored in Zurich. The Mac app is a new app: install it once and sign in once. It takes your hotkey and your Mac settings from j4k. Old backups still import. On a phone under 390 pixels wide, the Minimum/Maximum button is in Settings › General only."
+    },
+    {
+      "build": 498,
+      "date": "2026-10-30",
+      "title": "Swimlanes by Week Start and by Week Due",
+      "detail": "On the Kanban board, Swimlanes has two week groupings now. Week Start makes one row per week that holds a start date, Week Due one row per week that holds a due date. A card dropped on a Week Due row keeps its weekday in that week, or gets the Friday when it has no due date yet."
+    },
+    {
+      "build": 496,
+      "date": "2026-10-30",
+      "title": "The Priority selector is easy to read again",
+      "detail": "In dark mode, High, Medium and Low in the task editor had pale grey text on a pale fill. The word is dark again, as it should be."
+    },
+    {
+      "build": 487,
+      "date": "2026-10-28",
+      "title": "Other apps can open j4k on a view",
+      "detail": "A link j4k://show with the filters of a view brings the j4k Mac app to the front on that view. GLaDOS uses it to show you your tasks in j4k, not in a browser tab."
+    },
+    {
+      "build": 484,
+      "date": "2026-10-28",
+      "title": "About and What's New in the family's style",
+      "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
+    },
+    {
+      "build": 481,
+      "date": "2026-10-28",
+      "title": "Deleted tasks are kept 30 days, with no setting",
+      "detail": "Settings › Data no longer has Keep deleted tasks. A deleted task can always be restored for 30 days, on every device, and is then removed for good."
+    },
+    {
+      "build": 480,
+      "date": "2026-10-28",
+      "title": "Dark task cards have no bright white any more",
+      "detail": "In dark mode, a task's title, the count of done subtasks, the subtasks, the comments, the headings and the icons are now the same soft grey as folia's text, on the card and while you edit it. A link in a description is gold again in dark mode; it was a dark brown that was hard to read."
+    },
+    {
+      "build": 479,
+      "date": "2026-10-28",
+      "title": "A task's description reads in folia's softer text colour",
+      "detail": "The text of a description is now the same soft grey as a page in folia, in light and dark mode. In dark mode it was nearly white before, which was harder on the eyes."
+    },
+    {
+      "build": 478,
+      "date": "2026-10-28",
+      "title": "j4k follows the folia style guide",
+      "detail": "Text uses your system font at folia's sizes, and gold text and focus lines use folia's slightly darker gold, which is easier to read. In Settings and the other windows, the buttons, selects and fields in a row are 30 pixels high with smaller text, and the buttons at the foot of a window are 34 pixels high, as in folia."
+    },
+    {
+      "build": 477,
+      "date": "2026-10-28",
+      "title": "Mail no longer freezes while j4k looks for flagged mails",
+      "detail": "Mail integration now reads flagged mails from the inbox of each account only, and asks Mail far fewer questions. Searching every folder could keep Mail busy for hours on a large mailbox. A mail you flag in another folder no longer becomes a task. If Mail takes longer than two minutes to answer, j4k waits an hour before it asks again."
+    },
+    {
+      "build": 475,
+      "date": "2026-10-27",
+      "title": "A mail conversation dragged in becomes one task",
+      "detail": "Drag a whole conversation from Apple Mail onto j4k and it becomes one task, made from its latest mail: that mail's subject, sender and link. Mails of different conversations, dragged together, still become one task each."
+    },
+    {
+      "build": 474,
+      "date": "2026-10-27",
+      "title": "Dragging a mail conversation no longer crashes the Mac app",
+      "detail": "A conversation dragged from Apple Mail onto j4k crashed the app. It no longer does. A calendar event dragged in from Calendar had the same fault and is fixed too."
+    },
+    {
+      "build": 472,
+      "date": "2026-10-27",
+      "title": "No What's New bar; the message bar is amber",
+      "detail": "The What's New bar above the task list is gone. What's new is in Settings › About j4k, which still counts what you have not read. The bar that says what you just did, or what another device changed, is now amber instead of green."
+    },
+    {
+      "build": 471,
+      "date": "2026-10-27",
+      "title": "The search field sits exactly where folia's does",
+      "detail": "The search field is now in the exact centre of the top bar, as in folia, and its magnifier is folia's plain icon, with no yellow behind it. In Ask Claude mode the sparkle turns gold."
+    },
+    {
+      "build": 470,
+      "date": "2026-10-27",
+      "title": "The search field is in the top bar, as in folia",
+      "detail": "The search field moved from above the task list into the centre of the top bar, and looks like folia's. On a phone it fills the top bar's second row. In Ask Claude mode the field no longer has a microphone or a conversation button; Settings › Brain still opens the conversation."
+    },
+    {
+      "build": 469,
+      "date": "2026-10-27",
+      "title": "Docs in Settings opens the manual in a window",
+      "detail": "In the j4k Mac app, Settings › About j4k › Docs opens the j4k Field Manual in a window of the app, as the Docs button in the About j4k window does. In a browser it still opens the page online."
+    },
+    {
+      "build": 467,
+      "date": "2026-10-27",
+      "title": "No Done bar on an open task",
+      "detail": "The gold Done bar on top of a task you create or edit is gone. To go back to the list, press j4k in its gold frame, or press Esc. Your changes are saved as you type."
+    },
+    {
+      "build": 466,
+      "date": "2026-10-27",
+      "title": "A gold frame around j4k shows the way back",
+      "detail": "The j4k name in the header wears a gold frame whenever pressing it does something: a task is open, a filter, sort or search is set, or the board has swimlanes. Gold rings ripple out from it each time you change a filter. Press j4k to clear them all. With Reduce motion on, the frame stays and the rings do not move."
+    },
+    {
+      "build": 464,
+      "date": "2026-10-27",
+      "title": "No scrollbar on the main screen",
+      "detail": "The main screen no longer shows a scrollbar or keeps an empty strip for one on the right. It still scrolls with the trackpad, the mouse wheel and the keys."
+    },
+    {
+      "build": 463,
+      "date": "2026-10-27",
+      "title": "Mail integration and Calendar integration",
+      "detail": "In Settings › Mac app, Flagged mails as tasks is now Mail integration and Calendar meetings is now Calendar integration. Each switch now covers everything for its app: a mail dragged from Mail becomes a task only with Mail integration on, and an event dragged from Calendar only with Calendar integration on. With the switch off, a message tells you which one to turn on."
+    },
+    {
+      "build": 461,
+      "date": "2026-10-27",
+      "title": "Comments on a task",
+      "detail": "An open task has a Comments section below its subtasks. Write a comment and press Enter; it goes on top with its date and time. Add as many as you like, change one in its box, or remove it with its bin. The card shows them too, under the subtasks."
+    },
+    {
+      "build": 460,
+      "date": "2026-10-27",
+      "title": "The Done bar shows once you change the task",
+      "detail": "The gold Done bar on top of an open task now appears only after you create or change it."
+    },
+    {
+      "build": 459,
+      "date": "2026-10-27",
+      "title": "A gold Done bar on top of the open task",
+      "detail": "As soon as you create or change a task, a wide gold Done — back to the list bar appears at its top. It takes you back to where you opened the task. Your changes are already saved as you type, so it says Done, not Save. The j4k name and Esc still work too."
+    },
+    {
+      "build": 457,
+      "date": "2026-10-27",
+      "title": "About j4k has Settings…",
+      "detail": "About j4k now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens j4k's Settings the way the menu does."
+    },
+    {
+      "build": 456,
+      "date": "2026-10-27",
+      "title": "Docs opens the manual inside j4k",
+      "detail": "About j4k › Docs now shows the j4k Field Manual in a window of j4k's own, from the copy j4k carries. It needs no claude.ai account and no internet, so anyone who has j4k can read it. A link to the web in the manual opens in your browser."
+    },
+    {
+      "build": 455,
+      "date": "2026-10-26",
+      "title": "The window comes to the front at a start",
+      "detail": "Started again, j4k now comes to the front with its window, instead of opening it behind the app you were in. Opened at login, it stays in the background."
+    },
+    {
+      "build": 451,
+      "date": "2026-10-25",
+      "title": "The Dock icon's menu holds the menu bar menu",
+      "detail": "A right click on j4k's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open j4k and Open in Browser."
+    },
+    {
+      "build": 447,
+      "date": "2026-10-25",
+      "title": "Command-H hides j4k again · the download in Settings · The buttons in Settings look alike",
+      "detail": "Command-H hides j4k again · the download in Settings: Command-H hides j4k also when it shows in the menu bar alone. Settings › Mac app offers the download of the Mac app, for another Mac. The buttons in Settings look alike: Every button, menu and field in Settings and the other windows has the same size, height and type."
+    },
+    {
+      "build": 446,
+      "date": "2026-10-25",
+      "title": "A menu bar icon and a hotkey",
+      "detail": "j4k has an icon in the menu bar: it opens j4k, or j4k in the browser, and holds Settings…, Check for Updates… and Quit. Control-Option-Command-K shows j4k from any app; pressed again, it hides it. Settings › Mac app holds the hotkey, Start j4k at login (it was Open at login) and Show j4k in: the menu bar, the Dock, or both."
+    },
+    {
+      "build": 441,
+      "date": "2026-10-25",
+      "title": "Check for Updates is under Settings",
+      "detail": "In the j4k menu, at the left of the menu bar, Check for Updates… is now under Settings…, no longer under About j4k."
+    },
+    {
+      "build": 439,
+      "date": "2026-10-24",
+      "title": "Settings › Assistant is now called Brain",
+      "detail": "The part of the Settings window where you open the chat with Claude and pick its model and effort is now called Brain. Nothing in it changed but the name."
+    },
+    {
+      "build": 431,
+      "date": "2026-10-24",
+      "title": "The Mac app's What's New looks like this one, and its About has Docs",
+      "detail": "In the Mac app, What's New shows a card for each day, as here. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch. About j4k has a Docs button: it opens the j4k Field Manual."
+    },
+    {
+      "build": 429,
+      "date": "2026-10-23",
+      "title": "Docs is the j4k Field Manual",
+      "detail": "Settings › About j4k › Docs now opens the j4k Field Manual in a new tab: one illustrated page on what j4k is and how it works. The old Docs window inside the app is gone."
+    },
+    {
+      "build": 428,
+      "date": "2026-10-23",
+      "title": "About j4k shows the Board icon",
+      "detail": "Settings › About j4k now shows the app's Board icon beside the name, as folia's About shows its own, instead of the old j4k logo."
+    },
+    {
+      "build": 427,
+      "date": "2026-10-23",
+      "title": "Undo and redo lead the top bar's icons, as in folia",
+      "detail": "The undo and redo arrows moved to the start of the top bar's icons, before the plus, where folia has them. They are faded while there is nothing to undo or redo."
+    },
+    {
+      "build": 426,
+      "date": "2026-10-23",
+      "title": "The search bar in the page's colours",
+      "detail": "The search bar now has the same colours and rounded edge as the filter band and the task columns. In dark mode it no longer shows a black box with a grey border inside it."
+    },
+    {
+      "build": 424,
+      "date": "2026-10-23",
+      "title": "The top bar's buttons at its right edge, as in folia",
+      "detail": "The buttons in the top bar moved to its right edge, as in folia; they followed the j4k name before. The search field stays where it was, above the task list."
+    },
+    {
+      "build": 423,
+      "date": "2026-10-23",
+      "title": "Get the Mac app from Settings · The new icon on the iPhone's home screen",
+      "detail": "Get the Mac app from Settings: In a browser, Settings › Mac app now offers the j4k Mac app as a download: always the newest build, with the macOS it needs. Open the file, drag j4k into Applications, and it updates itself from then on. The new icon on the iPhone's home screen: Adding j4k to an iPhone's home screen kept showing the old icon, because the phone had saved it. The icons now have a new address, so the phone fetches the Board icon. An icon already on your home screen stays as it is: remove it and add j4k again."
+    },
+    {
+      "build": 422,
+      "date": "2026-10-23",
+      "title": "More room, the same layout as folia",
+      "detail": "The page reaches closer to the window's edges, with 10px around and between its bands, like folia. The header has folia's height and button size, so with the two windows side by side j4k and folia line up."
+    },
+    {
+      "build": 420,
+      "date": "2026-10-23",
+      "title": "j4k written in the header",
+      "detail": "The top of the page writes j4k as plain bold text, the way folia writes its name, in light and in dark. It fits every phone without touching the buttons."
+    }
+  ]
+}
