@@ -1,12 +1,30 @@
 {
   "app": "tabula",
-  "build": 630,
-  "commit": "74531b2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-630/tabula.dmg",
-  "sha256": "5acaa3f96e9c6e334e0743b63ea575bfa3ed6c346256c62fe2514b4260c2e27b",
+  "build": 635,
+  "commit": "7e8b0ab",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-635/tabula.dmg",
+  "sha256": "74d268421aa87c73e97cf3f550ce1e6c8eb733253897d631ca1f5976c34a67a2",
   "minimumSystemVersion": "26.0",
-  "notes": "Tidier Backups and Users\nA new task is kept until it saves\nAbout tabula fits the Settings window\nBrain knows when a task repeats",
+  "notes": "Type together in subtasks\nA tidier Share window\nPeople are rounded squares",
   "entries": [
+    {
+      "build": 633,
+      "date": "2026-11-01",
+      "title": "Type together in subtasks",
+      "detail": "In a shared task, a subtask's text now changes letter by letter too, with the other person's named cursor, as the title and description do."
+    },
+    {
+      "build": 632,
+      "date": "2026-11-01",
+      "title": "A tidier Share window",
+      "detail": "People to add are rows now, the same as the people on the task, each with an Add button. A person's role stands beside their address."
+    },
+    {
+      "build": 631,
+      "date": "2026-11-01",
+      "title": "People are rounded squares",
+      "detail": "A person's mark is a rounded square now, with no box around it and with letters that fit. On a card the marks stand side by side, not on top of each other."
+    },
     {
       "build": 630,
       "date": "2026-11-01",
@@ -228,24 +246,6 @@
       "date": "2026-10-27",
       "title": "Comments on a task",
       "detail": "An open task has a Comments section below its subtasks. Write a comment and press Enter; it goes on top with its date and time. Add as many as you like, change one in its box, or remove it with its bin. The card shows them too, under the subtasks."
-    },
-    {
-      "build": 460,
-      "date": "2026-10-27",
-      "title": "The Done bar shows once you change the task",
-      "detail": "The gold Done bar on top of an open task now appears only after you create or change it."
-    },
-    {
-      "build": 459,
-      "date": "2026-10-27",
-      "title": "A gold Done bar on top of the open task",
-      "detail": "As soon as you create or change a task, a wide gold Done — back to the list bar appears at its top. It takes you back to where you opened the task. Your changes are already saved as you type, so it says Done, not Save. The j4k name and Esc still work too."
-    },
-    {
-      "build": 457,
-      "date": "2026-10-27",
-      "title": "About j4k has Settings…",
-      "detail": "About j4k now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens j4k's Settings the way the menu does."
     }
   ]
 }
