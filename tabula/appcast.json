@@ -1,12 +1,36 @@
 {
   "app": "tabula",
-  "build": 635,
-  "commit": "7e8b0ab",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-635/tabula.dmg",
-  "sha256": "74d268421aa87c73e97cf3f550ce1e6c8eb733253897d631ca1f5976c34a67a2",
+  "build": 651,
+  "commit": "3fcb05c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-651/tabula.dmg",
+  "sha256": "392717526671f547be59249820ed7d47469118ef98f34f0ee9b4c2249770e7ce",
   "minimumSystemVersion": "26.0",
-  "notes": "Type together in subtasks\nA tidier Share window\nPeople are rounded squares",
+  "notes": "Filter by epic · Blocked by moves under Epic\nThe bulk bar follows the filter buttons\nFind the epic by typing\nChange many tasks at once and 2 more",
   "entries": [
+    {
+      "build": 651,
+      "date": "2026-11-01",
+      "title": "Filter by epic · Blocked by moves under Epic",
+      "detail": "Filter by epic: A fifth filter button, Epic, sits after Size. Tick an epic to see it with its tasks, or No epic for the tasks in none; each choice shows how many tasks it gives, and the tabula logo clears it with the other filters. Its Sort groups the tasks by their epic's number. Under the filters, the buttons now read Select, Review, For you. Blocked by moves under Epic: In a task's editor, Blocked by now sits below the Epic section, just above Comments."
+    },
+    {
+      "build": 649,
+      "date": "2026-11-01",
+      "title": "The bulk bar follows the filter buttons",
+      "detail": "When you change many tasks at once, the bar at the foot now lists Tag, Status, Priority and Size in the order of the filter buttons above, then Epic. The first filter button reads Tag: All, singular like the others."
+    },
+    {
+      "build": 648,
+      "date": "2026-11-01",
+      "title": "Find the epic by typing",
+      "detail": "Part of and Blocked by no longer list every open task. Type a few letters of the title, or the task's number (12 finds T-012), and the matches appear below, best first, with the letters you typed in bold. Pick one with a click, or with the arrow keys and Enter. Escape empties the search and leaves the task open. The Epic section now sits just above Comments."
+    },
+    {
+      "build": 646,
+      "date": "2026-11-01",
+      "title": "Change many tasks at once and 2 more",
+      "detail": "Change many tasks at once: Press Select under the filters, then select tasks with their checkbox, by pressing a card's title, or with All shown. The bar at the foot sets Status, Tag, Priority, Size or Epic on all of them, and one Undo takes it back. A task that cannot take the change, such as one with open subtasks set to Done, is left as it was and named in the message. A task can wait for others: In a task's editor, Blocked by names the tasks it waits for. It offers none that would wait in a circle, and lists the tasks waiting for this one. While one of them is still open, the card shows an hourglass and that task's number: press it to open that task. When the last one is done, the people on a shared waiting task hear of it in For you. Epics: tasks that hold tasks: A task can hold other tasks now. In a task's editor, Part of puts it into another task, and an epic's editor lists its tasks and adds new ones. A card names the epic it is part of, or counts how many of its tasks are done. On the board, Swimlanes › Epic gives each epic a row: drop a card in a row to move it there. One level only: a task in an epic holds no tasks of its own."
+    },
     {
       "build": 633,
       "date": "2026-11-01",
@@ -222,30 +246,6 @@
       "date": "2026-10-27",
       "title": "No Done bar on an open task",
       "detail": "The gold Done bar on top of a task you create or edit is gone. To go back to the list, press j4k in its gold frame, or press Esc. Your changes are saved as you type."
-    },
-    {
-      "build": 466,
-      "date": "2026-10-27",
-      "title": "A gold frame around j4k shows the way back",
-      "detail": "The j4k name in the header wears a gold frame whenever pressing it does something: a task is open, a filter, sort or search is set, or the board has swimlanes. Gold rings ripple out from it each time you change a filter. Press j4k to clear them all. With Reduce motion on, the frame stays and the rings do not move."
-    },
-    {
-      "build": 464,
-      "date": "2026-10-27",
-      "title": "No scrollbar on the main screen",
-      "detail": "The main screen no longer shows a scrollbar or keeps an empty strip for one on the right. It still scrolls with the trackpad, the mouse wheel and the keys."
-    },
-    {
-      "build": 463,
-      "date": "2026-10-27",
-      "title": "Mail integration and Calendar integration",
-      "detail": "In Settings › Mac app, Flagged mails as tasks is now Mail integration and Calendar meetings is now Calendar integration. Each switch now covers everything for its app: a mail dragged from Mail becomes a task only with Mail integration on, and an event dragged from Calendar only with Calendar integration on. With the switch off, a message tells you which one to turn on."
-    },
-    {
-      "build": 461,
-      "date": "2026-10-27",
-      "title": "Comments on a task",
-      "detail": "An open task has a Comments section below its subtasks. Write a comment and press Enter; it goes on top with its date and time. Add as many as you like, change one in its box, or remove it with its bin. The card shows them too, under the subtasks."
     }
   ]
 }
