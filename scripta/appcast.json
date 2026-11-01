@@ -1,9 +1,9 @@
 {
   "app": "scripta",
-  "build": 208,
-  "commit": "e3ea304",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-208/scripta.dmg",
-  "sha256": "6ace859c087eaeaa3d8ea16e3032f120dc458729a06a7ae8ec860738c04a3af1",
+  "build": 212,
+  "commit": "0385f20",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-212/scripta.dmg",
+  "sha256": "ce232cd38635e1fac61e9beeb6f0ba0256cd517e6c3c2650b8b4125a5e480af0",
   "minimumSystemVersion": "26.0",
   "notes": "Small fixes and improvements.",
   "entries": [
