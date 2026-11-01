@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 59,
-  "commit": "ca0834d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-59/specula.dmg",
-  "sha256": "7c5372707c9ae52e63e084aadf41bd346fc71a47101a2b22ac5341bc8f5f28e9",
+  "build": 68,
+  "commit": "cbe8eb4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-68/specula.dmg",
+  "sha256": "df70e249bee2ce9d4d04de3231be25a7af3424c6b6d9f580f209bc11cbaa1b09",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings › Mac app as in folia",
+  "notes": "The Timelapse builds from behind the ship",
   "entries": [
+    {
+      "build": 68,
+      "date": "2026-11-01",
+      "title": "The Timelapse builds from behind the ship",
+      "detail": "The Timelapse now starts from the view the 3D view opens on: SRG SSR builds on the left, NZZ on the right, ETH in front. The camera floats in a small loop and rises, comes down behind the ship for the warp, and rests on the same view at the end."
+    },
     {
       "build": 59,
       "date": "2026-10-31",
