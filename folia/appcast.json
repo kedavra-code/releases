@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 275,
-  "commit": "d70208d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-275/folia.dmg",
-  "sha256": "92a5e77b5140eeb16269f098ab825ee15a180ed69da9dd0c03c59204873364d2",
+  "build": 289,
+  "commit": "961b489",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-289/folia.dmg",
+  "sha256": "9fd9a2f0496f69f3edc53cca36434a14594177cccc7104ce0128f8e8db2c592d",
   "minimumSystemVersion": "26.0",
-  "notes": "A done task's text turns green",
+  "notes": "Set up the toolbar yourself\nInline code is back in the toolbar, Strikethrough has left it\nAbout folia is laid out as in tabula",
   "entries": [
+    {
+      "build": 289,
+      "date": "2026-11-01",
+      "title": "Set up the toolbar yourself",
+      "detail": "Settings › Toolbar shows the toolbar and a pool of tools. Click a tool to move it between them, or drag it to place it. Strikethrough waits in the pool. Each Mac and browser keeps its own toolbar."
+    },
+    {
+      "build": 288,
+      "date": "2026-11-01",
+      "title": "Inline code is back in the toolbar, Strikethrough has left it",
+      "detail": "The toolbar has Inline code right of Font colour. Strikethrough has no button now: type ~~ around a word, or set a key in Settings › Keys."
+    },
+    {
+      "build": 287,
+      "date": "2026-11-01",
+      "title": "About folia is laid out as in tabula",
+      "detail": "Settings › About folia shows the build facts in two columns. The About tab counts the changes you have not read. The foot of Settings names the build."
+    },
     {
       "build": 275,
       "date": "2026-11-01",
@@ -228,24 +246,6 @@
       "date": "2026-10-27",
       "title": "Split view: two pages side by side or one above the other",
       "detail": "Drag a page from the page list onto the page: near an edge it opens beside it, on that side; in the middle it takes its place. ⌥-click a page, a search result or a [[link]], or choose Open in split view in a page's … menu, to open it in the other pane. Click a pane to work in it: the page list, Outline, History and search follow it. Drag the line between the pages to resize them, double-click it to share evenly. Each pane has an × to close it, and ⌘K can turn the two or close one. In a narrow window only the active page shows."
-    },
-    {
-      "build": 223,
-      "date": "2026-10-27",
-      "title": "Docs opens the manual inside folia",
-      "detail": "About folia › Docs now shows the folia Field Manual in a window of folia's own, from the copy folia carries. It needs no claude.ai account and no internet, so anyone who has folia can read it. A link to the web in the manual opens in your browser."
-    },
-    {
-      "build": 222,
-      "date": "2026-10-27",
-      "title": "folia asks before a moved page replaces one of the same name",
-      "detail": "When you move or copy a page to a section that already has a page with its name, folia asks whether to replace it. Replace puts the page that was there into the trash, and undo brings it back. Cancel moves nothing. Dropping a page on a section in the sidebar asks too."
-    },
-    {
-      "build": 221,
-      "date": "2026-10-27",
-      "title": "A page title is no longer cut when you zoom",
-      "detail": "When you zoom a page in or out, its title grows or shrinks with it and wraps onto more lines when it needs them. Before, a zoomed title was cut off at the line below it."
     }
   ]
 }
