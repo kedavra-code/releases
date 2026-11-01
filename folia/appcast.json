@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 272,
-  "commit": "3a4499b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-272/folia.dmg",
-  "sha256": "5b606d56f93d3e3bfadb659a4848ee0d4df23bbcfa8337e249a4eeaa3000c004",
+  "build": 274,
+  "commit": "800721a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-274/folia.dmg",
+  "sha256": "563514414de24e55e041780f852192ac2ae0a4832a4493d20f763641afbdc45a",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings as large as in tabula, with the build facts in About",
+  "notes": "A done task gets a green check",
   "entries": [
+    {
+      "build": 274,
+      "date": "2026-11-01",
+      "title": "A done task gets a green check",
+      "detail": "In a task list, a done task now shows a round green check on its icon. Its text no longer has a line through it. A strike through that you set yourself stays."
+    },
     {
       "build": 272,
       "date": "2026-10-31",
@@ -240,12 +246,6 @@
       "date": "2026-10-27",
       "title": "A click on a picture shows it at its own size",
       "detail": "Click a picture in a page and it opens over the window at its own size. A picture larger than the window scrolls. Esc or a click closes it. The corners still resize the picture in the page."
-    },
-    {
-      "build": 219,
-      "date": "2026-10-27",
-      "title": "scripta's folia note finds a day's page in a person's notebook",
-      "detail": "A page titled with the day alone, as in a notebook kept for one person, is found by the notebook's name: scripta's folia note for \"20261014 JF Anna\" opens the page \"20261014\" in the notebook \"JF Anna\"."
     }
   ]
 }
