@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 651,
-  "commit": "3fcb05c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-651/tabula.dmg",
-  "sha256": "392717526671f547be59249820ed7d47469118ef98f34f0ee9b4c2249770e7ce",
+  "build": 652,
+  "commit": "7d2f84c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-652/tabula.dmg",
+  "sha256": "5993e58f300362d78ab280483d21c75f8f92bb482fe769fb2e71b2820796406e",
   "minimumSystemVersion": "26.0",
-  "notes": "Filter by epic · Blocked by moves under Epic\nThe bulk bar follows the filter buttons\nFind the epic by typing\nChange many tasks at once and 2 more",
+  "notes": "A task opens in a window over the board",
   "entries": [
+    {
+      "build": 652,
+      "date": "2026-11-01",
+      "title": "A task opens in a window over the board",
+      "detail": "Editing or creating a task now opens a window on top of the board, and the board, the filters and your place on the page stay as they are. Close it with its x, with a click beside it or with Escape. Undo and Redo are in the window, the fields have their normal size, and subtasks and comments read as a list of rows. On a phone the window fills the screen."
+    },
     {
       "build": 651,
       "date": "2026-11-01",
@@ -240,12 +246,6 @@
       "date": "2026-10-27",
       "title": "Docs in Settings opens the manual in a window",
       "detail": "In the j4k Mac app, Settings › About j4k › Docs opens the j4k Field Manual in a window of the app, as the Docs button in the About j4k window does. In a browser it still opens the page online."
-    },
-    {
-      "build": 467,
-      "date": "2026-10-27",
-      "title": "No Done bar on an open task",
-      "detail": "The gold Done bar on top of a task you create or edit is gone. To go back to the list, press j4k in its gold frame, or press Esc. Your changes are saved as you type."
     }
   ]
 }
