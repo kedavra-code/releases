@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 440,
-  "commit": "08e2d18",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-440/GLaDOS.dmg",
-  "sha256": "45660af0dcae43e5964826383bfd55904c1f9a276e094f39936fa52b7449fd25",
+  "build": 449,
+  "commit": "3ef9b88",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-449/GLaDOS.dmg",
+  "sha256": "5753a2621f74dd6c64b6ca60bb214a6fa205fcb470916af6c6f3264ba8110b12",
   "minimumSystemVersion": "26.0",
-  "notes": "⌘H leaves GLaDOS and J.A.R.V.I.S. on the screen",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 440,
