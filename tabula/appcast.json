@@ -1,12 +1,36 @@
 {
   "app": "tabula",
-  "build": 523,
-  "commit": "ef7df2e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-523/tabula.dmg",
-  "sha256": "6073d1da138e6802dcd4813bbbee9615ce20e754994bbd73e1cf64e00e8848e6",
+  "build": 630,
+  "commit": "74531b2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-630/tabula.dmg",
+  "sha256": "5acaa3f96e9c6e334e0743b63ea575bfa3ed6c346256c62fe2514b4260c2e27b",
   "minimumSystemVersion": "26.0",
-  "notes": "Share by pressing a face\nShare with one press\nLive typing in shared tasks\nAutomatic updates left Settings\nWork on a task with other people\nNo scrollbar in Settings\nSettings has folia's height\nAbout tabula says where your tasks live\nand 3 more — see What's New",
+  "notes": "Tidier Backups and Users\nA new task is kept until it saves\nAbout tabula fits the Settings window\nBrain knows when a task repeats",
   "entries": [
+    {
+      "build": 630,
+      "date": "2026-11-01",
+      "title": "Tidier Backups and Users",
+      "detail": "On a phone, a backup's date stays whole and its buttons stand under it. In Users, a person's face no longer sits in a box. Settings › Data no longer names a setting that is gone."
+    },
+    {
+      "build": 616,
+      "date": "2026-11-01",
+      "title": "A new task is kept until it saves",
+      "detail": "Since sharing arrived, the database could refuse a task made in the app, and the task was gone at the next reload. That is fixed. If a new task cannot be saved, for any reason, tabula now keeps it and sends it again when you next open the app."
+    },
+    {
+      "build": 610,
+      "date": "2026-11-01",
+      "title": "About tabula fits the Settings window",
+      "detail": "The facts of this version stand in two columns. Before, the bottom of About tabula was cut off until you scrolled, and the wheel moved every part a little."
+    },
+    {
+      "build": 569,
+      "date": "2026-11-01",
+      "title": "Brain knows when a task repeats",
+      "detail": "Asked about one task, Brain said it does not repeat, even when it does. Brain now reads the repeat and how it ends."
+    },
     {
       "build": 523,
       "date": "2026-10-31",
@@ -222,30 +246,6 @@
       "date": "2026-10-27",
       "title": "About j4k has Settings…",
       "detail": "About j4k now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens j4k's Settings the way the menu does."
-    },
-    {
-      "build": 456,
-      "date": "2026-10-27",
-      "title": "Docs opens the manual inside j4k",
-      "detail": "About j4k › Docs now shows the j4k Field Manual in a window of j4k's own, from the copy j4k carries. It needs no claude.ai account and no internet, so anyone who has j4k can read it. A link to the web in the manual opens in your browser."
-    },
-    {
-      "build": 455,
-      "date": "2026-10-26",
-      "title": "The window comes to the front at a start",
-      "detail": "Started again, j4k now comes to the front with its window, instead of opening it behind the app you were in. Opened at login, it stays in the background."
-    },
-    {
-      "build": 451,
-      "date": "2026-10-25",
-      "title": "The Dock icon's menu holds the menu bar menu",
-      "detail": "A right click on j4k's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open j4k and Open in Browser."
-    },
-    {
-      "build": 447,
-      "date": "2026-10-25",
-      "title": "Command-H hides j4k again · the download in Settings · The buttons in Settings look alike",
-      "detail": "Command-H hides j4k again · the download in Settings: Command-H hides j4k also when it shows in the menu bar alone. Settings › Mac app offers the download of the Mac app, for another Mac. The buttons in Settings look alike: Every button, menu and field in Settings and the other windows has the same size, height and type."
     }
   ]
 }
