@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 69,
-  "commit": "76c4ad3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-69/specula.dmg",
-  "sha256": "d11f4c9c0dd4fc158a805746769360180e57ddd67d3fc34595c048387a4201ed",
+  "build": 70,
+  "commit": "d5e9b5a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-70/specula.dmg",
+  "sha256": "f3f8e88084fb7bf3ab9db80ec198aa79b489b81e14eaf6ea0f8dc8b609dacd01",
   "minimumSystemVersion": "26.0",
-  "notes": "Get the Mac app is now in About",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 69,
