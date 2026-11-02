@@ -1,11 +1,11 @@
 {
   "app": "pactum",
-  "build": 20,
-  "commit": "696ff40",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-20/pactum.dmg",
-  "sha256": "ecadd43ba32b40c4e7d89bc5a6df249c4ae9e6b810f64a95f4e0f71be37fde56",
+  "build": 21,
+  "commit": "bfda2ce",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-21/pactum.dmg",
+  "sha256": "22bbb3d4c33f373e74ccf2e83b5b2d6f269f281310c788703b7a504ff1d6e35d",
   "minimumSystemVersion": "26.0",
-  "notes": "About pactum is laid out as in folia",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 20,
