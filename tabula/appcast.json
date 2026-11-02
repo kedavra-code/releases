@@ -1,12 +1,24 @@
 {
   "app": "tabula",
-  "build": 690,
-  "commit": "26348f0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-690/tabula.dmg",
-  "sha256": "4f75907071cc2594ef485fea28fef31b386ba6e2cc6bfcc31b1581f5552c4add",
+  "build": 696,
+  "commit": "d26172a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-696/tabula.dmg",
+  "sha256": "3e4f0cb65c40f43497fc190d2ee4524fbfd03d851dbbd6788fbde0a17ba4b490",
   "minimumSystemVersion": "26.0",
-  "notes": "Roadmap\nReports\nActivity: what changed on a task\nSaved views\nWork in progress limits",
+  "notes": "Brain knows your goals\nClosing a quarter",
   "entries": [
+    {
+      "build": 692,
+      "date": "2026-11-02",
+      "title": "Brain knows your goals",
+      "detail": "Brain, the assistant in the search bar, now sees the quarter's objectives and key results. Ask it to make an objective or a key result, check in with a reading and how confident you are, tie a task to a key result or put it into an epic, or tell you about a quarter. Ask it to review your OKRs and it says what to change, such as a key result that counts output instead of an outcome, and changes nothing unless you ask. Goals are not in Undo, so it makes them only when you ask."
+    },
+    {
+      "build": 691,
+      "date": "2026-11-02",
+      "title": "Closing a quarter",
+      "detail": "Close the quarter, on the Goals page, scores each key result from 0 to 1, proposed from how far it got; says how each objective went and what you learnt; and carries what is unfinished into the next quarter as a draft, with your open tasks that served it. A stretch counts as reached at 0.7. Afterwards each goal shows its score and what was learnt, and a score can still be changed in its window."
+    },
     {
       "build": 685,
       "date": "2026-11-02",
@@ -234,18 +246,6 @@
       "date": "2026-10-31",
       "title": "j4k is now tabula",
       "detail": "A new name, tabula: Latin for a board or a writing tablet. The address is tabula.pixelina.me, and the old one still works for now. Your tasks and settings came along, and they are now stored in Zurich. The Mac app is a new app: install it once and sign in once. It takes your hotkey and your Mac settings from j4k. Old backups still import. On a phone under 390 pixels wide, the Minimum/Maximum button is in Settings › General only."
-    },
-    {
-      "build": 498,
-      "date": "2026-10-30",
-      "title": "Swimlanes by Week Start and by Week Due",
-      "detail": "On the Kanban board, Swimlanes has two week groupings now. Week Start makes one row per week that holds a start date, Week Due one row per week that holds a due date. A card dropped on a Week Due row keeps its weekday in that week, or gets the Friday when it has no due date yet."
-    },
-    {
-      "build": 496,
-      "date": "2026-10-30",
-      "title": "The Priority selector is easy to read again",
-      "detail": "In dark mode, High, Medium and Low in the task editor had pale grey text on a pale fill. The word is dark again, as it should be."
     }
   ]
 }
