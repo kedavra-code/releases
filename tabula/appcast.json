@@ -1,12 +1,42 @@
 {
   "app": "tabula",
-  "build": 696,
-  "commit": "d26172a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-696/tabula.dmg",
-  "sha256": "3e4f0cb65c40f43497fc190d2ee4524fbfd03d851dbbd6788fbde0a17ba4b490",
+  "build": 706,
+  "commit": "9a1e489",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-706/tabula.dmg",
+  "sha256": "880ff9aff074646e4a56036f009d03daab620c00972a208a721630690f89f742",
   "minimumSystemVersion": "26.0",
-  "notes": "Brain knows your goals\nClosing a quarter",
+  "notes": "On the Goals page the header keeps every button\nSelect, Review and a bell in the header; Views as a filter · Brain is one panel, with your earlier questions in it\nBrain answers in a panel under the search field\nSet a key result on many tasks at once\nYour goals are in the backups",
   "entries": [
+    {
+      "build": 705,
+      "date": "2026-11-02",
+      "title": "On the Goals page the header keeps every button",
+      "detail": "Select, Review and task details no longer disappear on the Goals page. They stay in their place, switched off, so nothing in the header moves when you switch between the board and your goals. A switched-off button keeps its outline but loses its fill and fades, the same as Undo when there is nothing to undo."
+    },
+    {
+      "build": 700,
+      "date": "2026-11-02",
+      "title": "Select, Review and a bell in the header; Views as a filter · Brain is one panel, with your earlier questions in it",
+      "detail": "Select, Review and a bell in the header; Views as a filter: Every header button now has the look of New task: a soft amber box that lights up when you point at it and turns full amber while it is on. Undo and Redo stand beside the name, then New task. Select, Review (with the number of tasks waiting) and a bell for For you (with what is unread) moved from under the filters into the header. Views is the last filter button now, after Swimlanes, and opens a menu like the others to open, save or delete a view. The filter buttons are narrower, and each menu is exactly as wide as its button. On a phone the header has a row of its own for the tools, so task details is back there. Brain is one panel, with your earlier questions in it: The conversation window and the microphone are gone. Brain's panel under the search field now holds the whole conversation: your earlier questions stand above the newest, one line each, and a press opens one again with its reply and what it changed. Start over, the circling arrow in the panel's head, begins a new conversation. Settings › Brain › Open opens the panel with the field ready for your question."
+    },
+    {
+      "build": 699,
+      "date": "2026-11-02",
+      "title": "Brain answers in a panel under the search field",
+      "detail": "Brain's reply no longer squeezes into the search field. It drops down in a panel underneath, with its paragraphs and lists, and a task code in it opens the task. Under the reply, What it changed lists each change, and Undo takes back what the reply did to your tasks. The panel stays while you type your answer, and goes on Escape, a press outside it or ×."
+    },
+    {
+      "build": 698,
+      "date": "2026-11-02",
+      "title": "Set a key result on many tasks at once",
+      "detail": "Select now has a Key result menu after Epic, once you have key results. It lists the ones you are on, under their objective, and No key result. A task someone else owns keeps the key result its owner chose, and the message names it. One Undo takes it all back."
+    },
+    {
+      "build": 697,
+      "date": "2026-11-02",
+      "title": "Your goals are in the backups",
+      "detail": "The daily backup, Back up now and the backup file from Export now hold your objectives and key results, with their check-ins. Restoring one puts your goals back as they were, brings back one you removed, and removes those made since. Goals are not in Undo, so tabula backs up your goals as they are now before a restore changes them."
+    },
     {
       "build": 692,
       "date": "2026-11-02",
@@ -216,36 +246,6 @@
       "date": "2026-10-31",
       "title": "About tabula says where your tasks live",
       "detail": "Settings › About tabula has a new part, Where your tasks live. This version now also shows when tabula started and the build of the web app. The Armarium part and its task count are gone."
-    },
-    {
-      "build": 504,
-      "date": "2026-10-31",
-      "title": "Two dots under the task number",
-      "detail": "The yellow dot is gone: a card now shows the green start dot and the red due dot. The space between the task number, the dots and the subtask count is even. A due date in the next 3 days still shows in orange on the Due value."
-    },
-    {
-      "build": 503,
-      "date": "2026-10-31",
-      "title": "Task numbers without a line",
-      "detail": "The task number on a card, such as T-123, no longer has a line under it. You still click it to open the card."
-    },
-    {
-      "build": 502,
-      "date": "2026-10-31",
-      "title": "A new name in About tabula",
-      "detail": "In Settings › About tabula, the group with Started and Tasks is now called Armarium."
-    },
-    {
-      "build": 500,
-      "date": "2026-10-31",
-      "title": "The old address now leads to tabula",
-      "detail": "j4k.pixelina.me sends you to tabula.pixelina.me, and links keep their task or view. The j4k Mac app stops working with this page: install the tabula Mac app from Settings › Mac app in your browser."
-    },
-    {
-      "build": 499,
-      "date": "2026-10-31",
-      "title": "j4k is now tabula",
-      "detail": "A new name, tabula: Latin for a board or a writing tablet. The address is tabula.pixelina.me, and the old one still works for now. Your tasks and settings came along, and they are now stored in Zurich. The Mac app is a new app: install it once and sign in once. It takes your hotkey and your Mac settings from j4k. Old backups still import. On a phone under 390 pixels wide, the Minimum/Maximum button is in Settings › General only."
     }
   ]
 }
