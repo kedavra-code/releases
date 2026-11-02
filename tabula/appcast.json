@@ -1,12 +1,24 @@
 {
   "app": "tabula",
-  "build": 670,
-  "commit": "92e2657",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-670/tabula.dmg",
-  "sha256": "bb4edfa95633fa210e37d03954c8a48e4cbe599de86b235cb4604f7f8ba4438c",
+  "build": 680,
+  "commit": "b2c045c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-680/tabula.dmg",
+  "sha256": "a6c8ee297019ce8e3797be5525c610041a75f926531a5e714c7dc2ce4a91f2da",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Windows without scrollbars\nGoals with other people",
   "entries": [
+    {
+      "build": 675,
+      "date": "2026-11-02",
+      "title": "Windows without scrollbars",
+      "detail": "No window draws a scrollbar any more, nor anything in one: what is taller than its box still scrolls with the wheel, the trackpad or a finger. With one window over another, Escape closes the one on top and leaves the one under it open. A window takes the focus when it opens, so Tab moves through the window and not the page behind it. A goal's Notes field is one box, not a box inside a box."
+    },
+    {
+      "build": 672,
+      "date": "2026-11-02",
+      "title": "Goals with other people",
+      "detail": "Share an objective with the person button beside its title: everyone on it changes it and its key results, checks in and links tasks. Its maker can open it to everyone, who can then read it, and can say which other objective it supports. A key result can name who answers for it. Mine, Team and Everyone choose which objectives Goals shows, and the work bar counts everyone's tasks. For you tells you when you are added, when someone else checks in, and on Monday when a key result of yours has gone six days without a check-in."
+    },
     {
       "build": 665,
       "date": "2026-11-02",
@@ -234,18 +246,6 @@
       "date": "2026-10-28",
       "title": "A task's description reads in folia's softer text colour",
       "detail": "The text of a description is now the same soft grey as a page in folia, in light and dark mode. In dark mode it was nearly white before, which was harder on the eyes."
-    },
-    {
-      "build": 478,
-      "date": "2026-10-28",
-      "title": "j4k follows the folia style guide",
-      "detail": "Text uses your system font at folia's sizes, and gold text and focus lines use folia's slightly darker gold, which is easier to read. In Settings and the other windows, the buttons, selects and fields in a row are 30 pixels high with smaller text, and the buttons at the foot of a window are 34 pixels high, as in folia."
-    },
-    {
-      "build": 477,
-      "date": "2026-10-28",
-      "title": "Mail no longer freezes while j4k looks for flagged mails",
-      "detail": "Mail integration now reads flagged mails from the inbox of each account only, and asks Mail far fewer questions. Searching every folder could keep Mail busy for hours on a large mailbox. A mail you flag in another folder no longer becomes a task. If Mail takes longer than two minutes to answer, j4k waits an hour before it asks again."
     }
   ]
 }
