@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 455,
-  "commit": "b4fa1bf",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-455/GLaDOS.dmg",
-  "sha256": "8b40722d6a361726c083036b906da6f80d99af33c672c9536a64fdffb62715f0",
+  "build": 457,
+  "commit": "42f380e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-457/GLaDOS.dmg",
+  "sha256": "2a9b1c5e3d7290bf3f4fd6a3edd3386bce0bc8bab4f858220635f5c6d3056fd1",
   "minimumSystemVersion": "26.0",
-  "notes": "The eyes always find their corners",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 455,
