@@ -1,11 +1,11 @@
 {
   "app": "folia",
-  "build": 290,
-  "commit": "30fd887",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-290/folia.dmg",
-  "sha256": "03b939cf196dd2e222d0797d136e03a22dde08f7dfd39f7d4d324d62925c2b4d",
+  "build": 291,
+  "commit": "e2044de",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-291/folia.dmg",
+  "sha256": "32bd57821a17037a979aead2ff4b69295780fe739da8d1efbf4cd3a5b5080218",
   "minimumSystemVersion": "26.0",
-  "notes": "Get the Mac app is now in About",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 290,
