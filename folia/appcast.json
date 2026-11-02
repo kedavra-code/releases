@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 291,
-  "commit": "e2044de",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-291/folia.dmg",
-  "sha256": "32bd57821a17037a979aead2ff4b69295780fe739da8d1efbf4cd3a5b5080218",
+  "build": 292,
+  "commit": "a4939fb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-292/folia.dmg",
+  "sha256": "93d595ce8f0a122092aeac96581a508270a2eb1180c598a3f1001ef4f4b6c81f",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The header buttons look like tabula's New task button",
   "entries": [
+    {
+      "build": 292,
+      "date": "2026-11-02",
+      "title": "The header buttons look like tabula's New task button",
+      "detail": "The buttons at the top right are small amber tiles. Pointing lights their edge, and a button that is pressed or on turns full amber."
+    },
     {
       "build": 290,
       "date": "2026-11-02",
@@ -240,12 +246,6 @@
       "date": "2026-10-27",
       "title": "The … menus in groups",
       "detail": "A page's … menu shows its entries in groups with a small heading: Open, Copy, Move and Page group, with Delete apart at the end. The menus of notebooks and sections are grouped the same way: New, On this Mac, Colour."
-    },
-    {
-      "build": 225,
-      "date": "2026-10-27",
-      "title": "About folia has Settings…",
-      "detail": "About folia now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens folia's Settings the way the menu does."
     }
   ]
 }
