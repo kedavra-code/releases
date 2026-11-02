@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 449,
-  "commit": "3ef9b88",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-449/GLaDOS.dmg",
-  "sha256": "5753a2621f74dd6c64b6ca60bb214a6fa205fcb470916af6c6f3264ba8110b12",
+  "build": 455,
+  "commit": "b4fa1bf",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-455/GLaDOS.dmg",
+  "sha256": "8b40722d6a361726c083036b906da6f80d99af33c672c9536a64fdffb62715f0",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "The eyes always find their corners",
   "entries": [
+    {
+      "build": 455,
+      "date": "2026-11-02",
+      "title": "The eyes always find their corners",
+      "detail": "GLaDOS and J.A.R.V.I.S. no longer remember a place. Each time, their places are worked out from the screen: his eye up and to the right of the lower left corner, hers up and to the left of the lower right corner, on the same diagonal, on every Mac. When macOS moves an eye by itself, for example when a display is plugged in or out, the eye goes back. A ⌘-drag still moves an eye, until GLaDOS starts again or the screens change."
+    },
     {
       "build": 440,
       "date": "2026-10-31",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "Dual speed is a switch in Settings",
       "detail": "Settings, under Brain, has a new switch: Dual speed. Your brain stays what it is, and it is the think hard brain. With the switch on you choose a second, fast brain, with a model and an effort of its own, and the fast brain answers. Say \"think hard\" in a question, and that one answer comes from the think hard brain. With the switch off, your brain answers everything, and \"think hard\" changes nothing. The switch starts off."
-    },
-    {
-      "build": 317,
-      "date": "2026-10-05",
-      "title": "An update says what is new, and a bad one is undone",
-      "detail": "When a new build is offered, the message lists what changed for you, from What's New. And when a new build does not stay open after an update, GLaDOS puts the build you had back and tells you."
     }
   ]
 }
