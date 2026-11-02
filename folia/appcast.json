@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 289,
-  "commit": "961b489",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-289/folia.dmg",
-  "sha256": "9fd9a2f0496f69f3edc53cca36434a14594177cccc7104ce0128f8e8db2c592d",
+  "build": 290,
+  "commit": "30fd887",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-290/folia.dmg",
+  "sha256": "03b939cf196dd2e222d0797d136e03a22dde08f7dfd39f7d4d324d62925c2b4d",
   "minimumSystemVersion": "26.0",
-  "notes": "Set up the toolbar yourself\nInline code is back in the toolbar, Strikethrough has left it\nAbout folia is laid out as in tabula",
+  "notes": "Get the Mac app is now in About",
   "entries": [
+    {
+      "build": 290,
+      "date": "2026-11-02",
+      "title": "Get the Mac app is now in About",
+      "detail": "Settings › About folia now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its hotkey, its icon and opening at login."
+    },
     {
       "build": 289,
       "date": "2026-11-01",
@@ -240,12 +246,6 @@
       "date": "2026-10-27",
       "title": "About folia has Settings…",
       "detail": "About folia now has the buttons every app of the family has, in the same order: Docs, What's New… and Settings…, which opens folia's Settings the way the menu does."
-    },
-    {
-      "build": 224,
-      "date": "2026-10-27",
-      "title": "Split view: two pages side by side or one above the other",
-      "detail": "Drag a page from the page list onto the page: near an edge it opens beside it, on that side; in the middle it takes its place. ⌥-click a page, a search result or a [[link]], or choose Open in split view in a page's … menu, to open it in the other pane. Click a pane to work in it: the page list, Outline, History and search follow it. Drag the line between the pages to resize them, double-click it to share evenly. Each pane has an × to close it, and ⌘K can turn the two or close one. In a narrow window only the active page shows."
     }
   ]
 }
