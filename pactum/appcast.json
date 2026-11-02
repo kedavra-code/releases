@@ -1,12 +1,24 @@
 {
   "app": "pactum",
-  "build": 10,
-  "commit": "7fbd1fa",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-10/pactum.dmg",
-  "sha256": "1c424347b6d2c76fd05a77165b5e5e4d6dd6eb7f307644c31e13f15a583e0ea6",
+  "build": 19,
+  "commit": "fb42c5c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-19/pactum.dmg",
+  "sha256": "59bccf50d57290d76d4b7049a1994ec85a3cd47401b2f005f8ee4a331ca1be6c",
   "minimumSystemVersion": "26.0",
-  "notes": "A hotkey, and Settings › Mac app",
+  "notes": "Get the Mac app is now in About\nSettings as in folia, by the same parts",
   "entries": [
+    {
+      "build": 19,
+      "date": "2026-11-02",
+      "title": "Get the Mac app is now in About",
+      "detail": "Settings › About pactum now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its hotkey, its icon and opening at login."
+    },
+    {
+      "build": 18,
+      "date": "2026-11-01",
+      "title": "Settings as in folia, by the same parts",
+      "detail": "Settings now use the same parts as folia and specula. The left side and the title look as they do there; the rest stays where it was."
+    },
     {
       "build": 10,
       "date": "2026-10-31",
