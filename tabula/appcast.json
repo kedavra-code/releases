@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 659,
-  "commit": "3244826",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-659/tabula.dmg",
-  "sha256": "1396048a1642f45619fada38ed26f336f6e411aa6477cb2450d0fcc183817c7e",
+  "build": 669,
+  "commit": "1a116d1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-669/tabula.dmg",
+  "sha256": "23f8410ecf44f86e3b7f7892ce6a83d3afe46d9a009cfcb0f20d93ba5821b81f",
   "minimumSystemVersion": "26.0",
-  "notes": "The old addresses are switched off",
+  "notes": "Goals: objectives and key results",
   "entries": [
+    {
+      "build": 665,
+      "date": "2026-11-02",
+      "title": "Goals: objectives and key results",
+      "detail": "The target button at the top opens Goals: a quarter's objectives, each with the key results that say how you will know. A key result is a number to move, a milestone, a baseline to measure first, or a line to hold. Check in each week with the reading and how confident you are; tabula keeps every check-in and draws the confidence as a small line. Each key result has two bars: the outcome you read, and the work done in the tasks that serve it. Find a task's key result in its editor by typing a few words, as for Part of (an epic's tasks serve its key result), see it under the card's title, or sort the board by Swimlanes › Key result. Objectives for a later quarter start as drafts."
+    },
     {
       "build": 659,
       "date": "2026-11-02",
@@ -240,12 +246,6 @@
       "date": "2026-10-28",
       "title": "Mail no longer freezes while j4k looks for flagged mails",
       "detail": "Mail integration now reads flagged mails from the inbox of each account only, and asks Mail far fewer questions. Searching every folder could keep Mail busy for hours on a large mailbox. A mail you flag in another folder no longer becomes a task. If Mail takes longer than two minutes to answer, j4k waits an hour before it asks again."
-    },
-    {
-      "build": 475,
-      "date": "2026-10-27",
-      "title": "A mail conversation dragged in becomes one task",
-      "detail": "Drag a whole conversation from Apple Mail onto j4k and it becomes one task, made from its latest mail: that mail's subject, sender and link. Mails of different conversations, dragged together, still become one task each."
     }
   ]
 }
