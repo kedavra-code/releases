@@ -1,12 +1,36 @@
 {
   "app": "tabula",
-  "build": 652,
-  "commit": "7d2f84c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-652/tabula.dmg",
-  "sha256": "5993e58f300362d78ab280483d21c75f8f92bb482fe769fb2e71b2820796406e",
+  "build": 657,
+  "commit": "3e9a478",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-657/tabula.dmg",
+  "sha256": "dc69774967b303e067a529a36fb01225eafd3308d6c15c4a8b892c6393b81abf",
   "minimumSystemVersion": "26.0",
-  "notes": "A task opens in a window over the board",
+  "notes": "Get the Mac app is now in About\nPeople look like folia's notebooks\nStatus, Priority, Size, Tag\nA clear plus for a new task · The List view is gone",
   "entries": [
+    {
+      "build": 657,
+      "date": "2026-11-02",
+      "title": "Get the Mac app is now in About",
+      "detail": "Settings › About tabula now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its own switches."
+    },
+    {
+      "build": 656,
+      "date": "2026-11-02",
+      "title": "People look like folia's notebooks",
+      "detail": "A person is now a rounded square with one letter on one of folia's ten notebook colours, the same on cards, in the task window, in Share and in Settings. In Settings › Users the admin picks each person's colour, and everyone sees it on shared tasks."
+    },
+    {
+      "build": 655,
+      "date": "2026-11-02",
+      "title": "Status, Priority, Size, Tag",
+      "detail": "The fields now come in this one order everywhere: the filter buttons and the line under them, the task window, and the bar for changing many tasks at once. Epic still follows them."
+    },
+    {
+      "build": 653,
+      "date": "2026-11-02",
+      "title": "A clear plus for a new task · The List view is gone",
+      "detail": "A clear plus for a new task: The way to make a task is now a soft amber plus beside the name tabula, on the left. Its edge lights when you point at it, and it turns full amber when you press it and while the new task's window is open. The List view is gone: tabula now opens on the Kanban board, or on the Calendar if you chose that in Settings. Review, Archived and Deleted are on no board, so each of them stands in one column of its own when you pick it under Status. Nothing happened to your tasks."
+    },
     {
       "build": 652,
       "date": "2026-11-01",
@@ -222,30 +246,6 @@
       "date": "2026-10-27",
       "title": "Dragging a mail conversation no longer crashes the Mac app",
       "detail": "A conversation dragged from Apple Mail onto j4k crashed the app. It no longer does. A calendar event dragged in from Calendar had the same fault and is fixed too."
-    },
-    {
-      "build": 472,
-      "date": "2026-10-27",
-      "title": "No What's New bar; the message bar is amber",
-      "detail": "The What's New bar above the task list is gone. What's new is in Settings › About j4k, which still counts what you have not read. The bar that says what you just did, or what another device changed, is now amber instead of green."
-    },
-    {
-      "build": 471,
-      "date": "2026-10-27",
-      "title": "The search field sits exactly where folia's does",
-      "detail": "The search field is now in the exact centre of the top bar, as in folia, and its magnifier is folia's plain icon, with no yellow behind it. In Ask Claude mode the sparkle turns gold."
-    },
-    {
-      "build": 470,
-      "date": "2026-10-27",
-      "title": "The search field is in the top bar, as in folia",
-      "detail": "The search field moved from above the task list into the centre of the top bar, and looks like folia's. On a phone it fills the top bar's second row. In Ask Claude mode the field no longer has a microphone or a conversation button; Settings › Brain still opens the conversation."
-    },
-    {
-      "build": 469,
-      "date": "2026-10-27",
-      "title": "Docs in Settings opens the manual in a window",
-      "detail": "In the j4k Mac app, Settings › About j4k › Docs opens the j4k Field Manual in a window of the app, as the Docs button in the About j4k window does. In a browser it still opens the page online."
     }
   ]
 }
