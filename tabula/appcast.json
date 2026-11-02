@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 706,
-  "commit": "9a1e489",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-706/tabula.dmg",
-  "sha256": "880ff9aff074646e4a56036f009d03daab620c00972a208a721630690f89f742",
+  "build": 708,
+  "commit": "91f8cf5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-708/tabula.dmg",
+  "sha256": "81c39d41e01a3fd243f744a26ac9af4efcc7bbbc922d0f9b002848b859ce3c4a",
   "minimumSystemVersion": "26.0",
-  "notes": "On the Goals page the header keeps every button\nSelect, Review and a bell in the header; Views as a filter · Brain is one panel, with your earlier questions in it\nBrain answers in a panel under the search field\nSet a key result on many tasks at once\nYour goals are in the backups",
+  "notes": "Search and Ask Claude look like the header's buttons",
   "entries": [
+    {
+      "build": 707,
+      "date": "2026-11-02",
+      "title": "Search and Ask Claude look like the header's buttons",
+      "detail": "The magnifier and the sparkle at the left of the search field are now small soft-amber boxes, like New task and the other header buttons. The mode you are in, search or Ask Claude, is full amber."
+    },
     {
       "build": 705,
       "date": "2026-11-02",
@@ -240,12 +246,6 @@
       "date": "2026-10-31",
       "title": "Settings has folia's height",
       "detail": "The Settings window is now as tall as folia's: 925px, less on a shorter screen. A part taller than that scrolls."
-    },
-    {
-      "build": 506,
-      "date": "2026-10-31",
-      "title": "About tabula says where your tasks live",
-      "detail": "Settings › About tabula has a new part, Where your tasks live. This version now also shows when tabula started and the build of the web app. The Armarium part and its task count are gone."
     }
   ]
 }
