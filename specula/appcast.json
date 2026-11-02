@@ -1,12 +1,30 @@
 {
   "app": "specula",
-  "build": 70,
-  "commit": "d5e9b5a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-70/specula.dmg",
-  "sha256": "f3f8e88084fb7bf3ab9db80ec198aa79b489b81e14eaf6ea0f8dc8b609dacd01",
+  "build": 73,
+  "commit": "d09e69b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-73/specula.dmg",
+  "sha256": "a9c7b13b0c03795d3cae9d5e18cd9758542148680317b9330030ba0e4a143cde",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Reports looks the same way\nSearch and Ask look the same way\nThe header's buttons look like tabula's New task",
   "entries": [
+    {
+      "build": 73,
+      "date": "2026-11-02",
+      "title": "Reports looks the same way",
+      "detail": "The Reports button at the end of the search bar is a soft amber square too. It is full amber while the Reports window is open."
+    },
+    {
+      "build": 72,
+      "date": "2026-11-02",
+      "title": "Search and Ask look the same way",
+      "detail": "The Search and Ask buttons in the search bar are soft amber squares too, like the header's. The lit one is full amber."
+    },
+    {
+      "build": 71,
+      "date": "2026-11-02",
+      "title": "The header's buttons look like tabula's New task",
+      "detail": "The view buttons and Settings are small soft amber squares now. Point at one and its edge lights. The view that shows, and Settings while it is open, are full amber."
+    },
     {
       "build": 69,
       "date": "2026-11-02",
