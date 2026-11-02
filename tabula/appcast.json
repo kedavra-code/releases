@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 657,
-  "commit": "3e9a478",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-657/tabula.dmg",
-  "sha256": "dc69774967b303e067a529a36fb01225eafd3308d6c15c4a8b892c6393b81abf",
+  "build": 659,
+  "commit": "3244826",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-659/tabula.dmg",
+  "sha256": "1396048a1642f45619fada38ed26f336f6e411aa6477cb2450d0fcc183817c7e",
   "minimumSystemVersion": "26.0",
-  "notes": "Get the Mac app is now in About\nPeople look like folia's notebooks\nStatus, Priority, Size, Tag\nA clear plus for a new task · The List view is gone",
+  "notes": "The old addresses are switched off",
   "entries": [
+    {
+      "build": 659,
+      "date": "2026-11-02",
+      "title": "The old addresses are switched off",
+      "detail": "j4k.pixelina.me and task-001.pixelina.me no longer lead to tabula. Use tabula.pixelina.me. If an icon on your phone's home screen still says j4k, delete it and add tabula again from tabula.pixelina.me."
+    },
     {
       "build": 657,
       "date": "2026-11-02",
@@ -240,12 +246,6 @@
       "date": "2026-10-27",
       "title": "A mail conversation dragged in becomes one task",
       "detail": "Drag a whole conversation from Apple Mail onto j4k and it becomes one task, made from its latest mail: that mail's subject, sender and link. Mails of different conversations, dragged together, still become one task each."
-    },
-    {
-      "build": 474,
-      "date": "2026-10-27",
-      "title": "Dragging a mail conversation no longer crashes the Mac app",
-      "detail": "A conversation dragged from Apple Mail onto j4k crashed the app. It no longer does. A calendar event dragged in from Calendar had the same fault and is fixed too."
     }
   ]
 }
