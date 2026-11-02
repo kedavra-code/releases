@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 68,
-  "commit": "cbe8eb4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-68/specula.dmg",
-  "sha256": "df70e249bee2ce9d4d04de3231be25a7af3424c6b6d9f580f209bc11cbaa1b09",
+  "build": 69,
+  "commit": "76c4ad3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-69/specula.dmg",
+  "sha256": "d11f4c9c0dd4fc158a805746769360180e57ddd67d3fc34595c048387a4201ed",
   "minimumSystemVersion": "26.0",
-  "notes": "The Timelapse builds from behind the ship",
+  "notes": "Get the Mac app is now in About",
   "entries": [
+    {
+      "build": 69,
+      "date": "2026-11-02",
+      "title": "Get the Mac app is now in About",
+      "detail": "Settings › About specula now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its hotkey, its icon and opening at login."
+    },
     {
       "build": 68,
       "date": "2026-11-01",
