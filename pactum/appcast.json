@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 19,
-  "commit": "fb42c5c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-19/pactum.dmg",
-  "sha256": "59bccf50d57290d76d4b7049a1994ec85a3cd47401b2f005f8ee4a331ca1be6c",
+  "build": 20,
+  "commit": "696ff40",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-20/pactum.dmg",
+  "sha256": "ecadd43ba32b40c4e7d89bc5a6df249c4ae9e6b810f64a95f4e0f71be37fde56",
   "minimumSystemVersion": "26.0",
-  "notes": "Get the Mac app is now in About\nSettings as in folia, by the same parts",
+  "notes": "About pactum is laid out as in folia",
   "entries": [
+    {
+      "build": 20,
+      "date": "2026-11-02",
+      "title": "About pactum is laid out as in folia",
+      "detail": "Settings › About pactum starts with the icon. The build facts stand in two columns. The About tab counts the changes you have not read. The foot of Settings names the build."
+    },
     {
       "build": 19,
       "date": "2026-11-02",
