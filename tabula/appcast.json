@@ -1,12 +1,42 @@
 {
   "app": "tabula",
-  "build": 680,
-  "commit": "b2c045c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-680/tabula.dmg",
-  "sha256": "a6c8ee297019ce8e3797be5525c610041a75f926531a5e714c7dc2ce4a91f2da",
+  "build": 690,
+  "commit": "26348f0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-690/tabula.dmg",
+  "sha256": "4f75907071cc2594ef485fea28fef31b386ba6e2cc6bfcc31b1581f5552c4add",
   "minimumSystemVersion": "26.0",
-  "notes": "Windows without scrollbars\nGoals with other people",
+  "notes": "Roadmap\nReports\nActivity: what changed on a task\nSaved views\nWork in progress limits",
   "entries": [
+    {
+      "build": 685,
+      "date": "2026-11-02",
+      "title": "Roadmap",
+      "detail": "The Goals page shows Objectives or Roadmap. The roadmap draws the quarter's epics as bars across its weeks, from the first date among an epic and its tasks to the last, under the objective whose key result the epic serves; an epic tied to no objective of the quarter shows below when its dates fall in it. The done share of an epic's tasks is filled, a line marks today, and pressing an epic opens it."
+    },
+    {
+      "build": 684,
+      "date": "2026-11-02",
+      "title": "Reports",
+      "detail": "Reports, on the Goals page, shows the last 12 weeks: how many tasks got done each week, done and archived ones by the day they were done, and how long tasks took from their first move to Doing to Done, the median of each week. Three figures lead: done this week, done a week on average, and the time in progress. Point at a week, or tab to it, for its numbers; As a table lists them all. The time in progress needs the task history, so it starts the day that history does, and only signed in."
+    },
+    {
+      "build": 683,
+      "date": "2026-11-02",
+      "title": "Activity: what changed on a task",
+      "detail": "An open task ends with Activity: who changed its title, status, priority, size, dates, epic or key result, from what to what, and when, newest first, down to when it was made. A run of typing in the title is one line. The database writes it, so a change from another device or another person is there too. Signed in only."
+    },
+    {
+      "build": 682,
+      "date": "2026-11-02",
+      "title": "Saved views",
+      "detail": "Views, right after Select under the filters, keeps what the board shows under a name: the filters with their sorts, Kanban or Calendar, and the swimlanes. It opens a window like For you's, which lists each view with what it holds. Open one and all of it comes back at once; the search is left out. While the screen shows a saved view, the button names it. Saving under a name in use replaces that view, the bin deletes one, and twelve is the most. For you's list is drawn in the same cards."
+    },
+    {
+      "build": 681,
+      "date": "2026-11-02",
+      "title": "Work in progress limits",
+      "detail": "Settings › General › Kanban board sets the most tasks Backlog, Doing and Pending should hold. A column over its limit shows its count against the limit in amber, such as 4/3, with an amber line under its header; at the limit it stays quiet. Nothing is refused: a card can still be dropped there. With swimlanes each row keeps its own count, and the header turns amber when the whole column is over."
+    },
     {
       "build": 675,
       "date": "2026-11-02",
@@ -216,36 +246,6 @@
       "date": "2026-10-30",
       "title": "The Priority selector is easy to read again",
       "detail": "In dark mode, High, Medium and Low in the task editor had pale grey text on a pale fill. The word is dark again, as it should be."
-    },
-    {
-      "build": 487,
-      "date": "2026-10-28",
-      "title": "Other apps can open j4k on a view",
-      "detail": "A link j4k://show with the filters of a view brings the j4k Mac app to the front on that view. GLaDOS uses it to show you your tasks in j4k, not in a browser tab."
-    },
-    {
-      "build": 484,
-      "date": "2026-10-28",
-      "title": "About and What's New in the family's style",
-      "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
-    },
-    {
-      "build": 481,
-      "date": "2026-10-28",
-      "title": "Deleted tasks are kept 30 days, with no setting",
-      "detail": "Settings › Data no longer has Keep deleted tasks. A deleted task can always be restored for 30 days, on every device, and is then removed for good."
-    },
-    {
-      "build": 480,
-      "date": "2026-10-28",
-      "title": "Dark task cards have no bright white any more",
-      "detail": "In dark mode, a task's title, the count of done subtasks, the subtasks, the comments, the headings and the icons are now the same soft grey as folia's text, on the card and while you edit it. A link in a description is gold again in dark mode; it was a dark brown that was hard to read."
-    },
-    {
-      "build": 479,
-      "date": "2026-10-28",
-      "title": "A task's description reads in folia's softer text colour",
-      "detail": "The text of a description is now the same soft grey as a page in folia, in light and dark mode. In dark mode it was nearly white before, which was harder on the eyes."
     }
   ]
 }
