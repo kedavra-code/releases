@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 728,
-  "commit": "53cd00a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-728/tabula.dmg",
-  "sha256": "b2c489849eca12ae09a630fcd0b5812d6a93ca8e4a50604a1352ae87f9bd0aa4",
+  "build": 729,
+  "commit": "90640ef",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-729/tabula.dmg",
+  "sha256": "136961d887cf04539ec3155cb56caeb8ea3595edaf68afc1150c707fd0968869",
   "minimumSystemVersion": "26.0",
-  "notes": "A long objective title wraps beside its tags\nFold an objective in Goals\nEnter saves a check-in\nA key result lists its Jira epics\nSettings › Armarium shows the Jira connection\nA key result's Tasks link opens the board at its row\nGoals can follow a Jira plan\nBlocked by stands right below Epic again\nand 1 more — see What's New",
+  "notes": "Import opens the file window in the Mac app",
   "entries": [
+    {
+      "build": 729,
+      "date": "2026-11-03",
+      "title": "Import opens the file window in the Mac app",
+      "detail": "Settings › Data › Import is a Choose file… button now. In the Mac app, choosing from the old list opened no file window. tabula reads a file ending in .csv as CSV, any other as JSON."
+    },
     {
       "build": 728,
       "date": "2026-11-03",
@@ -240,12 +246,6 @@
       "date": "2026-11-01",
       "title": "A tidier Share window",
       "detail": "People to add are rows now, the same as the people on the task, each with an Add button. A person's role stands beside their address."
-    },
-    {
-      "build": 631,
-      "date": "2026-11-01",
-      "title": "People are rounded squares",
-      "detail": "A person's mark is a rounded square now, with no box around it and with letters that fit. On a card the marks stand side by side, not on top of each other."
     }
   ]
 }
