@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 213,
-  "commit": "8575be4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-213/scripta.dmg",
-  "sha256": "171639192758227f44b4df1c62b87b42c8a441e021b83366d73aea760ff07531",
+  "build": 215,
+  "commit": "95540bf",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-215/scripta.dmg",
+  "sha256": "cc10314ecf9203ddf33b3752942994b578663256d39326019aa4d132040b666e",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Settings › Armarium",
   "entries": [
+    {
+      "build": 214,
+      "date": "2026-11-03",
+      "title": "Settings › Armarium",
+      "detail": "Minutes to folia has moved from Settings › Brain to a tab of its own, Armarium, as in folia and GLaDOS: the place for what scripta sends to the family's other apps. The switch and what it does stay as they were."
+    },
     {
       "build": 203,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "An update says what is new, and a bad one is undone",
       "detail": "When a new build is offered, the message lists what changed for you, from What's New. And when a new build does not stay open after an update, scripta puts the build you had back and tells you."
-    },
-    {
-      "build": 116,
-      "date": "2026-10-05",
-      "title": "A few words are not named by themselves",
-      "detail": "scripta named a remembered voice by itself also when the voice said only a few words, and a short remark of another person could get your name. Now a voice must speak six seconds at a stretch before scripta names it by itself, or remembers it. You can still name any voice by hand."
     }
   ]
 }
