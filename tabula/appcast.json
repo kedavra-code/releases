@@ -1,12 +1,66 @@
 {
   "app": "tabula",
-  "build": 716,
-  "commit": "be19a5c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-716/tabula.dmg",
-  "sha256": "49550ed53b78a001229c3a67f855b5fbe4c71d876bf91d0ae99c7aa98f5c32a0",
+  "build": 728,
+  "commit": "53cd00a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-728/tabula.dmg",
+  "sha256": "b2c489849eca12ae09a630fcd0b5812d6a93ca8e4a50604a1352ae87f9bd0aa4",
   "minimumSystemVersion": "26.0",
-  "notes": "An epic goes to Done only when its tasks have",
+  "notes": "A long objective title wraps beside its tags\nFold an objective in Goals\nEnter saves a check-in\nA key result lists its Jira epics\nSettings › Armarium shows the Jira connection\nA key result's Tasks link opens the board at its row\nGoals can follow a Jira plan\nBlocked by stands right below Epic again\nand 1 more — see What's New",
   "entries": [
+    {
+      "build": 728,
+      "date": "2026-11-03",
+      "title": "A long objective title wraps beside its tags",
+      "detail": "In Goals, a long objective title now wraps onto a second line, so its tags stay beside it and Share stays at the right, as on every other objective."
+    },
+    {
+      "build": 727,
+      "date": "2026-11-03",
+      "title": "Fold an objective in Goals",
+      "detail": "The box with the arrow before an objective's name folds it to its head and says how many key results it holds; press it again to open it. The box beside Objectives and Roadmap folds every objective at once, and opens them again. This device remembers which are folded."
+    },
+    {
+      "build": 726,
+      "date": "2026-11-03",
+      "title": "Enter saves a check-in",
+      "detail": "In the Check in window, press Enter to save the check-in, also in the note. Shift+Enter starts a new line in the note. Enter on Cancel still cancels."
+    },
+    {
+      "build": 724,
+      "date": "2026-11-03",
+      "title": "A key result lists its Jira epics",
+      "detail": "Under a key result from Jira, \"Jira epics · 3 of 7 done\" opens the list of its epics: each with its key, which opens it in Jira, its title and its Jira status, the open ones first. They are not tasks, so your board stays your own work."
+    },
+    {
+      "build": 722,
+      "date": "2026-11-03",
+      "title": "Settings › Armarium shows the Jira connection",
+      "detail": "A new part of Settings, as in folia, for the admin: whether the Jira sync works, the last sync that worked and what it did, when the next one runs, how many goals come from Jira, and the last five runs, a failed one with its reason."
+    },
+    {
+      "build": 721,
+      "date": "2026-11-03",
+      "title": "A key result's Tasks link opens the board at its row",
+      "detail": "In Goals, Tasks beside Check in opens the board with a row per key result, as before, and now scrolls so that key result's row stands at the top."
+    },
+    {
+      "build": 719,
+      "date": "2026-11-03",
+      "title": "Goals can follow a Jira plan",
+      "detail": "A Jira Strategy is an Objective and an Initiative under it a Key Result; the Epics under an Initiative count as its work, beside the tasks that serve it, and are not made tasks. A synced goal shows its Jira key, which opens the issue. Goals already in tabula are linked by their number or title and keep their tabula names. The sync runs every 30 minutes on tabula's server and never writes to Jira."
+    },
+    {
+      "build": 718,
+      "date": "2026-11-03",
+      "title": "Blocked by stands right below Epic again",
+      "detail": "In the task window the order is now Subtasks, Epic, Blocked by, Key result, Comments: what the task is part of and what it waits for come first, then the key result it serves."
+    },
+    {
+      "build": 717,
+      "date": "2026-11-03",
+      "title": "Key result stands below Epic in the task window",
+      "detail": "In the task window, creating or editing, the Key result section now comes after Epic and before Blocked by. A task inside an epic serves its epic's key result, so the epic comes first."
+    },
     {
       "build": 715,
       "date": "2026-11-03",
@@ -192,60 +246,6 @@
       "date": "2026-11-01",
       "title": "People are rounded squares",
       "detail": "A person's mark is a rounded square now, with no box around it and with letters that fit. On a card the marks stand side by side, not on top of each other."
-    },
-    {
-      "build": 630,
-      "date": "2026-11-01",
-      "title": "Tidier Backups and Users",
-      "detail": "On a phone, a backup's date stays whole and its buttons stand under it. In Users, a person's face no longer sits in a box. Settings › Data no longer names a setting that is gone."
-    },
-    {
-      "build": 616,
-      "date": "2026-11-01",
-      "title": "A new task is kept until it saves",
-      "detail": "Since sharing arrived, the database could refuse a task made in the app, and the task was gone at the next reload. That is fixed. If a new task cannot be saved, for any reason, tabula now keeps it and sends it again when you next open the app."
-    },
-    {
-      "build": 610,
-      "date": "2026-11-01",
-      "title": "About tabula fits the Settings window",
-      "detail": "The facts of this version stand in two columns. Before, the bottom of About tabula was cut off until you scrolled, and the wheel moved every part a little."
-    },
-    {
-      "build": 569,
-      "date": "2026-11-01",
-      "title": "Brain knows when a task repeats",
-      "detail": "Asked about one task, Brain said it does not repeat, even when it does. Brain now reads the repeat and how it ends."
-    },
-    {
-      "build": 523,
-      "date": "2026-10-31",
-      "title": "Share by pressing a face",
-      "detail": "The Share window shows everyone on the Users list as a face. Press one to share the task. There is no address to type any more, and new people join in Settings › Users."
-    },
-    {
-      "build": 521,
-      "date": "2026-10-31",
-      "title": "Share with one press",
-      "detail": "The Share window shows the people you already share with as faces. Press one to share the task, with no address to type."
-    },
-    {
-      "build": 519,
-      "date": "2026-10-31",
-      "title": "Live typing in shared tasks",
-      "detail": "In a shared task, title and description now change letter by letter, with named cursors, and the task says who else is there. Private tasks stay as they are."
-    },
-    {
-      "build": 516,
-      "date": "2026-10-31",
-      "title": "Automatic updates left Settings",
-      "detail": "Settings › Mac app no longer has the Automatic updates switch. tabula › Check for Updates… stays in the menu."
-    },
-    {
-      "build": 515,
-      "date": "2026-10-31",
-      "title": "Work on a task with other people",
-      "detail": "Open a task and press the person icon to share it. A shared task shows faces on its card. Say who does it, write comments with @names, and see what others did under For you. Your star, tags and archive stay your own. This replaces handing over a copy."
     }
   ]
 }
