@@ -1,17 +1,17 @@
 {
   "app": "tabula",
-  "build": 709,
-  "commit": "773d421",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-709/tabula.dmg",
-  "sha256": "ed7ad9209a580e88d5849363ead2190a97a818553e962d3c5376ed6d5fb29e02",
+  "build": 714,
+  "commit": "b88d85b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-714/tabula.dmg",
+  "sha256": "9c34a94ec3a24a3d94aa327f6dff0299800607378d9dc16f976866525c86e34a",
   "minimumSystemVersion": "26.0",
-  "notes": "On a phone all header buttons share one row · The row under the filters is centred",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 709,
       "date": "2026-11-02",
-      "title": "On a phone all header buttons share one row · The row under the filters is centred",
-      "detail": "On a phone all header buttons share one row: On a phone the header is the name, then every button on one line, then the search: Undo, Redo and New task, the tools, then the bell and Settings, 3px apart. On a narrow phone the boxes are a little smaller so all of them fit. The tools were spread across a row of their own. The row under the filters is centred: The small pills under the filter buttons now show their text in the middle, like the buttons above them. A count, when there is one, stays at the right edge."
+      "title": "Brain sees what you see, and does more and 2 more",
+      "detail": "Brain sees what you see, and does more: Brain is told which board is on screen, its filters, the task open in its window (or the one you had open a moment ago, since pressing into Ask Claude closes it) and the tasks ticked in Select, so \"this task\" and \"these\" mean what you are looking at. It searches every task, done, archived and deleted ones too, and reads a task's comments, blockers and Activity, and the Reports figures. It can add, rename, remove, move and tick subtasks, write a comment, make a task wait for another, set a repeat, archive and restore, and open a task, a board, filters or a saved view when you ask to see something. One Undo still takes back what a reply changed in your tasks. On a phone all header buttons share one row: On a phone the header is the name, then every button on one line, then the search: Undo, Redo and New task, the tools, then the bell and Settings, 3px apart. On a narrow phone the boxes are a little smaller so all of them fit. The tools were spread across a row of their own. The row under the filters is centred: The small pills under the filter buttons now show their text in the middle, like the buttons above them. A count, when there is one, stays at the right edge."
     },
     {
       "build": 707,
