@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 729,
-  "commit": "90640ef",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-729/tabula.dmg",
-  "sha256": "136961d887cf04539ec3155cb56caeb8ea3595edaf68afc1150c707fd0968869",
+  "build": 730,
+  "commit": "ef3b1bc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-730/tabula.dmg",
+  "sha256": "5e1a4cc15543b9dff086fa40811fe8fa87d257a34058f395bfc8372828af1761",
   "minimumSystemVersion": "26.0",
-  "notes": "Import opens the file window in the Mac app",
+  "notes": "Import a file from another account",
   "entries": [
+    {
+      "build": 730,
+      "date": "2026-11-03",
+      "title": "Import a file from another account",
+      "detail": "A file exported from another of your accounts now imports as your own tasks, with their subtasks and comments. Before, tabula kept them as the other account's tasks and could not save them."
+    },
     {
       "build": 729,
       "date": "2026-11-03",
@@ -240,12 +246,6 @@
       "date": "2026-11-01",
       "title": "Type together in subtasks",
       "detail": "In a shared task, a subtask's text now changes letter by letter too, with the other person's named cursor, as the title and description do."
-    },
-    {
-      "build": 632,
-      "date": "2026-11-01",
-      "title": "A tidier Share window",
-      "detail": "People to add are rows now, the same as the people on the task, each with an Add button. A person's role stands beside their address."
     }
   ]
 }
