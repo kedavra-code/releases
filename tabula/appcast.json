@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 730,
-  "commit": "ef3b1bc",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-730/tabula.dmg",
-  "sha256": "5e1a4cc15543b9dff086fa40811fe8fa87d257a34058f395bfc8372828af1761",
+  "build": 731,
+  "commit": "a30b197",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-731/tabula.dmg",
+  "sha256": "f31bf9dbc36dabc78d26b13cd8267671135971a0710a8f1aa4b7e2ec5590bc97",
   "minimumSystemVersion": "26.0",
-  "notes": "Import a file from another account",
+  "notes": "The Roadmap shows each key result, with its Jira epics",
   "entries": [
+    {
+      "build": 731,
+      "date": "2026-11-03",
+      "title": "The Roadmap shows each key result, with its Jira epics",
+      "detail": "In Goals › Roadmap, every key result of an objective has a heading, with its tabula epics and tasks and its Jira epics as bars. A key result with nothing in the quarter says so. Going back a quarter now shows what was done then, also for this quarter's objectives."
+    },
     {
       "build": 730,
       "date": "2026-11-03",
@@ -240,12 +246,6 @@
       "date": "2026-11-01",
       "title": "Change many tasks at once and 2 more",
       "detail": "Change many tasks at once: Press Select under the filters, then select tasks with their checkbox, by pressing a card's title, or with All shown. The bar at the foot sets Status, Tag, Priority, Size or Epic on all of them, and one Undo takes it back. A task that cannot take the change, such as one with open subtasks set to Done, is left as it was and named in the message. A task can wait for others: In a task's editor, Blocked by names the tasks it waits for. It offers none that would wait in a circle, and lists the tasks waiting for this one. While one of them is still open, the card shows an hourglass and that task's number: press it to open that task. When the last one is done, the people on a shared waiting task hear of it in For you. Epics: tasks that hold tasks: A task can hold other tasks now. In a task's editor, Part of puts it into another task, and an epic's editor lists its tasks and adds new ones. A card names the epic it is part of, or counts how many of its tasks are done. On the board, Swimlanes › Epic gives each epic a row: drop a card in a row to move it there. One level only: a task in an epic holds no tasks of its own."
-    },
-    {
-      "build": 633,
-      "date": "2026-11-01",
-      "title": "Type together in subtasks",
-      "detail": "In a shared task, a subtask's text now changes letter by letter too, with the other person's named cursor, as the title and description do."
     }
   ]
 }
