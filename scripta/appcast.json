@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 215,
-  "commit": "95540bf",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-215/scripta.dmg",
-  "sha256": "cc10314ecf9203ddf33b3752942994b578663256d39326019aa4d132040b666e",
+  "build": 216,
+  "commit": "ac8505e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-216/scripta.dmg",
+  "sha256": "45255b2f270954047cb0a23cac0232cc5995f35572fac58030ad7e0446c02def",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings › Armarium",
+  "notes": "Send to folia",
   "entries": [
+    {
+      "build": 216,
+      "date": "2026-11-03",
+      "title": "Send to folia",
+      "detail": "The minutes you show last are now always the ones in folia. Picking Qwen and then Claude again within two seconds left Qwen's minutes in folia. A new button, Send to folia, left of Write Again, sends the minutes shown once more, also when folia has them. A line under the bar says which minutes folia got, and when."
+    },
     {
       "build": 214,
       "date": "2026-11-03",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "An imported recording finds its meeting in your calendar",
       "detail": "With Meeting from Calendar on, a recording you import now takes the invited people from the event in your calendar at the recording's hour, and the title as the calendar writes it. The event must have the recording's title, so another meeting at that hour is not taken. The OneNote page still gives its link, and its people are added."
-    },
-    {
-      "build": 118,
-      "date": "2026-10-05",
-      "title": "An update says what is new, and a bad one is undone",
-      "detail": "When a new build is offered, the message lists what changed for you, from What's New. And when a new build does not stay open after an update, scripta puts the build you had back and tells you."
     }
   ]
 }
