@@ -1,11 +1,11 @@
 {
   "app": "tabula",
-  "build": 731,
-  "commit": "a30b197",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-731/tabula.dmg",
-  "sha256": "f31bf9dbc36dabc78d26b13cd8267671135971a0710a8f1aa4b7e2ec5590bc97",
+  "build": 732,
+  "commit": "f02baa9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-732/tabula.dmg",
+  "sha256": "327c0e9948996d171bfa1efcd06acd2fc028eb1c8a9fb8edf1367fb1dba23fbb",
   "minimumSystemVersion": "26.0",
-  "notes": "The Roadmap shows each key result, with its Jira epics",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 731,
