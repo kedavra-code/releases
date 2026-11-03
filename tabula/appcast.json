@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 714,
-  "commit": "b88d85b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-714/tabula.dmg",
-  "sha256": "9c34a94ec3a24a3d94aa327f6dff0299800607378d9dc16f976866525c86e34a",
+  "build": 716,
+  "commit": "be19a5c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-716/tabula.dmg",
+  "sha256": "49550ed53b78a001229c3a67f855b5fbe4c71d876bf91d0ae99c7aa98f5c32a0",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "An epic goes to Done only when its tasks have",
   "entries": [
+    {
+      "build": 715,
+      "date": "2026-11-03",
+      "title": "An epic goes to Done only when its tasks have",
+      "detail": "As a task with open subtasks cannot go to Done, an epic with an open task cannot either: finish, archive or delete its tasks first, and the app says so. It holds on the card, on the board, in the editor, in bulk edit, for Brain and for a tick in folia. In bulk edit an epic selected together with its open tasks goes to Done after them. A task in it that only another person can see is not counted."
+    },
     {
       "build": 709,
       "date": "2026-11-02",
@@ -240,12 +246,6 @@
       "date": "2026-10-31",
       "title": "Work on a task with other people",
       "detail": "Open a task and press the person icon to share it. A shared task shows faces on its card. Say who does it, write comments with @names, and see what others did under For you. Your star, tags and archive stay your own. This replaces handing over a copy."
-    },
-    {
-      "build": 509,
-      "date": "2026-10-31",
-      "title": "No scrollbar in Settings",
-      "detail": "The Settings window shows no scrollbar. On a short screen a long part still scrolls with the wheel, the trackpad or a finger."
     }
   ]
 }
