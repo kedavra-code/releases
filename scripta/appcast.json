@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 218,
-  "commit": "89f44ef",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-218/scripta.dmg",
-  "sha256": "3520b34d6e9c6e517f16383dc7566464153c777c7a2579413b40f5cb01ea4c6e",
+  "build": 220,
+  "commit": "89356c1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-220/scripta.dmg",
+  "sha256": "32ede56111c8b9a901d6778d721726c0a506d40b531f4eb6291bb7d008a21d73",
   "minimumSystemVersion": "26.0",
-  "notes": "Memos from Voice Memos",
+  "notes": "Old recordings reach folia too",
   "entries": [
+    {
+      "build": 219,
+      "date": "2026-11-04",
+      "title": "Old recordings reach folia too",
+      "detail": "A recording you import now goes to folia, even when it was recorded long ago — a voice memo from 2017, say. Until now scripta went by the day it was recorded, so it never went, and folia note found no page. Meetings that were in scripta before you switched Minutes to folia on still stay out by themselves, and Send to folia now shows on every meeting with minutes, so you can send any of them."
+    },
     {
       "build": 218,
       "date": "2026-11-04",
@@ -240,12 +246,6 @@
       "date": "2026-10-06",
       "title": "OneNote is gone: your calendar gives the title and the people",
       "detail": "scripta no longer reads your OneNote. Its row is out of Settings, the Record sheet lists no OneNote pages, and a meeting has no OneNote link. A meeting's title and its invited people come from your calendar (Settings › General › Meeting from Calendar). A note written before keeps its OneNote link until scripta writes that note again."
-    },
-    {
-      "build": 124,
-      "date": "2026-10-05",
-      "title": "After an update, What's New opens once",
-      "detail": "When scripta has updated itself, the What's New window opens one time, so you see what changed without looking for it."
     }
   ]
 }
