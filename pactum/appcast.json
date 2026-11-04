@@ -1,12 +1,54 @@
 {
   "app": "pactum",
-  "build": 31,
-  "commit": "5c736d0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-31/pactum.dmg",
-  "sha256": "7e154dbd8a8172b714acd454790ae19c360b201bc72f1d152c1f1ebc02f70fa8",
+  "build": 38,
+  "commit": "809aeab",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-38/pactum.dmg",
+  "sha256": "611124eaa9249412648da3d569bae16832c9f28f0f24d35f902f0b50032ca8ea",
   "minimumSystemVersion": "26.0",
-  "notes": "One number for efficiency, one for maturity\nSettings… in About pactum",
+  "notes": "A picked spider goes first, and the table has no gaps\nThe selected row in amber\nThe figures turn amber with the selection\nThe page stays where you are\nThe figures name the factor's file\nA quieter 2×2, no column Set by, more in the figures\nFigures beside the table, a legend on every profile",
   "entries": [
+    {
+      "build": 38,
+      "date": "2026-11-04",
+      "title": "A picked spider goes first, and the table has no gaps",
+      "detail": "A spider you click goes to the top of the profiles, as one picked in the table or the 2×2, and it stays under your mouse: the page moves with it. The overview has no gaps between its cells any more, so a row is one band and the amber edge of the selected row runs unbroken."
+    },
+    {
+      "build": 37,
+      "date": "2026-11-04",
+      "title": "The selected row in amber",
+      "detail": "The selected ISG's row in the overview has the same amber ground and amber edge as its figures and its spiders. Its KPI cells keep their grey steps on the amber, so the standing still shows."
+    },
+    {
+      "build": 36,
+      "date": "2026-11-04",
+      "title": "The figures turn amber with the selection",
+      "detail": "When you select an ISG, the figures beside the table turn amber, as its row, its bubble and its spiders do."
+    },
+    {
+      "build": 35,
+      "date": "2026-11-04",
+      "title": "The page stays where you are",
+      "detail": "Picking an ISG in the table, the 2×2 or the profiles no longer moves the page; only the search goes to its row. A profile you click stays in its place. Each profile's legend stands beside its spiders. The complexity factor is on from the start. The figures no longer show the total cost. The overview's groups read ID ISGs and Departmental ISGs."
+    },
+    {
+      "build": 34,
+      "date": "2026-11-04",
+      "title": "The figures name the factor's file",
+      "detail": "Under the complexity factor, the figures no longer say who set it. They name where it is saved, as for every other figure: Input/pactum-eingaben.json."
+    },
+    {
+      "build": 33,
+      "date": "2026-11-04",
+      "title": "A quieter 2×2, no column Set by, more in the figures",
+      "detail": "The efficiency and maturity chart no longer shows values under the mouse. Enter maturity has no column Set by any more: a factor you enter counts as set by ID. The figures of an ISG add its devices on ID Client Delivery platforms, and the tickets are named as what they are: tickets solved by ID Service Desk."
+    },
+    {
+      "build": 32,
+      "date": "2026-11-04",
+      "title": "Figures beside the table, a legend on every profile",
+      "detail": "The figures of the selected ISG stand to the right of the overview, always, so nothing jumps in when you pick a row. The column of KPIs without data is gone; they are in the KPI catalog. Every profile has its own legend, and the selected ISG's profile comes first. In the 2×2, the mouse shows its efficiency and maturity on the axes, and a bubble from fewer KPIs is a dashed ring. A complexity factor of 1 shows as 1.0, and Enter goes to the next factor."
+    },
     {
       "build": 31,
       "date": "2026-11-04",
