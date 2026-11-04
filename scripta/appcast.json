@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 217,
-  "commit": "865bfcc",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-217/scripta.dmg",
-  "sha256": "a097bfb68361283185ba6075a0cdd5c92af8af77e17a0b6bddfc7ad8b6c544ef",
+  "build": 218,
+  "commit": "89f44ef",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-218/scripta.dmg",
+  "sha256": "3520b34d6e9c6e517f16383dc7566464153c777c7a2579413b40f5cb01ea4c6e",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Memos from Voice Memos",
   "entries": [
+    {
+      "build": 218,
+      "date": "2026-11-04",
+      "title": "Memos from Voice Memos",
+      "detail": "Drag a memo from Voice Memos onto the scripta window, and scripta transcribes it. The meeting gets the memo's title and the day it was recorded. Until now a drop from Voice Memos did nothing. A memo from your iPhone works too, once Voice Memos shows it on this Mac."
+    },
     {
       "build": 216,
       "date": "2026-11-03",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "After an update, What's New opens once",
       "detail": "When scripta has updated itself, the What's New window opens one time, so you see what changed without looking for it."
-    },
-    {
-      "build": 122,
-      "date": "2026-10-05",
-      "title": "An imported recording finds its meeting in your calendar",
-      "detail": "With Meeting from Calendar on, a recording you import now takes the invited people from the event in your calendar at the recording's hour, and the title as the calendar writes it. The event must have the recording's title, so another meeting at that hour is not taken. The OneNote page still gives its link, and its people are added."
     }
   ]
 }
