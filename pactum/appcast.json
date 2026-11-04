@@ -1,12 +1,24 @@
 {
   "app": "pactum",
-  "build": 29,
-  "commit": "0232961",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-29/pactum.dmg",
-  "sha256": "07f73c9e9937f006ef85a3a76d996ad6bb82e42bf211d94b71535760bcb2bdcd",
+  "build": 31,
+  "commit": "5c736d0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-31/pactum.dmg",
+  "sha256": "7e154dbd8a8172b714acd454790ae19c360b201bc72f1d152c1f1ebc02f70fa8",
   "minimumSystemVersion": "26.0",
-  "notes": "Whole names in the 2×2\nDocs opens the pactum Field Manual\nNot rated has its own strip\nA calmer table, and a checked complexity factor\nMaturity is saved at once\nBig profiles, and the Average ID CxS\nDepartmental ISGs in the KPI comparison",
+  "notes": "One number for efficiency, one for maturity\nSettings… in About pactum",
   "entries": [
+    {
+      "build": 31,
+      "date": "2026-11-04",
+      "title": "One number for efficiency, one for maturity",
+      "detail": "Each ISG has two single numbers for comparison. Efficiency Ø is the mean standing, 0 to 5, in the efficiency KPIs: it compares with the ISGs shown. Maturity Ø is the mean level entered, 1 to 5. Both end each row of the table and stand under the spiders on each card. When not all parts are in, the number says how many are, as in \"2 of 9\"."
+    },
+    {
+      "build": 30,
+      "date": "2026-11-04",
+      "title": "Settings… in About pactum",
+      "detail": "The About pactum window has a Settings… button, as folia's has. It opens pactum and its Settings."
+    },
     {
       "build": 29,
       "date": "2026-11-04",
