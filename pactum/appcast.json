@@ -1,12 +1,54 @@
 {
   "app": "pactum",
-  "build": 21,
-  "commit": "bfda2ce",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-21/pactum.dmg",
-  "sha256": "22bbb3d4c33f373e74ccf2e83b5b2d6f269f281310c788703b7a504ff1d6e35d",
+  "build": 29,
+  "commit": "0232961",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-29/pactum.dmg",
+  "sha256": "07f73c9e9937f006ef85a3a76d996ad6bb82e42bf211d94b71535760bcb2bdcd",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Whole names in the 2×2\nDocs opens the pactum Field Manual\nNot rated has its own strip\nA calmer table, and a checked complexity factor\nMaturity is saved at once\nBig profiles, and the Average ID CxS\nDepartmental ISGs in the KPI comparison",
   "entries": [
+    {
+      "build": 29,
+      "date": "2026-11-04",
+      "title": "Whole names in the 2×2",
+      "detail": "In the efficiency and maturity chart, every bubble carries its whole name: ID ISG D-BAUG for an ID ISG, ISG D-BSSE for a departmental one."
+    },
+    {
+      "build": 28,
+      "date": "2026-11-04",
+      "title": "Docs opens the pactum Field Manual",
+      "detail": "About pactum › Docs and Settings › About pactum › Docs open the Field Manual: what pactum is, and the maturity rubric with its five levels for each of the nine dimensions. In the Mac app it opens in a window of its own, also without the internet."
+    },
+    {
+      "build": 26,
+      "date": "2026-11-04",
+      "title": "Not rated has its own strip",
+      "detail": "In the efficiency and maturity chart, an ISG without a maturity no longer sits at level 3 as if rated. It stands in a strip \"Not rated\" under the chart, at its efficiency."
+    },
+    {
+      "build": 25,
+      "date": "2026-11-04",
+      "title": "A calmer table, and a checked complexity factor",
+      "detail": "The KPI table shows its standing in calm greys with soft numbers, no more blue. The names in the 2×2 are a true 12 px. Devices per staff member counts as better lower. The figures add the heads without an IT workplace. The complexity factor takes 0.5 to 2 only, and the page says so."
+    },
+    {
+      "build": 24,
+      "date": "2026-11-04",
+      "title": "Maturity is saved at once",
+      "detail": "Enter maturity saves each choice the moment you make it, so nothing is lost when pactum closes. The spiders show all five dots, also for low scores. Chart text follows the folia Style Guide, and the explanation of the profiles stands apart."
+    },
+    {
+      "build": 23,
+      "date": "2026-11-04",
+      "title": "Big profiles, and the Average ID CxS",
+      "detail": "Each ISG's spiders are as big as the legend's, with the axis names. Their dashed line is the workbook's Average ID CxS; the Data page warns where it differs from the ID ISGs. Every bubble of the 2×2 has its name. The page says ID CxS."
+    },
+    {
+      "build": 22,
+      "date": "2026-11-04",
+      "title": "Departmental ISGs in the KPI comparison",
+      "detail": "The departmental ISGs now have their own figures, except D-EAPS, D-MATL and D-USYS, which stay hatched until their figures are in. Tickets per staff member is gone. Two KPIs are new: IT workplace cost per device, and devices per staff member with an IT workplace."
+    },
     {
       "build": 20,
       "date": "2026-11-02",
