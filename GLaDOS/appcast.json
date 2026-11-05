@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 462,
-  "commit": "b0c6eb1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-462/GLaDOS.dmg",
-  "sha256": "db13aa08ad36c161421fdad7ea385246c250acde4a723601cef13e519eb02490",
+  "build": 463,
+  "commit": "f9e9574",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-463/GLaDOS.dmg",
+  "sha256": "5dd8fca4c28e3fb95779cbb25ce26e0184e8e77b8aec20de12455292c5b2afc8",
   "minimumSystemVersion": "26.0",
-  "notes": "Cerebrum: only the concepts, with their trust",
+  "notes": "Cerebrum answers at once",
   "entries": [
+    {
+      "build": 463,
+      "date": "2026-11-05",
+      "title": "Cerebrum answers at once",
+      "detail": "GLaDOS and J.A.R.V.I.S. keep Cerebrum's service running while they are powered up, so a search or a concept comes back in a few hundredths of a second instead of several seconds. It stops when you power them down."
+    },
     {
       "build": 462,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "A discussion goes on where you cut it",
       "detail": "When you speak into a discussion between GLaDOS and J.A.R.V.I.S., it stops, as before. Now say \"go on\" or \"weiter\", and it goes on at the line where you cut it, not from the beginning. The line you cut is said again. When you ask them something about the discussion, the one you asked answers, and can then carry it on from the same place."
-    },
-    {
-      "build": 327,
-      "date": "2026-10-05",
-      "title": "After an update, What's New opens once",
-      "detail": "When GLaDOS has updated itself, the What's New window opens one time, so you see what changed without looking for it."
     }
   ]
 }
