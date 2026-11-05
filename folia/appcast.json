@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 309,
-  "commit": "5d3e017",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-309/folia.dmg",
-  "sha256": "14ffc46879c0daa4822d2e41dc7d73ae4a5948f7d4344eeb3e2ce10da5a0e0a2",
+  "build": 310,
+  "commit": "a3b98ed",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-310/folia.dmg",
+  "sha256": "712361d2dc546516504fe2c43ba302b23a66fafa6c6b72d9e27c8a5c8889be18",
   "minimumSystemVersion": "26.0",
-  "notes": "A brief on every page of your ETH notebooks, on both Macs",
+  "notes": "Briefs are read in a moment",
   "entries": [
+    {
+      "build": 310,
+      "date": "2026-11-05",
+      "title": "Briefs are read in a moment",
+      "detail": "folia now keeps one Cerebrum reader open instead of starting it for every question. A page that has no brief yet gets one in about a second, and the pass over your ETH pages takes minutes instead of hours."
+    },
     {
       "build": 309,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-29",
       "title": "Show in Finder in the … menus",
       "detail": "In the Mac app, the … menu of a notebook, a section and a page has Show in Finder when the notebook keeps a Markdown copy on this Mac. The Finder opens with the notebook's or section's folder, or the page's file, selected."
-    },
-    {
-      "build": 248,
-      "date": "2026-10-28",
-      "title": "About and What's New in the family's style",
-      "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
     }
   ]
 }
