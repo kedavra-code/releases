@@ -1,12 +1,36 @@
 {
   "app": "specula",
-  "build": 83,
-  "commit": "42ae153",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-83/specula.dmg",
-  "sha256": "0a93530c0df5dcd5fecb3b9c34457320f18f05724c173b9ccc35d9e3ec84f3d6",
+  "build": 87,
+  "commit": "22e40a7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-87/specula.dmg",
+  "sha256": "2de4d12f12b7cd77d81aaeaadee4617a219fe03b6d2cc590f053cca338950940",
   "minimumSystemVersion": "26.0",
-  "notes": "The 00_Cerebrum Dashboard: click a figure\nNo table scrolls sideways\nThe dashboard follows the style guide\nNo scrollbar on the dashboard\nThe dashboard's lists: no scrollbars, easier to read\nEvery knowledge base on the dashboard\nLook up the vault from any app: ⌃⌥⌘C",
+  "notes": "No dark frame around the page and the dashboard\nReports: summaries, quotes and lines drawn right\nThe dashboard is a card too\nA concept page is a card",
   "entries": [
+    {
+      "build": 87,
+      "date": "2026-11-05",
+      "title": "No dark frame around the page and the dashboard",
+      "detail": "A concept page and the dashboard now sit on the same grey as the header, the search bar and the list on the left, with one thin line between them, as the header has. The dark gap around them is gone."
+    },
+    {
+      "build": 86,
+      "date": "2026-11-05",
+      "title": "Reports: summaries, quotes and lines drawn right",
+      "detail": "A report's management summary starts with its Problem row, no longer drawn as a heading you could sort by. A quote shows as a quote, with a bar on its left and without the \">\" marks. A line between parts is a line, not \"---\". A note the writer left for the next writer is no longer shown."
+    },
+    {
+      "build": 85,
+      "date": "2026-11-05",
+      "title": "The dashboard is a card too",
+      "detail": "The dashboard now sits on a card, as a concept page does: white in the light look, a lighter grey in the dark look. Its own cards are one quiet step lighter inside it."
+    },
+    {
+      "build": 84,
+      "date": "2026-11-05",
+      "title": "A concept page is a card",
+      "detail": "A concept page now sits on a card, as in folia: white in the light look, a lighter grey in the dark look, with a thin border and round corners. Before, its text sat on the window's darkest grey."
+    },
     {
       "build": 83,
       "date": "2026-11-05",
@@ -222,30 +246,6 @@
       "date": "2026-10-25",
       "title": "A hotkey for specula",
       "detail": "⌃⌥⌘S shows the specula window from any app; pressed again, it hides it. Settings › Mac app shows the hotkey and records new keys."
-    },
-    {
-      "build": 21,
-      "date": "2026-10-25",
-      "title": "Full screen in the Timelapse, in the app",
-      "detail": "The Timelapse's full-screen button works in the specula app too, not only in the browser."
-    },
-    {
-      "build": 19,
-      "date": "2026-10-25",
-      "title": "Warp speed at the end of the Timelapse",
-      "detail": "When the Timelapse has built the whole vault, the camera comes round behind it: the vault is the starship NCC-1701. Its nacelles glow, it draws out, and it goes to warp in a flash, the stars streaming past. Then the vault is back, at rest. With sound when you start the Timelapse yourself; not with reduced motion."
-    },
-    {
-      "build": 17,
-      "date": "2026-10-25",
-      "title": "Check for Updates in the specula menu again",
-      "detail": "The specula menu at the top left has Check for Updates… under Settings… again, as every app of the family has it: About specula, a line, Settings…, Check for Updates…, a line. In the menu of specula's icon, Settings… shows ⌘,."
-    },
-    {
-      "build": 16,
-      "date": "2026-10-25",
-      "title": "The icon's menu in murmur's order",
-      "detail": "The menu of specula's icon starts with About specula. Under a line follow Settings… and Check for Updates…, then Open specula and Open in Browser, then Show in Finder and Quit."
     }
   ]
 }
