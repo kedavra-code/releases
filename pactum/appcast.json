@@ -1,12 +1,30 @@
 {
   "app": "pactum",
-  "build": 38,
-  "commit": "809aeab",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-38/pactum.dmg",
-  "sha256": "611124eaa9249412648da3d569bae16832c9f28f0f24d35f902f0b50032ca8ea",
+  "build": 41,
+  "commit": "51ce2a7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-41/pactum.dmg",
+  "sha256": "46ad30b142af3270487d9b5c0e2b9991f1db1da106cedf95380d3294da539eb2",
   "minimumSystemVersion": "26.0",
-  "notes": "A picked spider goes first, and the table has no gaps\nThe selected row in amber\nThe figures turn amber with the selection\nThe page stays where you are\nThe figures name the factor's file\nA quieter 2×2, no column Set by, more in the figures\nFigures beside the table, a legend on every profile",
+  "notes": "The ISG teams' table holds the departmental ISGs\nFigures beside the table on the big screen\nThe ISG teams' own maturity",
   "entries": [
+    {
+      "build": 41,
+      "date": "2026-11-05",
+      "title": "The ISG teams' table holds the departmental ISGs",
+      "detail": "The table filled by the ISG teams lists the departmental ISGs only. Under each maturity spider, Maturity Ø ISG stands to the right of Maturity Ø ID, and the legend says Maturity by the ID in place of Own profile."
+    },
+    {
+      "build": 40,
+      "date": "2026-11-05",
+      "title": "Figures beside the table on the big screen",
+      "detail": "In a window of 1720 px the figures went under the overview. The two maturity headers now take two lines, so the table is narrower and the figures stand beside it again."
+    },
+    {
+      "build": 39,
+      "date": "2026-11-05",
+      "title": "The ISG teams' own maturity",
+      "detail": "Enter maturity has a second table, filled by the ISG teams: the same nine levels, for themselves. The first table is the one ID fills. The overview shows Maturity Ø ID and Maturity Ø ISG, and each maturity spider draws the ISG team's levels as a second line. Target is now Accepted Minimum, Research is Research/Business, and the complexity factor is off when the page opens."
+    },
     {
       "build": 38,
       "date": "2026-11-04",
