@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 463,
-  "commit": "f9e9574",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-463/GLaDOS.dmg",
-  "sha256": "5dd8fca4c28e3fb95779cbb25ce26e0184e8e77b8aec20de12455292c5b2afc8",
+  "build": 464,
+  "commit": "1bc9ccc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-464/GLaDOS.dmg",
+  "sha256": "f1834efdc6832f3e3db3151809915fe3fae9819f5ae8672cf5bd2d83e60fd534",
   "minimumSystemVersion": "26.0",
-  "notes": "Cerebrum answers at once",
+  "notes": "Every tabula change is in the transcript",
   "entries": [
+    {
+      "build": 464,
+      "date": "2026-11-05",
+      "title": "Every tabula change is in the transcript",
+      "detail": "When GLaDOS or J.A.R.V.I.S. creates, changes, ticks off, archives or deletes a task in tabula, the Transcript gets a line for it, such as \"tabula: Created T-519: Karts fixen\". It is written when the change is made, so you see it even when the spoken answer is cut off."
+    },
     {
       "build": 463,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "J.A.R.V.I.S.'s German voice has no effects",
       "detail": "His German voice played one semitone lower than its model speaks, with a light metallic ring. Both are gone: you hear the voice as it is. His English voice had no effects, and it is the same."
-    },
-    {
-      "build": 328,
-      "date": "2026-10-05",
-      "title": "A discussion goes on where you cut it",
-      "detail": "When you speak into a discussion between GLaDOS and J.A.R.V.I.S., it stops, as before. Now say \"go on\" or \"weiter\", and it goes on at the line where you cut it, not from the beginning. The line you cut is said again. When you ask them something about the discussion, the one you asked answers, and can then carry it on from the same place."
     }
   ]
 }
