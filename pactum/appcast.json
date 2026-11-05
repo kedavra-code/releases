@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 41,
-  "commit": "51ce2a7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-41/pactum.dmg",
-  "sha256": "46ad30b142af3270487d9b5c0e2b9991f1db1da106cedf95380d3294da539eb2",
+  "build": 42,
+  "commit": "0e1a02b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-42/pactum.dmg",
+  "sha256": "bc0aabf86d502b6fa7db18551de9b6348b5881bf02a08fc75ba60485432b5151",
   "minimumSystemVersion": "26.0",
-  "notes": "The ISG teams' table holds the departmental ISGs\nFigures beside the table on the big screen\nThe ISG teams' own maturity",
+  "notes": "The Field Manual has the updated rubric",
   "entries": [
+    {
+      "build": 42,
+      "date": "2026-11-05",
+      "title": "The Field Manual has the updated rubric",
+      "detail": "Docs opens the Field Manual with the maturity rubric as it was sent to the ISGs: the strict requirements of each level, Accepted Minimum at Defined and Gold Standard at Optimised. It also names the two tables of Enter maturity."
+    },
     {
       "build": 41,
       "date": "2026-11-05",
