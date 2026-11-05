@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 464,
-  "commit": "1bc9ccc",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-464/GLaDOS.dmg",
-  "sha256": "f1834efdc6832f3e3db3151809915fe3fae9819f5ae8672cf5bd2d83e60fd534",
+  "build": 466,
+  "commit": "894cebe",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-466/GLaDOS.dmg",
+  "sha256": "66b8e30e3cf27888bf89aabe74dedd6305c9335bf18784ff4b6283a10d3b5927",
   "minimumSystemVersion": "26.0",
-  "notes": "Every tabula change is in the transcript",
+  "notes": "Cerebrum concepts without the trust talk",
   "entries": [
+    {
+      "build": 466,
+      "date": "2026-11-05",
+      "title": "Cerebrum concepts without the trust talk",
+      "detail": "GLaDOS and J.A.R.V.I.S. no longer say whether a Cerebrum concept is a draft, verified, unverified or stale. They no longer get that information at all, only the concept itself."
+    },
     {
       "build": 464,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "J.A.R.V.I.S. speaks German like a butler",
       "detail": "His German voice is calmer and warmer. He speaks a little slower, his tone has more depth and a softer top, and he leaves a short pause after each sentence. The pitch is his own, and the metallic ring stays gone. His English voice is the same."
-    },
-    {
-      "build": 336,
-      "date": "2026-10-05",
-      "title": "J.A.R.V.I.S.'s German voice has no effects",
-      "detail": "His German voice played one semitone lower than its model speaks, with a light metallic ring. Both are gone: you hear the voice as it is. His English voice had no effects, and it is the same."
     }
   ]
 }
