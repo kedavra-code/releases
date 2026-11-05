@@ -1,12 +1,54 @@
 {
   "app": "specula",
-  "build": 75,
-  "commit": "709c73d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-75/specula.dmg",
-  "sha256": "7396455631d0e8378fe38f6857af5c46b698ac44f6d56a5ed6d1d2f3600a7840",
+  "build": 83,
+  "commit": "42ae153",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-83/specula.dmg",
+  "sha256": "0a93530c0df5dcd5fecb3b9c34457320f18f05724c173b9ccc35d9e3ec84f3d6",
   "minimumSystemVersion": "26.0",
-  "notes": "Reports: key figures as tiles, tables that sort\nA dashboard: how the vault stands",
+  "notes": "The 00_Cerebrum Dashboard: click a figure\nNo table scrolls sideways\nThe dashboard follows the style guide\nNo scrollbar on the dashboard\nThe dashboard's lists: no scrollbars, easier to read\nEvery knowledge base on the dashboard\nLook up the vault from any app: ⌃⌥⌘C",
   "entries": [
+    {
+      "build": 83,
+      "date": "2026-11-05",
+      "title": "The 00_Cerebrum Dashboard: click a figure",
+      "detail": "The dashboard is called 00_Cerebrum Dashboard. Click a figure to see what it counts, right under it: the stale and the draft pages, the open and deferred items, a red verify.py's lines. A page in that list opens with a click. Concepts opens the concept list at that base, and the health check's date opens its report. A small arrow shows which figures open."
+    },
+    {
+      "build": 82,
+      "date": "2026-11-05",
+      "title": "No table scrolls sideways",
+      "detail": "A table too wide for a concept page now fits it: a path may break after a slash, the cells get a little smaller, and only then may a long word break. No page scrolls sideways any more. The two buttons on a concept page have the same corners as the header's."
+    },
+    {
+      "build": 81,
+      "date": "2026-11-05",
+      "title": "The dashboard follows the style guide",
+      "detail": "The dashboard's title has the size of a concept page's title, without the line under it. Card titles have the guide's weight. File names in Needs you sit in the guide's code box. The lower cards stand in the same three columns as the cards above, so their edges line up."
+    },
+    {
+      "build": 80,
+      "date": "2026-11-05",
+      "title": "No scrollbar on the dashboard",
+      "detail": "The dashboard draws no scrollbar. It still scrolls with the trackpad, the mouse wheel and the keys."
+    },
+    {
+      "build": 79,
+      "date": "2026-11-05",
+      "title": "The dashboard's lists: no scrollbars, easier to read",
+      "detail": "The three cards at the bottom of the dashboard grow to hold their text and never scroll. Changed since yesterday is on the left, Needs you in the middle and wider, Stale on the right. A long list shows twelve rows and a Show all button. In Needs you, each item shows the file it is about, its question in bold, then short paragraphs, and the readings as a numbered list."
+    },
+    {
+      "build": 78,
+      "date": "2026-11-05",
+      "title": "Every knowledge base on the dashboard",
+      "detail": "The dashboard has room for every knowledge base, three to a row, in the same order as the header. NZZ and SRG SSR are marked frozen. They show as soon as the vault's dashboard script lists them."
+    },
+    {
+      "build": 76,
+      "date": "2026-11-05",
+      "title": "Look up the vault from any app: ⌃⌥⌘C",
+      "detail": "Press ⌃⌥⌘C anywhere, or choose Look Up in the Vault… in the menu, and type a name or a few words; \"who is Robi\" works too. The best concepts show at once, each with a line of what it is, its path, and how far to trust it: its status, whether it was checked, and stale when it is past its date. Return or a click opens the concept in specula. It uses no model and nothing leaves the Mac. Escape puts it away."
+    },
     {
       "build": 75,
       "date": "2026-11-05",
@@ -204,48 +246,6 @@
       "date": "2026-10-25",
       "title": "The icon's menu in murmur's order",
       "detail": "The menu of specula's icon starts with About specula. Under a line follow Settings… and Check for Updates…, then Open specula and Open in Browser, then Show in Finder and Quit."
-    },
-    {
-      "build": 15,
-      "date": "2026-10-25",
-      "title": "The specula menu as in scripta",
-      "detail": "The specula menu at the top left starts with About specula, a line under it, then Settings…, as scripta's. Check for Updates… is in the menu of specula's icon."
-    },
-    {
-      "build": 13,
-      "date": "2026-10-24",
-      "title": "The vault's newest commit in About",
-      "detail": "About specula names the vault's newest commit as soon as it is made. Before, it said \"uncommitted\" until the next change to a concept."
-    },
-    {
-      "build": 12,
-      "date": "2026-10-24",
-      "title": "specula is the vault's viewer",
-      "detail": "The vault's old one-file viewer has retired. Open 00_Cerebrum opens specula, and while the app runs, this Mac's browser shows specula at 127.0.0.1:8760, where the old viewer was."
-    },
-    {
-      "build": 11,
-      "date": "2026-10-24",
-      "title": "Reports as in folia · The Brain's controls, one size",
-      "detail": "Reports as in folia: The Reports window and a report open in folia's window. A report reads like a page in folia, light or dark with specula, its drawings too; English and Deutsch sit at its foot. The Brain's controls, one size: In Settings › Brain, the Model and Effort menus and the buttons have one height, one width and one type. Every row has its icon."
-    },
-    {
-      "build": 8,
-      "date": "2026-10-24",
-      "title": "iCloud Drive's question, said",
-      "detail": "The first time, macOS asks whether specula may open files in iCloud Drive, where the vault is. specula now opens its window at once and says so while it waits, and shows the vault once you choose Allow."
-    },
-    {
-      "build": 7,
-      "date": "2026-10-24",
-      "title": "specula for Mac",
-      "detail": "specula comes as an app for your Mac. It starts specula's server, can open at login, shows in the menu bar or the Dock, and updates itself; while it runs, this Mac's browser shows specula at the same address."
-    },
-    {
-      "build": 6,
-      "date": "2026-10-24",
-      "title": "Light, dark or the system's and 3 more",
-      "detail": "Light, dark or the system's: Settings › General picks the look: light, dark, or the same as your Mac. Everything around the map follows it; the 2D map and the 3D view keep their dark sky. Settings as in folia: The gear opens Settings, the mark opens About: About specula, General, Knowledge bases, Brain, Keys and Mac app, in the same window as folia and j4k. What's new: Settings › About specula › What's new lists what changed in specula, newest first, and counts what you have not read yet. Commands with ⌘K: ⌘K finds a concept, a report, a view or a setting by its name, and opens it."
     }
   ]
 }
