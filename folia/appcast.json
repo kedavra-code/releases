@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 292,
-  "commit": "a4939fb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-292/folia.dmg",
-  "sha256": "93d595ce8f0a122092aeac96581a508270a2eb1180c598a3f1001ef4f4b6c81f",
+  "build": 294,
+  "commit": "454472b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-294/folia.dmg",
+  "sha256": "4082fe10e1d424ee33c1179ee5b6a26ca7d8d6c9b956ea1bbb6c61cb6b3b82c1",
   "minimumSystemVersion": "26.0",
-  "notes": "The header buttons look like tabula's New task button",
+  "notes": "Make Markdown files on your Mac, in Files\nMinutes from scripta no longer blank a page",
   "entries": [
+    {
+      "build": 294,
+      "date": "2026-11-05",
+      "title": "Make Markdown files on your Mac, in Files",
+      "detail": "In the Mac app, Files under On this Mac makes new Markdown files. The first time, folia asks for a folder and keeps it. Files and opened folders now have new folders, templates, Move and Copy to folder, drag a file onto a folder, and sorting by name or date. Pictures and links keep working when a file moves."
+    },
+    {
+      "build": 293,
+      "date": "2026-11-03",
+      "title": "Minutes from scripta no longer blank a page",
+      "detail": "When scripta sent other minutes with no decisions or tasks, a meeting page could show nothing. Its text was safe, and it shows again once scripta sends the minutes once more."
+    },
     {
       "build": 292,
       "date": "2026-11-02",
@@ -234,18 +246,6 @@
       "date": "2026-10-27",
       "title": "Your meeting tasks go to j4k, and come back ticked",
       "detail": "Settings › j4k › Tasks to j4k: your tasks and tasks given to nobody, from the Tasks of a meeting's page, go to Review in j4k. When you set one to Done in j4k, folia ticks it in the page within two minutes. It works for meetings that start after you switch it on, also when folia is not open. scripta no longer sends tasks to j4k itself."
-    },
-    {
-      "build": 227,
-      "date": "2026-10-27",
-      "title": "The meetings panel keeps its arrows, and has Today",
-      "detail": "In the meetings panel, only the meetings scroll: the week arrows stay at the top. Today, left of the arrows, goes back to today's meetings."
-    },
-    {
-      "build": 226,
-      "date": "2026-10-27",
-      "title": "The … menus in groups",
-      "detail": "A page's … menu shows its entries in groups with a small heading: Open, Copy, Move and Page group, with Delete apart at the end. The menus of notebooks and sections are grouped the same way: New, On this Mac, Colour."
     }
   ]
 }
