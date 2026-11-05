@@ -1,12 +1,48 @@
 {
   "app": "specula",
-  "build": 87,
-  "commit": "22e40a7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-87/specula.dmg",
-  "sha256": "2de4d12f12b7cd77d81aaeaadee4617a219fe03b6d2cc590f053cca338950940",
+  "build": 96,
+  "commit": "69e746b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-96/specula.dmg",
+  "sha256": "05425394557d4b3e141fe7a969eb723c33cffb2a4240825b1d39fec25921fb71",
   "minimumSystemVersion": "26.0",
-  "notes": "No dark frame around the page and the dashboard\nReports: summaries, quotes and lines drawn right\nThe dashboard is a card too\nA concept page is a card",
+  "notes": "No blue marks on the page after the quick lookup\nThe quick lookup without the mark again\nThe quick lookup shows all its results at once\nThe quick lookup searches as you type\nAsk Claude finds concepts faster\nThe quick lookup's hotkey is in Settings",
   "entries": [
+    {
+      "build": 96,
+      "date": "2026-11-05",
+      "title": "No blue marks on the page after the quick lookup",
+      "detail": "Opening the quick lookup could select all the text of specula's page, which then showed in blue in the header and the search bar. It no longer does."
+    },
+    {
+      "build": 95,
+      "date": "2026-11-05",
+      "title": "The quick lookup without the mark again",
+      "detail": "The mark and the name above the quick lookup's field are gone again. It shows its 8 results at once, with no scroll bar, and is as tall as they need, with the same space above the first as below the last."
+    },
+    {
+      "build": 93,
+      "date": "2026-11-05",
+      "title": "The quick lookup shows all its results at once",
+      "detail": "The quick lookup is taller and shows all 8 results at once, with no scroll bar. Each result shows its title, one line and the path of its page, without the stable, unverified and stale labels. In Settings › Mac app, its hotkey is now under Hotkey, as Look up in 00_Cerebrum."
+    },
+    {
+      "build": 91,
+      "date": "2026-11-05",
+      "title": "The quick lookup searches as you type",
+      "detail": "Type the first letters of a word, and the quick lookup shows the concepts with words that start with them: \"kerb\" finds Kerberos. Before, it needed the whole word."
+    },
+    {
+      "build": 89,
+      "date": "2026-11-05",
+      "title": "Ask Claude finds concepts faster",
+      "detail": "Ask Claude now looks a concept up in the vault's own index, as the quick lookup does, before it searches any file. On three test questions it answered about a fifth faster, with a quarter fewer steps, for about a fifth less money."
+    },
+    {
+      "build": 88,
+      "date": "2026-11-05",
+      "title": "The quick lookup's hotkey is in Settings",
+      "detail": "Settings › Mac app shows the quick lookup's keys, ⌃⌥⌘C, under Quick lookup. Click them, then press new keys to choose others, as for Open specula."
+    },
     {
       "build": 87,
       "date": "2026-11-05",
@@ -210,42 +246,6 @@
       "date": "2026-10-25",
       "title": "⌘H hides specula as in other apps",
       "detail": "⌘H hides specula with macOS's own Hide, as in scripta and unus. The hotkey brings it back."
-    },
-    {
-      "build": 29,
-      "date": "2026-10-25",
-      "title": "⌘H gives the menu bar back",
-      "detail": "After ⌘H, the app behind specula comes to the front, with its name in the menu bar, as in other apps. Before, the menu bar still said specula."
-    },
-    {
-      "build": 27,
-      "date": "2026-10-25",
-      "title": "⌘H hides specula; one look for the buttons",
-      "detail": "⌘H hides the specula window, as in other apps. Every button in Settings and in specula's windows has one size and one type, and a link looks like the buttons beside it."
-    },
-    {
-      "build": 26,
-      "date": "2026-10-25",
-      "title": "Download specula for another Mac",
-      "detail": "Settings › Mac app in the app offers the newest build as a download too, for another Mac. The download opens in your browser."
-    },
-    {
-      "build": 25,
-      "date": "2026-10-25",
-      "title": "Settings › Mac app, tidied",
-      "detail": "Open at login is called \"Start specula at login\" now. The switch for update checks is gone: specula still checks once a day, and Check for Updates… is in the menus."
-    },
-    {
-      "build": 23,
-      "date": "2026-10-25",
-      "title": "Settings opens on General",
-      "detail": "The gear, ⌘, and Settings… in the menus open Settings on General."
-    },
-    {
-      "build": 22,
-      "date": "2026-10-25",
-      "title": "A hotkey for specula",
-      "detail": "⌃⌥⌘S shows the specula window from any app; pressed again, it hides it. Settings › Mac app shows the hotkey and records new keys."
     }
   ]
 }
