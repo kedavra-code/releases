@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 461,
-  "commit": "777a43f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-461/GLaDOS.dmg",
-  "sha256": "6c67c41c361c7ab442aa1231e49e75590508c15d6c9631d0fcc703e5efd61972",
+  "build": 462,
+  "commit": "b0c6eb1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-462/GLaDOS.dmg",
+  "sha256": "db13aa08ad36c161421fdad7ea385246c250acde4a723601cef13e519eb02490",
   "minimumSystemVersion": "26.0",
-  "notes": "Cerebrum searches skip the old OneNote archive",
+  "notes": "Cerebrum: only the concepts, with their trust",
   "entries": [
+    {
+      "build": 462,
+      "date": "2026-11-05",
+      "title": "Cerebrum: only the concepts, with their trust",
+      "detail": "GLaDOS and J.A.R.V.I.S. now ask Cerebrum's own service. They search and read the concepts of each knowledge base, the Wiki pages, best match first, and say when one is a draft, unverified or stale. The raw notes, folia and OneNote are no longer searched or read. A search takes a few seconds."
+    },
     {
       "build": 461,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-05",
       "title": "After an update, What's New opens once",
       "detail": "When GLaDOS has updated itself, the What's New window opens one time, so you see what changed without looking for it."
-    },
-    {
-      "build": 325,
-      "date": "2026-10-05",
-      "title": "The menu bar icon stays the eye",
-      "detail": "Powered down, GLaDOS showed a power symbol in the menu bar. She now shows her eye there too, as she does when she is powered up and waits."
     }
   ]
 }
