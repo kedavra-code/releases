@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 308,
-  "commit": "e6bc87f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-308/folia.dmg",
-  "sha256": "6d1ddaaea49536a2a1cbb005c9cb901f6479d1b2000e239852b5355bbeb53e72",
+  "build": 309,
+  "commit": "5d3e017",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-309/folia.dmg",
+  "sha256": "14ffc46879c0daa4822d2e41dc7d73ae4a5948f7d4344eeb3e2ce10da5a0e0a2",
   "minimumSystemVersion": "26.0",
-  "notes": "Align text left, centre, right or justified and 2 more\nA person's face beside their changes\nWho wrote what, whenever you want\nPeople in their own colour, as in tabula\nBriefs are read ahead\nSee what a coworker changed\nThe brief is kept, and folded into the meeting page\nOpen a brief's items in specula\nand 3 more — see What's New",
+  "notes": "A brief on every page of your ETH notebooks, on both Macs",
   "entries": [
+    {
+      "build": 309,
+      "date": "2026-11-05",
+      "title": "A brief on every page of your ETH notebooks, on both Macs",
+      "detail": "With Brief from Cerebrum on, every page of your ETH notebooks gets the folded brief card: what Cerebrum knows about its topic, the open items, and what was still open on the page before it in the section. folia reads the missing briefs one page at a time, the newest first; Settings › Armarium shows how far it is. The briefs are kept in your Cerebrum vault, in its own folder briefs, so your other Mac shows them too without reading them again."
+    },
     {
       "build": 308,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-28",
       "title": "About and What's New in the family's style",
       "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
-    },
-    {
-      "build": 245,
-      "date": "2026-10-28",
-      "title": "Files and Bin look alike",
-      "detail": "Files and Bin both have an outlined icon with a grey symbol. In the light look the outline is a little stronger, so both icons are as easy to see as in the dark look."
     }
   ]
 }
