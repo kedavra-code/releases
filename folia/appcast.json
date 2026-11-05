@@ -1,12 +1,78 @@
 {
   "app": "folia",
-  "build": 294,
-  "commit": "454472b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-294/folia.dmg",
-  "sha256": "4082fe10e1d424ee33c1179ee5b6a26ca7d8d6c9b956ea1bbb6c61cb6b3b82c1",
+  "build": 308,
+  "commit": "e6bc87f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-308/folia.dmg",
+  "sha256": "6d1ddaaea49536a2a1cbb005c9cb901f6479d1b2000e239852b5355bbeb53e72",
   "minimumSystemVersion": "26.0",
-  "notes": "Make Markdown files on your Mac, in Files\nMinutes from scripta no longer blank a page",
+  "notes": "Align text left, centre, right or justified and 2 more\nA person's face beside their changes\nWho wrote what, whenever you want\nPeople in their own colour, as in tabula\nBriefs are read ahead\nSee what a coworker changed\nThe brief is kept, and folded into the meeting page\nOpen a brief's items in specula\nand 3 more — see What's New",
   "entries": [
+    {
+      "build": 308,
+      "date": "2026-11-05",
+      "title": "Align text left, centre, right or justified and 2 more",
+      "detail": "Align text left, centre, right or justified: As in Word, for text and headings: add the four tools to the toolbar in Settings › Toolbar, or give them keys in Settings › Keys. A second press of Centre, Right or Justify goes back to left. The alignment stays in History, copies and templates, and the Markdown copy writes it as GitHub does. Lists, quotes and tables keep their own alignment. Choose the tools above a selection: Settings › Toolbar now also sets what shows above selected words: the font colours as before, and any of Bold, Italic, Link, the alignments, headings, lists and more, in your order. Its switch moved there from Settings › General. ⌘G goes through the changes by others: With nothing in the search field, ⌘G goes to the next place someone else changed on the open page, and ⇧⌘G to the one before. With words in the search field, ⌘G still goes through the hits."
+    },
+    {
+      "build": 307,
+      "date": "2026-11-05",
+      "title": "A person's face beside their changes",
+      "detail": "The bars beside what others wrote now carry the person's face from Settings › Users: the first letter of their address, in their colour. The line under the title and Share use the same face. A colour chosen in Settings › Users shows on the page at once. Beside older text the bar is lighter, the face stays in full colour."
+    },
+    {
+      "build": 306,
+      "date": "2026-11-05",
+      "title": "Who wrote what, whenever you want",
+      "detail": "Switch on Who wrote what in Settings › General, or in ⌘K: every page then shows a bar beside everything others wrote, in their colour, not only what is new. What is new since you last read the page stays bright, the rest is lighter."
+    },
+    {
+      "build": 305,
+      "date": "2026-11-05",
+      "title": "People in their own colour, as in tabula",
+      "detail": "Settings › Users now looks like tabula's: each person a coloured letter, and the admin picks their colour from folia's notebook colours. That colour is how everyone sees the person in folia: their cursor, the marks of their changes, their face in the change line and in Share. Without a choice, folia picks one from the address."
+    },
+    {
+      "build": 304,
+      "date": "2026-11-05",
+      "title": "Briefs are read ahead",
+      "detail": "With Brief from Cerebrum on, folia reads the briefs of today's and the next seven days' meetings by itself, half a minute after it starts and then every half hour, so Brief and the meeting page's card open at once. A brief older than a day is read again."
+    },
+    {
+      "build": 303,
+      "date": "2026-11-05",
+      "title": "See what a coworker changed",
+      "detail": "A page someone else changed since you last read it has a dot in their colour in the page list, and its section and notebook count it. On the page, a line under the title says who changed how many places and when, with arrows to go from place to place and Mark as seen; a bar in the right margin, with their initials, marks each place. What they type while you read shows at once."
+    },
+    {
+      "build": 302,
+      "date": "2026-11-05",
+      "title": "The brief is kept, and folded into the meeting page",
+      "detail": "A meeting page now has a folded Brief from Cerebrum card under its meeting line: one line says when it was read and what it holds, and a press opens it. The brief is read once and kept on this Mac, so it opens at once, here and with Brief in Meetings; Read again asks Cerebrum anew. It is never saved in the page and never sent."
+    },
+    {
+      "build": 301,
+      "date": "2026-11-05",
+      "title": "Open a brief's items in specula",
+      "detail": "In the brief and in Minutes and Cerebrum, press the name of a person, a topic or an open item, and specula shows it."
+    },
+    {
+      "build": 300,
+      "date": "2026-11-05",
+      "title": "Open items from Cerebrum say since when",
+      "detail": "In the brief and in Minutes and Cerebrum, each open item from your Cerebrum vault now says since when it is open, for example open since 12.03.2026."
+    },
+    {
+      "build": 299,
+      "date": "2026-11-05",
+      "title": "Minutes and Cerebrum on a meeting page",
+      "detail": "With Brief from Cerebrum on, a meeting page with scripta's minutes has a Minutes and Cerebrum button on its meeting line. It shows what earlier meetings of the series already had open, the people and projects the minutes name, and the decisions and open points beside what your Cerebrum vault holds. Prepare, Open and Brief in Meetings now share one width and line up. Like the brief, it is read on this Mac and never goes into a page."
+    },
+    {
+      "build": 295,
+      "date": "2026-11-05",
+      "title": "A brief from Cerebrum before a meeting",
+      "detail": "Switch on Brief from Cerebrum in Settings › Armarium, and each meeting in Meetings gets a Brief button beside Prepare. It shows the people, the related topics and the open items your Cerebrum vault has, and the open tasks and decisions of the series' last page. The brief is read on this Mac and shown in a window of its own: it never goes into a page."
+    },
     {
       "build": 294,
       "date": "2026-11-05",
@@ -180,72 +246,6 @@
       "date": "2026-10-28",
       "title": "Files and Bin look alike",
       "detail": "Files and Bin both have an outlined icon with a grey symbol. In the light look the outline is a little stronger, so both icons are as easy to see as in the dark look."
-    },
-    {
-      "build": 242,
-      "date": "2026-10-28",
-      "title": "Bin lines up with the notebooks",
-      "detail": "The Bin row now starts where the notebooks and Files start, and is as wide as they are."
-    },
-    {
-      "build": 241,
-      "date": "2026-10-28",
-      "title": "A bin for what you delete",
-      "detail": "Deleted notebooks, sections and pages now wait 30 days in the bin before they are gone for good. Open it with Bin at the foot of the notebook list: each item says where it was and how many days it has left, and Restore puts it back. A deleted notebook can also be brought back with Undo."
-    },
-    {
-      "build": 240,
-      "date": "2026-10-28",
-      "title": "Your name in task lines, for j4k",
-      "detail": "Settings › j4k has a field for the name your task lines give you, such as \"First Last\". Tasks given to that name go to j4k. Left empty, folia takes your account's name, as before. After a change, the tasks of your pages go again within three minutes."
-    },
-    {
-      "build": 239,
-      "date": "2026-10-28",
-      "title": "Bigger text in pages and lists",
-      "detail": "The text of a page and the rows of the notebook, section and page lists are a little bigger, 14.5 instead of 13.5 pixels. Headings grow with the text. Code blocks and formulas have the same rounded corners as the rest."
-    },
-    {
-      "build": 238,
-      "date": "2026-10-28",
-      "title": "The red Delete button reads well in dark mode",
-      "detail": "In dark mode the word on a red Delete button is dark now. White on that light red was hard to read."
-    },
-    {
-      "build": 237,
-      "date": "2026-10-28",
-      "title": "One text size, easier to read",
-      "detail": "A question's text and its buttons now have the size of the text around them, not a larger one. Links, chosen rows and the keyboard ring are a little darker in light mode, so they read better. A notebook's letter is dark on the light colours. Small labels, titles and corners all follow one scale."
-    },
-    {
-      "build": 235,
-      "date": "2026-10-27",
-      "title": "Docs in Settings opens the manual in a window",
-      "detail": "In the folia Mac app, Settings › About folia › Docs opens the folia Field Manual in a window of the app, as the Docs button in the About folia window does. In a browser it still opens the page online."
-    },
-    {
-      "build": 232,
-      "date": "2026-10-27",
-      "title": "A wider search bar",
-      "detail": "The search bar in the top bar is up to twice as wide, and its list of pages found is as wide as the bar. In a narrow window it stays smaller, so the tools still fit."
-    },
-    {
-      "build": 230,
-      "date": "2026-10-27",
-      "title": "Tasks go to j4k from every page, once you stop typing",
-      "detail": "Tasks to j4k now takes the Tasks of every page you make after switching it on, not only meeting pages. A page's tasks go once it has had no change for two minutes, so a task you are still typing never arrives half-written."
-    },
-    {
-      "build": 229,
-      "date": "2026-10-27",
-      "title": "The j4k switch waits until it knows",
-      "detail": "Settings › j4k › Tasks to j4k is greyed out for a moment while folia reads whether it is on. Before, it showed off and then jumped to on, which looked as if opening the part switched it on. The setting itself was always kept."
-    },
-    {
-      "build": 228,
-      "date": "2026-10-27",
-      "title": "Your meeting tasks go to j4k, and come back ticked",
-      "detail": "Settings › j4k › Tasks to j4k: your tasks and tasks given to nobody, from the Tasks of a meeting's page, go to Review in j4k. When you set one to Done in j4k, folia ticks it in the page within two minutes. It works for meetings that start after you switch it on, also when folia is not open. scripta no longer sends tasks to j4k itself."
     }
   ]
 }
