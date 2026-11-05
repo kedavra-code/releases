@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 96,
-  "commit": "69e746b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-96/specula.dmg",
-  "sha256": "05425394557d4b3e141fe7a969eb723c33cffb2a4240825b1d39fec25921fb71",
+  "build": 98,
+  "commit": "d05cd3b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-98/specula.dmg",
+  "sha256": "1c0fc2319bbe0cc64a823490a18b7a38962c82795bcb0599ee36517444b65e01",
   "minimumSystemVersion": "26.0",
-  "notes": "No blue marks on the page after the quick lookup\nThe quick lookup without the mark again\nThe quick lookup shows all its results at once\nThe quick lookup searches as you type\nAsk Claude finds concepts faster\nThe quick lookup's hotkey is in Settings",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 96,
