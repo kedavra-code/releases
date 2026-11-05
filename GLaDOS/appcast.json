@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 466,
-  "commit": "894cebe",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-466/GLaDOS.dmg",
-  "sha256": "66b8e30e3cf27888bf89aabe74dedd6305c9335bf18784ff4b6283a10d3b5927",
+  "build": 471,
+  "commit": "eeea3d5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-471/GLaDOS.dmg",
+  "sha256": "10a2e7c1f1d615ea6c634cb847ae2c5d9af80585945cfca14ee792446dd26324",
   "minimumSystemVersion": "26.0",
-  "notes": "Cerebrum concepts without the trust talk",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 466,
