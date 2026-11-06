@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 65,
-  "commit": "daabcb5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-65/pactum.dmg",
-  "sha256": "0e8c589fb79f861707dd20b97d2bd23ff5bac7b552500edf11dba4d60e9f00b6",
+  "build": 66,
+  "commit": "6794289",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-66/pactum.dmg",
+  "sha256": "d7a0e1ade44ad67df71e13168b231b8f97cb4fa53ca32e8e5e07889105eac5b6",
   "minimumSystemVersion": "26.0",
-  "notes": "A softer amber for the selected ISG",
+  "notes": "A Minimum Viable Efficiency for each efficiency KPI",
   "entries": [
+    {
+      "build": 66,
+      "date": "2026-11-06",
+      "title": "A Minimum Viable Efficiency for each efficiency KPI",
+      "detail": "Data ISGs has a Minimum Viable Efficiency for each of the six efficiency KPIs, with the same selectors as the Minimum Viable Maturity. Your one value became each KPI's. Each efficiency spider draws them in amber, with the name under that spider; the Minimum Viable Maturity's name stands under the maturity spider. The 2×2 draws their mean. A switch Minimum Viable Efficiency, left of Minimum Viable Maturity, shows or hides it."
+    },
     {
       "build": 65,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "Big profiles, and the Average ID CxS",
       "detail": "Each ISG's spiders are as big as the legend's, with the axis names. Their dashed line is the workbook's Average ID CxS; the Data page warns where it differs from the ID ISGs. Every bubble of the 2×2 has its name. The page says ID CxS."
-    },
-    {
-      "build": 22,
-      "date": "2026-11-04",
-      "title": "Departmental ISGs in the KPI comparison",
-      "detail": "The departmental ISGs now have their own figures, except D-EAPS, D-MATL and D-USYS, which stay hatched until their figures are in. Tickets per staff member is gone. Two KPIs are new: IT workplace cost per device, and devices per staff member with an IT workplace."
     }
   ]
 }
