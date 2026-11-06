@@ -1,12 +1,108 @@
 {
   "app": "pactum",
-  "build": 42,
-  "commit": "0e1a02b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-42/pactum.dmg",
-  "sha256": "bc0aabf86d502b6fa7db18551de9b6348b5881bf02a08fc75ba60485432b5151",
+  "build": 61,
+  "commit": "866e594",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-61/pactum.dmg",
+  "sha256": "e55de0beb25324033e251bdc64efe8e823246df87e804ebdce1d9743d5407359",
   "minimumSystemVersion": "26.0",
-  "notes": "The Field Manual has the updated rubric",
+  "notes": "Accepted Minimum in the 2×2, whole names on the buttons\nArrows on every column\nSort the overview\nNo hover left behind\nCalm hovers\nNothing typed is lost when pactum quits, and a clear hover\nBigger spiders, cleaner figures and names\nWhole specifics, readable names\nand 8 more — see What's New",
   "entries": [
+    {
+      "build": 61,
+      "date": "2026-11-06",
+      "title": "Accepted Minimum in the 2×2, whole names on the buttons",
+      "detail": "The 2×2 draws the Accepted Minimum as an amber line at the mean of its levels, as in the spiders, with a legend under it. The ISG buttons show whole names, such as ID ISG D-BAUG and ISG D-ARCH. The note under the overview no longer points to the KPIs without data."
+    },
+    {
+      "build": 60,
+      "date": "2026-11-06",
+      "title": "Arrows on every column",
+      "detail": "Every column title in the overview shows two small arrows, so you see that it sorts. A sorted title keeps only one: up when the lowest is first, down when the highest is first."
+    },
+    {
+      "build": 59,
+      "date": "2026-11-06",
+      "title": "Sort the overview",
+      "detail": "Click a column's title in the overview to sort all ISGs by it, the best first. Click again to turn the order round, and a third time to go back. The table is one list now, without the rows \"ID ISGs\" and \"Departmental ISGs\"; without a click, the order is as before."
+    },
+    {
+      "build": 58,
+      "date": "2026-11-06",
+      "title": "No hover left behind",
+      "detail": "A scroll now closes every hover. Before, a hover of the 2×2 could stay on the page after a scroll with the trackpad, far from its bubble."
+    },
+    {
+      "build": 57,
+      "date": "2026-11-06",
+      "title": "Calm hovers",
+      "detail": "Every hover now looks the same: the ISG, what is shown, one value, then labels and numbers in straight columns and a short note, in one size of text. The spiders' hover shows the KPIs and the nine levels as two small tables."
+    },
+    {
+      "build": 56,
+      "date": "2026-11-06",
+      "title": "Nothing typed is lost when pactum quits, and a clear hover",
+      "detail": "Before pactum quits, for an update too, it saves what you are typing under Data ISGs. In the overview, the hover shows the ISG, the KPI under it, the value, and then the median, the standing and the two figures behind it in two straight columns, without file names."
+    },
+    {
+      "build": 55,
+      "date": "2026-11-06",
+      "title": "Bigger spiders, cleaner figures and names",
+      "detail": "The spiders are bigger and use the card's room, with the legend beside them. The specifics stay in the figures, not between the spiders. The figures show names and numbers only; point at a row to see its file. In the 2×2, every name sits right beside its bubble: names are measured, not guessed, so ID ISG D-BIOL no longer goes a line up."
+    },
+    {
+      "build": 54,
+      "date": "2026-11-06",
+      "title": "Whole specifics, readable names",
+      "detail": "Under Specifics ISGs, each field is as tall as its text, so long points are no longer cut off. In the 2×2, a picked ISG's name stays where it was, so it no longer lies on a neighbour's name (ISG D-INFK and ISG D-HEST)."
+    },
+    {
+      "build": 53,
+      "date": "2026-11-06",
+      "title": "Copy one ISG as a picture",
+      "detail": "In an ISG's view of its own, Copy picture puts its row, the 2×2 with its figures, and its spiders on the clipboard, sharp at twice the size, ready to paste. The amber of a selection is softer. The spiders' hover keeps each line on one line. The search is gone from the top bar. The second page is now called Data ISGs, with the titles Maturity ISGs and Specifics ISGs."
+    },
+    {
+      "build": 50,
+      "date": "2026-11-06",
+      "title": "The whole 2×2 for a group too",
+      "detail": "With ID ISGs or Departmental ISGs on, the efficiency and maturity chart still shows all ISGs, where they stand among all. The table and the spiders show the group."
+    },
+    {
+      "build": 49,
+      "date": "2026-11-06",
+      "title": "One ISG at a glance, and its specifics",
+      "detail": "Buttons replace the group menu: All ISGs, ID ISGs, Departmental ISGs, and one button per ISG. An ISG's button shows that ISG alone: its row, the 2×2 of all ISGs with its figures, its spiders. Maturity ISGs has a section Specifics: a few points per ISG, shown between its spiders and in its figures. The KPI numbers are the ones in the sheet KPIs ID ISGs. A spider's hover names each KPI in full, Maturity Ø ID and ISG take one line each, and an ID ISG's own maturity is ID's."
+    },
+    {
+      "build": 48,
+      "date": "2026-11-06",
+      "title": "The pages as icons beside Settings, and the workbook's new rows",
+      "detail": "KPIs ISGs and Maturity ISGs are now icon buttons at the top right, left of Settings, in folia's style: amber when on. pactum reads the workbook's new rows, staff per FTE with and without workplace, with their Average ID CxS, and checks its own numbers against them. Where they differ, Settings › Data names the cells."
+    },
+    {
+      "build": 47,
+      "date": "2026-11-06",
+      "title": "More room: the pages on top, Data in Settings",
+      "detail": "The sidebar is gone. KPIs ISGs and Maturity ISGs are buttons at the top, so the pages have the whole width. Data is now in Settings. The overview has no column Heads; staff per FTE comes in two columns, with workplace and without workplace; and every column title takes two lines at most. The line about the Average ID CxS under the profiles is gone."
+    },
+    {
+      "build": 46,
+      "date": "2026-11-06",
+      "title": "The KPI page ends with the profiles",
+      "detail": "The section Development is gone from the KPI comparison. It only said that the trend begins with the second year."
+    },
+    {
+      "build": 45,
+      "date": "2026-11-06",
+      "title": "Data sources on the Data page, and a new title",
+      "detail": "The KPI catalog moved from under the profiles to the Data page. It is its own section there, Data sources: every KPI, where it comes from, and whether it has data. The search takes a KPI there. The KPI page is now called KPI comparison of ETH IT Service Groups."
+    },
+    {
+      "build": 44,
+      "date": "2026-11-06",
+      "title": "Your files are in iCloud Drive",
+      "detail": "pactum reads its files from iCloud Drive › Armarium › pactum › Input, so your other Mac has them too. Settings › About pactum says so under Where your data lives."
+    },
     {
       "build": 42,
       "date": "2026-11-05",
@@ -150,36 +246,6 @@
       "date": "2026-10-31",
       "title": "A hotkey, and Settings › Mac app",
       "detail": "⌃⌥⌘P shows or hides pactum from any app, and you can record other keys. Settings › Mac app also holds where the icon shows, opening at login, and the download."
-    },
-    {
-      "build": 9,
-      "date": "2026-10-31",
-      "title": "Account, Docs and What's New in Settings",
-      "detail": "Settings has an Account part: who uses this Mac, and what pactum holds. About has a Read group. Docs waits for a Field Manual."
-    },
-    {
-      "build": 8,
-      "date": "2026-10-31",
-      "title": "Settings, and pactum in English",
-      "detail": "The gear at the top right opens Settings. About pactum says which build this is and where your data lives. The whole app now speaks English."
-    },
-    {
-      "build": 3,
-      "date": "2026-10-28",
-      "title": "Starts without the Input folder too",
-      "detail": "When the Input folder is missing, pactum makes it and shows an empty page. Before, the server stopped."
-    },
-    {
-      "build": 2,
-      "date": "2026-10-28",
-      "title": "An icon of its own",
-      "detail": "The spider: five spokes, the KPI profile of a group, in the colours of the app family."
-    },
-    {
-      "build": 1,
-      "date": "2026-10-28",
-      "title": "pactum 1",
-      "detail": "The KPI comparison of the IT service groups, from the SLA workbook and the eTHIS exports."
     }
   ]
 }
