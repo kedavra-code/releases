@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 479,
-  "commit": "bfca254",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-479/GLaDOS.dmg",
-  "sha256": "e138dd8b0ae239cc8a97e2b61e8718da6425e9d4134c2e4eac77a6a4b9a40511",
+  "build": 481,
+  "commit": "7987b59",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-481/GLaDOS.dmg",
+  "sha256": "aad1a7801dba23f2101966d041dc9683febde6c38a584c7addd03d5bd78a83d2",
   "minimumSystemVersion": "26.0",
-  "notes": "Reports start sooner, and her local servers are locked tighter",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 478,
