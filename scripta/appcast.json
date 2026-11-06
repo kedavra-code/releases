@@ -1,11 +1,11 @@
 {
   "app": "scripta",
-  "build": 220,
-  "commit": "89356c1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-220/scripta.dmg",
-  "sha256": "32ede56111c8b9a901d6778d721726c0a506d40b531f4eb6291bb7d008a21d73",
+  "build": 221,
+  "commit": "feea147",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-221/scripta.dmg",
+  "sha256": "b7e0749f27df51a8333a6c7a33cf88466395d154769ca3096cbe0e78bb38894f",
   "minimumSystemVersion": "26.0",
-  "notes": "Old recordings reach folia too",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 219,
