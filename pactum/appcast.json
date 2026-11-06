@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 68,
-  "commit": "70e1409",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-68/pactum.dmg",
-  "sha256": "8040e702f27956767aa74aa7d8334b2eb13b329713c9dea152eac5e3e7f2bed7",
+  "build": 69,
+  "commit": "1f7293d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-69/pactum.dmg",
+  "sha256": "1986bd62ab1cebe5fc32d4410c66f82175bba75d639c56cce37115f0f0712aa5",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Safer and faster",
   "entries": [
+    {
+      "build": 69,
+      "date": "2026-11-06",
+      "title": "Safer and faster",
+      "detail": "pactum starts faster: it reads your files in about half the time. Its server keeps running after a bad request, and a save that fails now says \"not saved\" instead of stopping pactum. It is built with Node's newest security fixes."
+    },
     {
       "build": 66,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "Maturity is saved at once",
       "detail": "Enter maturity saves each choice the moment you make it, so nothing is lost when pactum closes. The spiders show all five dots, also for low scores. Chart text follows the folia Style Guide, and the explanation of the profiles stands apart."
-    },
-    {
-      "build": 23,
-      "date": "2026-11-04",
-      "title": "Big profiles, and the Average ID CxS",
-      "detail": "Each ISG's spiders are as big as the legend's, with the axis names. Their dashed line is the workbook's Average ID CxS; the Data page warns where it differs from the ID ISGs. Every bubble of the 2×2 has its name. The page says ID CxS."
     }
   ]
 }
