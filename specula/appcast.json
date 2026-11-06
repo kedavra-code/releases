@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 101,
-  "commit": "fa024f3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-101/specula.dmg",
-  "sha256": "01b6e242316ae19bf21ff9ed45903bf1836d4c3818cb06f0a727dfb48f88512f",
+  "build": 102,
+  "commit": "fc24fd8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-102/specula.dmg",
+  "sha256": "14409dd156e2853437cc3cc067d3b209328342016592b0713efc650b9665a730",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "One defect is \"1 defect\"",
   "entries": [
+    {
+      "build": 102,
+      "date": "2026-11-06",
+      "title": "One defect is \"1 defect\"",
+      "detail": "A knowledge base's card on the dashboard wrote \"1 defects\" when verify.py found one. It now writes \"1 defect\"."
+    },
     {
       "build": 96,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-25",
       "title": "The Dock icon's menu holds the menu bar menu",
       "detail": "A right click on specula's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open specula and Open in Browser."
-    },
-    {
-      "build": 31,
-      "date": "2026-10-25",
-      "title": "⌘H hides specula as in other apps",
-      "detail": "⌘H hides specula with macOS's own Hide, as in scripta and unus. The hotkey brings it back."
     }
   ]
 }
