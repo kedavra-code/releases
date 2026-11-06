@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 61,
-  "commit": "866e594",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-61/pactum.dmg",
-  "sha256": "e55de0beb25324033e251bdc64efe8e823246df87e804ebdce1d9743d5407359",
+  "build": 62,
+  "commit": "9fecaff",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-62/pactum.dmg",
+  "sha256": "331933ea6540f4f96d3fbac1c71fd6fe202e1ff05c053482a8b44992d06a0413",
   "minimumSystemVersion": "26.0",
-  "notes": "Accepted Minimum in the 2×2, whole names on the buttons\nArrows on every column\nSort the overview\nNo hover left behind\nCalm hovers\nNothing typed is lost when pactum quits, and a clear hover\nBigger spiders, cleaner figures and names\nWhole specifics, readable names\nand 8 more — see What's New",
+  "notes": "Minimum Viable Standard",
   "entries": [
+    {
+      "build": 62,
+      "date": "2026-11-06",
+      "title": "Minimum Viable Standard",
+      "detail": "The Accepted Minimum is now called Minimum Viable Standard: on the switch, in the legends of the spiders and the 2×2, and in the table under Data ISGs. Your values stay as they were."
+    },
     {
       "build": 61,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-11-01",
       "title": "Settings as in folia, by the same parts",
       "detail": "Settings now use the same parts as folia and specula. The left side and the title look as they do there; the rest stays where it was."
-    },
-    {
-      "build": 10,
-      "date": "2026-10-31",
-      "title": "A hotkey, and Settings › Mac app",
-      "detail": "⌃⌥⌘P shows or hides pactum from any app, and you can record other keys. Settings › Mac app also holds where the icon shows, opening at login, and the download."
     }
   ]
 }
