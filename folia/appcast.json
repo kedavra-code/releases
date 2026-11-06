@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 312,
-  "commit": "08fc3bc",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-312/folia.dmg",
-  "sha256": "71723ad66066a1f390f8a51e2a12f695fc7e7d4ed6725efe601bd8bb9854f336",
+  "build": 313,
+  "commit": "acc317e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-313/folia.dmg",
+  "sha256": "b1ef9bc4523dced93d82c0546d99e3ea2fe22b2c1c9737fe333f2387750044bf",
   "minimumSystemVersion": "26.0",
-  "notes": "Changes by others are marked row by row in tables",
+  "notes": "scripta writes into the page you prepared",
   "entries": [
+    {
+      "build": 313,
+      "date": "2026-11-06",
+      "title": "scripta writes into the page you prepared",
+      "detail": "scripta's minutes, Prepare and the meetings panel find a meeting's page also when the calendar changed the meeting's id, had the meeting twice, or the page was made by hand for that day. A new page for the meeting goes to the section of its series."
+    },
     {
       "build": 312,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-10-29",
       "title": "A renamed notebook keeps one folder in its Markdown copy",
       "detail": "When you rename a notebook, a section group or a section, its folder in the Markdown copy now moves whole, with its pictures, files and archive. Before, its pages moved to a new folder one by one, and the old folder kept the pictures and files, so they were on disk twice."
-    },
-    {
-      "build": 253,
-      "date": "2026-10-29",
-      "title": "Markdown files open by drag and from the Finder",
-      "detail": "Drop a Markdown file or a folder on folia's window, outside a page's text, and folia opens it, as File › Open File or Folder… does. Dropped on a page's text, a file is still attached to the page. A file opened from the Finder or the Dock brings the window back if it was closed. A file folia does not open, such as a file of a Markdown copy, now says why."
     }
   ]
 }
