@@ -1,12 +1,24 @@
 {
   "app": "tabula",
-  "build": 736,
-  "commit": "eab4934",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-736/tabula.dmg",
-  "sha256": "d1a40bf38dbb6f926291ee07de95860dd99d30c251d0ea20ddfcb1346046c326",
+  "build": 739,
+  "commit": "0a99d51",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-739/tabula.dmg",
+  "sha256": "5ae7a3f24e9d1137e3ddd69c1d05adcf19336d4cfca4fe76b9a3c2ccc0a7c9a3",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Settings › General › Look works as in folia\nEpics are cross-hatched, and Pending cards are plain",
   "entries": [
+    {
+      "build": 739,
+      "date": "2026-11-06",
+      "title": "Settings › General › Look works as in folia",
+      "detail": "Three picture cards: Same as the system, Light and Dark. Same as the system follows your device, so a dark phone and a light computer each get their own look. The choice is kept on each device. Your current colours stay as they were."
+    },
+    {
+      "build": 737,
+      "date": "2026-11-06",
+      "title": "Epics are cross-hatched, and Pending cards are plain",
+      "detail": "An epic's card now wears a fine cross-hatch, grey in the light theme and black in the dark one, so the tasks that hold other tasks stand out on the board while the title stays easy to read. Pending cards lost their grey fill and their stripes: they look like any other card, and the Pending column still says where they are."
+    },
     {
       "build": 733,
       "date": "2026-11-05",
@@ -234,18 +246,6 @@
       "date": "2026-11-01",
       "title": "Filter by epic · Blocked by moves under Epic",
       "detail": "Filter by epic: A fifth filter button, Epic, sits after Size. Tick an epic to see it with its tasks, or No epic for the tasks in none; each choice shows how many tasks it gives, and the tabula logo clears it with the other filters. Its Sort groups the tasks by their epic's number. Under the filters, the buttons now read Select, Review, For you. Blocked by moves under Epic: In a task's editor, Blocked by now sits below the Epic section, just above Comments."
-    },
-    {
-      "build": 649,
-      "date": "2026-11-01",
-      "title": "The bulk bar follows the filter buttons",
-      "detail": "When you change many tasks at once, the bar at the foot now lists Tag, Status, Priority and Size in the order of the filter buttons above, then Epic. The first filter button reads Tag: All, singular like the others."
-    },
-    {
-      "build": 648,
-      "date": "2026-11-01",
-      "title": "Find the epic by typing",
-      "detail": "Part of and Blocked by no longer list every open task. Type a few letters of the title, or the task's number (12 finds T-012), and the matches appear below, best first, with the letters you typed in bold. Pick one with a click, or with the arrow keys and Enter. Escape empties the search and leaves the task open. The Epic section now sits just above Comments."
     }
   ]
 }
