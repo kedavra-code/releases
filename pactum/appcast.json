@@ -1,11 +1,11 @@
 {
   "app": "pactum",
-  "build": 66,
-  "commit": "6794289",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-66/pactum.dmg",
-  "sha256": "d7a0e1ade44ad67df71e13168b231b8f97cb4fa53ca32e8e5e07889105eac5b6",
+  "build": 68,
+  "commit": "70e1409",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-68/pactum.dmg",
+  "sha256": "8040e702f27956767aa74aa7d8334b2eb13b329713c9dea152eac5e3e7f2bed7",
   "minimumSystemVersion": "26.0",
-  "notes": "A Minimum Viable Efficiency for each efficiency KPI",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 66,
