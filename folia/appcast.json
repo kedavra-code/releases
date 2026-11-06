@@ -1,11 +1,11 @@
 {
   "app": "folia",
-  "build": 313,
-  "commit": "acc317e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-313/folia.dmg",
-  "sha256": "b1ef9bc4523dced93d82c0546d99e3ea2fe22b2c1c9737fe333f2387750044bf",
+  "build": 314,
+  "commit": "fe8dd3b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-314/folia.dmg",
+  "sha256": "d5ac376931547da2223d807e6288b1fd2cf878ff05d486078eafb9dd3793b53a",
   "minimumSystemVersion": "26.0",
-  "notes": "scripta writes into the page you prepared",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 313,
