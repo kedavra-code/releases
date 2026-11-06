@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 476,
-  "commit": "b2fb169",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-476/GLaDOS.dmg",
-  "sha256": "8045c0f127dcfe956b6f40b3c20243d54f5424c9816b1ec9136b9443d32046d8",
+  "build": 479,
+  "commit": "bfca254",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-479/GLaDOS.dmg",
+  "sha256": "e138dd8b0ae239cc8a97e2b61e8718da6425e9d4134c2e4eac77a6a4b9a40511",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Reports start sooner, and her local servers are locked tighter",
   "entries": [
+    {
+      "build": 478,
+      "date": "2026-11-06",
+      "title": "Reports start sooner, and her local servers are locked tighter",
+      "detail": "A Cerebrum report starts about two seconds sooner: it no longer starts a helper it was never allowed to use. The page GLaDOS presents, and the tools she gives the Claude program on your plan, now answer only this Mac's own address, so a web page cannot reach them by a trick with its name. A long presentation also holds less memory."
+    },
     {
       "build": 466,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-06",
       "title": "The menu bar icon is always the eye",
       "detail": "The icon in the menu bar changed while GLaDOS listened, thought or spoke. Now it is the eye all the time. The menu still says what she does."
-    },
-    {
-      "build": 337,
-      "date": "2026-10-05",
-      "title": "J.A.R.V.I.S. speaks German like a butler",
-      "detail": "His German voice is calmer and warmer. He speaks a little slower, his tone has more depth and a softer top, and he leaves a short pause after each sentence. The pitch is his own, and the metallic ring stays gone. His English voice is the same."
     }
   ]
 }
