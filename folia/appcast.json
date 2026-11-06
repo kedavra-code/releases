@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 314,
-  "commit": "fe8dd3b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-314/folia.dmg",
-  "sha256": "d5ac376931547da2223d807e6288b1fd2cf878ff05d486078eafb9dd3793b53a",
+  "build": 319,
+  "commit": "12613e8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-319/folia.dmg",
+  "sha256": "a1bc18aa4306bf69bc927073170bf6b0399ddd95cc20f524ffe7d7882c0c1a92",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Safer files, and a quicker page list",
   "entries": [
+    {
+      "build": 316,
+      "date": "2026-11-06",
+      "title": "Safer files, and a quicker page list",
+      "detail": "A stored file that could run code, such as an HTML or SVG file, now downloads instead of opening in a browser tab. In the Mac app, a program, script or installer shows in the Finder instead of opening. A picture added to a Markdown file whose _assets folder is not there yet now goes into that folder. folia reads your page list in fewer, quicker steps."
+    },
     {
       "build": 313,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-10-29",
       "title": "What's New opens once after an update",
       "detail": "After an update, the Mac app shows What's New once. It no longer opens again each time you open a file from the Finder or the Dock, follow a link to a page, or bring the window back."
-    },
-    {
-      "build": 254,
-      "date": "2026-10-29",
-      "title": "A renamed notebook keeps one folder in its Markdown copy",
-      "detail": "When you rename a notebook, a section group or a section, its folder in the Markdown copy now moves whole, with its pictures, files and archive. Before, its pages moved to a new folder one by one, and the old folder kept the pictures and files, so they were on disk twice."
     }
   ]
 }
