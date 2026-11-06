@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 310,
-  "commit": "a3b98ed",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-310/folia.dmg",
-  "sha256": "712361d2dc546516504fe2c43ba302b23a66fafa6c6b72d9e27c8a5c8889be18",
+  "build": 312,
+  "commit": "08fc3bc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-312/folia.dmg",
+  "sha256": "71723ad66066a1f390f8a51e2a12f695fc7e7d4ed6725efe601bd8bb9854f336",
   "minimumSystemVersion": "26.0",
-  "notes": "Briefs are read in a moment",
+  "notes": "Changes by others are marked row by row in tables",
   "entries": [
+    {
+      "build": 312,
+      "date": "2026-11-06",
+      "title": "Changes by others are marked row by row in tables",
+      "detail": "When someone changes a cell, the bar beside the page now marks only that row, not the whole table. Rows in a row changed by one person share one bar, and ⌘G and the arrows go from row to row."
+    },
     {
       "build": 310,
       "date": "2026-11-05",
@@ -240,12 +246,6 @@
       "date": "2026-10-29",
       "title": "Markdown files open by drag and from the Finder",
       "detail": "Drop a Markdown file or a folder on folia's window, outside a page's text, and folia opens it, as File › Open File or Folder… does. Dropped on a page's text, a file is still attached to the page. A file opened from the Finder or the Dock brings the window back if it was closed. A file folia does not open, such as a file of a Markdown copy, now says why."
-    },
-    {
-      "build": 252,
-      "date": "2026-10-29",
-      "title": "Show in Finder in the … menus",
-      "detail": "In the Mac app, the … menu of a notebook, a section and a page has Show in Finder when the notebook keeps a Markdown copy on this Mac. The Finder opens with the notebook's or section's folder, or the page's file, selected."
     }
   ]
 }
