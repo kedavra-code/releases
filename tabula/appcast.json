@@ -1,9 +1,9 @@
 {
   "app": "tabula",
-  "build": 735,
-  "commit": "0a0f46c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-735/tabula.dmg",
-  "sha256": "cafc5b0da84441d2ebc1aecf9e11b058e9c161d89240def093c17697d04d07f9",
+  "build": 736,
+  "commit": "eab4934",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-736/tabula.dmg",
+  "sha256": "d1a40bf38dbb6f926291ee07de95860dd99d30c251d0ea20ddfcb1346046c326",
   "minimumSystemVersion": "26.0",
   "notes": "Small fixes and improvements.",
   "entries": [
