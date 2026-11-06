@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 105,
-  "commit": "c513f45",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-105/specula.dmg",
-  "sha256": "2d759c2a191cea097f6570f272548793ce800c36cdce89514aea5abb52d4dee0",
+  "build": 106,
+  "commit": "95a88d5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-106/specula.dmg",
+  "sha256": "ef7b2f9ce3c1df0750db0047ce597caacb8350bde88f4440416476d05c75fb41",
   "minimumSystemVersion": "26.0",
-  "notes": "Refresh looks like a button\nspecula guards the vault better",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 104,
