@@ -1,12 +1,24 @@
 {
   "app": "tabula",
-  "build": 740,
-  "commit": "577b161",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-740/tabula.dmg",
-  "sha256": "8c522746af405604a6f6c039a1d7f18dcee31102063155fda3ac3b2d0a24cbe5",
+  "build": 745,
+  "commit": "6a380ad",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-745/tabula.dmg",
+  "sha256": "d2064a95b960a412124281262a11f64cb3aaae51f5c3720766679657ad92f1c4",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "tabula is better protected against attacks\nNo more sign-in page when you open tabula",
   "entries": [
+    {
+      "build": 742,
+      "date": "2026-11-06",
+      "title": "tabula is better protected against attacks",
+      "detail": "The web page now tells the browser to run only tabula's own code and to send data only to tabula's own servers, so text from someone else can never run as a program. Other sites can no longer show tabula inside their own page. Nothing changes in how you use it."
+    },
+    {
+      "build": 741,
+      "date": "2026-11-06",
+      "title": "No more sign-in page when you open tabula",
+      "detail": "tabula used to show its Google sign-in page for a moment at every start, and again when you came back to it, while it checked who you are. It now waits without drawing anything, as folia does, and keeps your board on screen while it checks again in the background. The sign-in page shows only when you are really signed out."
+    },
     {
       "build": 739,
       "date": "2026-11-06",
@@ -234,18 +246,6 @@
       "date": "2026-11-02",
       "title": "A clear plus for a new task · The List view is gone",
       "detail": "A clear plus for a new task: The way to make a task is now a soft amber plus beside the name tabula, on the left. Its edge lights when you point at it, and it turns full amber when you press it and while the new task's window is open. The List view is gone: tabula now opens on the Kanban board, or on the Calendar if you chose that in Settings. Review, Archived and Deleted are on no board, so each of them stands in one column of its own when you pick it under Status. Nothing happened to your tasks."
-    },
-    {
-      "build": 652,
-      "date": "2026-11-01",
-      "title": "A task opens in a window over the board",
-      "detail": "Editing or creating a task now opens a window on top of the board, and the board, the filters and your place on the page stay as they are. Close it with its x, with a click beside it or with Escape. Undo and Redo are in the window, the fields have their normal size, and subtasks and comments read as a list of rows. On a phone the window fills the screen."
-    },
-    {
-      "build": 651,
-      "date": "2026-11-01",
-      "title": "Filter by epic · Blocked by moves under Epic",
-      "detail": "Filter by epic: A fifth filter button, Epic, sits after Size. Tick an epic to see it with its tasks, or No epic for the tasks in none; each choice shows how many tasks it gives, and the tabula logo clears it with the other filters. Its Sort groups the tasks by their epic's number. Under the filters, the buttons now read Select, Review, For you. Blocked by moves under Epic: In a task's editor, Blocked by now sits below the Epic section, just above Comments."
     }
   ]
 }
