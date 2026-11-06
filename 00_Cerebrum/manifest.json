@@ -2,7 +2,7 @@
   "name": "00_Cerebrum",
   "kind": "template",
   "build": 31,
-  "commit": "228a8df",
+  "commit": "35bc05d",
   "source": "https://github.com/kedavra-code/releases/tree/main/00_Cerebrum",
   "url": "https://github.com/kedavra-code/releases/releases/download/00_Cerebrum-31/00_Cerebrum-template-31.tar.gz",
   "sha256": "e308a3850e5ec33066c91133006bff351ca4b3bbd7e13438424c2139d48b57ad",
