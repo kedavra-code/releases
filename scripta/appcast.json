@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 223,
-  "commit": "f43f54a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-223/scripta.dmg",
-  "sha256": "cefe052c45d492223afc95b3fd84e676d0941e7108ff3ec93d4e81a0cc3f7e7b",
+  "build": 226,
+  "commit": "7e494e7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-226/scripta.dmg",
+  "sha256": "620799171ae88fffb8c84cb4842e679d0d4adca5405ed6659b9b6f882f06b32d",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A long meeting list ends cleanly",
   "entries": [
+    {
+      "build": 224,
+      "date": "2026-11-06",
+      "title": "A long meeting list ends cleanly",
+      "detail": "The folder line under the meeting list no longer covers the last meeting when the list is long."
+    },
     {
       "build": 219,
       "date": "2026-11-04",
@@ -240,12 +246,6 @@
       "date": "2026-10-06",
       "title": "The menu bar icon moves while scripta works",
       "detail": "While a recording is transcribed, a wave runs through the icon's bars and its lines are written again. While a meeting is recorded it moves the same way, beside a small orange dot that breathes: the microphone is on. A paused meeting keeps a still dot. When nothing runs, the icon is still."
-    },
-    {
-      "build": 131,
-      "date": "2026-10-06",
-      "title": "OneNote is gone: your calendar gives the title and the people",
-      "detail": "scripta no longer reads your OneNote. Its row is out of Settings, the Record sheet lists no OneNote pages, and a meeting has no OneNote link. A meeting's title and its invited people come from your calendar (Settings › General › Meeting from Calendar). A note written before keeps its OneNote link until scripta writes that note again."
     }
   ]
 }
