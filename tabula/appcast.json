@@ -1,11 +1,11 @@
 {
   "app": "tabula",
-  "build": 739,
-  "commit": "0a99d51",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-739/tabula.dmg",
-  "sha256": "5ae7a3f24e9d1137e3ddd69c1d05adcf19336d4cfca4fe76b9a3c2ccc0a7c9a3",
+  "build": 740,
+  "commit": "577b161",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-740/tabula.dmg",
+  "sha256": "8c522746af405604a6f6c039a1d7f18dcee31102063155fda3ac3b2d0a24cbe5",
   "minimumSystemVersion": "26.0",
-  "notes": "Settings › General › Look works as in folia\nEpics are cross-hatched, and Pending cards are plain",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 739,
