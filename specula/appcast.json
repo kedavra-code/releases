@@ -1,12 +1,24 @@
 {
   "app": "specula",
-  "build": 102,
-  "commit": "fc24fd8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-102/specula.dmg",
-  "sha256": "14409dd156e2853437cc3cc067d3b209328342016592b0713efc650b9665a730",
+  "build": 105,
+  "commit": "c513f45",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-105/specula.dmg",
+  "sha256": "2d759c2a191cea097f6570f272548793ce800c36cdce89514aea5abb52d4dee0",
   "minimumSystemVersion": "26.0",
-  "notes": "One defect is \"1 defect\"",
+  "notes": "Refresh looks like a button\nspecula guards the vault better",
   "entries": [
+    {
+      "build": 104,
+      "date": "2026-11-06",
+      "title": "Refresh looks like a button",
+      "detail": "The dashboard's Refresh is now an amber button like the ones in the header. While the figures are being read, it says Reading… and its arrows turn, where before it only went grey. specula's server now runs on Node 24.22.1, with the security fixes of 21 October."
+    },
+    {
+      "build": 103,
+      "date": "2026-11-06",
+      "title": "specula guards the vault better",
+      "detail": "specula's page and its reports now run only specula's own code and send nothing to other sites, even if a note or a report held some. A link in a report that would run code shows as words. A broken address no longer stops specula's server."
+    },
     {
       "build": 102,
       "date": "2026-11-06",
@@ -234,18 +246,6 @@
       "date": "2026-10-27",
       "title": "Docs opens the manual inside specula",
       "detail": "About specula › Docs now shows the specula Field Manual in a window of specula's own, from the copy specula carries. It needs no claude.ai account and no internet, so anyone who has specula can read it. A link to the web in the manual opens in your browser."
-    },
-    {
-      "build": 36,
-      "date": "2026-10-26",
-      "title": "The window comes to the front at a start",
-      "detail": "Started again, specula now comes to the front with its window, instead of opening it behind the app you were in. Opened at login, it stays in the background."
-    },
-    {
-      "build": 33,
-      "date": "2026-10-25",
-      "title": "The Dock icon's menu holds the menu bar menu",
-      "detail": "A right click on specula's Dock icon shows the items of its menu bar icon: About, Settings…, Check for Updates…, Open specula and Open in Browser."
     }
   ]
 }
