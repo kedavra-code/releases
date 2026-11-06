@@ -28,6 +28,8 @@ Read the `# Action items` table in every live `<KB>/Wiki/questions.md`. That tab
 
 Before deciding what is open, check each item against reality rather than against its own row. **Items go stale in both directions**: on 22.08.2026 two were still marked `open` after the same session had implemented them, and one marked `open` had been fixed by an unrelated repair earlier the same evening. Verify, then count.
 
+**`python3 _scripts/remeasure.py` runs first.** It reruns the count each item carries as Re-measure: `python3 _scripts/…` counting `…` = <n>, and sorts the items: `fixed?` (0 now) go to the owner together, as one question to confirm closing; `changed` are read again before they are asked; `still holds` keep the evidence they have. An item with no such count is checked by hand, as before.
+
 A `withdrawn` item is never raised again. If the same condition trips the same check, the check is wrong and gets fixed.
 
 ### 2. Group items into decisions
@@ -48,7 +50,25 @@ Three times on 22.08.2026 reading first changed the question itself:
 
 Measure before you offer. Say the real number.
 
-### 4. Ask, one decision at a time
+**Start from the evidence the audit wrote.** Since 05.11.2026 a health check writes, in its report in `Outputs/HealthChecks/`, an evidence block under each item it raised: the count and its command, the lines with `path:line`, and the proposed diff. Where one exists, take it as the starting point: rerun its count (`remeasure.py` has already done so for an item that carries one), open the lines it names to see they still read so, and search further only where the count or a line has changed. An older item has no block, and is read as above.
+
+### 4. Write the decision page, and show it
+
+Before the first question, write `Outputs/HealthChecks/YYYY-MM-DD_action-sitting.md` and open it in the side pane. One section per decision, in the order of step 2. Each section holds:
+
+- the item ids, and what is wrong, in two sentences;
+- the measured count, and the command that measured it;
+- the exact lines, quoted, each with a clickable `path:line`;
+- for a quotation, the page's German beside the concept's sentence;
+- each option as A, B, C: its before and after as a `diff` block, its cost, and its effect;
+- the do-nothing option, with its real consequence;
+- the pick, and why.
+
+The page is the evidence, and the chat stays short. The question box's preview does not show on the owner's screen, so nothing the owner needs to decide may live only there. The page is process history, like an audit report: it takes an `audit` row in `Outputs/_REPORTS.md` and is never promoted.
+
+### 5. Ask, one decision at a time
+
+The question box carries only "Decision N: which option?", with the labels A, B, C as on the page.
 
 `AskUserQuestion`, two to four options. Put the recommended option first and mark it `(Recommended)`.
 
@@ -59,11 +79,11 @@ Measure before you offer. Say the real number.
 
 Do not implement anything yet. Do not summarise the previous answer at length. Ask the next question.
 
-### 5. Record the testimony
+### 6. Record the testimony
 
 Write `_testimony/YYYY-MM-DD_testimony-action-items.md` with the standard Raw frontmatter and `type: Testimony`. Questions paraphrased, **answers verbatim**. Register it in the relevant `Raw/_INGESTED.md`. Cite it from the item rows.
 
-### 6. Implement, all at once
+### 7. Implement, all at once
 
 Now apply everything. Task list first, one task per decision.
 
@@ -74,18 +94,23 @@ Two constraints that bite here:
 - **Where the file tools cannot read the vault, bash can.** In some sandboxes `Read` returns `EPERM` for the vault path while bash reads it cleanly. Where that happens, use bash for everything and tell every sub-agent the same.
 - **Never run bare `git status`.** It takes `.git/index.lock`, which a bridge session cannot delete, and the owner's next commit then fails. `_scripts/git-read.sh` is the only git a session may run.
 
-### 7. Close out
+### 8. Close out
 
-Every one of these, every time:
+Every one of these, every time. `sh _scripts/closeout.sh` runs all five in this order, one line each, and stops at the first that fails:
 
 ```
 python3 _scripts/actionitems.py      # the roll-up
 python3 _scripts/reindex.py          # indexes from frontmatter
 python3 _scripts/inventory.py        # the concept list agents read
 python3 _scripts/coverage.py         # archive coverage
+python3 _scripts/verify.py           # must end green
+```
+
+Then, where concepts changed, the viewer, which `closeout.sh` does not run:
+
+```
 python3 _scripts/visualize.py        # 00_Cerebrum_viewer.html
 bash    _scripts/viewer-check-sandbox.sh
-python3 _scripts/verify.py           # must end green
 ```
 
 Plus: a CHANGELOG entry per file that changed (vault-level in `00_Cerebrum/CHANGELOG.md`, bundle work in `<KB>/CHANGELOG.md`), a `log.md` entry per bundle, `_REPAIR-LEDGER.md` for any body touched in a `verified` bundle, and every item row updated where it lives.

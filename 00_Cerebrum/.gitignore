@@ -6,6 +6,12 @@
 # OneNote/ ignored".
 OneNote/
 
+# folia's copies of its pages, from 20.10.2026: <KB>/folia/, written by folia,
+# the note app that replaces OneNote (~/__Dev/folia). Same class as OneNote/:
+# the same private pages, read-only here; the live page in folia is the master.
+# Anchored to a knowledge base's top folder, so nothing else named folia is hit.
+/*_kb/folia/
+
 # The Raw layers, excluded on the owner's instruction of 10.08.2026, analog
 # to OneNote: git holds the distilled knowledge, the filesystem holds the sources.
 # The registry stays tracked so the repo still records what Raw holds even
@@ -22,8 +28,17 @@ _testimony/
 # Meeting notes written by scripta, the owner's transcription program, from
 # 26.09.2026. Same class as Raw and _testimony: source material, with a full
 # transcript of what named colleagues said. It sits at the root because scripta
-# writes it there; Alpha_kb cites into it by default.
-Meetings/
+# writes it there; Alpha_kb cites into it by default. scripta wrote `Meetings/`
+# until 22.10.2026 and writes `scripta/` since, its own state in
+# `scripta/.scripta/` included.
+scripta/
+
+# Meeting briefs written by the folia Mac app, from 05.11.2026, one JSON file
+# per brief: what vault.py says about a page's people and topics, plus folia's
+# own open tasks. Derived from the vault, and kept here only so the cloud drive carries
+# them to the other Mac. Anchored to the vault root. folia refuses to write
+# the folder until this line exists.
+/briefs/
 
 # Retirement bins. Files here await manual deletion (the session VM cannot
 # delete); they are not knowledge and must not reach GitHub. Git history is
@@ -94,11 +109,6 @@ _snapshots/
 # one `sh _scripts/sync.sh` away from a 185 MB binary in the history: that
 # script stages with `git add -A` and would not have asked.
 .context/
-
-# Node dependencies for _scripts/viewer-check.js. The lockfile and manifest are
-# tracked so the viewer check's dependency is recorded — playwright was missing
-# on 31.08.2026 and nothing said it was needed; node_modules/ is not.
-node_modules/
 
 # The emailable build of the loop page. Derived, and unlike the PNGs beside it
 # genuinely reproducible: `python3 _scripts/loop-page.py --standalone` rebuilds

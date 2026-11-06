@@ -11,6 +11,10 @@ thing it writes is its own memory, _scripts/verify-state.json, which records
 how many distinct run-days each finding has stood.
 
 Usage:  python3 _scripts/verify.py [KnowledgeBase ...]   (default: all)
+        python3 _scripts/verify.py --no-clock [KnowledgeBase ...]
+`--no-clock` reports what a run would report and leaves the clock as it is:
+for a look that is not a run, such as `dashboard.py`, which would otherwise
+add a run-day every time a dashboard is opened.
 Exit code 1 if any DEFECT. FINDINGS do not fail the run on sight: dead links
 and orphans are legitimate under OKF and deserve eyes, not alarms. But a
 finding is a question, and questions do not get to stand unanswered: one
@@ -430,6 +434,22 @@ def changelog(kb):
     return open(f, encoding='utf-8').read() if os.path.exists(f) else ''
 
 
+def export_page(tgt):
+    """(base, path within the base) for a page of a OneNote export that folia's
+    copy has replaced, or None. folia's folder beside the export is the sign."""
+    p = bundle.canon(tgt)
+    m = re.search(r'/([^/]+_kb)/OneNote/', p)
+    if not m or not os.path.isdir(os.path.join(bundle.VAULT, m.group(1), _coverage.MIRROR)):
+        return None
+    return m.group(1), p.split('/%s/' % m.group(1), 1)[1]
+
+
+def kept_export(kb):
+    """The export pages a base names in `onenote_kept`: folia holds no file of them."""
+    return {str(e.get('path')) for e in assertions(kb).get('onenote_kept') or []
+            if isinstance(e, dict)}
+
+
 def source_real_date(concept_dir, src):
     """The cited page's own timestamp, or None when it cannot be read.
 
@@ -587,15 +607,26 @@ def audit(kb):
         # page is authored by an organisation — `Alpha Central IT` on 823
         # `Delta_kb` citations — and there is no slug for an institution. The
         # unscoped check fires 3'356 times and is wrong in almost all of them.
+        #
+        # A base that sets `authors_in_form: true` holds every source to the
+        # forms, archive or not, and a page with several authors gives them as
+        # a list. `Alpha_kb` opted in on 29.10.2026, when 2'192 free-text values
+        # in 317 concepts were mapped to the forms (AI-2026-10-28-2).
         for s in srcs:
             if not isinstance(s, dict) or 'author' not in s:
                 continue
-            if '/OneNote/' not in str(s.get('resource') or ''):
+            a = s.get('author')
+            bad = [str(x) for x in (a if isinstance(a, list) else [a])
+                   if not AUTHOR_FORM.match(str(x))]
+            if not bad:
                 continue
-            a = str(s.get('author'))
-            if not AUTHOR_FORM.match(a):
+            if _coverage.in_archive(s.get('resource')):
                 findings.append((rel, 'source author %r is not human:<slug>, '
-                                      'team:<id>, process:<id> or unknown' % a))
+                                      'team:<id>, process:<id> or unknown' % bad[0]))
+            elif A.get('authors_in_form'):
+                findings.append((rel, 'source author %r is free text, and this '
+                                      'base writes every author in the actor '
+                                      'forms' % bad[0]))
         # A verified key is legitimate, and only when the CHANGELOG records
         # the confirmation that produced it. Until 15.08.2026 this forbade the
         # key outright, which was the right guard while nothing was verified
@@ -695,6 +726,16 @@ def audit(kb):
                     defects.append((rel, 'cites a barred archive scope: %s (%s)'
                                     % (r, ' '.join(
                                         (rule.get('reason') or '').split()))))
+            # The export beside folia's copy is no longer read: "do not read
+            # anymore the onenote archives, just the folia archives. they are
+            # of better data quality" (the owner, 28.10.2026). Every citation
+            # into it moved to its folia page that day, by folia's own table of
+            # page ids. A page folia holds no file of keeps its citation, and
+            # its base names it in `onenote_kept` with the reason.
+            gone = export_page(tgt) if r else None
+            if gone and gone[1] not in kept_export(gone[0]):
+                defects.append((rel, 'cites the OneNote export, which is no '
+                                'longer read: %s; cite its page in folia/' % r))
             for rule in A.get('source_rules') or []:
                 if r and re.search(rule['resource_pattern'], r):
                     want = str(rule.get('require_last_modified'))
@@ -725,9 +766,11 @@ def audit(kb):
                 head = open(tgt, encoding='utf-8',
                             errors='replace').read(3000)
                 # `last_modified` is the date in the archive page's own
-                # title, and its `modified` stamp only where the title carries
+                # title, and folia's `created` stamp only where the title carries
                 # no date. Owner's ruling of 20.09.2026, section 2 of
-                # `_testimony/2026-09-20_testimony-health-check-sweep.md`.
+                # `_testimony/2026-09-20_testimony-health-check-sweep.md`; the
+                # stamp is `created` since 06.11.2026, because folia's `modified`
+                # is the day of its export (`_testimony/2026-11-06_testimony-frozen-drafts.md`).
                 #
                 # It replaces `last_modified_is_page_stamp`, which enforced the
                 # opposite and was `Beta_kb`'s alone. That rule was settled
@@ -752,7 +795,7 @@ def audit(kb):
                 # Scoped to the OneNote archive layer, which is what the ruling
                 # was applied to. A help-centre page mirrored into `Raw/` has
                 # no date in its title, so it would never fire there anyway.
-                if '/OneNote/' not in r and '/Raw/' not in r:
+                if not _coverage.in_archive(r) and '/Raw/' not in r:
                     _fn = os.path.basename(os.path.normpath(
                         os.path.join(d, r)))
                     _fd = NAME_DATE.match(_fn)
@@ -764,7 +807,7 @@ def audit(kb):
                                 (rel, 'source %s: last_modified %s, but the '
                                       'file\'s own name gives %s'
                                       % (r, _lm, _want)))
-                if '/OneNote/' in r:
+                if _coverage.in_archive(r):
                     _td_t = re.search(r'^title:\s*(.+)$', head, re.M)
                     td = None
                     if _td_t:
@@ -1658,7 +1701,8 @@ def audit(kb):
     # where it has been caught before.
     cov = os.path.join(root, 'COVERAGE.md')
     cst = os.path.join(root, '.coverage-state.json')
-    if os.path.isdir(os.path.join(root, _coverage.archive_layer(kb))):
+    if (os.path.isdir(os.path.join(root, _coverage.archive_layer(kb)))
+            or os.path.isdir(os.path.join(root, _coverage.MIRROR))):
         if not os.path.exists(cov):
             defects.append(('COVERAGE.md', 'archive coverage never measured; '
                             'run python3 _scripts/coverage.py'))
@@ -1668,7 +1712,18 @@ def audit(kb):
                 got = json.load(open(cst, encoding='utf-8'))
             except Exception:
                 got = None
-            if got != want:
+            # folia's copy changes its page count every day it copies pages,
+            # with nothing done in the bundle; failing on that blocked every
+            # commit until someone ran coverage.py (4 defects on 24.10.2026).
+            # That change alone is a gauge. Any other one still fails.
+            rest = lambda key: {k: v for k, v in (key or {}).items()
+                                if k != 'mirror_pages'}
+            if got != want and isinstance(got, dict) and rest(got) == rest(want):
+                findings.append(('(bundle)', "folia's copy holds %d page(s), "
+                                 'COVERAGE.md counts %d; regenerate with '
+                                 'python3 _scripts/coverage.py'
+                                 % (want['mirror_pages'], got.get('mirror_pages', 0))))
+            elif got != want:
                 defects.append(('COVERAGE.md', 'coverage table stale: measured '
                                 'at %s, bundle now %s. Regenerate with '
                                 'python3 _scripts/coverage.py'
@@ -1775,7 +1830,7 @@ def audit(kb):
             if not isinstance(s, dict) or 'author' not in s:
                 continue
             r = str(s.get('resource') or '')
-            if '/OneNote/' in r:
+            if _coverage.in_archive(r):
                 auth[bundle.canon(os.path.join(os.path.dirname(f), r))].add(
                     str(s.get('author')))
     nsplit = sum(1 for v in auth.values() if len(v) > 1)
@@ -2007,7 +2062,7 @@ def audit(kb):
             if not isinstance(_s, dict) or not _s.get('resource'):
                 continue
             _r = str(_s['resource'])
-            if '/OneNote/' in _r or '/Raw/' in _r or _r.startswith('Raw/'):
+            if _coverage.in_archive(_r) or '/Raw/' in _r or _r.startswith('Raw/'):
                 continue
             _lm = re.match(r'(\d{4}-\d{2}-\d{2})$', str(_s.get('last_modified') or ''))
             if not _lm:
@@ -2201,31 +2256,36 @@ def export_contract(kb):
 
     Skipped where there is no export: the frozen bundles have no exporter, and a
     knowledge base whose archive has not been synced yet has nothing to check.
+
+    **The newest report of each root**, since 20.10.2026: folia's copy writes
+    its own beside the export's, and one sort across both read only whichever
+    path sorted last — always folia's, so a broken export report went unseen.
+    Since 28.10.2026 folia's copy is the only root where it holds a page, and
+    the export's reports beside it, which no longer change, are not read.
     """
     defects = []
-    roots = _coverage.archive_roots(kb)
-    reports = sorted(f for r in roots
-                     for f in glob.glob(os.path.join(r, '_CHANGES-*.json')))
-    if not reports:
-        return defects
-    newest = reports[-1]
-    rel = os.path.relpath(newest, os.path.join(VAULT, kb))
-    try:
-        doc = json.load(open(newest, encoding='utf-8'))
-    except Exception as e:
-        defects.append((rel, 'the newest change report does not parse: %s' % e))
-        return defects
-    if 'complete' not in doc:
-        defects.append((rel, "no `complete` field; the ingest protocol reads it to "
-                             'decide whether an absence may be read as a deletion'))
-    changes = doc.get('changes')
-    if not isinstance(changes, list):
-        defects.append((rel, '`changes` is not a list; the ingest protocol iterates it'))
-        return defects
-    for want in ('status', 'contentChanged', 'path'):
-        if changes and not any(want in c for c in changes if isinstance(c, dict)):
-            defects.append((rel, 'no change record carries `%s`; the ingest protocol '
-                                 'keys off it and would rebuild nothing' % want))
+    for root in _coverage.archive_roots(kb):
+        reports = sorted(glob.glob(os.path.join(root, '_CHANGES-*.json')))
+        if not reports:
+            continue
+        newest = reports[-1]
+        rel = os.path.relpath(newest, os.path.join(VAULT, kb))
+        try:
+            doc = json.load(open(newest, encoding='utf-8'))
+        except Exception as e:
+            defects.append((rel, 'the newest change report does not parse: %s' % e))
+            continue
+        if 'complete' not in doc:
+            defects.append((rel, "no `complete` field; the ingest protocol reads it to "
+                                 'decide whether an absence may be read as a deletion'))
+        changes = doc.get('changes')
+        if not isinstance(changes, list):
+            defects.append((rel, '`changes` is not a list; the ingest protocol iterates it'))
+            continue
+        for want in ('status', 'contentChanged', 'path'):
+            if changes and not any(want in c for c in changes if isinstance(c, dict)):
+                defects.append((rel, 'no change record carries `%s`; the ingest protocol '
+                                     'keys off it and would rebuild nothing' % want))
     return defects
 
 
@@ -2276,9 +2336,11 @@ def repo_hygiene():
     # 26.09.2026, each note carrying a full transcript of named colleagues,
     # and the folder sat unignored until the session that found it: one
     # `sync.sh` from GitHub. Source material, the same class as `Raw/`.
+    # scripta moved to `scripta/` on 22.10.2026, and the new folder sat
+    # unignored again for a day.
     for rel in tracked:
-        if rel.startswith('Meetings/'):
-            defects.append((rel, 'a meeting note is git-tracked; Meetings/ is '
+        if rel.startswith('scripta/'):
+            defects.append((rel, 'a meeting note is git-tracked; scripta/ is '
                                  'source material with full transcripts and '
                                  'must not enter the repository'))
     # Teams join codes. The concept guard of 14.09.2026 kept them out of the
@@ -2501,7 +2563,7 @@ def skill_packages():
 HISTORY = ('CHANGELOG.md',
            '_BUILD-BRIEF', 'Outputs/', '/_testimony/', '_COMPILE-LEDGER.md',
            '_COMPILE-RESUME.md', '/_skills/')
-SKIP_DIRS = ('/OneNote/', '/_to_delete/', '/.git/', '/_extractions/',
+SKIP_DIRS = ('/OneNote/', '/%s/' % _coverage.MIRROR, '/_to_delete/', '/.git/', '/_extractions/',
              '/.obsidian/', '/_snapshots/', '/uploads/')
 BACKTICK = re.compile(r'`([^`\n]+)`')
 # Every link target, whatever it ends in. `audit()` reads its link graph and
@@ -2583,6 +2645,93 @@ DE_DIR = 'de'
 VAULT_REPORT_KB = None
 
 
+KEY_HEAD = ['Figure', 'Value', 'Source']
+KEY_SEC = re.compile(r'^## Key figures[ \t]*\n(.*?)(?=^#{1,2} |\Z)', re.M | re.S)
+
+
+def key_figures_faults(text):
+    """What is wrong with a question report's key-figures block.
+
+    B7 of `Outputs/2026-11-05_cerebrum-for-the-other-apps.md`: below the
+    management summary a report may carry `## Key figures`, one table with the
+    columns Figure, Value and Source, which specula draws as tiles. A block
+    that is not in that form would be drawn wrong or not at all, so where one
+    stands it is held to the form; a report without one is not touched. Each
+    Source cell names one or more footnotes the report defines, so a tile can
+    open the page its number came from.
+    """
+    secs = KEY_SEC.findall(text)
+    if not secs:
+        return []
+    if len(secs) > 1:
+        return ['key figures: the section stands twice']
+    rows = [l.strip() for l in secs[0].splitlines() if l.strip().startswith('|')]
+    cells = lambda l: [c.strip() for c in l.strip('|').split('|')]
+    if len(rows) < 3 or cells(rows[0]) != KEY_HEAD or not _tableorder.SEP.match(rows[1]):
+        return ['key figures: the table must open with the header | Figure | Value | Source | '
+                'and its separator, and hold at least one row']
+    defined = set(re.findall(r'^\[\^([^\]]+)\]:', text, re.M))
+    out = []
+    for n, l in enumerate(rows[2:], 1):
+        c = cells(l)
+        if len(c) != 3:
+            out.append('key figures: row %d has %d cells, not 3' % (n, len(c)))
+            continue
+        if not c[0] or not c[1]:
+            out.append('key figures: row %d has an empty figure or value' % n)
+        refs = re.findall(r'\[\^([^\]]+)\]', c[2])
+        if not refs:
+            out.append('key figures: row %d names no footnote as its source' % n)
+        for r in refs:
+            if r not in defined:
+                out.append('key figures: row %d cites [^%s], which the report does not define' % (n, r))
+    return out
+
+
+KEY_CASES = [
+    # (a made-up report, words the fault must hold, or None where it has none)
+    ('# R\n\n## Key figures\n\n| Figure | Value | Source |\n|---|---|---|\n| Concepts | 466 | [^a] |\n\n## Question\n\n[^a]: memory.md\n', None),
+    ('# R\n\n## Question\n\nNo block.\n', None),
+    ('# R\n\n## Key figures\n\n| What | Value | Source |\n|---|---|---|\n| Concepts | 466 | [^a] |\n\n[^a]: x\n', 'must open with the header'),
+    ('# R\n\n## Key figures\n\n| Figure | Value | Source |\n|---|---|---|\n| Concepts | 466 |\n\n[^a]: x\n', 'has 2 cells'),
+    ('# R\n\n## Key figures\n\n| Figure | Value | Source |\n|---|---|---|\n| Concepts |  | [^a] |\n\n[^a]: x\n', 'empty figure or value'),
+    ('# R\n\n## Key figures\n\n| Figure | Value | Source |\n|---|---|---|\n| Concepts | 466 | memory.md |\n', 'names no footnote'),
+    ('# R\n\n## Key figures\n\n| Figure | Value | Source |\n|---|---|---|\n| Concepts | 466 | [^b] |\n\n[^a]: x\n', 'does not define'),
+    ('# R\n\n## Key figures\n\n| Figure | Value | Source |\n|---|---|---|\n| A | 1 | [^a] |\n\n## Key figures\n\n| Figure | Value | Source |\n|---|---|---|\n| B | 2 | [^a] |\n\n[^a]: x\n', 'stands twice'),
+]
+
+
+def render_cases():
+    """specula's page renderer, `visualize.py`'s `md2html`, still renders its
+    kept cases right: `\\|` stays a bar in a table cell, and no bold, italics
+    or link is made inside a code span. Kept since 05.11.2026, when the
+    specula session found both faults on the concept pages."""
+    r = subprocess.run([sys.executable, os.path.join(VAULT, '_scripts', 'visualize.py'), '--cases'],
+                       capture_output=True, text=True)
+    if r.returncode == 0:
+        return []
+    lines = [l for l in (r.stdout + r.stderr).splitlines() if l.strip()][:8]
+    return [('_scripts/visualize.py', l[:400]) for l in lines] or [('_scripts/visualize.py', 'render cases failed')]
+
+
+def key_figures():
+    """Every question report's key-figures block is in its form, and the rule
+    still fires on its kept cases. English reports only: the German version is
+    a translation, and its headings are German."""
+    out = []
+    for n, (text, want) in enumerate(KEY_CASES, 1):
+        got = key_figures_faults(text)
+        if (want is None and got) or (want is not None and not any(want in g for g in got)):
+            out.append(('_scripts/verify.py', 'key figures case %d: expected %s, got %s'
+                        % (n, repr(want) if want else 'no fault', got or 'no fault')))
+    d = os.path.join(VAULT, 'Outputs')
+    for name in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+        if name.endswith('.md') and not name.startswith('_'):
+            for m in key_figures_faults(open(os.path.join(d, name), encoding='utf-8').read()):
+                out.append((os.path.join('Outputs', name), m))
+    return out
+
+
 def reports_register():
     """Every report in Outputs/ carries a row in the register.
 
@@ -2658,14 +2807,14 @@ def reports_register():
     # row of its own. **Every question report has one.** Owner's instruction of
     # 16.09.2026, replacing the on-demand rule of the same morning: the
     # translation was written from a button on the report, and the owner wants
-    # both languages without asking for the second. The viewer's helper now
+    # both languages without asking for the second. specula's Ask Claude now
     # writes the German version as the last step of answering a question, so
     # the only way one goes missing is a report filed by a session, which is
     # what this catches. Audit reports are English: they are process history
     # and the owner does not read them in German.
     #
     # It is a defect rather than a finding because the fix is one command and
-    # the rule is absolute — `python3 _scripts/viewer-server.py` is not needed,
+    # the rule is absolute — specula is not needed,
     # the session that filed the report writes the translation the same way it
     # wrote the report. A finding would sit for three run-days first, and by
     # then the report has been read in one language and nobody is looking.
@@ -2813,15 +2962,18 @@ def main():
     total = 0
     state = _stored()
     today = datetime.date.today().isoformat()
-    if not sys.argv[1:]:
+    clock = '--no-clock' not in sys.argv
+    args = [a for a in sys.argv[1:] if a != '--no-clock']
+    if not args:
         vd = (vault_audit() + repo_hygiene() + reports_register()
               + raw_register() + packer_dedup()
-              + blankline_cases() + kept_cases() + one_separator())
+              + blankline_cases() + kept_cases() + one_separator()
+              + key_figures() + render_cases())
         print('== 00_Cerebrum (vault): %d defects' % len(vd))
         for rel, msg in vd:
             print('  DEFECT  %s: %s' % (rel, msg))
         total += len(vd)
-    touched = list(sys.argv[1:] or discover())
+    touched = list(args or discover())
     for kb in touched:
         n, c, defects, findings = audit(kb)
         defects = defects + export_contract(kb)
@@ -2905,8 +3057,9 @@ def main():
     mine = tuple(kb + '|' for kb in touched)
     merged = {k: v for k, v in on_disk.items() if not k.startswith(mine)}
     merged.update({k: v for k, v in state.items() if k.startswith(mine)})
-    json.dump(merged, open(STATE, 'w', encoding='utf-8'),
-              indent=0, sort_keys=True)
+    if clock:
+        json.dump(merged, open(STATE, 'w', encoding='utf-8'),
+                  indent=0, sort_keys=True)
     sys.exit(1 if total else 0)
 
 

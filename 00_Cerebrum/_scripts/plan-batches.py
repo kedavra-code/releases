@@ -78,7 +78,7 @@ def main():
             if line.strip():
                 excluded.add(coverage._p(os.path.join(root, line.strip())))
 
-    # coverage.cited() returns (paths, n_concepts, n_citations)
+    # coverage.cited() returns (paths, n_concepts, n_citations).
     done = coverage.cited(kb)[0] | coverage.ledger(kb)
     plan, manifests, seen_ids, taken = [], {}, set(), set()
     for chapter in coverage.archive_roots(kb):

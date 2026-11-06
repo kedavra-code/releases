@@ -40,18 +40,40 @@ def discover():
                   and os.path.exists(os.path.join(VAULT, d, 'CLAUDE.md')))
 
 
+def live():
+    """The knowledge bases that are not frozen. Which are frozen is read from
+    the Current state table of the vault's CLAUDE.md, the way `verify.py`
+    reads it for the report register."""
+    table = open(os.path.join(VAULT, 'CLAUDE.md'), encoding='utf-8').read()
+    frozen = set(re.findall(r'^\|\s*`(\w+_kb)`\s*\|[^|\n]*\|\s*frozen\s*\|',
+                            table, re.M))
+    return [k for k in discover() if k not in frozen]
+
+
 def assertions(kb=''):
     """A knowledge base's `assertions.yaml`, or the vault's own when kb is ''.
 
     The vault's file had a reader of its own, `vault_assertions()`, with this
     body and the path one folder up. Joined on 04.10.2026 in a review: joining
     VAULT with '' is VAULT, so the same file is opened.
+
+    The parse is kept by the file's text, so a file is parsed once per process
+    while it stays the same: one audit asked for it 1137 times on 06.11.2026,
+    5 of its 37 seconds. Keyed by text, not path, because the kept cases swap
+    VAULT and rewrite the file between cases. Shared like `frontmatter()`'s
+    value: no caller may change it.
     """
     import yaml
     p = os.path.join(VAULT, kb, 'assertions.yaml')
     if not os.path.exists(p):
         return {}
-    return yaml.safe_load(open(p, encoding='utf-8')) or {}
+    text = open(p, encoding='utf-8').read()
+    if text not in _asserted:
+        _asserted[text] = yaml.safe_load(text) or {}
+    return _asserted[text]
+
+
+_asserted = {}
 
 
 def concept_files(kb, indexes=False):

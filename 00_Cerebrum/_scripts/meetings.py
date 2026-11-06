@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""The meeting notes scripta writes into `Meetings/`, read the way a compile may read them.
+"""The meeting notes scripta writes into `scripta/`, read the way a compile may read them.
 
 scripta, the owner's transcription program, writes one note per meeting into
-`Meetings/<year>/YYYYMMDD_HHMM.md` at the vault root. A note carries a Summary,
-Decisions, Tasks and Open points, then the full Transcript and an "As heard"
-block of unedited speech recognition. **Only the first four are compiled**,
+`scripta/<year>/YYYYMMDD_HHMM.md` at the vault root, and into `Meetings/` until
+22.10.2026. A note carries a Summary, Decisions, Tasks and Open points, then
+the full Transcript and an "As heard" block of unedited speech recognition. **Only the first four are compiled**,
 owner's instruction of 26.09.2026. The transcript is the machine's hearing of
 named colleagues, and a concept written from it would cite words nobody wrote.
 
@@ -26,7 +26,7 @@ import sys
 
 from bundle import VAULT
 
-MEETINGS = os.path.join(VAULT, 'Meetings')
+MEETINGS = os.path.join(VAULT, 'scripta')
 KEEP = ('Summary', 'Decisions', 'Tasks', 'Open points')
 ANCHOR = re.compile(r'\[\[#\^p\d+\|([^\]]+)\]\]')     # [[#^p37|40:38]] -> 40:38
 
@@ -84,7 +84,8 @@ def read(rel):
     print()
 
 
-def queue(kb):
+def pending(kb):
+    """The notes no concept of the base cites and its ledger does not list."""
     wiki = os.path.join(VAULT, kb, 'Wiki')
     if not os.path.isdir(wiki):
         sys.exit(f'no such knowledge base: {kb}')
@@ -96,7 +97,11 @@ def queue(kb):
     ledger = os.path.join(VAULT, kb, '_COMPILE-LEDGER.md')
     if os.path.exists(ledger):
         seen += open(ledger, encoding='utf-8').read()
-    todo = [n for n in notes() if n not in seen]
+    return [n for n in notes() if n not in seen]
+
+
+def queue(kb):
+    todo = pending(kb)
     print(f'{kb}: {len(todo)} of {len(notes())} meeting notes not yet compiled')
     for n in todo:
         meta, _ = front(open(os.path.join(VAULT, n), encoding='utf-8').read())

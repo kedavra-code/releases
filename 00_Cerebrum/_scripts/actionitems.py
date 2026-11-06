@@ -63,7 +63,7 @@ def items(kb):
 
     out = []
     for r in ROW.findall(sec):
-        out.append(dict(id=r[0].strip(), item=rebase(r[2].strip()),
+        out.append(dict(id=r[0].strip(), raised=r[1].strip(), item=rebase(r[2].strip()),
                         state=state_of(r[3]),
                         res=rebase(r[4].strip())))
     # A file that carries AI- ids and parses to no rows is unreadable, not

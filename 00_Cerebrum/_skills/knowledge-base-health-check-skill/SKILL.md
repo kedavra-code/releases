@@ -28,7 +28,7 @@ When one is named, freezing changes what counts as a finding. There is no ingest
 
 ### What the orchestrator keeps for itself
 
-Agents share nothing inside their own knowledge base and would collide on everything above it. Four things belong to the vault rather than to any base, and a concurrent write to any of them loses whatever the other agent wrote:
+Agents share nothing inside their own knowledge base and would collide on everything above it. Five things belong to the vault rather than to any base, and a concurrent write to any of them loses whatever the other agent wrote:
 
 | What | Why an agent may not write it |
 |---|---|
@@ -40,13 +40,13 @@ Agents share nothing inside their own knowledge base and would collide on everyt
 
 So each agent **writes its own report file and returns its register row as text**, and the orchestrator appends the rows serially once every agent is in. This is the pattern `merge-appends.py` uses on a compile, for the same reason and against the same failure: concurrent agents may create, and may not edit what they share.
 
-**The fifth row was added on 08.09.2026, by an agent that noticed it mid-sweep.** `verify-state.json` records how many distinct run-days each finding has stood, and every agent runs `verify.py`, so every agent wrote it. The agent that raised it judged the collision benign because all agents stamp the same date. It was not: `verify.py` read the whole file at start and wrote the whole file at the end, so an agent auditing a base with **no** clocked findings would write back the copy it read and roll another base's clock back by a run-day. Three run-days is what escalates a standing finding to a DEFECT, so a lost day delays that escalation and nothing says so.
+**The last row was added on 08.09.2026, by an agent that noticed it mid-sweep.** `verify-state.json` records how many distinct run-days each finding has stood, and every agent runs `verify.py`, so every agent wrote it. The agent that raised it judged the collision benign because all agents stamp the same date. It was not: `verify.py` read the whole file at start and wrote the whole file at the end, so an agent auditing a base with **no** clocked findings would write back the copy it read and roll another base's clock back by a run-day. Three run-days is what escalates a standing finding to a DEFECT, so a lost day delays that escalation and nothing says so.
 
 `verify.py` now re-reads and merges at write time, keeping only the prefixes the run actually audited and taking every other prefix from disk. The fix is at the source rather than in this file, so a sweep that forgets the rule is still safe — but an agent has no reason to run the vault-wide `verify.py` anyway, and the orchestrator runs it once in the closing sequence.
 
 ### Closing a sweep
 
-After the last agent reports, in this order:
+After the last agent reports, in this order. Or append the rows of step 2 first, then `sh _scripts/closeout.sh` runs steps 1 and 4 with `reindex.py`, `inventory.py` and `coverage.py` between them, for the live bases, and stops at the first that fails; step 3, the viewer, it does not run:
 
 1. `python3 _scripts/actionitems.py` — the roll-up, once, never per base.
 2. Append the returned `_REPORTS.md` rows.
@@ -92,7 +92,8 @@ Read this before touching anything. The structure is specific and several obviou
     ├── CLAUDE.md              per-KB manual. Never modify.
     ├── CHANGELOG.md           append-only run log.
     ├── Raw/_INGESTED.md       source register.
-    ├── OneNote/               archive layer. READ ONLY, never write, never propose moving.
+    ├── OneNote/               closed export, not read since 28.10.2026. Never write, never propose moving.
+    ├── folia/                 archive layer: folia's copy of the notebooks. READ ONLY, never write.
     └── Wiki/                  the OKF bundle.
         ├── index.md           reserved. Not a concept. Root carries okf_version.
         ├── log.md             reserved. Not a concept. Bundle history.
@@ -152,7 +153,7 @@ On the run immediately after a compile the read set is the whole bundle, because
 
 **Before the read set, read the stale-claims list.** `python3 _scripts/stale-claims.py <KB>` lists sentences a concept's own later content may have disproved: a "to at least <date>" bound that a newer cited source passes, and claims that something is written, dated or resolved nowhere. An ingest appends at the bottom of a concept and does not revisit the sentence near the top that the new evidence closes, so the stale claim is the one a reader meets first; the Alpha run of 14.09.2026 repaired 818 of them. Read each listed sentence against the concept below it and against its cited pages, grep the archive once for what an absence claim says is missing, and correct what no longer holds. It is a list of sentences, not of concepts, so it does not widen the read set. `verify.py` prints its length as a bundle gauge, which never escalates, because about half the date hits are still true and only a reading can tell. Owner's decision of 15.09.2026 (Alpha_kb AI-2026-08-31-1).
 
-**Then the quotation list.** `python3 _scripts/quotes.py <KB>` lists every quotation that stands in no page its footnotes cite: words cut from the middle with no ellipsis, a changed letter, a sentence footnoted to the page in the other language. Read each against its page and correct the misquotations. In a base whose `assertions.yaml` sets `quotes_in_page: true`, `verify.py` raises each as a finding on the clock, and a span that is no quotation of a page, such as the concept's own name for something, is waived there with what it is. Only `Delta_kb` has opted in, on 05.10.2026, where the rule was calibrated. **Opting a base in is the owner's decision**: where a base has not, run the script, read what it lists, and raise an action item with the two counts. Counted and not read that day: 186 of 3'411 in `Alpha_kb`, 28 of 280 in `Epsilon_kb`, 2 of 33 in `Zeta_kb`.
+**Then the quotation list.** `python3 _scripts/quotes.py <KB>` lists every quotation that stands in no page its footnotes cite: words cut from the middle with no ellipsis, a changed letter, a sentence footnoted to the page in the other language. Read each against its page and correct the misquotations. In a base whose `assertions.yaml` sets `quotes_in_page: true`, `verify.py` raises each as a finding on the clock, and a span that is no quotation of a page, such as the concept's own name for something, is waived there with what it is. `Delta_kb` opted in on 05.10.2026, where the rule was calibrated, and `Alpha_kb`, `Epsilon_kb` and `Zeta_kb` on 18.10.2026. **Opting a base in is the owner's decision**: where a base has not, run the script, read what it lists, and raise an action item with the two counts. Counted and not read that day: 186 of 3'411 in `Alpha_kb`, 28 of 280 in `Epsilon_kb`, 2 of 33 in `Zeta_kb`.
 
 **Revisit this again if the machine scan itself stops completing.** The read arms are bounded by design; `verify.py` is the part that scales with the bundle.
 
@@ -386,6 +387,8 @@ Each row: id, raising run, the item in one sentence, state, and resolution. A re
 
 **A count carries how it was counted.** In an item and in a concept alike, a figure states the command that produced it, or says it is a hand count and therefore a floor, so the next run reruns rather than re-enumerates. Settled 15.09.2026 (Beta_kb AI-2026-09-08-5), after four counts in that bundle's open items were remeasured and all four were low, each produced by hand: chronology tables at 11 against 66, em-dash paragraphs at 8 against 35, currency forms at 324 against 617, and eight of thirteen mention counts. A hand count that was never labelled one is read as a measurement, and decisions were being taken on them.
 
+**Where a script can count it, the count goes in a fixed form at the end of the Item cell**, so the next run and the sitting can rerun it without reading the row: Re-measure: `python3 _scripts/<name>.py <args>` counting `<text>` = <n>. `<n>` is the number of output lines holding `<text>` when the item is raised; without `counting`, the lines that are not blank. No `|` in it: a pipe splits the cell. `python3 _scripts/remeasure.py <KB>` reruns every such count and sorts the items into `still holds`, `fixed?` and `changed`; use it in step 2 and 3 of the reconciling above. Since 05.11.2026 (B3 of `Outputs/2026-11-05_cerebrum-for-the-other-apps.md`).
+
 **Withdrawn rows are the most valuable entries in the table.** They record what the audit got wrong, not what the corpus got wrong. A false positive that is not written down is rediscovered every quarter, and each rediscovery costs the same effort as the first.
 
 ### The vault roll-up, regenerated at the end of every run
@@ -456,6 +459,7 @@ The report is not an OKF concept and carries no OKF frontmatter. `Outputs/` is h
 - The run, restated: knowledge base, date, which audits ran, scope covered.
 - Findings by audit, with the concrete evidence rather than counts alone. Audit 6 always states its arithmetic here: clusters read, concepts covered, pairs still unread.
 - Each action item: its id, what it is, how long it has been open, why it needs judgement, and the realistic options.
+- **For each item this run raised, its evidence, under a heading with the item id**, in the shape the action sitting's decision page takes: the measured count with the command that measured it (the Re-measure form of *Writing a row*); the exact lines, quoted, each with a clickable `path:line`; for a quotation, the page's German beside the concept's sentence; and the change the run would make, as a `diff` block. The audit has just read these lines, and the sitting then re-measures them rather than searching for them again. Since 05.11.2026 (B2 of `Outputs/2026-11-05_cerebrum-for-the-other-apps.md`).
 - What changed, and what was deliberately left alone.
 - What the next run should watch.
 

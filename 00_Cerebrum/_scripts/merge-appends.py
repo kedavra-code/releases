@@ -31,6 +31,7 @@ Usage:  python3 _scripts/merge-appends.py <KB> [batch-file ...]   (default: all)
 import collections
 import datetime
 import glob
+import json
 import os
 import re
 import sys
@@ -70,6 +71,21 @@ def parse(path):
     return out
 
 
+def folia_moves(base):
+    """Where folia moved its pages, {old path: new path} under `base`/folia, from
+    the `movedFrom` records of its change reports."""
+    out = {}
+    for f in sorted(glob.glob(os.path.join(base, coverage.MIRROR, '_CHANGES-*.json'))):
+        try:
+            doc = json.load(open(f, encoding='utf-8'))
+        except (OSError, ValueError):
+            continue
+        for c in (doc.get('changes') or []) if isinstance(doc, dict) else []:
+            if isinstance(c, dict) and c.get('movedFrom') and c.get('path'):
+                out[c['movedFrom']] = c['path']
+    return out
+
+
 def resolve_resource(kb_root, concept_path, val):
     """Rewrite a resource path to the true relative depth.
 
@@ -95,6 +111,21 @@ def resolve_resource(kb_root, concept_path, val):
         cand = os.path.join(*(['..'] * up + [tail])) if up else tail
         if os.path.isfile(os.path.normpath(os.path.join(d, cand))):
             return cand
+    # folia moves a page to another section with its file, and its change
+    # report names the old path as `movedFrom`: 1'324 pages on 27.10.2026, and
+    # eight citations broke. Follow the record before the file name, which is
+    # ambiguous where two sections hold the same name.
+    tgt = os.path.normpath(os.path.join(d, val))
+    mark = os.sep + coverage.MIRROR + os.sep
+    if mark in tgt:
+        root, rel = tgt.split(mark, 1)
+        moves, seen = folia_moves(root), set()
+        while rel in moves and rel not in seen:
+            seen.add(rel)
+            rel = moves[rel]
+        new = os.path.join(root, coverage.MIRROR, rel)
+        if seen and os.path.isfile(new):
+            return os.path.relpath(new, d)
     base = os.path.basename(val)
     hits = []
     # Searched where `coverage.py` says the corpus is, since 04.10.2026. It

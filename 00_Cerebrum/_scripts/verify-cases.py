@@ -33,6 +33,7 @@ import ast
 import contextlib
 import datetime
 import io
+import json
 import os
 import re
 import shutil
@@ -117,6 +118,10 @@ PERSON = CONCEPT.format(title='Ada Lovelace', sid='beta-page', page='beta-page.m
 ROWS = '|---|---|---|---|---|\n'
 ITEM = '| AI-2026-01-10-1 | 10.01.2026 | Read the Alpha page again | open | |\n'
 CHANGES = 'Raw/_CHANGES-2026-02-01.json'
+# folia's copy of a page, beside the export (20.10.2026), named as folia names it.
+FOLIA_NOTE = 'folia/Fixture/Notes/2026-01-05-20260105-kickoff.md'
+FOLIA_KICKOFF = '../../' + FOLIA_NOTE
+FOLIA_CHANGES = 'folia/_CHANGES-2026-02-02.json'
 GLOSS = ('Beta is a made-up system of the fixture, kept in the cellar beside the lamp and the '
          'green door and switched off by hand each night.')
 TWICE = 'The cellar door is painted green and the key hangs on a nail beside the lamp.'
@@ -236,6 +241,13 @@ CASES = [
     ('an archive author written as a display name',
      {NOTE: NOTE_PAGE, A: cite('kickoff', KICKOFF, author='Ada Lovelace')},
      "source author 'Ada Lovelace' is not human:<slug>"),
+    ('a free-text author in a base that writes every author in a form',
+     {RULES: add('authors_in_form: true\n'), A: sub('    author: unknown\n', '    author: Ada Lovelace\n')},
+     "source author 'Ada Lovelace' is free text"),
+    ('a list of authors with one free-text name, in a base that writes every author in a form',
+     {RULES: add('authors_in_form: true\n'),
+      A: sub('    author: unknown\n', '    author: [human:ada-lovelace, Charles Babbage]\n')},
+     "source author 'Charles Babbage' is free text"),
     ('a concept verified by a script',
      {A: sub('status: stable\n', 'status: stable\nverified: { by: process:verify, '
                                  'at: 2026-01-11T08:00:00Z }\n')},
@@ -444,6 +456,17 @@ CASES = [
      'archive coverage never measured'),
     ('a page added to the archive after its coverage was measured',
      {'Raw/gamma-page.md': RAW.format(ptitle='Gamma page')}, 'coverage table stale'),
+    # folia's copy is the archive layer once it holds a page (28.10.2026), so the
+    # table is set back to one page of it, measured before the second came.
+    ("a page added to folia's copy after coverage was measured: a gauge, not a defect",
+     {'folia/Book/Part/2026-01-05-old.md': '---\ntitle: Old\n---\n\nAn old page.\n',
+      'folia/Book/Part/2026-01-06-new.md': '---\ntitle: New\n---\n\nA new page.\n',
+      '.coverage-state.json': lambda t: json.dumps(dict(json.loads(t), pages=0,
+                                                        mirror_pages=1, covered=0))},
+     "folia's copy holds 2 page(s), COVERAGE.md counts 1", 'coverage table stale'),
+    ("a citation into the OneNote export beside folia's copy",
+     {NOTE: NOTE_PAGE, FOLIA_NOTE: NOTE_PAGE, A: cite('kickoff', KICKOFF)},
+     'cites the OneNote export, which is no longer read: ../../OneNote/20260105-kickoff.md'),
     ('a required file that is gone', {RULES: add('require_file:\n  - Wiki/systems/gamma.md\n')},
      'required file missing (settled fact)'),
     ('a link into a knowledge base whose archive is cleared',
@@ -509,6 +532,16 @@ CASES = [
     ('a change report that does not say what changed',
      {CHANGES: '{"complete": true, "changes": [{"path": "alpha-page.md", "status": "changed"}]}'},
      'no change record carries `contentChanged`'),
+    ('a folia author written as a display name',
+     {FOLIA_NOTE: NOTE_PAGE, A: cite('kickoff', FOLIA_KICKOFF, author='Ada Lovelace')},
+     "source author 'Ada Lovelace' is not human:<slug>"),
+    ('a folia page dated other than its title, not by its file name',
+     {FOLIA_NOTE: NOTE_PAGE, A: cite('kickoff', FOLIA_KICKOFF, last_modified='2026-01-06')},
+     "last_modified 2026-01-06, but the page's own title gives 2026-01-05",
+     "but the file's own name gives"),
+    ('a folia change report that does not say whether it is complete',
+     {FOLIA_NOTE: NOTE_PAGE, FOLIA_CHANGES: '{"generated": "2026-02-02T08:00:00", "changes": []}'},
+     'no `complete` field'),
 ]
 
 # Reporting sites with no case the run can count: the fixed words each
@@ -583,6 +616,10 @@ def rule_failures():
             out.append('quotes.py, %s: reports %r, must report %r' % (what, got, want))
     if Q.missing(['He said "these words are in no page".[^p]'], {'p': None})[0]:
         out.append('quotes.py reports a quotation whose page is no text')
+    # folia writes &, < and > as HTML entities in its markdown (28.10.2026).
+    if Q.missing(['They wrote "miro & roger decide, <20 staff" here.[^p]'],
+                 {'p': Q.normal('They wrote miro &amp; roger decide, &lt;20 staff here.')})[0]:
+        out.append('quotes.py reports a quotation whose page writes & and < as entities')
 
     P = bundle.script('pairs.py')
     bodies = {'a.md': 'one', 'b.md': 'two', 'c.md': 'three'}

@@ -1,6 +1,6 @@
 ---
 name: knowledge-base-compile-skill
-description: "Compiles an archive layer of a 00_Cerebrum knowledge base into OKF concepts by dispatching batches of ~55 archive pages to parallel sub-agents, then merging what they hand back. Plans batches, packs them, runs up to eight agents concurrently, merges append-requests, writes the compile ledger, and measures coverage as the share of archive pages actually cited rather than asserted. Use whenever the user says \"compile the archives\", \"compile all kb\", \"compile the [name] archive\", \"run a compile\", \"continue the compile\", \"read the rest of the archive\", or asks how much of an archive has actually been read. Also covers the routine ingest of new material into a live knowledge base, from its Raw/ folder, from a weekly OneNote export delta, and from the meeting notes scripta writes into Meetings/. \"Compile the archives\" or \"compile all kb\", plural, means every live knowledge base in turn and never a frozen one, and it ends by writing the checked findings of question reports in Outputs/ into the live knowledge bases."
+description: "Compiles an archive layer of a 00_Cerebrum knowledge base into OKF concepts by dispatching batches of ~55 archive pages to parallel sub-agents, then merging what they hand back. Plans batches, packs them, runs up to eight agents concurrently, merges append-requests, writes the compile ledger, and measures coverage as the share of archive pages actually cited rather than asserted. Use whenever the user says \"compile the archives\", \"compile all kb\", \"compile the [name] archive\", \"run a compile\", \"continue the compile\", \"read the rest of the archive\", or asks how much of an archive has actually been read. Also covers the routine ingest of new material into a live knowledge base, from its Raw/ folder, from a weekly OneNote export delta, and from the meeting notes scripta writes into scripta/. \"Compile the archives\" or \"compile all kb\", plural, means every live knowledge base in turn and never a frozen one, and it ends by writing the checked findings of question reports in Outputs/ into the live knowledge bases."
 ---
 
 # Knowledge base compile
@@ -9,7 +9,7 @@ Reads an archive layer end to end and turns it into cited OKF concepts, and keep
 
 **All four bundles are now at 100 per cent, so the common invocation is no longer the bulk pass.** It is the delta: a handful of pages a week. The bulk procedure below still stands, because an archive can be replaced again, but read *Compiling a live knowledge base* first — that is what "compile the archives" now usually means.
 
-**Coverage here means the share of archive pages some concept actually cites, plus pages a compile agent opened and recorded as carrying nothing citable.** It does not mean "a concept exists for this scope". That older question is about the bundle, and it reported Alpha as fully compiled while 10'122 of its 10'561 pages had never been cited by anything. Every rule below exists to keep the measurement honest.
+**Coverage here means the share of archive pages some concept actually cites, plus pages a compile agent opened and recorded as carrying nothing citable. Where folia's copy holds pages, it is the only layer counted (owner, 28.10.2026).** It does not mean "a concept exists for this scope". That older question is about the bundle, and it reported Alpha as fully compiled while 10'122 of its 10'561 pages had never been cited by anything. Every rule below exists to keep the measurement honest.
 
 ## When to invoke
 
@@ -41,10 +41,10 @@ Each live knowledge base has its own sources, and they are not interchangeable.
 
 | Knowledge base | Sources |
 |---|---|
-| `Alpha_kb` | `Alpha_kb/Raw/`, the weekly OneNote export delta under `Alpha_kb/OneNote/Work Alpha/`, **and** the meeting notes in `Meetings/` at the vault root |
+| `Alpha_kb` | `Alpha_kb/Raw/`, the weekly OneNote export delta under `Alpha_kb/OneNote/Work Alpha/`, **and** the meeting notes in `scripta/` at the vault root |
 | `Zeta_kb` | `Zeta_kb/Raw/` **only** |
 
-**`Zeta_kb/OneNote/Personal/` is never compiled.** Standing instruction of the owner, 22.08.2026. Its pages are cited across from `Beta_kb` and `Alpha_kb` for the career record, and no exporter feeds it. It reads as 0 per cent covered in `COVERAGE.md`; that figure is the instruction, not a backlog. Do not plan batches over it, and do not offer to.
+**`Zeta_kb/OneNote/Personal/` is never compiled.** Standing instruction of the owner, 22.08.2026. Its pages are cited across from `Beta_kb` and `Alpha_kb` for the career record, and no exporter feeds it. **folia's copy of the same notebook, `Zeta_kb/folia/`, is barred the same way** (owner, 24.10.2026). It reads as 0 per cent covered in `COVERAGE.md`; that figure is the instruction, not a backlog. Do not plan batches over it, and do not offer to.
 
 ## Before anything else
 
@@ -58,7 +58,7 @@ The bulk pass reads an archive nobody has read. This is the other job: keeping a
 
 ### New pages the planner finds by itself
 
-`plan-batches.py` derives unread as *every page on disk minus (pages some concept cites ∪ pages the ledger records)*. It walks the filesystem fresh every run, so **a page that did not exist last week appears as unread with no bookkeeping**. Nothing needs to be told it arrived.
+`plan-batches.py` derives unread as *every page on disk minus (pages some concept cites ∪ pages the ledger records)*. It walks the filesystem fresh every run, so **a page that did not exist last week appears as unread with no bookkeeping**. Nothing needs to be told it arrived. Where folia's copy holds pages, the planner plans it alone: the export beside it is no longer read, and every citation into it moved to its folia page on 28.10.2026 (owner: "do not read anymore the onenote archives, just the folia archives").
 
 **Coverage falling after a sync is correct.** New pages enlarge the denominator, so `COVERAGE.md` drops below 100 per cent whenever the archive grows. That is the queue working, not a regression.
 
@@ -115,13 +115,13 @@ About 100k tokens a concept. Where a compile writes one to three concepts, this 
 
 ### Meeting notes
 
-scripta, the owner's transcription program, writes one note per meeting into `Meetings/<year>/YYYYMMDD_HHMM.md` at the vault root. **They belong to `Alpha_kb` by default**, owner's instruction of 26.09.2026. A note that is plainly about something else goes to the owner before it is compiled anywhere.
+scripta, the owner's transcription program, writes one note per meeting into `scripta/<year>/YYYYMMDD_HHMM.md` at the vault root, and wrote into `Meetings/` until 22.10.2026. **They belong to `Alpha_kb` by default**, owner's instruction of 26.09.2026. A note that is plainly about something else goes to the owner before it is compiled anywhere.
 
 **Only four sections are compiled: Summary, Decisions, Tasks and Open points.** Never the Transcript, never the "As heard" block after it. So a note is never opened directly: `python3 _scripts/meetings.py --read <note>` prints the four sections and nothing after them, and that is the only way a note enters the context that writes a concept. Pass the same instruction to any sub-agent.
 
 1. `python3 _scripts/meetings.py Alpha_kb` lists the notes no concept cites and the ledger does not record. It is the queue, found without bookkeeping, as the planner finds new archive pages.
 2. Treat them like Raw: a direct read, not the batch machinery. They arrive a few a week.
-3. Cite the note by path, `../../../Meetings/2026/20260915_1251.md` from a concept in a group directory. `title` is the note's `title`, `last_modified` its `date`, and `author` is `process:scripta`: the four sections are the program's summary of a recording, not anyone's minutes.
+3. Cite the note by path, `../../../scripta/2026/20260915_1251.md` from a concept in a group directory. `title` is the note's `title`, `last_modified` its `date`, and `author` is `process:scripta`: the four sections are the program's summary of a recording, not anyone's minutes.
 4. **Names in a note come from speech recognition.** The speaker list repeats names and can put one person's words under another's. A name, a role or an attribution that matters is checked against the archive before it goes into a `Person` concept.
 5. A note carrying nothing citable goes into `_COMPILE-LEDGER.md` like an archive page, so it leaves the queue.
 
@@ -129,7 +129,7 @@ scripta, the owner's transcription program, writes one note per meeting into `Me
 
 ```bash
 V=/path/to/00_Cerebrum; cd "$V"
-tail -5 "<KB>/OneNote/<layer>/_CHANGELOG.md"   # did the sync run? did it find anything?
+tail -5 "<KB>/folia/_CHANGELOG.md"            # did folia's mirror run? did it find anything?
 python3 _scripts/plan-batches.py <KB> --dry-run # new pages, found without being told
 python3 _scripts/changed-pages.py <KB>          # concepts written before a page they cite changed
 ls <KB>/Raw/                                    # anything dropped by hand
@@ -153,7 +153,7 @@ Zero unread, no concept behind a changed page, a changelog line of all zeros, no
 5. **Where a finding disagrees with a concept, do not write over it.** If the concept misreads a page it cites, correct it from that page by attribution, as a health check does. If two pages disagree, record both positions in the Contradictions table of `questions.md`.
 6. Update the register row: `promoted`, naming the concepts; `partial`, naming what was left out and why; or `none`, with the reason. An open action item that asked whether to promote the report is set to `actioned`, with the same note.
 
-**Close it like any run that changed concepts:** `reindex.py`; a `Wiki/log.md` and a `CHANGELOG.md` entry in each knowledge base written into; `memory.md` where its answer changed; `actionitems.py` where an item changed; `readblocks.py --write` where a `verified` key was cleared, so the concept is back on the owner's reading list (without `--write` the script only prints, and the file stays stale); `verify.py` green; the viewer regenerated and checked. **The closing summary names each report, what it added where, and every `verified` key it cleared.** The owner no longer approves each promotion, so that summary is the review it gets.
+**Close it like any run that changed concepts:** `sh _scripts/closeout.sh <KB>` runs `actionitems.py`, `reindex.py`, `inventory.py`, `coverage.py` and `verify.py` and stops at the first that fails; then a `Wiki/log.md` and a `CHANGELOG.md` entry in each knowledge base written into; `memory.md` where its answer changed; `actionitems.py` where an item changed; `readblocks.py --write` where a `verified` key was cleared, so the concept is back on the owner's reading list (without `--write` the script only prints, and the file stays stale); `verify.py` green; the viewer regenerated and checked. **The closing summary names each report, what it added where, and every `verified` key it cleared.** The owner no longer approves each promotion, so that summary is the review it gets.
 
 **Run the reports one after another.** They are few, and two agents writing one concept lose a write.
 
@@ -212,7 +212,7 @@ This is the part that cannot be reconstructed from the scripts. Every clause bel
 >
 > **Step 1 — the bulk reads, then work.** Read exactly these four and nothing else exploratory:
 > `_extractions/_packed-[BATCH-ID].txt`, `_extractions/_INVENTORY.md` (the [N] concepts that already exist), `[KB]/CLAUDE.md`, `About me/writing-rules.md`.
-> Reading a specific named concept you intend to append to is expected and is not exploration. **No `ls` sweeps, no `find` over the archive, no opening individual OneNote pages.** If the pack overflows the bash output cap, read it in `sed -n '1,400p'` windows rather than one truncating `cat`.
+> Reading a specific named concept you intend to append to is expected and is not exploration. **No `ls` sweeps, no `find` over the archive, no opening individual archive pages, and never a page under `OneNote/`, which is no longer read.** If the pack overflows the bash output cap, read it in `sed -n '1,400p'` windows rather than one truncating `cat`.
 > One `=== PAGE <relative path>` header per page — **cite that path exactly as given**. `[+N lines carried, first in <file>]` means that content already appears elsewhere in the corpus: an item carried forward again, not missing information. A page that is almost entirely such markers is a duplicate, and the marker names its source.
 >
 > **Your batch is not the corpus. Never write that the export lost something.** The pack strips frontmatter and URLs, replaces every link with a marker and cannot show you an image, so what is absent from your batch is absent from your batch and nothing more. Write "the pages in this batch do not carry X", never "X did not survive the export" or "X is not in the export". Sixteen claims of that shape stood in `Epsilon_kb` while the attachment folders held the files, three of them corrected once and written again by the next wave (`Epsilon_kb` AI-2026-09-14-2). `verify.py` now reports the phrasing as a finding in a bundle that opts in with `export_loss_claims`.
@@ -231,7 +231,7 @@ This is the part that cannot be reconstructed from the scripts. Every clause bel
 > If the guarded write fails the concept already exists: **do not remove it, do not retry without the guard, do not invent a variant filename.** Read the existing file and file an APPEND against it. **If you list such a concept under `## Concepts created`, also list it under `## Collisions`** — the merge preflight uses that to tell a guard working from a lost write.
 > Frontmatter: `type`, `title`, `description`, `tags`, `status: draft`, `generated: { by: librarian/claude-<the model you run as>, at: <now> }`, `sources` with `id` / `resource` / `title` / `author` / `last_modified`.
 > **Quote any `title:` containing `": "` or that is a bare `YYYY-MM-DD`** — both break the concept's YAML.
-> `../../OneNote/…` is right from `Wiki/<group>/x.md`; from `Wiki/systems/vendors/x.md` or `Wiki/references/digests/x.md`, one level deeper, it is `../../../OneNote/…`. Cross-KB links are `../../../Alpha_kb/Wiki/…` from `Wiki/<group>/x.md`, and **`verify.py` fails the run on a cross-KB link that resolves nowhere.** Inside APPEND blocks always write `../../OneNote/…`; the merge script re-resolves the depth.
+> `../../folia/…` is right from `Wiki/<group>/x.md`; from `Wiki/systems/vendors/x.md` or `Wiki/references/digests/x.md`, one level deeper, it is `../../../folia/…`. Cross-KB links are `../../../Alpha_kb/Wiki/…` from `Wiki/<group>/x.md`, and **`verify.py` fails the run on a cross-KB link that resolves nowhere.** Inside APPEND blocks always write `../../folia/…`; the merge script re-resolves the depth.
 > Every claim carries a footnote whose label equals a `sources[].id`. A label defined but never referenced is a defect; so is a reference with no definition. No `verified:` key, ever. No `stale_after` on a frozen archive. English prose, German quotes verbatim, proper nouns never translated.
 >
 > **Link every concept you write to its neighbours.** A bundle that is a list is worth less than one that is a graph, and links are cheapest to write while the pages are in front of you. A `Procedure` links to the system it operates on; a system links to what it depends on, replaces or configures; a person links to the projects and decisions they appear in. **Aim for roughly three links per concept**, in the body prose and never in frontmatter. A link to a concept that does not exist yet is legitimate under OKF and is a good way to mark what should be written next — but a **cross-KB** link that resolves nowhere is a defect, so check those with `test -f` before writing them. Do not invent a relationship to reach a number: a subject the archive genuinely documents in isolation may stay thin, and saying so in the body is better than a false link.
@@ -243,7 +243,7 @@ This is the part that cannot be reconstructed from the scripts. Every clause bel
 > ### APPEND Wiki/people/example.md
 > #### SOURCES
 > - id: kt-2017-03-14
->   resource: ../../OneNote/…/2017-03-14-….md
+>   resource: ../../folia/…/2017-03-14-….md
 >   title: …
 >   author: human:owner
 >   last_modified: 2017-03-14

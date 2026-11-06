@@ -53,6 +53,7 @@ code. A concept states what it counted, and no page holds that.
 Usage:  python3 _scripts/quotes.py [KB ...] [--tsv] [--stats]
 """
 import functools
+import html
 import os
 import re
 import sys
@@ -79,6 +80,7 @@ def normal(s):
     s = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', s)           # a link's text
     s = REF.sub('', s)
     s = re.sub(r'<[^>\n]{0,80}>', ' ', s)                    # <br>, <span ...>
+    s = html.unescape(s)            # &amp; &lt; &gt;: folia's markdown, 28.10.2026
     s = s.replace('\\|', '|')
     for gone in (0xad, 0x200b, 0xfffc):     # soft hyphen, zero width, object mark
         s = s.replace(chr(gone), '')
