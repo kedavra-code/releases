@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 63,
-  "commit": "fda2f50",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-63/pactum.dmg",
-  "sha256": "8aa39c2b70224655bf6f84619618e20a99a97d49eba40797f9bc164f6ec3254b",
+  "build": 64,
+  "commit": "b835000",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-64/pactum.dmg",
+  "sha256": "e6623fb21f78bb681bd020283a55b148c7ce2bf81c09e68a9415e2482b754144",
   "minimumSystemVersion": "26.0",
-  "notes": "Minimum Viable Maturity and Minimum Viable Efficiency",
+  "notes": "Both minimums at the top of Data ISGs",
   "entries": [
+    {
+      "build": 64,
+      "date": "2026-11-06",
+      "title": "Both minimums at the top of Data ISGs",
+      "detail": "Data ISGs starts with Minimum Viable: the Minimum Viable Efficiency, then the Minimum Viable Maturity, in a section of their own. The cross-hatch in the 2×2 is softer. Docs, the Field Manual, names today's pages and says your data is in iCloud."
+    },
     {
       "build": 63,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "About pactum is laid out as in folia",
       "detail": "Settings › About pactum starts with the icon. The build facts stand in two columns. The About tab counts the changes you have not read. The foot of Settings names the build."
-    },
-    {
-      "build": 19,
-      "date": "2026-11-02",
-      "title": "Get the Mac app is now in About",
-      "detail": "Settings › About pactum now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its hotkey, its icon and opening at login."
     }
   ]
 }
