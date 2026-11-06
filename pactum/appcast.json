@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 64,
-  "commit": "b835000",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-64/pactum.dmg",
-  "sha256": "e6623fb21f78bb681bd020283a55b148c7ce2bf81c09e68a9415e2482b754144",
+  "build": 65,
+  "commit": "daabcb5",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-65/pactum.dmg",
+  "sha256": "0e8c589fb79f861707dd20b97d2bd23ff5bac7b552500edf11dba4d60e9f00b6",
   "minimumSystemVersion": "26.0",
-  "notes": "Both minimums at the top of Data ISGs",
+  "notes": "A softer amber for the selected ISG",
   "entries": [
+    {
+      "build": 65,
+      "date": "2026-11-06",
+      "title": "A softer amber for the selected ISG",
+      "detail": "The amber behind the selected ISG's row, its figures and its spiders is softer, and so is the amber area in its spiders, like the cross-hatch in the 2×2."
+    },
     {
       "build": 64,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "Departmental ISGs in the KPI comparison",
       "detail": "The departmental ISGs now have their own figures, except D-EAPS, D-MATL and D-USYS, which stay hatched until their figures are in. Tickets per staff member is gone. Two KPIs are new: IT workplace cost per device, and devices per staff member with an IT workplace."
-    },
-    {
-      "build": 20,
-      "date": "2026-11-02",
-      "title": "About pactum is laid out as in folia",
-      "detail": "Settings › About pactum starts with the icon. The build facts stand in two columns. The About tab counts the changes you have not read. The foot of Settings names the build."
     }
   ]
 }
