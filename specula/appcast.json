@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 109,
-  "commit": "f2126d5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-109/specula.dmg",
-  "sha256": "6647517016935fdc76aa018e784e1a1e66259d0274085b88dc1fdd98a97b271b",
+  "build": 111,
+  "commit": "47f2844",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-111/specula.dmg",
+  "sha256": "b563b978c7c312b0792cb224f3cc60b6a0a29ab84c0c153d374cd098a04834d1",
   "minimumSystemVersion": "26.0",
-  "notes": "The top tiles open their lists\nThe dashboard without the three lists",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 108,
