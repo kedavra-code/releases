@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 321,
-  "commit": "4f4527e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-321/folia.dmg",
-  "sha256": "8a8e77525be96cc85c63e86e3df316082b73a2c1a09c63bd79e535562a32580c",
+  "build": 323,
+  "commit": "d3efc55",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-323/folia.dmg",
+  "sha256": "3eb9d15eb7dbc52720638b964fea38e958c5325db979e10abb53bd7a5322b204",
   "minimumSystemVersion": "26.0",
-  "notes": "Briefs for all your knowledge bases",
+  "notes": "Calendar integration can be switched off\nAll briefs are read without a long pause",
   "entries": [
+    {
+      "build": 323,
+      "date": "2026-11-07",
+      "title": "Calendar integration can be switched off",
+      "detail": "Settings › Mac app has a new switch, Calendar integration, as in tabula. On, Meetings shows the meetings of your Mac's Calendar app, with Prepare and Brief beside each. Off, folia reads no calendar, and Meetings says so. The briefs of your pages are read either way."
+    },
+    {
+      "build": 322,
+      "date": "2026-11-07",
+      "title": "All briefs are read without a long pause",
+      "detail": "When folia stops reading the missing briefs because Cerebrum could not answer for a moment, it now tries again after a minute instead of half an hour. So all your pages get their brief soon after the start, without a press on the card."
+    },
     {
       "build": 321,
       "date": "2026-11-07",
@@ -234,18 +246,6 @@
       "date": "2026-10-30",
       "title": "Search shows \"&\" as \"&\"",
       "detail": "A search hit no longer shows \"&amp;\" where the page has \"&\", for example in \"Q&A\". The same goes for \"<\", \">\", quotes and fixed spaces."
-    },
-    {
-      "build": 258,
-      "date": "2026-10-29",
-      "title": "Work offline: new pages, renames, moves, deletes and files",
-      "detail": "While folia cannot reach its database, everything you do still works: new pages and sections, renames, moves, deletes, colours, undo, and pictures and files you add. The changes wait on this device, also through a restart, and go in, in the order you made them, as soon as folia is back online. The status bar shows how many changes are waiting."
-    },
-    {
-      "build": 257,
-      "date": "2026-10-29",
-      "title": "Pages written offline reach the cloud by themselves",
-      "detail": "Text you write while folia cannot reach its servers now goes up by itself when they are back, also in pages you have closed since. The status bar says Saved only once your text is in the database; while the database cannot be reached it says Not saved yet, and your text stays safe on this device."
     }
   ]
 }
