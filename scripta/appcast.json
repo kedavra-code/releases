@@ -1,11 +1,11 @@
 {
   "app": "scripta",
-  "build": 226,
-  "commit": "7e494e7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-226/scripta.dmg",
-  "sha256": "620799171ae88fffb8c84cb4842e679d0d4adca5405ed6659b9b6f882f06b32d",
+  "build": 227,
+  "commit": "e64602f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-227/scripta.dmg",
+  "sha256": "262c2d34f4f8019964120543bc37018520d93220f068bdfb618c73c731fe0e90",
   "minimumSystemVersion": "26.0",
-  "notes": "A long meeting list ends cleanly",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 224,
