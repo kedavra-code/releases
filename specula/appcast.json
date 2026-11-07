@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 117,
-  "commit": "e8a7a24",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-117/specula.dmg",
-  "sha256": "abdd849e471e197575d44fa55945125f0b8212183c4722b303cdaea433732af7",
+  "build": 120,
+  "commit": "92b66e4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-120/specula.dmg",
+  "sha256": "02b294c2a449446ce72a01d4f04622eff5e8f9955ef8c3260326e5e65c3846b2",
   "minimumSystemVersion": "26.0",
-  "notes": "Choose where your vault is, in Armarium",
+  "notes": "specula trusts only its own server",
   "entries": [
+    {
+      "build": 119,
+      "date": "2026-11-07",
+      "title": "specula trusts only its own server",
+      "detail": "The Mac app shows only the pages of the server it started itself. If another program holds specula's port 8760, or specula's server stops, the window, Reload Page and Open in Browser no longer show what answers there: specula says why, and you open specula again."
+    },
     {
       "build": 116,
       "date": "2026-11-07",
@@ -240,12 +246,6 @@
       "date": "2026-10-28",
       "title": "A concept page uses its width, in the style guide's colours",
       "detail": "A concept page's text now fills the page's column, as its tables do, and no table runs past it: a very wide one scrolls sideways inside the page. The colours follow folia's style guide: titles and headings in the text colour, amber only for links and what is selected, and every text easy to read in light and dark."
-    },
-    {
-      "build": 43,
-      "date": "2026-10-28",
-      "title": "The whole of specula follows the family's style guide",
-      "detail": "The header, the list, the concept page, the search bar and the card beside the map now use the sizes, weights and corners of folia's style guide, in the Mac's own font, as Settings does. The concept page's text is 14.5 px. The first row of categories stays on one line again in a 1440 px window, and hiding a knowledge base no longer moves the chips beside it."
     }
   ]
 }
