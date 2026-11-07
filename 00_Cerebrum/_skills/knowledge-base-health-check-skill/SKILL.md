@@ -34,7 +34,6 @@ Agents share nothing inside their own knowledge base and would collide on everyt
 |---|---|
 | `00_Cerebrum/Outputs/_REPORTS.md` | One register for the whole vault since 21.08.2026. Two agents appending a row at once keep one row |
 | `00_Cerebrum/_ACTION-ITEMS.md` | Derived from every base's table, so it is only correct once the last agent has finished |
-| `00_Cerebrum_viewer.html` | Renders the whole vault, so regenerating it mid-sweep captures a half-audited state |
 | `.git` | One commit for the sweep, opening on one CHANGELOG heading |
 | `_scripts/verify-state.json` | The finding clock. Every agent runs `verify.py`, so this was written concurrently by all of them — see below |
 
@@ -46,13 +45,12 @@ So each agent **writes its own report file and returns its register row as text*
 
 ### Closing a sweep
 
-After the last agent reports, in this order. Or append the rows of step 2 first, then `sh _scripts/closeout.sh` runs steps 1 and 4 with `reindex.py`, `inventory.py` and `coverage.py` between them, for the live bases, and stops at the first that fails; step 3, the viewer, it does not run:
+After the last agent reports, in this order. Or append the rows of step 2 first, then `sh _scripts/closeout.sh` runs steps 1 and 3 with `reindex.py`, `inventory.py` and `coverage.py` between them, for the live bases, and stops at the first that fails:
 
 1. `python3 _scripts/actionitems.py` — the roll-up, once, never per base.
 2. Append the returned `_REPORTS.md` rows.
-3. `python3 _scripts/visualize.py`, then `node _scripts/viewer-check.js` where node exists. Deliver nothing that fails the check.
-4. `python3 _scripts/verify.py` — green before any commit. It covers every base, so it is the sweep's own audit.
-5. Commit and push if the session can run git, with one message opening on the sweep's CHANGELOG heading. A device-bridge session leaves the tree clean and says a commit is pending.
+3. `python3 _scripts/verify.py` — green before any commit. It covers every base, so it is the sweep's own audit.
+4. Commit and push if the session can run git, with one message opening on the sweep's CHANGELOG heading. A device-bridge session leaves the tree clean and says a commit is pending.
 
 Then print one summary: the per-base one-liners as bullets, then the vault totals. Do not restate each base's findings in prose. The entries and reports hold them, and a sweep summary that repeats four audits is longer than any of them.
 
@@ -63,7 +61,7 @@ Passed to each agent with `<full path>` filled in:
 ```
 Run the knowledge-base-health-check-skill against the knowledge base at <full path>. Audit that base only. Apply all auto-fixes, rewrite memory.md, auto-draft up to three new concepts where evidence supports them, and log to that knowledge base's CHANGELOG.md and Wiki/log.md. Write an Outputs report to 00_Cerebrum/Outputs/ if the run raises action items or applies fixes. Do not web search on any internal topic. Do not pause for input.
 
-Four things are the orchestrator's and you must not write them: 00_Cerebrum/Outputs/_REPORTS.md, 00_Cerebrum/_ACTION-ITEMS.md, 00_Cerebrum_viewer.html, and anything under .git. If you filed a report, return the register row you would have added as a final line prefixed ROW:, and leave the appending to the orchestrator.
+Three things are the orchestrator's and you must not write them: 00_Cerebrum/Outputs/_REPORTS.md, 00_Cerebrum/_ACTION-ITEMS.md, and anything under .git. If you filed a report, return the register row you would have added as a final line prefixed ROW:, and leave the appending to the orchestrator.
 
 Return one line:
 KB: <name> | concepts: N machine-scanned, N read in full | citations broken: N | auto-fixed: N | new concepts: N | held: N | action items: N new, N carried | report: <path|none> | clean: <yes|no>
@@ -133,9 +131,8 @@ Filenames are lowercase: `questions.md`, `index.md`, `Raw/`. macOS filesystems a
 9. **Write the CHANGELOG entry and the `Wiki/log.md` entry.**
 10. **Write a `00_Cerebrum/Outputs/` report if this run qualifies.** See *When a run writes a report* below.
 11. **Regenerate `00_Cerebrum/_ACTION-ITEMS.md`** if this run touched any action item. In a multi-knowledge-base run, once at the end, after every sub-agent has reported.
-12. **If the run regenerated `00_Cerebrum_viewer.html`** (a compile changed concepts, or `_scripts/visualize.py` changed), run `node 00_Cerebrum/_scripts/viewer-check.js` where node exists and deliver nothing that fails it. The delivery rule lives in `00_Cerebrum/CLAUDE.md`; on a machine without node, say in the summary that the viewer is regenerated but unchecked.
-13. **Commit and push, if this session can run git.** `verify.py` must be green; the message opens with the CHANGELOG entry's heading; the entry and the changes travel together. A bridge session leaves the tree clean and states in its summary that a commit is pending.
-14. **Print the summary** and stop. The owner answers pending items in a separate sitting with `knowledge-base-action-skill`, not at the end of the run.
+12. **Commit and push, if this session can run git.** `verify.py` must be green; the message opens with the CHANGELOG entry's heading; the entry and the changes travel together. A bridge session leaves the tree clean and states in its summary that a commit is pending.
+13. **Print the summary** and stop. The owner answers pending items in a separate sitting with `knowledge-base-action-skill`, not at the end of the run.
 
 Prefer a script over reading files one by one. Audits 1, 2, 4 and the clustering half of 6 are mechanical and should be done with a single pass that parses frontmatter and bodies, not by eye.
 
@@ -264,6 +261,7 @@ The archive layer is the real corpus. Report, do not modify.
 - Compare the coverage table in `Wiki/questions.md` against the archive on disk. Report scopes that are uncompiled, partially compiled, or have grown since the last check.
 - Give the largest uncompiled scope by page count. That is usually the single most useful line in the whole report.
 - Never propose reorganising, migrating or renaming anything under the archive layer.
+- **Every `Raw/` file is cited or has a fate**, owner's ruling of 07.11.2026, when 218 of `Alpha_kb`'s files had neither. `bundle.raw_without_fate(<KB>)` lists the rest: open each, and either cite it from the concept it belongs to or record its fate in `<KB>/_COMPILE-LEDGER.md` — read and carrying nothing citable, or out of scope and the base it belongs to. A base's own source copy, such as `Epsilon_kb`'s Confluence export, is declared once under `raw_copies` in its `assertions.yaml`. **`verify.py` holds it** in a base that sets `raw_needs_fate: <grace>`: a file older than the grace with neither is a finding.
 
 ## Audit 6 — contradictions
 
@@ -293,7 +291,7 @@ Fix by attribution, not deletion. "X said Y, and Y was false" carries more than 
 The candidate set is too large to read in one pass and will grow. Do not sample it, and do not silently read the top few. Keep an explicit queue.
 
 - Record the full candidate list, the clusters already read, and the date each was read, in `questions.md`.
-- Read the **next five highest-overlap unread pairs at minimum, every run**. "As many as the run can afford" turned out to mean zero: the backlog grew from 94 to 238 pairs across two days while nobody was scheduled to read cluster six (fixed 10.08.2026). Five per run is the floor, not the ambition.
+- **Read every unread pair, every run**, owner's ruling of 07.11.2026. Five a run, the floor set on 10.08.2026, let `Alpha_kb`'s queue reach 2'140 pairs. Read a pair on its shared pages: for each page both concepts cite, set the sentences of each that cite it side by side, and open the page wherever they disagree on a date, number, name, role, outcome or order of events. `python3 _scripts/pair-packs.py <KB> --out <dir>` builds the packs, cut to the sentence carrying the footnote, about 250 KB to a reader; the pass of 07.11.2026 read 2'201 pairs so, with 24 readers at about 220k tokens each; after a full pass only the pairs of changed concepts come back. Record each pair with `python3 _scripts/pairs.py <KB> --mark-read A B` **after** the fixes, because a fix changes the body the reading is recorded against. **`verify.py` holds it** in a base that sets `pairs_unread_days: <grace>`: a pair whose two concepts are older than the grace and still unread is a finding.
 - **State the arithmetic in the report every time**: clusters read this run, concepts covered, pairs still unread. On 09.08.2026 that was 5 clusters, 14 concepts, 89 of 94 pairs unread. A clean result on fourteen concepts is not a clean result on the bundle, and a report that does not say so is misleading.
 - A pair once read is not read forever. Re-queue any pair where either concept has changed since the reading date.
 
@@ -358,6 +356,56 @@ For each:
 
 If evidence is thin, do not fabricate. Log `Concept candidate held: <name> (insufficient evidence)` and move on. Surfacing a gap beats writing filler.
 
+## Every queue, every run
+
+**A queue nobody is told to empty grows.** On 07.11.2026 the owner asked whether anything else was being missed, and the answer was every gauge: 2'140 unread pairs, 218 Raw files with no fate, deferred dates passed unseen, 57 drafts, 1'163 open-question bullets inside `Alpha_kb` concepts, and pages cited with two authors or two dates. A gauge never escalated, so nothing ever made a run look at them. The rule since that day: **a health check works every queue below to zero, or raises what is left as action items**, and states each number before and after in its report.
+
+| Queue | How it is listed | What clears it |
+|---|---|---|
+| Unread contradiction pairs | `python3 _scripts/pairs.py <KB>` | *The reading queue, carried across runs* |
+| Raw files with no citation and no fate | `bundle.raw_without_fate(<KB>)` | *Audit 5* |
+| Deferred items | the *Action items* table | *Reconciling, on every run*, step 5 |
+| Drafts | `status: draft` | *Sorting the drafts* |
+| Open-question bullets in concepts | the `# Open questions` section of each concept | Sorted like drafts: settle from the pages and remove the bullet; or raise an action item naming the concept for what needs the owner or waits outside. What is left for the owner is added, as written, to `_scripts/owner-questions.json`, which specula's dashboard reads |
+| Held readings in `questions.md` | the *Held by …* and *Held from …* lists | The same sort; a reading the pages settle is written into its concept and struck from the list |
+| Pages cited with two authors or two dates | `verify.py`'s gauges | Read the page and give it its one author and its one date in every concept that cites it |
+| Sentences later content may disprove | `python3 _scripts/stale-claims.py <KB>` | Read each against its concept and pages; correct what no longer holds |
+| Concepts written before a page changed | `python3 _scripts/changed-pages.py <KB>` | Read the page against the concept, correct, restamp |
+| Descriptions behind their newest source | `verify.py`'s gauge | Rewrite the description from the body |
+| Vault-file stamps older than the file | `verify.py`'s gauge | Read the file's diff against the concept, restamp the frontmatter only |
+| Pending attachments | `<KB>/_ATTACHMENT-PASS.md` | Open each attachment; cite it or record it as carrying nothing |
+| `memory.md` past its length | `verify.py`'s gauge | Move detail into `questions.md` |
+
+**`verify.py` holds it** in a base that sets `gauges_escalate: true`: every gauge still standing is also a finding on `Wiki/questions.md`, which escalates to a DEFECT on its third run-day. A queue too large for one run, such as the open-question bullets of `Alpha_kb`, is raised once as an action item with its size and cost, so the owner decides the spend; it is never left as a number nobody reads.
+
+## Working until done, without a loop
+
+Owner's instruction of 07.11.2026: the compile, the health check and the action sitting "work all open items until done", and "make sure to not get into a infinite loop". `python3 _scripts/queues.py` measures every queue of the table above in one place and splits them in two:
+
+- **Librarian queues** a run drains by itself.
+- **Waiting queues**, open and deferred action items, move only on the owner's answer or an outside event. A run never loops on them: it hands them to the action sitting, or leaves them deferred with their condition.
+
+The procedure, the same in all three skills:
+
+1. `python3 _scripts/queues.py <KB …> --save /tmp/q0.json` before the first pass.
+2. **A pass**: work every librarian queue as the table above says, in its order, the pairs last, because every fix re-queues pairs.
+3. `python3 _scripts/queues.py <KB …> --save /tmp/q1.json` and `python3 _scripts/queues.py --compare /tmp/q0.json /tmp/q1.json`.
+4. **Exit 2**: done; every librarian queue is empty. **Exit 0**: the total fell; run another pass on what is left, comparing against the previous snapshot. **Exit 1**: the total did not fall; stop.
+5. **Three passes at most.** After the third, or on exit 1, whatever stands is raised as action items with its size, so it becomes a waiting queue and the next run starts from less. A queue raised so does not count as new work for the next pass.
+6. **A budget.** Before the first pass, say what it will cost: about 220k agent tokens per reader, a reader taking some 100 concept-pages or 250 KB of pair packs. Above 1M agent tokens, ask the owner first; below, work.
+
+**Why this ends.** Every pass must shrink a finite number; the waiting queues are outside the count; three passes is a hard ceiling; and what a run cannot drain leaves the count as an action item. A check that reads its own output cannot keep itself alive.
+
+## Sorting the drafts
+
+**Every draft of the base, every run, not only the read set.** Owner's ruling of 07.11.2026: until then nothing read the reasons drafts give, so drafts were only ever added, and 57 stood in the live bases with nothing to settle them. The reason is one sentence carrying `` `status: draft` ``, so the pass is cheap. For each draft, read that sentence and the pages it names, then do one of three things:
+
+1. **The pages settle it.** The reason no longer holds, or the corpus holds the pages that settle it and they can be read now. Read them, write what they say, set `status: stable` and drop the reason. This is librarian work and needs nobody.
+2. **It needs the owner, or waits for something outside the vault.** The owner knows the answer; or it waits for a page behind a login, a test, a video to watch, a team to answer, an event that has not happened. Raise an action item naming the concept by its path under `Wiki/`, quoting the reason, and saying what would settle it. The action skill puts it to the owner, who settles it, does the outside step, or defers it with the condition that reopens it.
+3. **It is not a draft.** A concept that is a draft only because what it describes keeps changing describes an ongoing state: set `status: stable` and a `stale_after`, as *Concept frontmatter* in the vault `CLAUDE.md` rules.
+
+A draft already named in an open or deferred item is carried, not raised again. **`verify.py` holds the rule** in a base that sets `drafts_need_item: true`: a draft that no open or deferred item names is a finding, and on its third run-day a DEFECT.
+
 ## Action items
 
 Every finding that needs judgement becomes an action item with a state, recorded in the `# Action items` table in `<KB>/Wiki/questions.md`. `CHANGELOG.md` records that an item was raised; the table records what became of it. Without the table, an item raised in one run is invisible to the next, because the run only reads the top CHANGELOG block.
@@ -378,7 +426,7 @@ Before deciding what this run found:
 2. **An `open` item that still holds is not a new finding.** Carry it forward unchanged and report it as carried, with the date it was first raised. Raising it again as new hides how long it has been outstanding, which is usually the most interesting thing about it.
 3. **An `open` item that no longer holds becomes `withdrawn`**, with the reason.
 4. **A `withdrawn` item is never raised again.** If the same condition trips the same check, the check is wrong. Fix the check and say so in the row.
-5. **A `deferred` item reopens only when its stated condition is met.** Every deferred row must carry that condition; a deferral without one is an `open` item wearing a disguise.
+5. **A `deferred` item reopens only when its stated condition is met, and every run tests the condition**, owner's ruling of 07.11.2026: until then nobody looked, and a deferral whose date had passed slept on. Every deferred row must carry its condition after the word *Reopens*; a deferral without one is an `open` item wearing a disguise. For each: has the date passed, has the page or event appeared in the archive, `scripta/` or `Raw/`? If so, the item is `open` again, and the action skill puts it to the owner. **`verify.py` holds the dates** in a base that sets `deferred_dates: <grace>`: a deferred item whose latest date after *Reopens* lies more than the grace in the past is a finding.
 6. **Only findings that survive this pass are new items.**
 
 ### Writing a row

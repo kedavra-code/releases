@@ -45,6 +45,16 @@ That installs `verify.py` as a pre-commit hook, so a commit on a red audit is bl
 
 **Decide the repository's visibility from what your corpus will hold.** A vault compiled from workplace or personal notes carries material that must not be public. `gitsetup.sh` will not guess a remote for you, and the corpus is deliberately never sanitised — see *Scope: everything counts* in `CLAUDE.md`.
 
+## The viewer: specula
+
+specula is the vault's viewer, a Mac app of its own: the 2D map, the 3D view and its Timelapse, the concepts, the question reports, a dashboard of what waits for you, and Ask Claude, which answers a question over the vault and files the report. It is published beside this template:
+
+- **Download:** the newest `specula` release at https://github.com/kedavra-code/releases/releases, the file `specula.dmg`. macOS on Apple silicon.
+- **Install:** open the image and move specula into `/Applications`.
+- **Point it at this folder:** specula › Settings › Armarium › Vault folder › Choose…, then this folder. `Open 00_Cerebrum.command` checks the Claude login and then opens it.
+
+specula reads two scripts of this folder, `_scripts/visualize.py --json` and `_scripts/dashboard.py --json`, and writes only the reports Ask Claude files in `Outputs/`. It answers only the Mac it runs on.
+
 ## The three loops
 
 **Read** turns new material into concepts that cite it. **Repair** checks those concepts against their sources and mends them, raising what needs your judgement as a written action item. **Remember** turns each fault into a check that catches it next time.
@@ -65,7 +75,7 @@ The scripts and skills carry the incidents that produced their rules — a check
 
 - Python 3 with `pyyaml` and `numpy`
 - Claude Code
-- Optional: Node with `playwright` (`npm install`) for `_scripts/viewer-check.js`, which renders the generated viewer in headless Chromium and checks it
+- Optional: specula, the viewer (see *The viewer: specula* above)
 - Optional: Obsidian, for reading the vault by hand
 
 ## Credit

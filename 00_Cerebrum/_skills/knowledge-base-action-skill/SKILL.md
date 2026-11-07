@@ -24,6 +24,8 @@ These are standing instructions, not defaults to re-derive each time.
 
 Read the `# Action items` table in every live `<KB>/Wiki/questions.md`. That table is the only place an item's state lives; `_ACTION-ITEMS.md` is generated and must never be read as a source.
 
+**Deferred items whose condition has come are walked too**, owner's ruling of 07.11.2026: `verify.py` reports a deferred item whose date has passed (`deferred_dates`), and a health check reopens one whose page or event has appeared. Read the *Reopens* sentence of every deferred row in the live bases, test it, and put each one whose condition is met to the owner with the rest.
+
 **Frozen knowledge bases are left out**, owner's instruction of 27.09.2026: a base whose `memory.md` declares it frozen is walked only when the owner names it. Its items stay `deferred` until then, with that as the reopening condition.
 
 Before deciding what is open, check each item against reality rather than against its own row. **Items go stale in both directions**: on 22.08.2026 two were still marked `open` after the same session had implemented them, and one marked `open` had been fixed by an unrelated repair earlier the same evening. Verify, then count.
@@ -64,11 +66,20 @@ Before the first question, write `Outputs/HealthChecks/YYYY-MM-DD_action-sitting
 - the do-nothing option, with its real consequence;
 - the pick, and why.
 
+**Where the question is about what a source page says, the source page comes with it**, owner's instruction of 07.11.2026, after Decision 3 of that day's sitting asked about "the ethOS page of 28.10.2025" and gave him nothing to open: "i need all necessary information to make a sound decision during these interviews. this includes links etc." So each such section also holds:
+
+- the source page by name and date, with its `foliaUrl` from the page's own frontmatter, which opens the page in folia, and its path in the vault as a clickable link; a `Raw/` page with its `source_url` where it has one;
+- the page's own words that the question turns on, quoted with the lines around them, and who the page lists as present;
+- every other page in the corpus that bears on the answer, each with its link and the line that bears, found by a search and not from memory: for a first name, every page where that name appears near the same people or topic;
+- what the concept says now, and what each answer would change in it.
+
 The page is the evidence, and the chat stays short. The question box's preview does not show on the owner's screen, so nothing the owner needs to decide may live only there. The page is process history, like an audit report: it takes an `audit` row in `Outputs/_REPORTS.md` and is never promoted.
 
 ### 5. Ask, one decision at a time
 
 The question box carries only "Decision N: which option?", with the labels A, B, C as on the page.
+
+**Before each question, the chat message carries the decision whole**: the links to the source page and the concept line, the quoted words, the other evidence with its links, and each option with what it changes. The owner answers from the chat at that moment and the decision page may not be open, so a question that names a page without its link cannot be answered soundly (07.11.2026).
 
 `AskUserQuestion`, two to four options. Put the recommended option first and mark it `(Recommended)`.
 
@@ -94,6 +105,10 @@ Two constraints that bite here:
 - **Where the file tools cannot read the vault, bash can.** In some sandboxes `Read` returns `EPERM` for the vault path while bash reads it cleanly. Where that happens, use bash for everything and tell every sub-agent the same.
 - **Never run bare `git status`.** It takes `.git/index.lock`, which a bridge session cannot delete, and the owner's next commit then fails. `_scripts/git-read.sh` is the only git a session may run.
 
+### 7b. Work until done
+
+The owner's answers make work: a settled draft re-queues its contradiction pairs, a new source asks for a fate. After implementing, run the health check's *Working until done, without a loop* over the bases the sitting touched: `queues.py` before and after each pass, three passes at most, each smaller than the last. What is still standing is raised as action items for the next sitting, never left as a number.
+
 ### 8. Close out
 
 Every one of these, every time. `sh _scripts/closeout.sh` runs all five in this order, one line each, and stops at the first that fails:
@@ -104,13 +119,6 @@ python3 _scripts/reindex.py          # indexes from frontmatter
 python3 _scripts/inventory.py        # the concept list agents read
 python3 _scripts/coverage.py         # archive coverage
 python3 _scripts/verify.py           # must end green
-```
-
-Then, where concepts changed, the viewer, which `closeout.sh` does not run:
-
-```
-python3 _scripts/visualize.py        # 00_Cerebrum_viewer.html
-bash    _scripts/viewer-check-sandbox.sh
 ```
 
 Plus: a CHANGELOG entry per file that changed (vault-level in `00_Cerebrum/CHANGELOG.md`, bundle work in `<KB>/CHANGELOG.md`), a `log.md` entry per bundle, `_REPAIR-LEDGER.md` for any body touched in a `verified` bundle, and every item row updated where it lives.

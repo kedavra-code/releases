@@ -235,6 +235,47 @@ def site_pages(kb, lang='en', category=None):
     return sorted(os.path.join(raw, f) for _, f in newest.values())
 
 
+def raw_without_fate(kb):
+    """The `Raw/` files of a base that no concept cites and no record gives a
+    fate, as paths.
+
+    A fate is a skip reason in the Raw plan (`_extractions/_RAW-PLAN-RAW.tsv`),
+    the file's name in the base's `_COMPILE-LEDGER.md`, or a source copy the
+    base declares under `raw_copies` in its `assertions.yaml`. Names are
+    compared in NFC on both sides: macOS names files decomposed, the ledger is
+    typed composed. Written for `dashboard.py` on 07.11.2026, when it counted
+    1'105 files in `Alpha_kb` of which 887 had a fate; moved here the same day so
+    `verify.py` holds the rule with the same reader."""
+    raw = os.path.join(VAULT, kb, 'Raw')
+    if not os.path.isdir(raw):
+        return []
+    nfc = lambda s: unicodedata.normalize('NFC', s)
+    cited = {p for f in concept_files(kb) for _, p in sources(f) if p}
+    ledger = os.path.join(VAULT, kb, '_COMPILE-LEDGER.md')
+    ledger = nfc(open(ledger, encoding='utf-8').read()) if os.path.exists(ledger) else ''
+    plan = os.path.join(VAULT, kb, '_extractions', '_RAW-PLAN-RAW.tsv')
+    skipped = set()
+    if os.path.exists(plan):
+        for line in open(plan, encoding='utf-8').read().splitlines()[1:]:
+            cells = line.split('\t')
+            if len(cells) > 2 and cells[2].strip():
+                skipped.add(nfc(cells[0]))
+    copies = [c.rstrip('/') for c in assertions(kb).get('raw_copies') or []]
+    out = []
+    for root, dirs, files in os.walk(raw):
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        for f in sorted(files):
+            if f in ('_INGESTED.md', '.DS_Store') or f.startswith('.'):
+                continue
+            path = os.path.join(root, f)
+            rel = nfc(os.path.relpath(path, raw).replace(os.sep, '/'))
+            if canon(path) in cited or rel in skipped or nfc(f) in ledger \
+                    or any(rel == c or rel.startswith(c + '/') for c in copies):
+                continue
+            out.append(path)
+    return out
+
+
 def script(filename):
     """A sibling script as a module, loaded by path.
 

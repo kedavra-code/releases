@@ -7,7 +7,7 @@
 OneNote/
 
 # folia's copies of its pages, from 20.10.2026: <KB>/folia/, written by folia,
-# the note app that replaces OneNote (~/__Dev/folia). Same class as OneNote/:
+# the note app that replaces OneNote. Same class as OneNote/:
 # the same private pages, read-only here; the live page in folia is the master.
 # Anchored to a knowledge base's top folder, so nothing else named folia is hit.
 /*_kb/folia/

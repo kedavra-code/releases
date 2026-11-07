@@ -482,6 +482,9 @@ def source_real_date(concept_dir, src):
     return None
 
 
+_draft_items = {}
+
+
 def audit(kb):
     A = assertions(kb)
     root = os.path.join(VAULT, kb)
@@ -1401,6 +1404,23 @@ def audit(kb):
             findings.append((rel, 'status is draft and the concept does not '
                                   'say why; a draft with no stated reason is '
                                   'a field nobody can act on'))
+        # A draft whose reason nobody acts on stays a draft for good: until
+        # 07.11.2026 no skill read the reasons, and 57 drafts stood in the live
+        # bases with nothing to settle them. Owner's ruling of that day: the
+        # health check sorts every draft, settles from the pages what the pages
+        # settle, and raises an action item for the rest, the owner's
+        # questions and what waits outside the vault alike. So with
+        # `drafts_need_item: true` a draft must be named, by its path under
+        # `Wiki/`, in an open or deferred action item of its base.
+        if A.get('drafts_need_item') and fm.get('status') == 'draft':
+            import actionitems
+            if kb not in _draft_items:
+                _draft_items[kb] = ' '.join(i['item'] + ' ' + i['res'] for i in actionitems.items(kb)
+                                            if i['state'] in ('open', 'deferred'))
+            if rel.replace(os.sep, '/').split('Wiki/', 1)[-1] not in _draft_items[kb]:
+                findings.append((rel, 'status is draft and no open or deferred '
+                                      'action item names it; the health check '
+                                      'sorts every draft into a settlement or an item'))
 
         # A `stale_after` that is no day, such as `soon`, was compared as
         # text until 05.10.2026: `soon` sorts after every date, so it never
@@ -1842,6 +1862,55 @@ def audit(kb):
                          % (nsplit, os.path.basename(worst[0]),
                             ', '.join(sorted(worst[1])))))
 
+    # The three queues no run worked until 07.11.2026, when the owner asked
+    # for them: 2'140 unread pairs in Alpha_kb against a health check that read
+    # five a run, 218 Raw files with neither a citation nor a fate, and
+    # deferred items whose dates passed with nobody to look. Each is opt-in,
+    # its value the days of grace, so an unattended weekly task that files
+    # pages or re-queues pairs is not blocked before a health check can catch
+    # up. The findings carry no counts, so the clock sees one standing finding.
+    import time as _time
+    days = A.get('pairs_unread_days')
+    if days is not None:
+        cut = _time.time() - int(days) * 86400
+        if any(os.path.getmtime(a) <= cut and os.path.getmtime(b) <= cut
+               for _, a, b in unread):
+            findings.append(('Wiki/questions.md',
+                             'contradiction pairs stand unread past the grace of '
+                             'pairs_unread_days; read each on its shared pages and '
+                             'record it: python3 _scripts/pairs.py %s' % kb))
+    days = A.get('raw_needs_fate')
+    if days is not None and not isinstance(days, bool):
+        cut = _time.time() - int(days) * 86400
+        for p in bundle.raw_without_fate(kb):
+            if os.path.getmtime(p) <= cut:
+                findings.append((os.path.relpath(p, root),
+                                 'no concept cites this Raw file and no record '
+                                 'gives its fate; cite it, or record its fate in '
+                                 '_COMPILE-LEDGER.md'))
+    days = A.get('deferred_dates')
+    if days is not None:
+        import actionitems
+        today = datetime.date.today() - datetime.timedelta(days=int(days))
+        for it in actionitems.items(kb):
+            if it['state'] != 'deferred':
+                continue
+            text = it['item'] + ' ' + it['res']
+            # The condition is the sentence that opens with Reopens; a row's
+            # later history carries dates that are no condition.
+            m = re.search(r'[Rr]eopens?\b.*?(?:(?<!\d)\.\s+(?=[A-Z*])|$)', text)
+            dates = []
+            for d, mo, y in re.findall(r'\b(\d{1,2})\.(\d{1,2})\.(20\d\d)\b', m.group(0) if m else ''):
+                try:
+                    dates.append(datetime.date(int(y), int(mo), int(d)))
+                except ValueError:
+                    pass
+            if dates and max(dates) <= today:
+                findings.append(('Wiki/questions.md',
+                                 '%s is deferred until %s, which has passed; check '
+                                 'its condition, then reopen it or defer it anew'
+                                 % (it['id'], max(dates).strftime('%d.%m.%Y'))))
+
     if unread:
         n, a, b = max(unread)
         findings.append(('(bundle)',
@@ -2029,7 +2098,10 @@ def audit(kb):
         _dy = [int(y) for y in re.findall(r'\b(20[0-3]\d)\b', str(_fm.get('description') or ''))]
         _sy = []
         for _s in (_fm.get('sources') or []):
-            if isinstance(_s, dict):
+            # A testimony is dated by the day the owner answered, not by
+            # the events he answered about: the sitting of 07.11.2026 put
+            # a 2026 testimony on concepts about 2023 and 2024.
+            if isinstance(_s, dict) and '_testimony/' not in str(_s.get('resource') or ''):
                 _m = re.match(r'(20[0-3]\d)-', str(_s.get('last_modified') or ''))
                 if _m:
                     _sy.append(int(_m.group(1)))
@@ -2145,6 +2217,18 @@ def audit(kb):
                          'deleted pending replacement. They are not waived; '
                          'they are unverifiable until it is back'
                          % (absent_cites, _layer)))
+    # A gauge never escalates, so a gauge nobody is asked to clear stands
+    # for good: on 07.11.2026 the owner asked whether anything else was being
+    # missed, and every gauge was. With `gauges_escalate: true` each standing
+    # gauge is also reported as a finding on `Wiki/questions.md`, worded by
+    # its kind with the counts left out, so the clock sees one finding while
+    # the gauge stands and escalates it on its third run-day like any other.
+    if A.get('gauges_escalate'):
+        for rel, msg in [f for f in findings if f[0] == '(bundle)']:
+            kind = re.sub(r"[0-9][0-9'.,]*", 'N', msg.split(';')[0]).strip()
+            findings.append(('Wiki/questions.md', 'a gauge stands: %s; the health '
+                             'check clears every gauge or raises what is left as '
+                             'an action item' % kind))
     return len(concepts), citations, defects, findings
 
 

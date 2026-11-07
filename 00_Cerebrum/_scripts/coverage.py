@@ -50,9 +50,13 @@ MIRROR = 'folia'
 
 def in_archive(resource):
     """Whether a citation names a page of an archive with export frontmatter:
-    the OneNote export, or folia's copy beside it."""
-    r = str(resource or '')
-    return '/OneNote/' in r or '/%s/' % MIRROR in r
+    the OneNote export, or folia's copy beside it.
+
+    Only the folder directly under a knowledge base counts: reached by `../`,
+    named after `<KB>/`, or first in the path. Until 07.11.2026 any `/folia/`
+    counted, so folia's own notes in `~/__Dev/folia/` were held to the archive
+    rules (`Zeta_kb` AI-2026-11-06-2)."""
+    return bool(re.search(r'(^|\.\./|_kb/)(OneNote|%s)/' % MIRROR, str(resource or '')))
 
 
 def archive_layer(kb):

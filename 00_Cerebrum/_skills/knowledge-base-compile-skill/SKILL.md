@@ -136,6 +136,10 @@ ls <KB>/Raw/                                    # anything dropped by hand
 python3 _scripts/meetings.py Alpha_kb             # meeting notes not yet compiled
 ```
 
+**A compile leaves no queue behind it**, owner's ruling of 07.11.2026. Before it closes: every pair its edits re-queued is read on its shared pages and recorded (`python3 _scripts/pairs.py <KB>`), every `Raw/` file it read is cited or given a fate in `<KB>/_COMPILE-LEDGER.md` (`bundle.raw_without_fate(<KB>)` lists what is left), and every concept it writes at `status: draft` is named in an action item, as `drafts_need_item` requires. The health check's *Every queue, every run* lists the rest; a compile that leaves one standing says so in its CHANGELOG entry.
+
+**Then it works until done**, by the health check's *Working until done, without a loop*: `queues.py` before and after each pass, three passes at most, each pass smaller than the last, what is left raised as action items. A plural compile does this once at the end, over every base it touched.
+
 Zero unread, no concept behind a changed page, a changelog line of all zeros, nothing new in `Raw/` and no meeting note in the queue means there is nothing to compile. **Say that and stop** — a plural run still goes on to the question reports. Manufacturing a pass over a bundle that has not changed is how a corpus acquires concepts nobody needed.
 
 ## Question reports into the Wiki
@@ -153,7 +157,7 @@ Zero unread, no concept behind a changed page, a changelog line of all zeros, no
 5. **Where a finding disagrees with a concept, do not write over it.** If the concept misreads a page it cites, correct it from that page by attribution, as a health check does. If two pages disagree, record both positions in the Contradictions table of `questions.md`.
 6. Update the register row: `promoted`, naming the concepts; `partial`, naming what was left out and why; or `none`, with the reason. An open action item that asked whether to promote the report is set to `actioned`, with the same note.
 
-**Close it like any run that changed concepts:** `sh _scripts/closeout.sh <KB>` runs `actionitems.py`, `reindex.py`, `inventory.py`, `coverage.py` and `verify.py` and stops at the first that fails; then a `Wiki/log.md` and a `CHANGELOG.md` entry in each knowledge base written into; `memory.md` where its answer changed; `actionitems.py` where an item changed; `readblocks.py --write` where a `verified` key was cleared, so the concept is back on the owner's reading list (without `--write` the script only prints, and the file stays stale); `verify.py` green; the viewer regenerated and checked. **The closing summary names each report, what it added where, and every `verified` key it cleared.** The owner no longer approves each promotion, so that summary is the review it gets.
+**Close it like any run that changed concepts:** `sh _scripts/closeout.sh <KB>` runs `actionitems.py`, `reindex.py`, `inventory.py`, `coverage.py` and `verify.py` and stops at the first that fails; then a `Wiki/log.md` and a `CHANGELOG.md` entry in each knowledge base written into; `memory.md` where its answer changed; `actionitems.py` where an item changed; `readblocks.py --write` where a `verified` key was cleared, so the concept is back on the owner's reading list (without `--write` the script only prints, and the file stays stale); `verify.py` green. **The closing summary names each report, what it added where, and every `verified` key it cleared.** The owner no longer approves each promotion, so that summary is the review it gets.
 
 **Run the reports one after another.** They are few, and two agents writing one concept lose a write.
 
@@ -181,7 +185,7 @@ python3 _scripts/verify.py <KB>                    # must be 0 defects
 python3 _scripts/verify.py <KB> | grep -c 'no inbound link'
 ```
 
-At the end of a run that changed concepts: `python3 _scripts/visualize.py` and `bash _scripts/viewer-check-sandbox.sh` green, then rewrite `memory.md` in place and prepend a `CHANGELOG.md` entry.
+At the end of a run that changed concepts: rewrite `memory.md` in place and prepend a `CHANGELOG.md` entry. There is no viewer to regenerate: specula reads the vault where it is.
 
 **Eight agents per wave.** More gains little and multiplies collisions. Four scopes across eight batches is better than eight batches of one scope: it spreads the concept namespace.
 
@@ -254,7 +258,7 @@ This is the part that cannot be reconstructed from the scripts. Every clause bel
 > ```
 > `#### SECTION <name>` must name a heading that exists **verbatim in the target file** — check it, do not trust the type's declared shape; several concepts do not follow theirs, and at least one Timeline has no headings at all and cannot be appended to by section. Multiple SECTION blocks in one APPEND are supported. Every footnote label used must be defined in the same block and equal a `sources[].id` there. No APPEND for a concept you created in this batch.
 >
-> **Prohibitions.** Do not edit an existing concept. Do not touch `index.md`, `log.md`, `questions.md`, `memory.md`, `CHANGELOG.md`, `COVERAGE.md`, `_INVENTORY.md`, `_COMPILE-LEDGER.md` or `_extractions/_merged/`. Do not write under `OneNote/` or `Raw/`. Do not write into any knowledge base other than **[KB]**. No `verified` key. Do not repair a broken concept link — under OKF a broken link is legitimate. Do not run git. Do not regenerate the viewer. Do not run `verify.py` — the dispatcher runs it once for the wave.
+> **Prohibitions.** Do not edit an existing concept. Do not touch `index.md`, `log.md`, `questions.md`, `memory.md`, `CHANGELOG.md`, `COVERAGE.md`, `_INVENTORY.md`, `_COMPILE-LEDGER.md` or `_extractions/_merged/`. Do not write under `OneNote/` or `Raw/`. Do not write into any knowledge base other than **[KB]**. No `verified` key. Do not repair a broken concept link — under OKF a broken link is legitimate. Do not run git. Do not run `verify.py` — the dispatcher runs it once for the wave.
 >
 > **Report back**, under 30 lines: pages read and their date window, concepts created, collisions, append-requests and targets, pages carrying nothing citable, names or shorthands you could not resolve, and anything the pipeline should know.
 

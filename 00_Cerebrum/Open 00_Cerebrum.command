@@ -1,25 +1,13 @@
 #!/bin/bash
-# Opens the vault viewer with Ask Claude working.
+# Opens the vault's viewer, the app specula, after checking the login.
 #
-# Double-click this in Finder. It starts `_scripts/viewer-server.py` if it is
-# not already up, then opens `00_Cerebrum_viewer.html` in your browser.
-#
-# It exists because a page opened from disk cannot start anything: browsers
-# forbid it, so the helper has to be running before the page asks. Opening the
-# HTML directly still works — the page searches exactly the same — but the Ask
-# Claude and Reports buttons are grey, because there is nothing for them to
-# talk to. Owner's instruction of 16.09.2026.
-#
-# Nothing here is left running that was not already: the helper is started
-# detached and keeps running after this window closes, so a second double-click
-# finds it and starts nothing. Stop it with `pkill -f viewer-server.py`.
+# Double-click this in Finder. The viewer is specula, an app of its own: install
+# it from the releases page named in README.md, and choose this folder in its
+# Settings › Armarium › Vault folder. The app starts its own server, so this starts nothing
+# but the app. Template builds up to 31 started a one-file viewer here instead.
 
 set -u
 cd "$(dirname "$0")" || exit 1
-
-PORT=8760
-VIEWER=00_Cerebrum_viewer.html
-LOG="${TMPDIR:-/tmp}/cerebrum-viewer-server.log"
 
 echo "00_Cerebrum — $(pwd)"
 
@@ -75,66 +63,11 @@ if [ "$LOGIN" = 1 ] || [ "$LOGIN" = 2 ] || [ "$LOGIN" = 3 ]; then
       [Nn]*) echo "$SKIPPED" ;;
       *) "$CLAUDE" auth login || echo "!! the sign-in did not finish"
          # Say what the login looks like now, so the answer is on screen rather
-         # than assumed. The helper reads the keychain on every /health, so a
-         # helper already running needs no restart.
+         # than assumed.
          python3 _scripts/check-login.py || true ;;
     esac
   fi
 fi
 
-# The viewer is generated and gitignored, so a fresh clone has none. Build it
-# rather than opening a browser at a file that is not there.
-if [ ! -f "$VIEWER" ]; then
-  echo "· no viewer yet, generating it (this takes a moment)"
-  python3 _scripts/visualize.py || { echo "!! visualize.py failed"; exit 1; }
-fi
-
-# A helper reads its code and its model list one time, when it starts. One that
-# began before its script last changed is stopped here, and the new one is
-# started below. Until 08.10.2026 it was left to run, and the owner started the
-# viewer again after two models had left the list and saw them still. A helper
-# that is answering a question at this moment is left to finish.
-OLD=$(pgrep -f "viewer-server.py --port $PORT" | head -1)
-if [ -n "$OLD" ] && python3 _scripts/viewer-server.py --stale "$OLD"; then
-  if curl -fsS -m 2 "http://127.0.0.1:$PORT/health" 2>/dev/null | grep -q '"busy": true'; then
-    echo "· the helper is older than its script, but it is answering a question: it is left running"
-  else
-    echo "· the helper is older than its script: stopping it, the new one starts now"
-    kill "$OLD" 2>/dev/null || true
-    for _ in $(seq 1 20); do
-      curl -fsS -m 1 "http://127.0.0.1:$PORT/health" >/dev/null 2>&1 || break
-      sleep 0.25
-    done
-  fi
-fi
-
-# Is the helper already answering? Ask it rather than looking for a process:
-# what matters is whether the port responds, not whether something is named
-# like it.
-if curl -fsS -m 2 "http://127.0.0.1:$PORT/health" >/dev/null 2>&1; then
-  echo "· helper already running on 127.0.0.1:$PORT"
-else
-  echo "· starting the helper on 127.0.0.1:$PORT"
-  nohup python3 _scripts/viewer-server.py --port "$PORT" >>"$LOG" 2>&1 &
-  # Wait for it to answer rather than sleeping a guess: the page checks once on
-  # load, and opening the browser first would grey the buttons for no reason.
-  for _ in $(seq 1 40); do
-    if curl -fsS -m 1 "http://127.0.0.1:$PORT/health" >/dev/null 2>&1; then
-      break
-    fi
-    sleep 0.25
-  done
-  if curl -fsS -m 1 "http://127.0.0.1:$PORT/health" >/dev/null 2>&1; then
-    echo "· helper is up"
-  else
-    echo "!! the helper did not come up. Its log is $LOG"
-    echo "   The viewer still opens and searches; Ask Claude will be grey."
-  fi
-fi
-
-echo "· opening the viewer"
-open "$VIEWER"
-
-echo
-echo "Ask Claude writes a question report into Outputs/ using Claude Opus 5.5."
-echo "Stop the helper with:  pkill -f viewer-server.py"
+echo "· opening specula"
+open -a specula || echo "!! specula did not open. Install it into /Applications from the releases page named in README.md."

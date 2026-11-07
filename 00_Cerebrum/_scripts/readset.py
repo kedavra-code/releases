@@ -25,6 +25,12 @@ practice removed on 09.08.2026 for having no principled basis.
 This script exists so the read set is derived rather than chosen to fit. A
 run that picks its own scope will always pick the scope it had budget for.
 
+A base whose every concept has been read by two independent readers can set
+`read_changed_only: true` in its `assertions.yaml`. Then the second and third
+arms read only concepts that also changed: the first arm alone decides.
+`Zeta_kb` set it on 07.11.2026, after its two-reader pass, on the owner's
+choice (AI-2026-11-06-1, AI-2026-11-07-2).
+
 Usage:  python3 _scripts/readset.py <KnowledgeBase> [--top N] [--since DATE]
 Prints the read set with the reason each concept is in it, then the arithmetic
 the CHANGELOG entry has to carry.
@@ -227,8 +233,10 @@ def main():
             # AI-2026-09-20-2.)
             if body_changed_since(kb, rel, base_rev):
                 reasons[rel].append('changed since %s' % since)
-    for rel, n in inbound.most_common(top):
-        reasons[rel].append('top %d by inbound links (%d)' % (top, n))
+    changed_only = bool(verify.bundle.assertions(kb).get('read_changed_only'))
+    if not changed_only:
+        for rel, n in inbound.most_common(top):
+            reasons[rel].append('top %d by inbound links (%d)' % (top, n))
 
     size = sum(len(b) for b in bodies.values())
     print('%s: %d concepts, %.1f MB of body text' % (kb, len(concepts), size / 1e6))
@@ -243,7 +251,11 @@ def main():
     print('  machine-scanned: %d of %d' % (len(concepts), len(concepts)))
     print('  read in full: %d, chosen by the read rule, not by budget' % len(reasons))
     print('  not read in full: %d' % (len(concepts) - len(reasons)))
-    print('  plus the concepts in the contradiction clusters this run reads')
+    if changed_only:
+        print('  read_changed_only: the most-linked and the contradiction '
+              'clusters are read in full only where they changed')
+    else:
+        print('  plus the concepts in the contradiction clusters this run reads')
 
 
 if __name__ == '__main__':
