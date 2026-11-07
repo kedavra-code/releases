@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 319,
-  "commit": "12613e8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-319/folia.dmg",
-  "sha256": "a1bc18aa4306bf69bc927073170bf6b0399ddd95cc20f524ffe7d7882c0c1a92",
+  "build": 320,
+  "commit": "cbca4e0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-320/folia.dmg",
+  "sha256": "2037a123fcbab13b4c5660bd122f73add1a964359d313a2959de6a4bb419d0e6",
   "minimumSystemVersion": "26.0",
-  "notes": "Safer files, and a quicker page list",
+  "notes": "Choose where your Cerebrum vault is",
   "entries": [
+    {
+      "build": 320,
+      "date": "2026-11-07",
+      "title": "Choose where your Cerebrum vault is",
+      "detail": "Settings › Armarium › Cerebrum has a new row, Vault folder. Brief from Cerebrum reads your vault from the standard place in iCloud Drive, or from any folder you choose on this Mac, so a vault anywhere works, also another person's. The briefs are kept in the briefs folder of that vault. The row also says when a folder has no Cerebrum vault, or when the vault does not let folia keep briefs yet."
+    },
     {
       "build": 316,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-10-29",
       "title": "Settings › Users, as in j4k",
       "detail": "Only for the admin: everyone who may sign in to folia, each with Remove, and a field to add an address. Before, an address came on the list only when a notebook was shared with it, and nothing took one off."
-    },
-    {
-      "build": 255,
-      "date": "2026-10-29",
-      "title": "What's New opens once after an update",
-      "detail": "After an update, the Mac app shows What's New once. It no longer opens again each time you open a file from the Finder or the Dock, follow a link to a page, or bring the window back."
     }
   ]
 }
