@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 324,
-  "commit": "89ab303",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-324/folia.dmg",
-  "sha256": "9ef6e848d49bbbca02dc9acc4517295107bb4386ad401113ee0f7734b85273f1",
+  "build": 327,
+  "commit": "e472b80",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-327/folia.dmg",
+  "sha256": "103349afbb71a6fc4d98adc9c0e9301bcf08d14dbf53ac013c681ff1caa849bf",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Only new briefs are made\nfolia stays quick with a brief on every page and 2 more",
   "entries": [
+    {
+      "build": 327,
+      "date": "2026-11-07",
+      "title": "Only new briefs are made",
+      "detail": "folia makes a brief only for a meeting or page that has none. A brief it made once stays as it is, also after a day; press Read again in its card for a new one."
+    },
+    {
+      "build": 326,
+      "date": "2026-11-07",
+      "title": "folia stays quick with a brief on every page and 2 more",
+      "detail": "folia stays quick with a brief on every page: With briefs on all your knowledge bases, folia could slow down and stop with \"Something went wrong\". It worked out the list of briefed pages again at each change of any page, which took almost a second; now it takes a hundredth of that. At each start it also read every kept brief again; now it only asks which pages have none. Meetings finds pages the calendar renamed: When your calendar gives a meeting series a new id, Meetings still shows Open for the page you prepared, and does not offer Prepare again. folia finds it by the meeting's time and the title it had at Prepare, also when you changed the page's title. A link from scripta finds it the same way. No Brief button in Meetings: folia reads the briefs by itself, so Meetings shows only Prepare or Open. A meeting's brief is in its page, once you have prepared it."
+    },
     {
       "build": 323,
       "date": "2026-11-07",
@@ -234,18 +246,6 @@
       "date": "2026-10-30",
       "title": "While you search, the columns show where the hits are",
       "detail": "Each notebook and section shows how many pages it has with your words, and each page how many hits. Notebooks, sections and pages without any turn grey; nothing is hidden. Clear the search and the numbers go."
-    },
-    {
-      "build": 260,
-      "date": "2026-10-30",
-      "title": "Search filters: notebook, section, date, open tasks, tag",
-      "detail": "Under the search field, a row of filters narrows what you find: a notebook or a section (also the one you are in), a time (today, last 7 or 30 days, this year, last year, or between two days), where the words stand (titles, headings, open tasks, pictures and files, meetings), and a tag. Each choice shows how many pages it gives. Sort by best match or newest. Without any words, the filters list their pages, for example every open task of a section from the last week."
-    },
-    {
-      "build": 259,
-      "date": "2026-10-30",
-      "title": "Search shows \"&\" as \"&\"",
-      "detail": "A search hit no longer shows \"&amp;\" where the page has \"&\", for example in \"Q&A\". The same goes for \"<\", \">\", quotes and fixed spaces."
     }
   ]
 }
