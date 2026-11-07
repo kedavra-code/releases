@@ -1,11 +1,11 @@
 {
   "app": "folia",
-  "build": 323,
-  "commit": "d3efc55",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-323/folia.dmg",
-  "sha256": "3eb9d15eb7dbc52720638b964fea38e958c5325db979e10abb53bd7a5322b204",
+  "build": 324,
+  "commit": "89ab303",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-324/folia.dmg",
+  "sha256": "9ef6e848d49bbbca02dc9acc4517295107bb4386ad401113ee0f7734b85273f1",
   "minimumSystemVersion": "26.0",
-  "notes": "Calendar integration can be switched off\nAll briefs are read without a long pause",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 323,
