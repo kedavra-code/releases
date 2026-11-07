@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 120,
-  "commit": "92b66e4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-120/specula.dmg",
-  "sha256": "02b294c2a449446ce72a01d4f04622eff5e8f9955ef8c3260326e5e65c3846b2",
+  "build": 121,
+  "commit": "3ea9bb8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-121/specula.dmg",
+  "sha256": "52eafa04fb0f71e8b0335fa33b6152b5662651131c5144142a396872b96540b0",
   "minimumSystemVersion": "26.0",
-  "notes": "specula trusts only its own server",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 119,
