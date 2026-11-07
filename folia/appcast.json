@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 320,
-  "commit": "cbca4e0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-320/folia.dmg",
-  "sha256": "2037a123fcbab13b4c5660bd122f73add1a964359d313a2959de6a4bb419d0e6",
+  "build": 321,
+  "commit": "4f4527e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-321/folia.dmg",
+  "sha256": "8a8e77525be96cc85c63e86e3df316082b73a2c1a09c63bd79e535562a32580c",
   "minimumSystemVersion": "26.0",
-  "notes": "Choose where your Cerebrum vault is",
+  "notes": "Briefs for all your knowledge bases",
   "entries": [
+    {
+      "build": 321,
+      "date": "2026-11-07",
+      "title": "Briefs for all your knowledge bases",
+      "detail": "With Brief from Cerebrum on, the pages of every notebook whose Markdown copy is in a knowledge base of your vault now get the brief card too, such as your NZZ and SRG SSR notebooks, not only the ETH ones. folia reads the missing briefs one page at a time, the newest first; Settings › Armarium shows how far it is."
+    },
     {
       "build": 320,
       "date": "2026-11-07",
@@ -240,12 +246,6 @@
       "date": "2026-10-29",
       "title": "Pages written offline reach the cloud by themselves",
       "detail": "Text you write while folia cannot reach its servers now goes up by itself when they are back, also in pages you have closed since. The status bar says Saved only once your text is in the database; while the database cannot be reached it says Not saved yet, and your text stays safe on this device."
-    },
-    {
-      "build": 256,
-      "date": "2026-10-29",
-      "title": "Settings › Users, as in j4k",
-      "detail": "Only for the admin: everyone who may sign in to folia, each with Remove, and a field to add an address. Before, an address came on the list only when a notebook was shared with it, and nothing took one off."
     }
   ]
 }
