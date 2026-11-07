@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 69,
-  "commit": "1f7293d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-69/pactum.dmg",
-  "sha256": "1986bd62ab1cebe5fc32d4410c66f82175bba75d639c56cce37115f0f0712aa5",
+  "build": 71,
+  "commit": "a3b6cf6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-71/pactum.dmg",
+  "sha256": "1b28ba086f9aad322ab7e2ae828d54364c55952f3400a2dc5474ce211fc2b8b0",
   "minimumSystemVersion": "26.0",
-  "notes": "Safer and faster",
+  "notes": "pactum trusts only its own server",
   "entries": [
+    {
+      "build": 70,
+      "date": "2026-11-07",
+      "title": "pactum trusts only its own server",
+      "detail": "pactum shows only pages from the server it started itself. Before, another program on this Mac that took pactum's port first could have shown its pages in pactum's window. Now pactum shows why instead, and opens nothing in the browser."
+    },
     {
       "build": 69,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "A calmer table, and a checked complexity factor",
       "detail": "The KPI table shows its standing in calm greys with soft numbers, no more blue. The names in the 2×2 are a true 12 px. Devices per staff member counts as better lower. The figures add the heads without an IT workplace. The complexity factor takes 0.5 to 2 only, and the page says so."
-    },
-    {
-      "build": 24,
-      "date": "2026-11-04",
-      "title": "Maturity is saved at once",
-      "detail": "Enter maturity saves each choice the moment you make it, so nothing is lost when pactum closes. The spiders show all five dots, also for low scores. Chart text follows the folia Style Guide, and the explanation of the profiles stands apart."
     }
   ]
 }
