@@ -1,11 +1,11 @@
 {
   "app": "tabula",
-  "build": 745,
-  "commit": "6a380ad",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-745/tabula.dmg",
-  "sha256": "d2064a95b960a412124281262a11f64cb3aaae51f5c3720766679657ad92f1c4",
+  "build": 746,
+  "commit": "24952b0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-746/tabula.dmg",
+  "sha256": "8b8c043824ec88aeb4d4f1f4a61928085368eb1344cbe103488ddabd7904e2c7",
   "minimumSystemVersion": "26.0",
-  "notes": "tabula is better protected against attacks\nNo more sign-in page when you open tabula",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 742,
