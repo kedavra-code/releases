@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 111,
-  "commit": "47f2844",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-111/specula.dmg",
-  "sha256": "b563b978c7c312b0792cb224f3cc60b6a0a29ab84c0c153d374cd098a04834d1",
+  "build": 114,
+  "commit": "03f5684",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-114/specula.dmg",
+  "sha256": "4c23856385b5d46df6dcb4f11915575028edf59bb5edb663d813458df88536bc",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Questions for you in each knowledge base",
   "entries": [
+    {
+      "build": 113,
+      "date": "2026-11-07",
+      "title": "Questions for you in each knowledge base",
+      "detail": "Each knowledge base card on the dashboard has a line Questions for you: the questions in its concepts that only you can answer. Click it, and they open under the line, by concept. A concept's name opens the concept at its open questions. The line shows once the vault lists your questions. Open items now show their bold words in bold, not between stars."
+    },
     {
       "build": 108,
       "date": "2026-11-07",
@@ -240,12 +246,6 @@
       "date": "2026-10-28",
       "title": "Settings and the windows follow the family's style guide",
       "detail": "Settings, About, ⌘K and the Reports window now look as folia's style guide says: the Mac's own font, one base size, the small buttons of every Settings row 30 px high, and amber text and focus rings a little darker, so they read well on every light ground. The red Delete button reads well in dark mode too."
-    },
-    {
-      "build": 41,
-      "date": "2026-10-27",
-      "title": "Docs in Settings opens the manual in a window",
-      "detail": "In the specula Mac app, Settings › About specula › Docs opens the specula Field Manual in a window of the app, as the Docs button in the About specula window does. In a browser it still opens the page online."
     }
   ]
 }
