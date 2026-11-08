@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 129,
-  "commit": "29ceb59",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-129/specula.dmg",
-  "sha256": "fc0a4ad2fa1b6756cebe89740ff96c8f2ec3ea2a209a622b66b829b2020bf472",
+  "build": 130,
+  "commit": "2ff50b2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-130/specula.dmg",
+  "sha256": "27b3861e5a0b26dc06bda7b7429629c253bd8005d0883eb3821210205de13a42",
   "minimumSystemVersion": "26.0",
-  "notes": "Reports stands under Settings",
+  "notes": "Newer vault data while you are away",
   "entries": [
+    {
+      "build": 130,
+      "date": "2026-11-08",
+      "title": "Newer vault data while you are away",
+      "detail": "When the vault changes while you cannot see specula (its window closed, hidden with ⌘H or covered), specula now shows the newer data by itself, on the same concept and at the same place on the page. While you look at it, the note \"The vault has changed\" still waits for Show, so nothing moves under your eyes. It also waits while Claude answers a question, the Timelapse plays, or a window such as Settings is open."
+    },
     {
       "build": 129,
       "date": "2026-11-08",
@@ -240,12 +246,6 @@
       "date": "2026-10-31",
       "title": "No scrollbar in Settings",
       "detail": "About specula now fits the window: the build facts stand in two columns, what each one means is in its tooltip, and Where your notes live has two short rows. Settings draws no scrollbar."
-    },
-    {
-      "build": 57,
-      "date": "2026-10-31",
-      "title": "Settings as big as tabula's; more in About",
-      "detail": "The Settings window has the size of tabula's. About specula lists the build code, build number, build date, the first commit, the web app and the Mac app, and says where your notes live. A new part, Account, shows who uses specula on this Mac and the vault it reads."
     }
   ]
 }
