@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 504,
-  "commit": "f35c5ac",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-504/GLaDOS.dmg",
-  "sha256": "add18f3778c0ab04fcf3e51d909393b58e71b1dc3a232551338730021f2e47fb",
+  "build": 506,
+  "commit": "fa42d58",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-506/GLaDOS.dmg",
+  "sha256": "0dba0cb16f79eea87d62763592ccc98ed68b8d096e4dc54af5f199fd2aa4c00d",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A larger mark in the menu bar",
   "entries": [
+    {
+      "build": 506,
+      "date": "2026-11-08",
+      "title": "A larger mark in the menu bar",
+      "detail": "Her mark in the menu bar is an eighth larger, as large as the marks of the other apps. It moves as before while she or J.A.R.V.I.S. speaks."
+    },
     {
       "build": 495,
       "date": "2026-11-07",
@@ -240,12 +246,6 @@
       "date": "2026-10-06",
       "title": "The menu bar icon turns smoothly, at no cost",
       "detail": "While GLaDOS or J.A.R.V.I.S. speaks, the eye in the menu bar icon still turns. The graphics chip draws the turn now. It is smoother, and the app uses no more processor power than with the still icon."
-    },
-    {
-      "build": 339,
-      "date": "2026-10-06",
-      "title": "The menu bar icon turns while they speak",
-      "detail": "While GLaDOS or J.A.R.V.I.S. speaks, the eye in the menu bar icon goes round clockwise, and its pupil goes round anticlockwise. One turn takes three seconds. At all other times it is the still eye."
     }
   ]
 }
