@@ -67,6 +67,7 @@ Each knowledge base is one folder inside `00_Cerebrum/`, named `[Topic]_kb`.
 │   ├── questions.md  — open threads, gaps, coverage queue (an OKF concept)
 │   ├── references/   — mirrored external material, digests, scripts
 │   └── <group>/      — concepts, grouped in subdirectories
+├── _QUESTIONS-CLOSED.md — closed action items and settled held rows, moved out of questions.md
 └── CHANGELOG.md      — the librarian's run log; top entry = current state
 ```
 
@@ -194,7 +195,7 @@ When a concept states a figure someone might act on and that figure was derived 
 
 - `index.md` — directory listing, one per directory. No frontmatter, except the bundle root's `okf_version: "0.2"`. Entries carry the linked concept's `description`.
 - `log.md` — the OKF update log: what concepts were **created, updated, deprecated, and when**. Sits at the bundle root; may also appear in subdirectories.
-- `questions.md` — a concept like any other, `type: Open Questions`. Holds open threads, unresolved tensions, the coverage queue, and the **Action items** table.
+- `questions.md` — a concept like any other, `type: Open Questions`. Holds open threads, unresolved tensions, the coverage queue, and the **Action items** table. Its closed rows move to `<KB>/_QUESTIONS-CLOSED.md`.
 - `references/` — mirrored external material, web-search digests, and any scripts an executor or attester points at.
 
 ### memory.md, and why it is not a log
@@ -376,7 +377,7 @@ On top of its usual passes the audit verifies:
 
 ### Action items
 
-Findings that need judgement become **action items** in that knowledge base's `Wiki/questions.md`. `CHANGELOG.md` records that an item was raised; **the table is the only place its state lives.**
+Findings that need judgement become **action items** in that knowledge base's `Wiki/questions.md`. `CHANGELOG.md` records that an item was raised; **the table is the only place an open or deferred item's state lives.** Once an item is `actioned` or `withdrawn`, `close-items.py` moves its row to `<KB>/_QUESTIONS-CLOSED.md`, and from then on that file is the only place its state lives. A *Held* section whose rows are all settled moves there too. So a sitting reads only what is still open.
 
 Four states: `open`, `actioned`, `deferred`, `withdrawn`. Ids are `AI-YYYY-MM-DD-n`, stamped with the raising run and **never reused**.
 
@@ -402,7 +403,7 @@ If you wire it to a scheduler, three facts bind whatever you build. **A run that
 
 ## Action items across the vault
 
-Findings are raised per knowledge base, in `<KB>/Wiki/questions.md`. **That table is the only place an item's state lives.**
+Findings are raised per knowledge base, in `<KB>/Wiki/questions.md`. **That table is the only place an open or deferred item's state lives; a closed item's is `<KB>/_QUESTIONS-CLOSED.md`.**
 
 `_ACTION-ITEMS.md` in this folder carries a roll-up: every open item across every knowledge base, oldest first, plus deferred items with the conditions that reopen them, plus per-knowledge-base counts.
 
@@ -452,44 +453,43 @@ Ignored by `.gitignore`, by decision: archive layers (read-only bulk exports tha
 - **Prove the new check fails without its fix.** Write the check, reintroduce the defect it is for, watch `verify.py` go red, then restore. **Reintroduce one at a time**: a batch hides which cases the guard cannot see, because the first failure is the one that gets reported. **A confirmation guard is proven by refusing at its prompt, never by removing it** — removed, it performs the action it guards.
 - **A check keeps its failing case.** `verify-cases.py` holds, for each check `verify.py` makes of a knowledge base, a made-up input that makes it fire, and the audit runs them on every commit. **A new check brings its case in the commit that adds it.** A check written before 05.10.2026 with no case stands in the script's `OWED` list, which only gets shorter.
 
-| Script | What it does, and when to run it |
+**Each script's full description, its options and what it was built from stand in `_scripts/README.md`.** Read its row there before you run a script for the first time in a session or change it. The table below keeps what each script is for and every rule it carries; where the two disagree, this file wins.
+
+| Script | What it is for, and the rule it carries |
 |---|---|
-| **`verify.py`** | The canonical mechanical audit and this repository's test suite. Every health check runs it, any session may, and the pre-commit hook runs it on every commit. Checks OKF conformance, citation resolution, footnote binding, `generated.at` freshness, the assertions, the link graph, and the vault-level files. It checks an index by asking whether `reindex.py` would change it. `--no-clock` reports the same and leaves the finding clock unwritten, for a look that is not a run. |
-| **`bundle.py`** | What a bundle is, for every other script: where the vault is, what frontmatter and a fence are, which folders are knowledge bases, how `assertions.yaml` is read, which files are concepts, how `sources` are read, and how a sibling script with a hyphen in its name is loaded. Imported, never run by hand. |
-| **`verify-cases.py`** | The kept cases: a small made-up knowledge base the audit passes, and one change to it for each check. `verify.py` runs them in its vault pass. `python3 _scripts/verify-cases.py --sites` lists every reporting site of the audit and the case that covers it. |
-| **`vault.py`** | The vault, read-only, for any app or Claude session on the machine: `search`, `concept`, `person`, `project`, `changed`, `questions`, each answer with the concept path and its trust signals. A command line, and an MCP server (`--mcp`) that Claude Code can register. **It reads concepts only**, never `Raw/`, the archive layers, `scripta/` or `_testimony/`; it writes nothing and opens no port. `--check` runs the questions with known answers listed in its `CHECK`, which the template ships empty, and the guards that keep it inside the concepts. |
-| **`remeasure.py`** | Reruns the count an action item carries as Re-measure: `python3 _scripts/<name>.py <args>` counting `<text>` = <n>, and sorts the open and deferred items into `fixed?`, `changed` and `still holds`. **The action sitting runs it first.** It runs only `python3 _scripts/…`, never through a shell. |
-| **`closeout.sh`** | Closes a compile, a health check or a sitting: `sh _scripts/closeout.sh [KB …]` runs `actionitems.py`, `reindex.py`, `inventory.py`, `coverage.py` and `verify.py`, one line each, and stops at the first that fails. With no base named, it writes the live bases only. |
-| **`actionitems.py`** | Regenerates `_ACTION-ITEMS.md` from the per-KB tables. The roll-up is never written by hand. |
-| **`reindex.py`** | Regenerates directory indexes from the concepts' own frontmatter. **Compile agents may not touch `index.md`**, so a compile always leaves them stale by exactly the number of concepts it added. **It never reorders an index** — `people/` is alphabetical, `decisions/` is filename order which is chronological, and a hand-ordered reading list stays in its curated order. It refreshes descriptions, adds what is missing, drops what is gone. Run it at the end of every compile wave and every health check. |
-| **`visualize.py`** | The vault's data and its map, for specula. `python3 _scripts/visualize.py --json` prints the concepts with their places, the halos, the knowledge-base blocks, the build facts, the news and the mark, as one JSON object, and nothing else. specula's server runs it, keeps the result, and runs it again two seconds after a concept changes, so **there is nothing to regenerate and no page to build**. The layout is solved from the links, each base on a circle round the middle; `PLACE`, empty here, lets you set where the middle of each base stands, and `_depth()` gives the 3D view its depth. A change here is checked by opening specula. |
-| **specula** | The vault's viewer, an app of its own: the 2D map, the 3D view and its Timelapse, the concepts, the question reports in English and German, the dashboard, and Ask Claude, which runs `claude -p` over this vault under the *Question report protocol*. **Download it from the releases page named in `README.md`**, install it, and choose this folder in Settings › Armarium › Vault folder. It answers only this Mac, reads the vault where it is, and writes only what Ask Claude files in `Outputs/`. It reads `visualize.py --json` and `dashboard.py --json`, so those two scripts are its interface: a change to either is checked by opening specula. |
-| **`dashboard.py`** | How the vault stands and what waits for the owner, as one JSON object for specula's dashboard: `python3 _scripts/dashboard.py --json`. Every figure comes from the script that owns it, and `verify.py` runs with `--no-clock`. Writes nothing. `--check` holds each figure to its own script. |
-| **`mermaid-check.py`** | Turns every Mermaid block in a markdown file into a URL that renders it. **A diagram nobody has rendered is an unverified claim.** The URL is opened in the owner's own browser; **driving it with the Claude in Chrome tools makes it a screenshot the librarian can read, which is what verification means here.** `python3 _scripts/mermaid-check.py <file>`, or `--json`. |
-| **`namescan.py`** | The calibrated name scan. **An estimator that feeds decisions gets calibrated against knowns before its numbers are trusted.** Measures every spelling family against the people who already have concepts and presents counts for unknowns as floors with the measured range attached. Kürzel and nicknames count only when `assertions.yaml` maps them. |
-| **`coverage.py`** | Measures archive coverage and writes the generated `<KB>/COVERAGE.md`. **Coverage is the share of archive pages some concept actually cites**, plus pages a compile agent recorded in `<KB>/_COMPILE-LEDGER.md` as carrying nothing citable. `verify.py` fails when the table goes stale. A knowledge base whose bulk corpus is not `OneNote/` declares `archive_layer` in its own `assertions.yaml`. |
-| **`prepare-batch.py`** | Packs a compile batch: strips frontmatter, Teams boilerplate, URLs and GUIDs, and collapses lines already present elsewhere to a marker naming where they came from. **Never `--no-collapse`.** |
-| **`merge-appends.py`** | **Compile agents run concurrently and so may not edit an existing concept: they emit APPEND blocks and this merges them serially**, resolving each citation to its true relative depth. It does not remap a footnote where the page is already cited under another id; `verify.py` reports a page cited under two ids. |
-| **`blanklines.py`** | Where a blank line is missing between two blocks, for the check and for the repairs: what a fenced block, a paragraph line and a table row are, and each rule once. `verify.py` counts by it, and `fix-runons.py`, `fix-tablebreaks.py` and `fix-footnote-gaps.py` find their places by it. A row a blank line would not mend is held for a reader, and the finding names no script. Imported, never run by hand. |
-| **`fix-runons.py`** | Inserts the blank line a run-on paragraph is missing, so two claims with two sources stop rendering as one. Its rule is `blanklines.runon`, the one `verify.py` counts by, so the two cannot part. It leaves tables, headings, block quotes, footnote definitions, fenced blocks and list items marked `-` or `*` alone on both sides. `python3 _scripts/fix-runons.py <KB> [more] [--dry-run]`. |
-| **`fix-depth.py`** | Repairs a resource path whose only fault is the number of `../` steps. Touches only a citation that does not resolve, and only where re-anchoring on the path from `OneNote/` onward finds the file. **Run it after every merge.** `python3 _scripts/fix-depth.py <KB> [--dry-run]`. |
-| **`plan-batches.py`** | Derives what is unread and cuts it into batches inside a scope. Neither archive is planned by hand. |
-| **`inventory.py`** | Regenerates the concept list compile agents read instead of exploring the tree. An agent that cannot see a concept writes it again under a second name. |
-| **`archive-snapshot.sh` / `archive-diff.sh`** | Snapshot an archive layer's file list and hashes, and report what changed. Answers "did this file change". |
-| **`archive-fingerprint.py`** | Fingerprints an archive layer by content and records every citation into it, so a replacement export can be remapped. Answers "which page in the new export is this old page". |
-| **`attachment-register.py`** | Generates `<KB>/_ATTACHMENT-PASS.md` from the `# Pending attachments` tables in the concepts. Generated; never edited by hand. |
-| **`readset.py`** | Derives the health check's read set. See *Health check skill*. |
-| **`pairs.py`** | The contradiction reading queue: which candidate pairs nobody has read since either side changed. `python3 _scripts/pairs.py <KB>` lists them, largest overlap first; `--mark-read A B` records a reading once its repairs are written. A pair returns when either concept's body changes. The verdict of a reading stays in the queue table in `questions.md`. |
-| **`queues.py`** | Every queue of a base in one measure, librarian queues apart from those waiting on the owner, and the loop's guard: `--compare BEFORE AFTER` exits 2 when done, 0 when smaller, 1 when not smaller. The compile, the health check and the action sitting run it before and after each pass, three passes at most. |
-| **`pair-packs.py`** | Packs the unread contradiction pairs as the sentences of both concepts citing each shared page, about 250 KB to a reader. `python3 _scripts/pair-packs.py <KB> --out <dir>`. |
-| **`changed-pages.py`** | Lists the concepts written before a page they cite was rewritten, from the exporter's change lists. **Run it in every compile's short loop**: the planner counts a cited page as covered whatever it now says. Read the page against the concept, then restamp. |
-| **`quotes.py`** | Lists quotations that stand in no page their footnotes cite. A base switches the check on with `quotes_in_page: true`, and `verify.py` then raises a finding for each. **Opting a base in is the owner's decision.** A span that is no quotation of a page is waived in `assertions.yaml` with what it is. |
-| **`meetings.py`** | The queue and the reader for `scripta/`, where scripta, a meeting transcription program, writes one note per meeting. `python3 _scripts/meetings.py <KB>` lists the notes no concept cites yet; `--read <note>` prints Summary, Decisions, Tasks and Open points and stops before the transcript, **which is never compiled**. |
-| **`check-login.py`** | Reads the command-line login's expiry from the keychain — two numbers, never a token — and says how many days are left. The launcher runs it on every start and offers the sign-in when the login is dead or has seven days or fewer left. **macOS notifications do not reach this Mac**; the launcher and the viewer's Ask button are the reminders that work. |
-| **`set-icon.sh`** | Puts the vault's mark on the launcher's Finder icon. **Run it again after a fresh clone** — a custom icon lives in the resource fork, which git does not track. |
-| **`sync.sh`** | Commits everything and pushes, **from the Mac only**. Runs `verify.py`, pulls with rebase, then adds, commits and pushes. `sh _scripts/sync.sh "subject" "body"` for a written message, or bare for a generated one. |
-| **`gitsetup.sh`** | One-time git setup, **run on the Mac in Terminal**. Installs the pre-commit hook (verify.py). Safe to re-run; re-running repairs a deleted hook, and removes the post-commit hook that rebuilt the old viewer. |
-| **`build-skill.py`** | Builds a `.skill` package from its source. **Skills have two representations and one source of truth: `_skills/<name>/` is edited and diffed, `<name>.skill` is built from it.** **Never edit a package directly and never write one back from a session's own scratch space.** The build is deterministic — an unchanged source rebuilds to an identical file — and `verify.py` fails when a package differs from its source. `.claude/skills/<name>` are symlinks into `_skills/<name>/`, adding no copy. |
+| **`verify.py`** | The mechanical audit and the test suite; the pre-commit hook runs it. `--no-clock` looks without writing the finding clock |
+| **`verify-cases.py`** | The kept failing case of each check; `--sites` lists them |
+| **`bundle.py`**, **`blanklines.py`** | What a bundle is, and the blank-line rules, for the other scripts. Imported, never run by hand |
+| **`closeout.sh`** | Closes a run: `close-items.py`, `actionitems.py`, `reindex.py`, `inventory.py`, `coverage.py`, `verify.py`, stopping at the first that fails. With no base named, the live bases only |
+| **`close-items.py`** | Moves closed items and settled *Held* sections out of `questions.md` into `<KB>/_QUESTIONS-CLOSED.md`, where a base sets `questions_closed: true` |
+| **`actionitems.py`** | Writes `_ACTION-ITEMS.md`. The roll-up is never written by hand |
+| **`reindex.py`** | Writes directory indexes from frontmatter. **Compile agents may not touch `index.md`, and it never reorders an index.** Run it at the end of every compile wave and every health check |
+| **`inventory.py`** | Writes the concept list compile agents read |
+| **`coverage.py`** | Writes `<KB>/COVERAGE.md`: the share of archive pages some concept cites, plus the pages the compile ledger records as carrying nothing |
+| **`sync.sh`** | Commits and pushes, **from your own machine only** |
+| **`gitsetup.sh`** | One-time git setup, **run in a terminal on your machine** |
+| **`build-skill.py`** | Builds `<name>.skill` from `_skills/<name>/`. **Never edit a package, and never write one back from a session's scratch space** |
+| **`visualize.py`** | `--json`: the data and the map specula draws |
+| **specula** | The viewer, an app of its own. **Download it from the releases page named in `README.md`**, then choose this folder in Settings › Armarium › Vault folder. It reads `visualize.py --json` and `dashboard.py --json`, and writes only what Ask Claude files in `Outputs/` |
+| **`vault.py`** | The vault read-only, as a command line and as an MCP server. **It reads concepts only** and writes nothing |
+| **`dashboard.py`** | `--json`: how the vault stands and what waits for the owner. Writes nothing |
+| **`mermaid-check.py`** | A URL that renders each Mermaid block. **A diagram nobody has rendered is an unverified claim** |
+| **`namescan.py`** | The calibrated name scan. Nicknames count only where `assertions.yaml` maps them |
+| **`plan-batches.py`**, **`prepare-batch.py`** | Plan and pack a compile batch. **Never `--no-collapse`** |
+| **`merge-appends.py`** | Merges the compile agents' APPEND blocks one at a time, because **an agent may not edit an existing concept** |
+| **`fix-depth.py`** | Repairs a citation whose only fault is its `../` depth. **Run it after every merge** |
+| **`fix-runons.py`** | Inserts the blank line a run-on paragraph is missing |
+| **`archive-snapshot.sh`**, **`archive-diff.sh`**, **`archive-fingerprint.py`** | Whether an archive file changed, and which page of a new export is which old page |
+| **`attachment-register.py`** | Writes `<KB>/_ATTACHMENT-PASS.md`, never edited by hand |
+| **`readset.py`** | The health check's read set |
+| **`pairs.py`**, **`pair-packs.py`** | The contradiction reading queue, and its packs for readers. `--mark-read A B` once the repairs are written |
+| **`queues.py`** | Every queue of a base in one measure. `--compare` is the loop's guard: three passes at most |
+| **`remeasure.py`** | Reruns each item's Re-measure count. **The action sitting runs it first** |
+| **`changed-pages.py`** | Concepts written before a page they cite was rewritten. **Run it in every compile's short loop** |
+| **`quotes.py`** | Quotations that stand in no page their footnotes cite. **Opting a base in is the owner's decision** |
+| **`meetings.py`** | The queue of meeting notes in `scripta/`. `--read` is **the only way a note is read**, and stops before the transcript, which is never compiled |
+| **`check-login.py`** | Days left on the command-line login, from the keychain: two numbers, never a token |
+| **`set-icon.sh`** | The launcher's Finder icon. **Run it again after a fresh clone** |
 
 **`assertions.yaml`** — settled facts with teeth, one file at the vault root and one per knowledge base. When a fact settles — by testimony, by evidence, by a ruling — and a pattern can express it, **the librarian adds an entry**: a forbidden regex, a required file, or a rule about how a class of source must be cited. `verify.py` enforces them, so a settled fact that regresses fails the audit. **Hand-curated; never delete an entry without saying so in the CHANGELOG.**
 

@@ -44,7 +44,7 @@ Each live knowledge base has its own sources, and they are not interchangeable.
 | `Alpha_kb` | `Alpha_kb/Raw/`, the weekly OneNote export delta under `Alpha_kb/OneNote/Work Alpha/`, **and** the meeting notes in `scripta/` at the vault root |
 | `Zeta_kb` | `Zeta_kb/Raw/` **only** |
 
-**`Zeta_kb/OneNote/Personal/` is never compiled.** Standing instruction of the owner, 22.08.2026. Its pages are cited across from `Beta_kb` and `Alpha_kb` for the career record, and no exporter feeds it. **folia's copy of the same notebook, `Zeta_kb/folia/`, is barred the same way** (owner, 24.10.2026). It reads as 0 per cent covered in `COVERAGE.md`; that figure is the instruction, not a backlog. Do not plan batches over it, and do not offer to.
+**`Zeta_kb/folia/` is never compiled.** Standing instruction of the owner, 22.08.2026, for the OneNote export it replaced, and 24.10.2026 for folia's copy; the export was deleted on 08.11.2026. Its pages are cited across from `Beta_kb` and `Alpha_kb` for the career record. It reads as 0 per cent covered in `COVERAGE.md`; that figure is the instruction, not a backlog. Do not plan batches over it, and do not offer to.
 
 ## Before anything else
 
@@ -157,7 +157,7 @@ Zero unread, no concept behind a changed page, a changelog line of all zeros, no
 5. **Where a finding disagrees with a concept, do not write over it.** If the concept misreads a page it cites, correct it from that page by attribution, as a health check does. If two pages disagree, record both positions in the Contradictions table of `questions.md`.
 6. Update the register row: `promoted`, naming the concepts; `partial`, naming what was left out and why; or `none`, with the reason. An open action item that asked whether to promote the report is set to `actioned`, with the same note.
 
-**Close it like any run that changed concepts:** `sh _scripts/closeout.sh <KB>` runs `actionitems.py`, `reindex.py`, `inventory.py`, `coverage.py` and `verify.py` and stops at the first that fails; then a `Wiki/log.md` and a `CHANGELOG.md` entry in each knowledge base written into; `memory.md` where its answer changed; `actionitems.py` where an item changed; `readblocks.py --write` where a `verified` key was cleared, so the concept is back on the owner's reading list (without `--write` the script only prints, and the file stays stale); `verify.py` green. **The closing summary names each report, what it added where, and every `verified` key it cleared.** The owner no longer approves each promotion, so that summary is the review it gets.
+**Close it like any run that changed concepts:** `sh _scripts/closeout.sh <KB>` runs `close-items.py`, `actionitems.py`, `reindex.py`, `inventory.py`, `coverage.py` and `verify.py` and stops at the first that fails; then a `Wiki/log.md` and a `CHANGELOG.md` entry in each knowledge base written into; `memory.md` where its answer changed; `actionitems.py` where an item changed; `readblocks.py --write` where a `verified` key was cleared, so the concept is back on the owner's reading list (without `--write` the script only prints, and the file stays stale); `verify.py` green. **The closing summary names each report, what it added where, and every `verified` key it cleared.** The owner no longer approves each promotion, so that summary is the review it gets.
 
 **Run the reports one after another.** They are few, and two agents writing one concept lose a write.
 

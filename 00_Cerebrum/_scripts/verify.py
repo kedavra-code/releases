@@ -444,12 +444,6 @@ def export_page(tgt):
     return m.group(1), p.split('/%s/' % m.group(1), 1)[1]
 
 
-def kept_export(kb):
-    """The export pages a base names in `onenote_kept`: folia holds no file of them."""
-    return {str(e.get('path')) for e in assertions(kb).get('onenote_kept') or []
-            if isinstance(e, dict)}
-
-
 def source_real_date(concept_dir, src):
     """The cited page's own timestamp, or None when it cannot be read.
 
@@ -630,6 +624,32 @@ def audit(kb):
                 findings.append((rel, 'source author %r is free text, and this '
                                       'base writes every author in the actor '
                                       'forms' % bad[0]))
+        # A base that sets `raw_dates_from_date_added: true` dates a source in
+        # its own `Raw/` by that file's `date_added`. `Delta_kb` does: a mirrored
+        # help page carries no date of its own. Two pages saved there by hand
+        # on 07.11.2026 were cited at `last_modified: unknown`, and nothing saw
+        # it, because the forbid rules read prose and the dating checks compare
+        # two citations with each other, not a citation with its file (owner's
+        # decision of 08.11.2026, Delta_kb AI-2026-11-08-1). 1'124 citations
+        # matched on the day, so a mismatch is a defect.
+        if A.get('raw_dates_from_date_added'):
+            raw_dir = os.path.join(VAULT, kb, 'Raw') + os.sep
+            for s in srcs:
+                if not isinstance(s, dict):
+                    continue
+                p = os.path.normpath(os.path.join(os.path.dirname(f),
+                                                  str(s.get('resource') or '')))
+                if not (p.startswith(raw_dir) and p.endswith('.md')
+                        and os.path.exists(p)):
+                    continue
+                rm = bundle.FM.match(open(p, encoding='utf-8').read())
+                added = str((bundle.mapping(rm.group(1)) if rm else {}).get('date_added'))
+                if str(s.get('last_modified')) != added:
+                    defects.append((rel, 'source %s is dated %s, and its Raw file '
+                                         'was added %s: this base dates a Raw '
+                                         'source by its date_added'
+                                    % (s.get('id') or '(no id)',
+                                       s.get('last_modified'), added)))
         # A verified key is legitimate, and only when the CHANGELOG records
         # the confirmation that produced it. Until 15.08.2026 this forbade the
         # key outright, which was the right guard while nothing was verified
@@ -733,10 +753,11 @@ def audit(kb):
             # anymore the onenote archives, just the folia archives. they are
             # of better data quality" (the owner, 28.10.2026). Every citation
             # into it moved to its folia page that day, by folia's own table of
-            # page ids. A page folia holds no file of keeps its citation, and
-            # its base names it in `onenote_kept` with the reason.
+            # page ids. The exports themselves were deleted on 08.11.2026 ("i
+            # dont need them anymore. everything is in folia"), and the 30
+            # pages kept until then moved to folia or out of the concepts.
             gone = export_page(tgt) if r else None
-            if gone and gone[1] not in kept_export(gone[0]):
+            if gone:
                 defects.append((rel, 'cites the OneNote export, which is no '
                                 'longer read: %s; cite its page in folia/' % r))
             for rule in A.get('source_rules') or []:
@@ -1701,6 +1722,40 @@ def audit(kb):
     except ValueError as e:
         defects.append(('Wiki/questions.md', str(e)))
 
+    # Closed rows live in <KB>/_QUESTIONS-CLOSED.md once `close-items.py` has
+    # moved them (owner, 08.11.2026, Option A of
+    # `Outputs/2026-11-08_zettelkasten-para-context-engineering-vault.md`).
+    # An id in both files has two states; an open or deferred item in the
+    # closed file is one no sitting reads; a closed row or a settled Held
+    # section left in questions.md is the read the move exists to save.
+    if A.get('questions_closed'):
+        try:
+            import actionitems
+            _its = actionitems.items(kb)
+            for _id, _n in sorted(collections.Counter(i['id'] for i in _its).items()):
+                if _n > 1:
+                    defects.append((actionitems.CLOSED, 'action item %s stands %d times '
+                                    'across Wiki/questions.md and the closed file; an id '
+                                    'has one row' % (_id, _n)))
+            for _it in _its:
+                if _it['where'] == actionitems.CLOSED and _it['state'] in ('open', 'deferred'):
+                    defects.append((actionitems.CLOSED, 'action item %s is %s in the closed '
+                                    'file; its row goes back to Wiki/questions.md'
+                                    % (_it['id'], _it['state'])))
+            _ci = bundle.script('close-items.py')
+            _qt = open(os.path.join(root, 'Wiki', 'questions.md'), encoding='utf-8').read()
+            _, _, _rows, _secs = _ci.split(_qt)
+            for _r in _rows:
+                findings.append(('Wiki/questions.md', 'action item %s is closed and still '
+                                 'stands here; run python3 _scripts/close-items.py %s'
+                                 % (actionitems.ROW.match(_r).group(1).strip(), kb)))
+            for _s in _secs:
+                findings.append(('Wiki/questions.md', 'the section "%s" has every row settled '
+                                 'and still stands here; run python3 _scripts/close-items.py %s'
+                                 % (_s.split('\n', 1)[0][3:], kb)))
+        except (ImportError, ValueError, OSError):
+            pass
+
     # Archive coverage, measured rather than asserted. Until 15.08.2026
     # coverage answered "does a concept exist for this scope", which is a
     # question about the bundle: Alpha read as fully compiled while 10'122 of
@@ -2393,7 +2448,7 @@ TEAMS_CODE = re.compile(r'\b\d{3} \d{3} \d{3} \d{2,3}\b|\b\d{3} \d{3} \d{2,3}#'
 def repo_hygiene():
     """Two guards on the boundary between the archive and the repository.
 
-    `OneNote/` is gitignored because the archive is sensitive. On 22.08.2026 a
+    `folia/` is gitignored because the archive is sensitive. On 22.08.2026 a
     certificate passphrase was found in the repository anyway, and on GitHub:
     `archive-fingerprint.py` wrote the first 120 characters of every archive
     page into `_snapshots/*.fingerprint.tsv` as a convenience, and those files

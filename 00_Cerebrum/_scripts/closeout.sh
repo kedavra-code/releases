@@ -4,8 +4,10 @@
 #   sh _scripts/closeout.sh             # every live knowledge base
 #   sh _scripts/closeout.sh Alpha_kb      # one or more knowledge bases
 #
-# Runs the five scripts every run closes with, in the order the action skill
-# gives them, and prints one line for each. It stops at the first step that
+# Runs the six scripts every run closes with, in the order the action skill
+# gives them, and prints one line for each. `close-items.py` comes first
+# (owner, 08.11.2026): it moves closed rows out of each questions.md, so the
+# roll-up and the audit after it read them where they now live. It stops at the first step that
 # fails, names it, and prints its DEFECT or error lines. B5 of
 # `Outputs/2026-11-05_cerebrum-for-the-other-apps.md`.
 #
@@ -32,7 +34,7 @@ for kb in "$@"; do
 done
 echo "Knowledge bases: $*"
 
-for s in actionitems.py reindex.py inventory.py coverage.py verify.py; do
+for s in close-items.py actionitems.py reindex.py inventory.py coverage.py verify.py; do
   case $s in
     actionitems.py|verify.py) python3 "_scripts/$s" >"$out" 2>&1 ;;
     *) python3 "_scripts/$s" "$@" >"$out" 2>&1 ;;

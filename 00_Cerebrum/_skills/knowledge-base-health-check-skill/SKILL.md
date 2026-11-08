@@ -90,7 +90,6 @@ Read this before touching anything. The structure is specific and several obviou
     ├── CLAUDE.md              per-KB manual. Never modify.
     ├── CHANGELOG.md           append-only run log.
     ├── Raw/_INGESTED.md       source register.
-    ├── OneNote/               closed export, not read since 28.10.2026. Never write, never propose moving.
     ├── folia/                 archive layer: folia's copy of the notebooks. READ ONLY, never write.
     └── Wiki/                  the OKF bundle.
         ├── index.md           reserved. Not a concept. Root carries okf_version.
@@ -122,7 +121,7 @@ Filenames are lowercase: `questions.md`, `index.md`, `Raw/`. macOS filesystems a
 
    The reason is narrower than "no writes" and was learned the hard way on 15.08.2026: **a bare `git status` is itself a write.** It refreshes the index and takes `.git/index.lock`. The bridge VM cannot delete files, so the lock survives the session, and the owner's next commit fails with *Unable to create '.git/index.lock'* — three and a half hours later, in that case, with no obvious connection to the run that caused it. Recovery needs `rm .git/index.lock` from the owner's own machine, so a bridge session cannot even repair what it broke.
 2. **Read `<KB>/memory.md`.** It is the cheapest way to load state: counts, compiled scopes, settled facts, hazards, next scope.
-3. **Read the rest of the state files.** `<KB>/CLAUDE.md`, the top block of `<KB>/CHANGELOG.md`, `<KB>/Wiki/questions.md` **including its Action items table, which is the only place a past item's state lives**, `<KB>/Wiki/log.md`, `<KB>/Raw/_INGESTED.md`, `00_Cerebrum/Outputs/_REPORTS.md`. Then `00_Cerebrum/CLAUDE.md` for vault rules and `About me/writing-rules.md` for the banned list.
+3. **Read the rest of the state files.** `<KB>/CLAUDE.md`, the top block of `<KB>/CHANGELOG.md`, `<KB>/Wiki/questions.md` **including its Action items table, which is the only place an open or deferred item's state lives**; of `<KB>/_QUESTIONS-CLOSED.md`, where a closed item's row stands since 08.11.2026, only the `withdrawn` rows (`grep withdrawn`), so that none is raised again, never the whole file, `<KB>/Wiki/log.md`, `<KB>/Raw/_INGESTED.md`, `00_Cerebrum/Outputs/_REPORTS.md`. Then `00_Cerebrum/CLAUDE.md` for vault rules and `About me/writing-rules.md` for the banned list.
 4. **Skip-if-no-changes.** If the top CHANGELOG entry is itself a health check, with no compile pass, manual edit or new output since, append `## YYYY-MM-DD — Health check skipped (no changes since last check)` to the top of CHANGELOG and stop.
 5. **Machine-scan every concept, and read in full the set `_scripts/readset.py` derives.** There is one run type. See *The read rule* below.
 6. **Run `00_Cerebrum/_scripts/verify.py` first.** It is the mechanical half of Audits 1, 2, 4 and 6 in executable form, plus the `assertions.yaml` checks. Then run the audits below, applying auto-fixes as you go, and re-run the script after fixing. When a run finds a new mechanical defect class, extend the script before closing: **a defect class is not fixed until verify.py catches its recurrence.** On its first run, 09.08.2026, it caught two classes the hand-written checks had missed. Since 10.08.2026 findings carry a clock: one standing on three distinct run-days escalates to a DEFECT unless waived with a reason in `assertions.yaml` `finding_waivers`. When the escalation fires during a health check, either fix the finding, or waive it and say why in the CHANGELOG — never waive to make the run green.
@@ -422,7 +421,7 @@ Every finding that needs judgement becomes an action item with a state, recorded
 
 Before deciding what this run found:
 
-1. **Read every existing row.**
+1. **Read every existing row** of `Wiki/questions.md`, and the `withdrawn` rows of `<KB>/_QUESTIONS-CLOSED.md`. The `actioned` rows there are history and are not read; `verify.py` fails a new id that one of them already holds.
 2. **An `open` item that still holds is not a new finding.** Carry it forward unchanged and report it as carried, with the date it was first raised. Raising it again as new hides how long it has been outstanding, which is usually the most interesting thing about it.
 3. **An `open` item that no longer holds becomes `withdrawn`**, with the reason.
 4. **A `withdrawn` item is never raised again.** If the same condition trips the same check, the check is wrong. Fix the check and say so in the row.

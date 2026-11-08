@@ -118,6 +118,11 @@ PERSON = CONCEPT.format(title='Ada Lovelace', sid='beta-page', page='beta-page.m
 ROWS = '|---|---|---|---|---|\n'
 ITEM = '| AI-2026-01-10-1 | 10.01.2026 | Read the Alpha page again | open | |\n'
 CHANGES = 'Raw/_CHANGES-2026-02-01.json'
+# Where close-items.py moves closed rows (08.11.2026), with one row in its table.
+CLOSED = '_QUESTIONS-CLOSED.md'
+CLOSED_FILE = ('# Closed questions — Fixture_kb\n\n# Action items\n\n'
+               '| Id | Raised | Item | State | Resolution |\n|---|---|---|---|---|\n%s\n'
+               '# Held sections, settled\n')
 # folia's copy of a page, beside the export (20.10.2026), named as folia names it.
 FOLIA_NOTE = 'folia/Fixture/Notes/2026-01-05-20260105-kickoff.md'
 FOLIA_KICKOFF = '../../' + FOLIA_NOTE
@@ -248,6 +253,10 @@ CASES = [
      {RULES: add('authors_in_form: true\n'),
       A: sub('    author: unknown\n', '    author: [human:ada-lovelace, Charles Babbage]\n')},
      "source author 'Charles Babbage' is free text"),
+    ('a Raw source left undated, in a base that dates Raw by date_added',
+     {RULES: add('raw_dates_from_date_added: true\n'),
+      A: sub('    last_modified: 2026-01-05\n', '    last_modified: unknown\n')},
+     'source alpha-page is dated unknown, and its Raw file was added 2026-01-05'),
     ('a concept verified by a script',
      {A: sub('status: stable\n', 'status: stable\nverified: { by: process:verify, '
                                  'at: 2026-01-11T08:00:00Z }\n')},
@@ -472,6 +481,21 @@ CASES = [
     ('an action item in a state nobody defined',
      {Q: sub(ROWS, ROWS + ITEM.replace('open', 'pending') + '\n# Open threads\n')},
      "unrecognised action item state 'pending'"),
+    ('an action item in both the open and the closed file',
+     {RULES: add('questions_closed: true\n'), Q: sub(ROWS, ROWS + ITEM + '\n# Open threads\n'),
+      CLOSED: CLOSED_FILE % ITEM.replace('open', 'actioned')},
+     'action item AI-2026-01-10-1 stands 2 times across Wiki/questions.md and the closed file'),
+    ('an open action item in the closed file',
+     {RULES: add('questions_closed: true\n'), CLOSED: CLOSED_FILE % ITEM},
+     'action item AI-2026-01-10-1 is open in the closed file'),
+    ('a closed action item left in questions.md',
+     {RULES: add('questions_closed: true\n'),
+      Q: sub(ROWS, ROWS + ITEM.replace('open', 'actioned') + '\n# Open threads\n')},
+     'action item AI-2026-01-10-1 is closed and still stands here'),
+    ('a settled Held section left in questions.md',
+     {RULES: add('questions_closed: true\n'),
+      Q: add('\n# Held\n\n## Held by the fixture\n\n1. **The door.** Settled: it is green.\n')},
+     'the section "Held by the fixture" has every row settled and still stands here'),
     ('an archive whose coverage was never measured', {'COVERAGE.md': None},
      'archive coverage never measured'),
     ('a page added to the archive after its coverage was measured',

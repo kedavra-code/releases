@@ -22,7 +22,7 @@ These are standing instructions, not defaults to re-derive each time.
 
 ### 1. Gather, and reconcile before you count
 
-Read the `# Action items` table in every live `<KB>/Wiki/questions.md`. That table is the only place an item's state lives; `_ACTION-ITEMS.md` is generated and must never be read as a source.
+Read the `# Action items` table in every live `<KB>/Wiki/questions.md`. That table is the only place an open or deferred item's state lives, and a closed item's row stands in `<KB>/_QUESTIONS-CLOSED.md` (owner, 08.11.2026); `_ACTION-ITEMS.md` is generated and must never be read as a source.
 
 **Deferred items whose condition has come are walked too**, owner's ruling of 07.11.2026: `verify.py` reports a deferred item whose date has passed (`deferred_dates`), and a health check reopens one whose page or event has appeared. Read the *Reopens* sentence of every deferred row in the live bases, test it, and put each one whose condition is met to the owner with the rest.
 
@@ -111,9 +111,10 @@ The owner's answers make work: a settled draft re-queues its contradiction pairs
 
 ### 8. Close out
 
-Every one of these, every time. `sh _scripts/closeout.sh` runs all five in this order, one line each, and stops at the first that fails:
+Every one of these, every time. `sh _scripts/closeout.sh` runs all six in this order, one line each, and stops at the first that fails:
 
 ```
+python3 _scripts/close-items.py      # closed rows out of questions.md
 python3 _scripts/actionitems.py      # the roll-up
 python3 _scripts/reindex.py          # indexes from frontmatter
 python3 _scripts/inventory.py        # the concept list agents read
