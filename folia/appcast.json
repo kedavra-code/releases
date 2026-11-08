@@ -1,11 +1,11 @@
 {
   "app": "folia",
-  "build": 327,
-  "commit": "e472b80",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-327/folia.dmg",
-  "sha256": "103349afbb71a6fc4d98adc9c0e9301bcf08d14dbf53ac013c681ff1caa849bf",
+  "build": 328,
+  "commit": "a3024f1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-328/folia.dmg",
+  "sha256": "205569f9d9c80279c0a57f1e06d487d02d58fb1765be8fcba50eb5843f13f11b",
   "minimumSystemVersion": "26.0",
-  "notes": "Only new briefs are made\nfolia stays quick with a brief on every page and 2 more",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 327,
