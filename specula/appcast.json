@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 131,
-  "commit": "4a2aec4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-131/specula.dmg",
-  "sha256": "fde87c7a0a1ccf1a2d0f5b6d383b94c2939629a848c21182131293bbc2a8a6be",
+  "build": 132,
+  "commit": "8d145cd",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-132/specula.dmg",
+  "sha256": "4c5fa03226bca85b9fde069fcb8ee6666a15197b57f0406403737328c92d4a3a",
   "minimumSystemVersion": "26.0",
-  "notes": "No more \"The vault has changed\" note",
+  "notes": "A larger eye in the app icon",
   "entries": [
+    {
+      "build": 132,
+      "date": "2026-11-08",
+      "title": "A larger eye in the app icon",
+      "detail": "The eye in specula's app icon and disk icon is a little larger, so it has the same size as the marks of the other apps. The menu bar's eye stays as it was."
+    },
     {
       "build": 131,
       "date": "2026-11-08",
@@ -240,12 +246,6 @@
       "date": "2026-11-01",
       "title": "The Timelapse builds from behind the ship",
       "detail": "The Timelapse now starts from the view the 3D view opens on: SRG SSR builds on the left, NZZ on the right, ETH in front. The camera floats in a small loop and rises, comes down behind the ship for the warp, and rests on the same view at the end."
-    },
-    {
-      "build": 59,
-      "date": "2026-10-31",
-      "title": "Settings › Mac app as in folia",
-      "detail": "The part has the same groups and words as in folia: Hotkey, This Mac and Get the Mac app. \"Start specula at login\" is called \"Open at login\" again."
     }
   ]
 }
