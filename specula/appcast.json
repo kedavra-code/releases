@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 121,
-  "commit": "3ea9bb8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-121/specula.dmg",
-  "sha256": "52eafa04fb0f71e8b0335fa33b6152b5662651131c5144142a396872b96540b0",
+  "build": 124,
+  "commit": "8ce3a2a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-124/specula.dmg",
+  "sha256": "239d2ecceccd4d1e06e7a28e09903bc4eac53b38646d1203579aa8607e783506",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "No cut-off names on the dashboard",
   "entries": [
+    {
+      "build": 123,
+      "date": "2026-11-08",
+      "title": "No cut-off names on the dashboard",
+      "detail": "In a narrow window, the names Concepts, Drafts and verify.py in each knowledge base card are no longer cut off: each figure is as wide as its name, and one that does not fit moves to the next line. The Timelapse's play button now has its name, Play, from the start, for VoiceOver and its tooltip."
+    },
     {
       "build": 119,
       "date": "2026-11-07",
@@ -240,12 +246,6 @@
       "date": "2026-10-28",
       "title": "About and What's New in the family's style",
       "detail": "About and What's New in the Mac app follow the folia style guide now, as Settings does: a head, a body of soft cards, and a foot with the buttons on the right. Done is the one amber button."
-    },
-    {
-      "build": 46,
-      "date": "2026-10-28",
-      "title": "A concept page uses its width, in the style guide's colours",
-      "detail": "A concept page's text now fills the page's column, as its tables do, and no table runs past it: a very wide one scrolls sideways inside the page. The colours follow folia's style guide: titles and headings in the text colour, amber only for links and what is selected, and every text easy to read in light and dark."
     }
   ]
 }
