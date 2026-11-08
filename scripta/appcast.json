@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 229,
-  "commit": "a80fb3d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-229/scripta.dmg",
-  "sha256": "887b5bd356393fcdec0cf647009a79a2fb80dd1b5588194038f904bcc427d863",
+  "build": 230,
+  "commit": "2d6916b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-230/scripta.dmg",
+  "sha256": "482f7175c16c8a0f6e3fa1ea1970065a483d758ce851939b1b7405f671f64230",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A slightly larger logo",
   "entries": [
+    {
+      "build": 230,
+      "date": "2026-11-08",
+      "title": "A slightly larger logo",
+      "detail": "The logo in the app icon and in the menu bar is a little larger, the same size as in your other apps."
+    },
     {
       "build": 224,
       "date": "2026-11-06",
@@ -240,12 +246,6 @@
       "date": "2026-10-07",
       "title": "Haiku 5.5 takes the place of Haiku 4.5",
       "detail": "Settings › Brain › Model now offers Haiku 5.5, Anthropic's new small and fast model, where Haiku 4.5 was. It takes an effort, as the other models do. If you had chosen Haiku 4.5, scripta uses Haiku 5.5 from now on."
-    },
-    {
-      "build": 133,
-      "date": "2026-10-06",
-      "title": "The menu bar icon moves while scripta works",
-      "detail": "While a recording is transcribed, a wave runs through the icon's bars and its lines are written again. While a meeting is recorded it moves the same way, beside a small orange dot that breathes: the microphone is on. A paused meeting keeps a still dot. When nothing runs, the icon is still."
     }
   ]
 }
