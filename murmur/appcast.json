@@ -1,12 +1,18 @@
 {
   "app": "murmur",
-  "build": 218,
-  "commit": "2d022a5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-218/murmur.dmg",
-  "sha256": "95e63fdbe84dace4c202fa1634097eb4149c1c523100e67f881c93b38605e2ab",
+  "build": 219,
+  "commit": "94685c1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-219/murmur.dmg",
+  "sha256": "2d39a4d95defc66d507acd94c86c3f4d422f54e91a547075861b7ca5d9bf8eb7",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A bigger mark in the Dock and the menu bar",
   "entries": [
+    {
+      "build": 219,
+      "date": "2026-11-08",
+      "title": "A bigger mark in the Dock and the menu bar",
+      "detail": "murmur's five bars are bigger now: about a fifth in the app icon and the disk image, and a fifth in the menu bar, so murmur is the same size as the other apps of the family. They move as before."
+    },
     {
       "build": 198,
       "date": "2026-10-28",
@@ -240,12 +246,6 @@
       "date": "2026-09-29",
       "title": "Parakeet works on macOS 27.2",
       "detail": "On macOS 27.2 murmur quit at the first dictation with the Parakeet engine. It dictates again."
-    },
-    {
-      "build": 83,
-      "date": "2026-09-06",
-      "title": "A Brain tab in Settings",
-      "detail": "Settings › Brain holds what does the listening and the thinking: the recognition engine, the language and Apple Intelligence. They were on the General and Text tabs before."
     }
   ]
 }
