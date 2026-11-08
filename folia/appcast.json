@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 329,
-  "commit": "031d48d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-329/folia.dmg",
-  "sha256": "c68dc30e8b34f704ea70bf5f8804875f1e4f02d8846654502c587ede6bf72931",
+  "build": 330,
+  "commit": "d7d9098",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-330/folia.dmg",
+  "sha256": "862d55aaa8c0233d29e7c13caa3989e811062aa9c2f0fb7eb3c199cf9beb843d",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A bigger leaf in the Dock and the menu bar",
   "entries": [
+    {
+      "build": 330,
+      "date": "2026-11-08",
+      "title": "A bigger leaf in the Dock and the menu bar",
+      "detail": "folia's leaf is a little bigger in its app icon, and fills the menu bar's height. So it now has the same size as the marks of your other apps."
+    },
     {
       "build": 327,
       "date": "2026-11-07",
@@ -240,12 +246,6 @@
       "date": "2026-10-30",
       "title": "A tick in folia finishes the task in j4k",
       "detail": "A task that went to j4k and that you tick in folia now goes to Done in j4k, within about three minutes. A task with an open subtask or a repeat in j4k stays open: finish it there."
-    },
-    {
-      "build": 261,
-      "date": "2026-10-30",
-      "title": "While you search, the columns show where the hits are",
-      "detail": "Each notebook and section shows how many pages it has with your words, and each page how many hits. Notebooks, sections and pages without any turn grey; nothing is hidden. Clear the search and the numbers go."
     }
   ]
 }
