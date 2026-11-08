@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 496,
-  "commit": "89e6590",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-496/GLaDOS.dmg",
-  "sha256": "a0e2f6b8349d12bb49c5f45f3cbd78f102c4441984c6ed279a3ff259c1b94e28",
+  "build": 502,
+  "commit": "8b038e6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-502/GLaDOS.dmg",
+  "sha256": "b4626e68c5ca64066e74ce5ac4e88f3d1ecf99827a0cede62be5c7788ef3e72a",
   "minimumSystemVersion": "26.0",
-  "notes": "She opens the dashboard in specula",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 495,
