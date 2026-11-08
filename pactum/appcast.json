@@ -1,9 +1,9 @@
 {
   "app": "pactum",
-  "build": 74,
-  "commit": "47c98e5",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-74/pactum.dmg",
-  "sha256": "3d99f893f4923d8c6c669af9f78795f35cccba0f33b9b4082d981792ef61649f",
+  "build": 75,
+  "commit": "46b0af2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-75/pactum.dmg",
+  "sha256": "68304e7ec5b001ebd65397038220cf2bec7a88cb9af8b5bd824fc02ba25c7955",
   "minimumSystemVersion": "26.0",
   "notes": "Small fixes and improvements.",
   "entries": [
