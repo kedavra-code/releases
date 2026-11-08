@@ -98,6 +98,8 @@ Write `_testimony/YYYY-MM-DD_testimony-action-items.md` with the standard Raw fr
 
 Now apply everything. Task list first, one task per decision.
 
+**In a concept, only the chosen label is the owner's words**, owner's decision of 08.11.2026 (`_testimony/2026-11-08_testimony-action-items-2.md`, Decision 4). An option's description is the librarian's text: write what the owner decided, attributed as his choice, and where the description's wording matters quote it as the option's ("the option he chose read …"), never as his. The testimony files already do this. The evening health check of 08.11.2026 corrected 23 sentences in `Alpha_kb` that had put the librarian's option text in the owner's mouth.
+
 Where the work splits cleanly across knowledge bases, parallel sub-agents are the documented pattern. Give each the no-clobber rule and the access note.
 
 Two constraints that bite here:
