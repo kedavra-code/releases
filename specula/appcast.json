@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 126,
-  "commit": "49da927",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-126/specula.dmg",
-  "sha256": "d1a4056e18c5e818efdd13e306645c10361acfc706daba7eee3d18380da7ac07",
+  "build": 127,
+  "commit": "b8e52ad",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-127/specula.dmg",
+  "sha256": "3ed0631206e9192c9509b56e31ee6da682f316db93cc0dfb44bde36dfaa33916",
   "minimumSystemVersion": "26.0",
-  "notes": "The quick lookup marks your words",
+  "notes": "The window looks like folia",
   "entries": [
+    {
+      "build": 127,
+      "date": "2026-11-08",
+      "title": "The window looks like folia",
+      "detail": "Each part of the window is now a card with round corners, 10 px apart on a darker ground, as in folia: the header, the search bar, the list, the dashboard and the maps. The concept page is folia's page card, a little lighter than the rest, in the dark and the light look. The Timelapse still fills the window."
+    },
     {
       "build": 126,
       "date": "2026-11-08",
@@ -240,12 +246,6 @@
       "date": "2026-10-30",
       "title": "A new icon: the eye",
       "detail": "specula's app icon, menu bar icon, disk image and browser tab now show an eye: a lookout watching. The old mark was too fine at small sizes; the eye stays clear in the menu bar. Inside specula, the header and Settings › About keep the vault's mark."
-    },
-    {
-      "build": 52,
-      "date": "2026-10-28",
-      "title": "3D opens behind the ship",
-      "detail": "Switched to 3D, the vault now turns to the view from behind the ship and a little above, as in the warp: ITAKB and ITKB at the top, ETH and kedavra in the middle, SRG SSR and NZZ at the bottom. The Timelapse keeps its own view."
     }
   ]
 }
