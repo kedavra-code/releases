@@ -1,12 +1,18 @@
 {
   "app": "unus",
-  "build": 234,
-  "commit": "36d9ab8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-234/unus.dmg",
-  "sha256": "7a17e94e81714995583a244f95303fc47147938d66975a951bfe123c605a0f8e",
+  "build": 235,
+  "commit": "76703c3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-235/unus.dmg",
+  "sha256": "602db7db71ecf81a1d13b0b60752cf4561df2a34e6cd7541c8015fab1962f36f",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A bigger icon",
   "entries": [
+    {
+      "build": 235,
+      "date": "2026-11-08",
+      "title": "A bigger icon",
+      "detail": "The four signs fill more of the icon now, so unus looks the same size as its sibling apps in the Dock. The menu bar icon stays as it was."
+    },
     {
       "build": 217,
       "date": "2026-10-28",
