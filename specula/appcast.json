@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 127,
-  "commit": "b8e52ad",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-127/specula.dmg",
-  "sha256": "3ed0631206e9192c9509b56e31ee6da682f316db93cc0dfb44bde36dfaa33916",
+  "build": 128,
+  "commit": "02f6b51",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-128/specula.dmg",
+  "sha256": "119600dddbd66bcfed69c7bbe459d137a204b107656a6f653b5d467e2a3f82fa",
   "minimumSystemVersion": "26.0",
-  "notes": "The window looks like folia",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 127,
