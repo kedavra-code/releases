@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 128,
-  "commit": "02f6b51",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-128/specula.dmg",
-  "sha256": "119600dddbd66bcfed69c7bbe459d137a204b107656a6f653b5d467e2a3f82fa",
+  "build": 129,
+  "commit": "29ceb59",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-129/specula.dmg",
+  "sha256": "fc0a4ad2fa1b6756cebe89740ff96c8f2ec3ea2a209a622b66b829b2020bf472",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Reports stands under Settings",
   "entries": [
+    {
+      "build": 129,
+      "date": "2026-11-08",
+      "title": "Reports stands under Settings",
+      "detail": "The Reports button at the right of the search bar now stands exactly under the Settings button, and the search buttons at the left under the mark. Before, Reports stood a little to the left."
+    },
     {
       "build": 127,
       "date": "2026-11-08",
@@ -240,12 +246,6 @@
       "date": "2026-10-31",
       "title": "Settings as big as tabula's; more in About",
       "detail": "The Settings window has the size of tabula's. About specula lists the build code, build number, build date, the first commit, the web app and the Mac app, and says where your notes live. A new part, Account, shows who uses specula on this Mac and the vault it reads."
-    },
-    {
-      "build": 53,
-      "date": "2026-10-30",
-      "title": "A new icon: the eye",
-      "detail": "specula's app icon, menu bar icon, disk image and browser tab now show an eye: a lookout watching. The old mark was too fine at small sizes; the eye stays clear in the menu bar. Inside specula, the header and Settings › About keep the vault's mark."
     }
   ]
 }
