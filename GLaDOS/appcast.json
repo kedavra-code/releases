@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 508,
-  "commit": "c6fd4d4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-508/GLaDOS.dmg",
-  "sha256": "f7686e41f01986ac0a50bf02d8f6628c27afd2ca7c5d9bd8c40ca7be8cddfe0c",
+  "build": 509,
+  "commit": "f19265c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-509/GLaDOS.dmg",
+  "sha256": "18ef764ea87dcf6cd2c4fb39f70e5f8e3d654ed89a8a04b35cc4d32c341679e5",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Both eyes to the other screen",
   "entries": [
+    {
+      "build": 509,
+      "date": "2026-11-09",
+      "title": "Both eyes to the other screen",
+      "detail": "Press ⌃⌥⌘D, or choose Move to Next Display in the menu, and both eyes go to the next display: to its bottom corners when they are small, and over the whole of it, with the black and the transcript, when they are big. GLaDOS remembers that display. While it is unplugged, the eyes use the one with the menu bar. You can record another key in Settings › General."
+    },
     {
       "build": 506,
       "date": "2026-11-08",
@@ -240,12 +246,6 @@
       "date": "2026-10-06",
       "title": "J.A.R.V.I.S. is as loud as GLaDOS on the Mac's speakers",
       "detail": "On the Mac's speakers J.A.R.V.I.S. was less loud than GLaDOS, in German and in English. He is one and a half decibels louder there now, and a measurement at the speakers shows the two level."
-    },
-    {
-      "build": 341,
-      "date": "2026-10-06",
-      "title": "The menu bar icon turns smoothly, at no cost",
-      "detail": "While GLaDOS or J.A.R.V.I.S. speaks, the eye in the menu bar icon still turns. The graphics chip draws the turn now. It is smoother, and the app uses no more processor power than with the still icon."
     }
   ]
 }
