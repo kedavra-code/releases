@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 77,
-  "commit": "4d063b7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-77/pactum.dmg",
-  "sha256": "d386cd9b931d83f1c1dcbc6909971360461cc52934c5dc7ea6a6dd36eb2bbd85",
+  "build": 78,
+  "commit": "3d9d5d4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-78/pactum.dmg",
+  "sha256": "22cc15af8b39a6e6f110f6899a690c33265ed856f2b5facf17b4349a15451403",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Petrol minimums, and maturity from both sides",
   "entries": [
+    {
+      "build": 78,
+      "date": "2026-11-09",
+      "title": "Petrol minimums, and maturity from both sides",
+      "detail": "The Minimum Viable Efficiency and Maturity are petrol now, in the 2×2 and in the spiders, so they stand apart from the selected ISG's amber. The corner where both are met has a soft petrol ground. In the 2×2, an ISG's maturity is the mean of Maturity Ø ID and Maturity Ø ISG, and its hover shows both. The axes are named as the overview's columns."
+    },
     {
       "build": 76,
       "date": "2026-11-09",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "Docs opens the pactum Field Manual",
       "detail": "About pactum › Docs and Settings › About pactum › Docs open the Field Manual: what pactum is, and the maturity rubric with its five levels for each of the nine dimensions. In the Mac app it opens in a window of its own, also without the internet."
-    },
-    {
-      "build": 26,
-      "date": "2026-11-04",
-      "title": "Not rated has its own strip",
-      "detail": "In the efficiency and maturity chart, an ISG without a maturity no longer sits at level 3 as if rated. It stands in a strip \"Not rated\" under the chart, at its efficiency."
     }
   ]
 }
