@@ -1,11 +1,11 @@
 {
   "app": "murmur",
-  "build": 219,
-  "commit": "94685c1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-219/murmur.dmg",
-  "sha256": "2d39a4d95defc66d507acd94c86c3f4d422f54e91a547075861b7ca5d9bf8eb7",
+  "build": 220,
+  "commit": "81521be",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-220/murmur.dmg",
+  "sha256": "d518c7cea187030467894dca78106d166a9716eda1d219de9029fcb947fa247b",
   "minimumSystemVersion": "26.0",
-  "notes": "A bigger mark in the Dock and the menu bar",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 219,
