@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 75,
-  "commit": "46b0af2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-75/pactum.dmg",
-  "sha256": "68304e7ec5b001ebd65397038220cf2bec7a88cb9af8b5bd824fc02ba25c7955",
+  "build": 76,
+  "commit": "e1468c4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-76/pactum.dmg",
+  "sha256": "45ed1a0049a9e2850b5b02038259b09f7c8b8a45874f018c4e6d392c08fb8cf9",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "An update no longer freezes pactum",
   "entries": [
+    {
+      "build": 76,
+      "date": "2026-11-09",
+      "title": "An update no longer freezes pactum",
+      "detail": "When pactum installed an update, it could stop at \"Installing\". Then About, Docs and Quit did nothing, while the page still worked. Now pactum quits within 3 seconds, and the update goes on."
+    },
     {
       "build": 70,
       "date": "2026-11-07",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "Not rated has its own strip",
       "detail": "In the efficiency and maturity chart, an ISG without a maturity no longer sits at level 3 as if rated. It stands in a strip \"Not rated\" under the chart, at its efficiency."
-    },
-    {
-      "build": 25,
-      "date": "2026-11-04",
-      "title": "A calmer table, and a checked complexity factor",
-      "detail": "The KPI table shows its standing in calm greys with soft numbers, no more blue. The names in the 2×2 are a true 12 px. Devices per staff member counts as better lower. The figures add the heads without an IT workplace. The complexity factor takes 0.5 to 2 only, and the page says so."
     }
   ]
 }
