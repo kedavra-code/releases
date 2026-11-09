@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 132,
-  "commit": "8d145cd",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-132/specula.dmg",
-  "sha256": "4c5fa03226bca85b9fde069fcb8ee6666a15197b57f0406403737328c92d4a3a",
+  "build": 133,
+  "commit": "6e7e946",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-133/specula.dmg",
+  "sha256": "05d36d8389eaf991c94d5f492283b1f478f92d6697611209f4d6f6eca9ebfca4",
   "minimumSystemVersion": "26.0",
-  "notes": "A larger eye in the app icon",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 132,
