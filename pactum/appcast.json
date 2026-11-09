@@ -1,11 +1,11 @@
 {
   "app": "pactum",
-  "build": 76,
-  "commit": "e1468c4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-76/pactum.dmg",
-  "sha256": "45ed1a0049a9e2850b5b02038259b09f7c8b8a45874f018c4e6d392c08fb8cf9",
+  "build": 77,
+  "commit": "4d063b7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-77/pactum.dmg",
+  "sha256": "d386cd9b931d83f1c1dcbc6909971360461cc52934c5dc7ea6a6dd36eb2bbd85",
   "minimumSystemVersion": "26.0",
-  "notes": "An update no longer freezes pactum",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 76,
