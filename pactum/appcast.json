@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 80,
-  "commit": "ec901fb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-80/pactum.dmg",
-  "sha256": "1ba2b531c4be579b24eb986a87f55ab5862470e60e16eb60e73bfcdb01fc8680",
+  "build": 81,
+  "commit": "d92cd15",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-81/pactum.dmg",
+  "sha256": "158847cf801fd20e6fa5e3985e081a2d3361b0d0c76188317ddfb8f85bb04016",
   "minimumSystemVersion": "26.0",
-  "notes": "Maturity by the ID is back in the legend",
+  "notes": "Each spider label says its mean",
   "entries": [
+    {
+      "build": 81,
+      "date": "2026-11-09",
+      "title": "Each spider label says its mean",
+      "detail": "The labels of the spiders say the mean of their line: Maturity by the ID, Maturity by the ISG team, the Average ID CxS (for the efficiency and the maturity) and both minimums under their spiders. A line without values has no mean."
+    },
     {
       "build": 80,
       "date": "2026-11-09",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "One number for efficiency, one for maturity",
       "detail": "Each ISG has two single numbers for comparison. Efficiency Ø is the mean standing, 0 to 5, in the efficiency KPIs: it compares with the ISGs shown. Maturity Ø is the mean level entered, 1 to 5. Both end each row of the table and stand under the spiders on each card. When not all parts are in, the number says how many are, as in \"2 of 9\"."
-    },
-    {
-      "build": 30,
-      "date": "2026-11-04",
-      "title": "Settings… in About pactum",
-      "detail": "The About pactum window has a Settings… button, as folia's has. It opens pactum and its Settings."
     }
   ]
 }
