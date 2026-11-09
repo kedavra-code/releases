@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 79,
-  "commit": "968ec1c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-79/pactum.dmg",
-  "sha256": "f4bcea19b416d20baa730b0211e09b3260639d29cd6eccce933d1e52c2381eb4",
+  "build": 80,
+  "commit": "ec901fb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-80/pactum.dmg",
+  "sha256": "1ba2b531c4be579b24eb986a87f55ab5862470e60e16eb60e73bfcdb01fc8680",
   "minimumSystemVersion": "26.0",
-  "notes": "Every spider in amber",
+  "notes": "Maturity by the ID is back in the legend",
   "entries": [
+    {
+      "build": 80,
+      "date": "2026-11-09",
+      "title": "Maturity by the ID is back in the legend",
+      "detail": "The spiders' legend names \"Maturity by the ID\" again, with its line in amber on every card, as the spiders are."
+    },
     {
       "build": 79,
       "date": "2026-11-09",
@@ -240,12 +246,6 @@
       "date": "2026-11-04",
       "title": "Settings… in About pactum",
       "detail": "The About pactum window has a Settings… button, as folia's has. It opens pactum and its Settings."
-    },
-    {
-      "build": 29,
-      "date": "2026-11-04",
-      "title": "Whole names in the 2×2",
-      "detail": "In the efficiency and maturity chart, every bubble carries its whole name: ID ISG D-BAUG for an ID ISG, ISG D-BSSE for a departmental one."
     }
   ]
 }
