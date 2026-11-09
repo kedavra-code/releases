@@ -1,11 +1,11 @@
 {
   "app": "scripta",
-  "build": 230,
-  "commit": "2d6916b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-230/scripta.dmg",
-  "sha256": "482f7175c16c8a0f6e3fa1ea1970065a483d758ce851939b1b7405f671f64230",
+  "build": 231,
+  "commit": "84bdb88",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-231/scripta.dmg",
+  "sha256": "1e9f7d823b43d50964d02291d388ebae303abc6e68df6d5b41dd620c39132add",
   "minimumSystemVersion": "26.0",
-  "notes": "A slightly larger logo",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 230,
