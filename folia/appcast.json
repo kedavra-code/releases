@@ -1,11 +1,11 @@
 {
   "app": "folia",
-  "build": 330,
-  "commit": "d7d9098",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-330/folia.dmg",
-  "sha256": "862d55aaa8c0233d29e7c13caa3989e811062aa9c2f0fb7eb3c199cf9beb843d",
+  "build": 331,
+  "commit": "1d52428",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-331/folia.dmg",
+  "sha256": "e5506d1f6d772083c4f8f26f658a83d95405247e1c1e8758b781e837722528a5",
   "minimumSystemVersion": "26.0",
-  "notes": "A bigger leaf in the Dock and the menu bar",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 330,
