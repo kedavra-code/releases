@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 506,
-  "commit": "fa42d58",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-506/GLaDOS.dmg",
-  "sha256": "0dba0cb16f79eea87d62763592ccc98ed68b8d096e4dc54af5f199fd2aa4c00d",
+  "build": 508,
+  "commit": "c6fd4d4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-508/GLaDOS.dmg",
+  "sha256": "f7686e41f01986ac0a50bf02d8f6628c27afd2ca7c5d9bd8c40ca7be8cddfe0c",
   "minimumSystemVersion": "26.0",
-  "notes": "A larger mark in the menu bar",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 506,
