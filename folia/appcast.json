@@ -1,12 +1,120 @@
 {
   "app": "folia",
-  "build": 331,
-  "commit": "1d52428",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-331/folia.dmg",
-  "sha256": "e5506d1f6d772083c4f8f26f658a83d95405247e1c1e8758b781e837722528a5",
+  "build": 351,
+  "commit": "22d5619",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-351/folia.dmg",
+  "sha256": "cd3659c0484486966e06e36ca4a4f9e3b1e3341a4f55515b1bbeeabd080c6516",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "All side windows the same width\nPicking a tabula task works every time\nMany new pages at once all show\nFind a tabula task from the page\nImport a Confluence space\nGreyed-out tools say why\nNo more amber @mentions, and a list that fits\nCalmer @mentions, and the right colour for who is here\nand 10 more — see What's New",
   "entries": [
+    {
+      "build": 351,
+      "date": "2026-11-10",
+      "title": "All side windows the same width",
+      "detail": "Comments on the right is now as wide as Meetings, Outline and History, so the page keeps the same room whichever side window is open."
+    },
+    {
+      "build": 350,
+      "date": "2026-11-10",
+      "title": "Picking a tabula task works every time",
+      "detail": "In the Link tabula task box, a task is picked as soon as you press it, and a press anywhere in the box keeps it open. A long list moves above the cursor when there is no room below, so it stays in the window."
+    },
+    {
+      "build": 349,
+      "date": "2026-11-10",
+      "title": "Many new pages at once all show",
+      "detail": "When many pages arrive at once, from an import or from someone else's work, folia now shows them all together. Before, from about 50 at once, a few could be missing from the list until folia was opened again."
+    },
+    {
+      "build": 348,
+      "date": "2026-11-10",
+      "title": "Find a tabula task from the page",
+      "detail": "Type /task in a page, or use the tool Link tabula task: a field searches your tabula tasks by name or number, and a pick puts the task's link in the page with its state beside it. With words selected, the words become the link. The pill beside a task link now opens the task too, and in the Mac app a task link opens the tabula app instead of the website."
+    },
+    {
+      "build": 347,
+      "date": "2026-11-10",
+      "title": "Import a Confluence space",
+      "detail": "A notebook's … menu › Import Confluence export… (also in ⌘K) takes the zip of a Confluence space's HTML export. The space's home page becomes the wiki's home page, each page under it a section, and a page with pages under it a page group. Text, tables, code, info boxes, pictures and attached files come along; links between the pages become folia links. Files a page has attached but does not show are listed under Attachments at its end."
+    },
+    {
+      "build": 346,
+      "date": "2026-11-10",
+      "title": "Greyed-out tools say why",
+      "detail": "Point at a tool that is greyed out, and it says what to do: Create tabula task asks you to select some words first, Fold-out heading to put the cursor in a heading, and the alignment tools say they do not work in a list, a quote or a table."
+    },
+    {
+      "build": 345,
+      "date": "2026-11-10",
+      "title": "No more amber @mentions, and a list that fits",
+      "detail": "A mention of you is now the same quiet grey pill as every other @mention. The list that opens when you type @ is as wide as its names, so a name stays on one line, and an address shows in the normal font."
+    },
+    {
+      "build": 344,
+      "date": "2026-11-10",
+      "title": "Calmer @mentions, and the right colour for who is here",
+      "detail": "An @mention in a page or a comment is now a quiet grey pill with no line under it, as folia's style guide draws a pill. A mention of you has an amber edge, so you see it at once. The name beside a page's dates that shows who else is on the page now has the same colour as that person's face in Settings › Users."
+    },
+    {
+      "build": 343,
+      "date": "2026-11-10",
+      "title": "Pick people when you share",
+      "detail": "The Share window of a notebook or wiki space lists the people you can add, with their face, name and address, as tabula does. Type a few letters of a name or an address to find someone, choose Can edit or Can read, and press Add. A new e-mail address still works with Share."
+    },
+    {
+      "build": 342,
+      "date": "2026-11-10",
+      "title": "Choose the top bar's buttons",
+      "detail": "Settings › Top bar shows the buttons at the top right as the top bar draws them. Click a button to take it out or put it back, drag it to a new place, or press ← → on it. Settings always stays at the right end, and the keys and ⌘K still work for a button you took out. Back to the start brings all of them back."
+    },
+    {
+      "build": 340,
+      "date": "2026-11-10",
+      "title": "tabula tasks in a page",
+      "detail": "Paste a link to a tabula task into a page: beside it, folia shows the task's number, its state, the date it is due and who owns it, as tabula has it now. Select words and use Create tabula task (add it in Settings › Toolbar, or above a selection): the words become a new task in your tabula Review, and a link to it."
+    },
+    {
+      "build": 339,
+      "date": "2026-11-10",
+      "title": "Fold-out headings",
+      "detail": "A heading can fold the text under it, up to the next heading of its level, for an FAQ or long details. Add the tool Fold-out heading in Settings › Toolbar, put the cursor in a heading and press it. An arrow before the heading opens and closes it. People who can only read see it folded at first; folia remembers what you opened. In the Markdown file it is a small hidden note on the heading's line, so other apps show everything."
+    },
+    {
+      "build": 338,
+      "date": "2026-11-10",
+      "title": "Links to this page, in wiki spaces",
+      "detail": "At the foot of a page in a wiki space, folia lists the pages that link to it with [[ ]], each with its notebook and section. A click opens one. Plain notebooks stay without the list."
+    },
+    {
+      "build": 337,
+      "date": "2026-11-10",
+      "title": "Page owners and review dates",
+      "detail": "In a wiki space, a page's … menu has Owner and review…: who keeps the page up to date, and how often to look at it. When that time has come, the page says it may be out of date, its owner is told in the bell, and Mark as reviewed starts the time again. Search › In › Need review lists such pages."
+    },
+    {
+      "build": 336,
+      "date": "2026-11-10",
+      "title": "@mentions and notifications",
+      "detail": "Type @ in a page and pick a person: their name shows as a coloured pill. In a comment, write @ and their name. The person is told in the new bell at the top, also of replies in their threads and new comments on pages they made. A click opens the page, and the thread when there is one."
+    },
+    {
+      "build": 335,
+      "date": "2026-11-10",
+      "title": "Comments",
+      "detail": "The new Comments button in the top bar opens the comments of the page. Select words and write a comment on them, or comment on the whole page. The words get a soft mark; a click on them opens their thread. Everyone in the notebook can reply and mark a thread as resolved, also people who can only read; you can change and delete your own comments. The button shows how many threads are open."
+    },
+    {
+      "build": 333,
+      "date": "2026-11-10",
+      "title": "Wiki spaces",
+      "detail": "The owner of a notebook can make it a wiki space in its … menu. It gets a book in place of its letter, its sections and pages stay where you put them, and it opens on its home page, which any page's … menu can set. Above each page's title a line shows where it is; each part takes you there."
+    },
+    {
+      "build": 332,
+      "date": "2026-11-10",
+      "title": "Share a notebook to read only",
+      "detail": "In Share, each person can edit the notebook or only read it. A reader sees every page and can search it, but cannot type, rename, move or delete anything, and the status bar says \"Read only\". The owner can change it at any time, and an open page follows at once."
+    },
     {
       "build": 330,
       "date": "2026-11-08",
@@ -138,114 +246,6 @@
       "date": "2026-11-05",
       "title": "Minutes and Cerebrum on a meeting page",
       "detail": "With Brief from Cerebrum on, a meeting page with scripta's minutes has a Minutes and Cerebrum button on its meeting line. It shows what earlier meetings of the series already had open, the people and projects the minutes name, and the decisions and open points beside what your Cerebrum vault holds. Prepare, Open and Brief in Meetings now share one width and line up. Like the brief, it is read on this Mac and never goes into a page."
-    },
-    {
-      "build": 295,
-      "date": "2026-11-05",
-      "title": "A brief from Cerebrum before a meeting",
-      "detail": "Switch on Brief from Cerebrum in Settings › Armarium, and each meeting in Meetings gets a Brief button beside Prepare. It shows the people, the related topics and the open items your Cerebrum vault has, and the open tasks and decisions of the series' last page. The brief is read on this Mac and shown in a window of its own: it never goes into a page."
-    },
-    {
-      "build": 294,
-      "date": "2026-11-05",
-      "title": "Make Markdown files on your Mac, in Files",
-      "detail": "In the Mac app, Files under On this Mac makes new Markdown files. The first time, folia asks for a folder and keeps it. Files and opened folders now have new folders, templates, Move and Copy to folder, drag a file onto a folder, and sorting by name or date. Pictures and links keep working when a file moves."
-    },
-    {
-      "build": 293,
-      "date": "2026-11-03",
-      "title": "Minutes from scripta no longer blank a page",
-      "detail": "When scripta sent other minutes with no decisions or tasks, a meeting page could show nothing. Its text was safe, and it shows again once scripta sends the minutes once more."
-    },
-    {
-      "build": 292,
-      "date": "2026-11-02",
-      "title": "The header buttons look like tabula's New task button",
-      "detail": "The buttons at the top right are small amber tiles. Pointing lights their edge, and a button that is pressed or on turns full amber."
-    },
-    {
-      "build": 290,
-      "date": "2026-11-02",
-      "title": "Get the Mac app is now in About",
-      "detail": "Settings › About folia now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its hotkey, its icon and opening at login."
-    },
-    {
-      "build": 289,
-      "date": "2026-11-01",
-      "title": "Set up the toolbar yourself",
-      "detail": "Settings › Toolbar shows the toolbar and a pool of tools. Click a tool to move it between them, or drag it to place it. Strikethrough waits in the pool. Each Mac and browser keeps its own toolbar."
-    },
-    {
-      "build": 288,
-      "date": "2026-11-01",
-      "title": "Inline code is back in the toolbar, Strikethrough has left it",
-      "detail": "The toolbar has Inline code right of Font colour. Strikethrough has no button now: type ~~ around a word, or set a key in Settings › Keys."
-    },
-    {
-      "build": 287,
-      "date": "2026-11-01",
-      "title": "About folia is laid out as in tabula",
-      "detail": "Settings › About folia shows the build facts in two columns. The About tab counts the changes you have not read. The foot of Settings names the build."
-    },
-    {
-      "build": 275,
-      "date": "2026-11-01",
-      "title": "A done task's text turns green",
-      "detail": "When you tick a task, its text turns green, like its check. A font colour that you set yourself stays."
-    },
-    {
-      "build": 274,
-      "date": "2026-11-01",
-      "title": "A done task gets a green check",
-      "detail": "In a task list, a done task now shows a round green check on its icon. Its text no longer has a line through it. A strike through that you set yourself stays."
-    },
-    {
-      "build": 272,
-      "date": "2026-10-31",
-      "title": "Settings as large as in tabula, with the build facts in About",
-      "detail": "The Settings window has the size of tabula's, and shrinks to fit a smaller window. Settings › About folia shows the build code, build number, build date, when folia started, and the builds of the web app and the Mac app."
-    },
-    {
-      "build": 271,
-      "date": "2026-10-31",
-      "title": "Font colours above a selection, and one list of colours",
-      "detail": "Select words in a page, and the font colours show right above them. Settings › General can switch that off. Font colours are now the same 11 colours as notebooks and sections, in the same order. In text each one is only as much darker or lighter as it needs to read well."
-    },
-    {
-      "build": 270,
-      "date": "2026-10-31",
-      "title": "Settings › tabula is called Armarium",
-      "detail": "The part of Settings that sends your tasks is now called Armarium. Its switch and what it does stay as they were."
-    },
-    {
-      "build": 269,
-      "date": "2026-10-31",
-      "title": "Font colours, and orange for notebooks and sections",
-      "detail": "The toolbar has Font colour where Code stood: select words, press the A with the bar, and pick a colour, or pick one first and type. Each colour reads well in the light and the dark look, and Default colour takes it off. Inline code stays: type it between backticks. Notebooks and sections can now be orange too."
-    },
-    {
-      "build": 267,
-      "date": "2026-10-31",
-      "title": "j4k is called tabula now",
-      "detail": "Settings › j4k is now Settings › tabula, and its switch Tasks to tabula. Your switch and your name in task lines stay as they were, and your tasks go to Review in tabula as before."
-    },
-    {
-      "build": 264,
-      "date": "2026-10-30",
-      "title": "Delete your templates",
-      "detail": "New page from a template now has Manage templates…. It lists your templates and where each one is. Delete puts the page into the bin for 30 days. Stop using keeps the page. Pages you made from a template stay as they are."
-    },
-    {
-      "build": 263,
-      "date": "2026-10-30",
-      "title": "Page templates of your own",
-      "detail": "Write a page as you like it, and choose Use as template in its … menu. It then shows under New page from a template, and Prepare offers it for a meeting. A meeting prepared from a template keeps its link, so scripta writes its minutes under the headings of your template, also under German ones such as Aufgaben or Beschlüsse."
-    },
-    {
-      "build": 262,
-      "date": "2026-10-30",
-      "title": "A tick in folia finishes the task in j4k",
-      "detail": "A task that went to j4k and that you tick in folia now goes to Done in j4k, within about three minutes. A task with an open subtask or a repeat in j4k stays open: finish it there."
     }
   ]
 }
