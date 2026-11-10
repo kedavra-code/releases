@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 762,
-  "commit": "02dcf27",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-762/tabula.dmg",
-  "sha256": "40f173c8508020f25c6f4e8b78a1f0d8057a1c9ae460198a67f7276821794c63",
+  "build": 763,
+  "commit": "d4afcb7",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-763/tabula.dmg",
+  "sha256": "4d6ac43c72bf09579cebca480404b14b5ff6c82e456242978669bb6f3b397ac4",
   "minimumSystemVersion": "26.0",
-  "notes": "A link to a task says when it cannot open it",
+  "notes": "Find someone to share with by typing",
   "entries": [
+    {
+      "build": 763,
+      "date": "2026-11-10",
+      "title": "Find someone to share with by typing",
+      "detail": "Both Share windows, a task's and an objective's, have a search field above Add someone, as in folia. Type part of a name or an address: the rows narrow at once, names that start with it first. Case and accents do not count. Enter adds the person when only one is left."
+    },
     {
       "build": 762,
       "date": "2026-11-10",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "Windows without scrollbars",
       "detail": "No window draws a scrollbar any more, nor anything in one: what is taller than its box still scrolls with the wheel, the trackpad or a finger. With one window over another, Escape closes the one on top and leaves the one under it open. A window takes the focus when it opens, so Tab moves through the window and not the page behind it. A goal's Notes field is one box, not a box inside a box."
-    },
-    {
-      "build": 672,
-      "date": "2026-11-02",
-      "title": "Goals with other people",
-      "detail": "Share an objective with the person button beside its title: everyone on it changes it and its key results, checks in and links tasks. Its maker can open it to everyone, who can then read it, and can say which other objective it supports. A key result can name who answers for it. Mine, Team and Everyone choose which objectives Goals shows, and the work bar counts everyone's tasks. For you tells you when you are added, when someone else checks in, and on Monday when a key result of yours has gone six days without a check-in."
     }
   ]
 }
