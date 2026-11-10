@@ -1,12 +1,42 @@
 {
   "app": "tabula",
-  "build": 752,
-  "commit": "87b1a99",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-752/tabula.dmg",
-  "sha256": "a5fb8be5ef774f596f117f8d527caf8b4d55a9a572ad31c1d3b889f626980d14",
+  "build": 761,
+  "commit": "1a421f3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-761/tabula.dmg",
+  "sha256": "9ce4cd99cb292996834dc54216dc76cefafb1ade9fedaa98d2ae9e2646c8abe5",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Typing together runs on tabula's own server\nPick the key results that carry\nWork counts the stories and tasks in Jira epics\nSearch your goals\nA key result lists its tabula epics",
   "entries": [
+    {
+      "build": 759,
+      "date": "2026-11-10",
+      "title": "Typing together runs on tabula's own server",
+      "detail": "When two people type in a shared task at once, their text now goes through tabula's own server. Until now it went through folia's server, so work on folia could interrupt it. Nothing changes in how you use it. An open tabula window takes the new server when you reload it."
+    },
+    {
+      "build": 756,
+      "date": "2026-11-10",
+      "title": "Pick the key results that carry",
+      "detail": "When you close a quarter and carry an objective into the next one, each of its key results now has its own switch. The unfinished ones start switched on, a done milestone starts off. Only the key results you pick are copied, with the open tasks that serve them."
+    },
+    {
+      "build": 755,
+      "date": "2026-11-10",
+      "title": "Work counts the stories and tasks in Jira epics",
+      "detail": "A key result's Work bar now counts the stories and tasks inside its Jira epics, which move every week, instead of the epics, which move once a quarter. Each Jira epic shows its own count, for example 3/12 tasks. An epic with nothing in it still counts as one task. The new counts arrive with the next Jira sync."
+    },
+    {
+      "build": 754,
+      "date": "2026-11-10",
+      "title": "Search your goals",
+      "detail": "The search field at the top now works on the Goals page too. Type a word, for example PCW, and you see only the objectives and key results whose title, description or Jira key holds it. An objective that matches keeps all its key results. Clear the search and the page is as it was."
+    },
+    {
+      "build": 753,
+      "date": "2026-11-10",
+      "title": "A key result lists its tabula epics",
+      "detail": "Under a key result's bars, before its Jira epics, a folded list shows the tabula epics that serve it: the open ones first, then the done and archived ones. Each shows its code, its title, how many of its tasks are done and its status. Press the code to open the epic."
+    },
     {
       "build": 742,
       "date": "2026-11-06",
@@ -216,36 +246,6 @@
       "date": "2026-11-02",
       "title": "Goals: objectives and key results",
       "detail": "The target button at the top opens Goals: a quarter's objectives, each with the key results that say how you will know. A key result is a number to move, a milestone, a baseline to measure first, or a line to hold. Check in each week with the reading and how confident you are; tabula keeps every check-in and draws the confidence as a small line. Each key result has two bars: the outcome you read, and the work done in the tasks that serve it. Find a task's key result in its editor by typing a few words, as for Part of (an epic's tasks serve its key result), see it under the card's title, or sort the board by Swimlanes › Key result. Objectives for a later quarter start as drafts."
-    },
-    {
-      "build": 659,
-      "date": "2026-11-02",
-      "title": "The old addresses are switched off",
-      "detail": "j4k.pixelina.me and task-001.pixelina.me no longer lead to tabula. Use tabula.pixelina.me. If an icon on your phone's home screen still says j4k, delete it and add tabula again from tabula.pixelina.me."
-    },
-    {
-      "build": 657,
-      "date": "2026-11-02",
-      "title": "Get the Mac app is now in About",
-      "detail": "Settings › About tabula now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its own switches."
-    },
-    {
-      "build": 656,
-      "date": "2026-11-02",
-      "title": "People look like folia's notebooks",
-      "detail": "A person is now a rounded square with one letter on one of folia's ten notebook colours, the same on cards, in the task window, in Share and in Settings. In Settings › Users the admin picks each person's colour, and everyone sees it on shared tasks."
-    },
-    {
-      "build": 655,
-      "date": "2026-11-02",
-      "title": "Status, Priority, Size, Tag",
-      "detail": "The fields now come in this one order everywhere: the filter buttons and the line under them, the task window, and the bar for changing many tasks at once. Epic still follows them."
-    },
-    {
-      "build": 653,
-      "date": "2026-11-02",
-      "title": "A clear plus for a new task · The List view is gone",
-      "detail": "A clear plus for a new task: The way to make a task is now a soft amber plus beside the name tabula, on the left. Its edge lights when you point at it, and it turns full amber when you press it and while the new task's window is open. The List view is gone: tabula now opens on the Kanban board, or on the Calendar if you chose that in Settings. Review, Archived and Deleted are on no board, so each of them stands in one column of its own when you pick it under Status. Nothing happened to your tasks."
     }
   ]
 }
