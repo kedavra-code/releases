@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 761,
-  "commit": "1a421f3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-761/tabula.dmg",
-  "sha256": "9ce4cd99cb292996834dc54216dc76cefafb1ade9fedaa98d2ae9e2646c8abe5",
+  "build": 762,
+  "commit": "02dcf27",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-762/tabula.dmg",
+  "sha256": "40f173c8508020f25c6f4e8b78a1f0d8057a1c9ae460198a67f7276821794c63",
   "minimumSystemVersion": "26.0",
-  "notes": "Typing together runs on tabula's own server\nPick the key results that carry\nWork counts the stories and tasks in Jira epics\nSearch your goals\nA key result lists its tabula epics",
+  "notes": "A link to a task says when it cannot open it",
   "entries": [
+    {
+      "build": 762,
+      "date": "2026-11-10",
+      "title": "A link to a task says when it cannot open it",
+      "detail": "A link to one task (?task-id=, as folia puts in its pages) opens it, also when it is shared with you. If the task is not on your list, tabula now says so instead of doing nothing. If you must sign in first, the link opens the task after the sign-in."
+    },
     {
       "build": 759,
       "date": "2026-11-10",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "Goals with other people",
       "detail": "Share an objective with the person button beside its title: everyone on it changes it and its key results, checks in and links tasks. Its maker can open it to everyone, who can then read it, and can say which other objective it supports. A key result can name who answers for it. Mine, Team and Everyone choose which objectives Goals shows, and the work bar counts everyone's tasks. For you tells you when you are added, when someone else checks in, and on Monday when a key result of yours has gone six days without a check-in."
-    },
-    {
-      "build": 665,
-      "date": "2026-11-02",
-      "title": "Goals: objectives and key results",
-      "detail": "The target button at the top opens Goals: a quarter's objectives, each with the key results that say how you will know. A key result is a number to move, a milestone, a baseline to measure first, or a line to hold. Check in each week with the reading and how confident you are; tabula keeps every check-in and draws the confidence as a small line. Each key result has two bars: the outcome you read, and the work done in the tasks that serve it. Find a task's key result in its editor by typing a few words, as for Part of (an epic's tasks serve its key result), see it under the card's title, or sort the board by Swimlanes › Key result. Objectives for a later quarter start as drafts."
     }
   ]
 }
