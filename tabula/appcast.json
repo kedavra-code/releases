@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 763,
-  "commit": "d4afcb7",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-763/tabula.dmg",
-  "sha256": "4d6ac43c72bf09579cebca480404b14b5ff6c82e456242978669bb6f3b397ac4",
+  "build": 765,
+  "commit": "1ceb4d6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-765/tabula.dmg",
+  "sha256": "2da7ee59e7c84faab9123a0f20fecafc8dfa62f5150c1ac650e24c9b903479e6",
   "minimumSystemVersion": "26.0",
-  "notes": "Find someone to share with by typing",
+  "notes": "A link to a task in Review opens Review",
   "entries": [
+    {
+      "build": 765,
+      "date": "2026-11-10",
+      "title": "A link to a task in Review opens Review",
+      "detail": "A link to one task (as folia puts in its pages) opened the board with live work, where a task in Review never shows. It now opens the Review list with the task marked, as links to archived, deleted and done tasks already open their view."
+    },
     {
       "build": 763,
       "date": "2026-11-10",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "Work in progress limits",
       "detail": "Settings › General › Kanban board sets the most tasks Backlog, Doing and Pending should hold. A column over its limit shows its count against the limit in amber, such as 4/3, with an amber line under its header; at the limit it stays quiet. Nothing is refused: a card can still be dropped there. With swimlanes each row keeps its own count, and the header turns amber when the whole column is over."
-    },
-    {
-      "build": 675,
-      "date": "2026-11-02",
-      "title": "Windows without scrollbars",
-      "detail": "No window draws a scrollbar any more, nor anything in one: what is taller than its box still scrolls with the wheel, the trackpad or a finger. With one window over another, Escape closes the one on top and leaves the one under it open. A window takes the focus when it opens, so Tab moves through the window and not the page behind it. A goal's Notes field is one box, not a box inside a box."
     }
   ]
 }
