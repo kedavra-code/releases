@@ -1,12 +1,18 @@
 {
   "app": "specula",
-  "build": 133,
-  "commit": "6e7e946",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-133/specula.dmg",
-  "sha256": "05d36d8389eaf991c94d5f492283b1f478f92d6697611209f4d6f6eca9ebfca4",
+  "build": 134,
+  "commit": "7bb4c41",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-134/specula.dmg",
+  "sha256": "fdcce79a125c2a8d86fa14785c96af5582fe7f93733d6209f359050723516937",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "No vault found: choose its folder right there",
   "entries": [
+    {
+      "build": 134,
+      "date": "2026-11-10",
+      "title": "No vault found: choose its folder right there",
+      "detail": "When specula finds no vault where it looks, it says so and names that folder. Before, it showed \"spawn /usr/bin/python3 ENOENT\". In the Mac app the same screen has Choose the vault folder…, as in Settings › Armarium, so specula starts on the right folder at once."
+    },
     {
       "build": 132,
       "date": "2026-11-08",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "Get the Mac app is now in About",
       "detail": "Settings › About specula now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its hotkey, its icon and opening at login."
-    },
-    {
-      "build": 68,
-      "date": "2026-11-01",
-      "title": "The Timelapse builds from behind the ship",
-      "detail": "The Timelapse now starts from the view the 3D view opens on: SRG SSR builds on the left, NZZ on the right, ETH in front. The camera floats in a small loop and rises, comes down behind the ship for the warp, and rests on the same view at the end."
     }
   ]
 }
