@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 351,
-  "commit": "22d5619",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-351/folia.dmg",
-  "sha256": "cd3659c0484486966e06e36ca4a4f9e3b1e3341a4f55515b1bbeeabd080c6516",
+  "build": 353,
+  "commit": "41a0278",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-353/folia.dmg",
+  "sha256": "85d0127a7cb98f4e9b208e7e42c088c20f84b5d36830f3f2370f61316ec41cd5",
   "minimumSystemVersion": "26.0",
-  "notes": "All side windows the same width\nPicking a tabula task works every time\nMany new pages at once all show\nFind a tabula task from the page\nImport a Confluence space\nGreyed-out tools say why\nNo more amber @mentions, and a list that fits\nCalmer @mentions, and the right colour for who is here\nand 10 more — see What's New",
+  "notes": "Calmer marks for commented words\nComments: jump to the words, and @ to mention",
   "entries": [
+    {
+      "build": 353,
+      "date": "2026-11-10",
+      "title": "Calmer marks for commented words",
+      "detail": "Words with a comment now sit on a soft grey pill instead of an amber line. The words of the comment you have open get a slightly stronger grey."
+    },
+    {
+      "build": 352,
+      "date": "2026-11-10",
+      "title": "Comments: jump to the words, and @ to mention",
+      "detail": "Click a comment in the Comments window, and the page goes to the words it is about, with them selected. Typing @ in a comment or a reply opens the same list of people as in the page; pick one with the mouse or Enter."
+    },
     {
       "build": 351,
       "date": "2026-11-10",
@@ -234,18 +246,6 @@
       "date": "2026-11-05",
       "title": "Open a brief's items in specula",
       "detail": "In the brief and in Minutes and Cerebrum, press the name of a person, a topic or an open item, and specula shows it."
-    },
-    {
-      "build": 300,
-      "date": "2026-11-05",
-      "title": "Open items from Cerebrum say since when",
-      "detail": "In the brief and in Minutes and Cerebrum, each open item from your Cerebrum vault now says since when it is open, for example open since 12.03.2026."
-    },
-    {
-      "build": 299,
-      "date": "2026-11-05",
-      "title": "Minutes and Cerebrum on a meeting page",
-      "detail": "With Brief from Cerebrum on, a meeting page with scripta's minutes has a Minutes and Cerebrum button on its meeting line. It shows what earlier meetings of the series already had open, the people and projects the minutes name, and the decisions and open points beside what your Cerebrum vault holds. Prepare, Open and Brief in Meetings now share one width and line up. Like the brief, it is read on this Mac and never goes into a page."
     }
   ]
 }
