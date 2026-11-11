@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 353,
-  "commit": "41a0278",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-353/folia.dmg",
-  "sha256": "85d0127a7cb98f4e9b208e7e42c088c20f84b5d36830f3f2370f61316ec41cd5",
+  "build": 356,
+  "commit": "356ae0a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-356/folia.dmg",
+  "sha256": "572a0240d507ba6369cf6854141fcc96d5f567983f63f23d3fb2aee7c3d29556",
   "minimumSystemVersion": "26.0",
-  "notes": "Calmer marks for commented words\nComments: jump to the words, and @ to mention",
+  "notes": "Document pictures in a Confluence import, with no extra step\nA new page opens at once, also after an import\nA Confluence import that looks like Confluence",
   "entries": [
+    {
+      "build": 356,
+      "date": "2026-11-11",
+      "title": "Document pictures in a Confluence import, with no extra step",
+      "detail": "In the Mac app, Import Confluence export… now draws the picture of each Word, PowerPoint or PDF page that Confluence shows, by itself, and puts it above the file, also in a table cell. No script to run first."
+    },
+    {
+      "build": 355,
+      "date": "2026-11-11",
+      "title": "A new page opens at once, also after an import",
+      "detail": "A page that folia opened while it was still saving it could say \"No access to this page\" until a reload, for example the home page right after a Confluence import. folia now asks again a second later and opens it."
+    },
+    {
+      "build": 354,
+      "date": "2026-11-11",
+      "title": "A Confluence import that looks like Confluence",
+      "detail": "Import Confluence export… now keeps what Confluence draws in the browser: the page trees and child page lists, tables of contents, recent updates, version history and file lists. Coloured text keeps its colour, a row's own header is bold, and a price like $5 / $30 stays text."
+    },
     {
       "build": 353,
       "date": "2026-11-10",
@@ -228,24 +246,6 @@
       "date": "2026-11-05",
       "title": "Briefs are read ahead",
       "detail": "With Brief from Cerebrum on, folia reads the briefs of today's and the next seven days' meetings by itself, half a minute after it starts and then every half hour, so Brief and the meeting page's card open at once. A brief older than a day is read again."
-    },
-    {
-      "build": 303,
-      "date": "2026-11-05",
-      "title": "See what a coworker changed",
-      "detail": "A page someone else changed since you last read it has a dot in their colour in the page list, and its section and notebook count it. On the page, a line under the title says who changed how many places and when, with arrows to go from place to place and Mark as seen; a bar in the right margin, with their initials, marks each place. What they type while you read shows at once."
-    },
-    {
-      "build": 302,
-      "date": "2026-11-05",
-      "title": "The brief is kept, and folded into the meeting page",
-      "detail": "A meeting page now has a folded Brief from Cerebrum card under its meeting line: one line says when it was read and what it holds, and a press opens it. The brief is read once and kept on this Mac, so it opens at once, here and with Brief in Meetings; Read again asks Cerebrum anew. It is never saved in the page and never sent."
-    },
-    {
-      "build": 301,
-      "date": "2026-11-05",
-      "title": "Open a brief's items in specula",
-      "detail": "In the brief and in Minutes and Cerebrum, press the name of a person, a topic or an open item, and specula shows it."
     }
   ]
 }
