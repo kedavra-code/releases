@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 356,
-  "commit": "356ae0a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-356/folia.dmg",
-  "sha256": "572a0240d507ba6369cf6854141fcc96d5f567983f63f23d3fb2aee7c3d29556",
+  "build": 357,
+  "commit": "177e5a6",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-357/folia.dmg",
+  "sha256": "458634ba5bbf93060b233a2b2bf6f39ebde334236ee6fbbf721f724bc45b2af9",
   "minimumSystemVersion": "26.0",
-  "notes": "Document pictures in a Confluence import, with no extra step\nA new page opens at once, also after an import\nA Confluence import that looks like Confluence",
+  "notes": "Columns in a page: one, two or three",
   "entries": [
+    {
+      "build": 357,
+      "date": "2026-11-11",
+      "title": "Columns in a page: one, two or three",
+      "detail": "The toolbar has One column, Two columns and Three columns. Two or three put empty columns below the line you are on; in columns they change how many there are, and One column puts everything back on the page, nothing lost. On a narrow page the columns stand one below the other. A Confluence import now keeps the columns of a page, as on the space's home page. New tools: if you set up your toolbar yourself, add them in Settings › Toolbar."
+    },
     {
       "build": 356,
       "date": "2026-11-11",
@@ -240,12 +246,6 @@
       "date": "2026-11-05",
       "title": "People in their own colour, as in tabula",
       "detail": "Settings › Users now looks like tabula's: each person a coloured letter, and the admin picks their colour from folia's notebook colours. That colour is how everyone sees the person in folia: their cursor, the marks of their changes, their face in the change line and in Share. Without a choice, folia picks one from the address."
-    },
-    {
-      "build": 304,
-      "date": "2026-11-05",
-      "title": "Briefs are read ahead",
-      "detail": "With Brief from Cerebrum on, folia reads the briefs of today's and the next seven days' meetings by itself, half a minute after it starts and then every half hour, so Brief and the meeting page's card open at once. A brief older than a day is read again."
     }
   ]
 }
