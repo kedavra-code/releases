@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 358,
-  "commit": "642aa61",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-358/folia.dmg",
-  "sha256": "a2289be64c7894e4cd8980c59ebb1c982d85019d3d45de30d9a7039f72ad7486",
+  "build": 360,
+  "commit": "4686c2e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-360/folia.dmg",
+  "sha256": "faafb409614baec6a4e4a104319d67d549845398bb0b2b6a6d630730db0d8117",
   "minimumSystemVersion": "26.0",
-  "notes": "Confluence tables and headings imported whole",
+  "notes": "Fold and open a heading beside its words\nFold-out headings open with a click on their words",
   "entries": [
+    {
+      "build": 360,
+      "date": "2026-11-11",
+      "title": "Fold and open a heading beside its words",
+      "detail": "A click on the empty space right of a fold-out heading's words opens or folds it, and your cursor stays where it was. There the pointer turns into a hand and says Fold. A click on the words still lets you edit them."
+    },
+    {
+      "build": 359,
+      "date": "2026-11-11",
+      "title": "Fold-out headings open with a click on their words",
+      "detail": "A folded heading now opens when you click anywhere on it, not only on its arrow; the cursor goes there too. If you may only read the page, a click opens and folds it. A search hit or a comment inside a folded part opens that part by itself."
+    },
     {
       "build": 358,
       "date": "2026-11-11",
@@ -234,18 +246,6 @@
       "date": "2026-11-05",
       "title": "Align text left, centre, right or justified and 2 more",
       "detail": "Align text left, centre, right or justified: As in Word, for text and headings: add the four tools to the toolbar in Settings › Toolbar, or give them keys in Settings › Keys. A second press of Centre, Right or Justify goes back to left. The alignment stays in History, copies and templates, and the Markdown copy writes it as GitHub does. Lists, quotes and tables keep their own alignment. Choose the tools above a selection: Settings › Toolbar now also sets what shows above selected words: the font colours as before, and any of Bold, Italic, Link, the alignments, headings, lists and more, in your order. Its switch moved there from Settings › General. ⌘G goes through the changes by others: With nothing in the search field, ⌘G goes to the next place someone else changed on the open page, and ⇧⌘G to the one before. With words in the search field, ⌘G still goes through the hits."
-    },
-    {
-      "build": 307,
-      "date": "2026-11-05",
-      "title": "A person's face beside their changes",
-      "detail": "The bars beside what others wrote now carry the person's face from Settings › Users: the first letter of their address, in their colour. The line under the title and Share use the same face. A colour chosen in Settings › Users shows on the page at once. Beside older text the bar is lighter, the face stays in full colour."
-    },
-    {
-      "build": 306,
-      "date": "2026-11-05",
-      "title": "Who wrote what, whenever you want",
-      "detail": "Switch on Who wrote what in Settings › General, or in ⌘K: every page then shows a bar beside everything others wrote, in their colour, not only what is new. What is new since you last read the page stays bright, the rest is lighter."
     }
   ]
 }
