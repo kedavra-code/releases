@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 357,
-  "commit": "177e5a6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-357/folia.dmg",
-  "sha256": "458634ba5bbf93060b233a2b2bf6f39ebde334236ee6fbbf721f724bc45b2af9",
+  "build": 358,
+  "commit": "642aa61",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-358/folia.dmg",
+  "sha256": "a2289be64c7894e4cd8980c59ebb1c982d85019d3d45de30d9a7039f72ad7486",
   "minimumSystemVersion": "26.0",
-  "notes": "Columns in a page: one, two or three",
+  "notes": "Confluence tables and headings imported whole",
   "entries": [
+    {
+      "build": 358,
+      "date": "2026-11-11",
+      "title": "Confluence tables and headings imported whole",
+      "detail": "A table whose row headers hold paragraphs no longer breaks apart into text with \"|\" signs, and a heading that starts with a line break or holds a table of contents stays one heading. Import the space again to get the fixed pages."
+    },
     {
       "build": 357,
       "date": "2026-11-11",
@@ -240,12 +246,6 @@
       "date": "2026-11-05",
       "title": "Who wrote what, whenever you want",
       "detail": "Switch on Who wrote what in Settings › General, or in ⌘K: every page then shows a bar beside everything others wrote, in their colour, not only what is new. What is new since you last read the page stays bright, the rest is lighter."
-    },
-    {
-      "build": 305,
-      "date": "2026-11-05",
-      "title": "People in their own colour, as in tabula",
-      "detail": "Settings › Users now looks like tabula's: each person a coloured letter, and the admin picks their colour from folia's notebook colours. That colour is how everyone sees the person in folia: their cursor, the marks of their changes, their face in the change line and in Share. Without a choice, folia picks one from the address."
     }
   ]
 }
