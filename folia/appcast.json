@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 366,
-  "commit": "0654968",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-366/folia.dmg",
-  "sha256": "ed7931b51402989ab1ace81d83f7d1b14550fc20cbeb3dc82ac5ed51e0d4f790",
+  "build": 369,
+  "commit": "e12082f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-369/folia.dmg",
+  "sha256": "b83a3477bc65810402bdad342768cff92a27ec3f1c31db31005e2062fd349d9e",
   "minimumSystemVersion": "26.0",
-  "notes": "Links to this page show the notebook\nLinks to this page in every notebook\nLink to page from the toolbar",
+  "notes": "Six dots for each list line\nCopy or move a page, and you go with it\nA list line moves alone",
   "entries": [
+    {
+      "build": 369,
+      "date": "2026-11-12",
+      "title": "Six dots for each list line",
+      "detail": "Each line of a list has its own six dots, left of its bullet. A click selects that line and the lines under it, and a drag moves them together. Before, the dots took the whole list, and two lists that touch look like one."
+    },
+    {
+      "build": 368,
+      "date": "2026-11-12",
+      "title": "Copy or move a page, and you go with it",
+      "detail": "After Copy to section… or Move to section…, folia opens the page where it went: the copy, or the moved page, in its new section. Of several pages, the one that was open, else the first."
+    },
+    {
+      "build": 367,
+      "date": "2026-11-12",
+      "title": "A list line moves alone",
+      "detail": "Backspace at the start of a list line joins it to the line above, and Delete at its end joins the line below. Tab moves only the line one level in. The lines below keep their level and their place. Backspace in the first line of a list still takes its bullet away."
+    },
     {
       "build": 366,
       "date": "2026-11-12",
@@ -228,24 +246,6 @@
       "date": "2026-11-07",
       "title": "Calendar integration can be switched off",
       "detail": "Settings › Mac app has a new switch, Calendar integration, as in tabula. On, Meetings shows the meetings of your Mac's Calendar app, with Prepare and Brief beside each. Off, folia reads no calendar, and Meetings says so. The briefs of your pages are read either way."
-    },
-    {
-      "build": 322,
-      "date": "2026-11-07",
-      "title": "All briefs are read without a long pause",
-      "detail": "When folia stops reading the missing briefs because Cerebrum could not answer for a moment, it now tries again after a minute instead of half an hour. So all your pages get their brief soon after the start, without a press on the card."
-    },
-    {
-      "build": 321,
-      "date": "2026-11-07",
-      "title": "Briefs for all your knowledge bases",
-      "detail": "With Brief from Cerebrum on, the pages of every notebook whose Markdown copy is in a knowledge base of your vault now get the brief card too, such as your NZZ and SRG SSR notebooks, not only the ETH ones. folia reads the missing briefs one page at a time, the newest first; Settings › Armarium shows how far it is."
-    },
-    {
-      "build": 320,
-      "date": "2026-11-07",
-      "title": "Choose where your Cerebrum vault is",
-      "detail": "Settings › Armarium › Cerebrum has a new row, Vault folder. Brief from Cerebrum reads your vault from the standard place in iCloud Drive, or from any folder you choose on this Mac, so a vault anywhere works, also another person's. The briefs are kept in the briefs folder of that vault. The row also says when a folder has no Cerebrum vault, or when the vault does not let folia keep briefs yet."
     }
   ]
 }
