@@ -1,12 +1,24 @@
 {
   "app": "folia",
-  "build": 361,
-  "commit": "4a73fd4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-361/folia.dmg",
-  "sha256": "75201396cfe3c384b12dea6ab82fef39d2b1950efc2fca1abe57d05cc044b072",
+  "build": 363,
+  "commit": "55cb426",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-363/folia.dmg",
+  "sha256": "43880569c18b823cb75fcfeb0dfd4c84e8cad4e5d767e1be44582a872ba78913",
   "minimumSystemVersion": "26.0",
-  "notes": "Tab indents a list item again everywhere",
+  "notes": "Hide the cursors of others on a page\nFocus and Typewriter mode are buttons in the top bar again",
   "entries": [
+    {
+      "build": 363,
+      "date": "2026-11-12",
+      "title": "Hide the cursors of others on a page",
+      "detail": "Settings › General › Others' cursors. Switched off, a page shows no cursor, name or selection of another person, and no faces beside its dates. They still write with you, and you still see what they write."
+    },
+    {
+      "build": 362,
+      "date": "2026-11-12",
+      "title": "Focus and Typewriter mode are buttons in the top bar again",
+      "detail": "They left Settings › General. Two buttons in the top bar switch them on and off, beside Page alone, and ⌘K still has them. If you had set up your top bar, folia adds the two once; Settings › Top bar moves or hides them."
+    },
     {
       "build": 361,
       "date": "2026-11-12",
@@ -234,18 +246,6 @@
       "date": "2026-11-06",
       "title": "Changes by others are marked row by row in tables",
       "detail": "When someone changes a cell, the bar beside the page now marks only that row, not the whole table. Rows in a row changed by one person share one bar, and ⌘G and the arrows go from row to row."
-    },
-    {
-      "build": 310,
-      "date": "2026-11-05",
-      "title": "Briefs are read in a moment",
-      "detail": "folia now keeps one Cerebrum reader open instead of starting it for every question. A page that has no brief yet gets one in about a second, and the pass over your ETH pages takes minutes instead of hours."
-    },
-    {
-      "build": 309,
-      "date": "2026-11-05",
-      "title": "A brief on every page of your ETH notebooks, on both Macs",
-      "detail": "With Brief from Cerebrum on, every page of your ETH notebooks gets the folded brief card: what Cerebrum knows about its topic, the open items, and what was still open on the page before it in the section. folia reads the missing briefs one page at a time, the newest first; Settings › Armarium shows how far it is. The briefs are kept in your Cerebrum vault, in its own folder briefs, so your other Mac shows them too without reading them again."
     }
   ]
 }
