@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 363,
-  "commit": "55cb426",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-363/folia.dmg",
-  "sha256": "43880569c18b823cb75fcfeb0dfd4c84e8cad4e5d767e1be44582a872ba78913",
+  "build": 366,
+  "commit": "0654968",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-366/folia.dmg",
+  "sha256": "ed7931b51402989ab1ace81d83f7d1b14550fc20cbeb3dc82ac5ed51e0d4f790",
   "minimumSystemVersion": "26.0",
-  "notes": "Hide the cursors of others on a page\nFocus and Typewriter mode are buttons in the top bar again",
+  "notes": "Links to this page show the notebook\nLinks to this page in every notebook\nLink to page from the toolbar",
   "entries": [
+    {
+      "build": 366,
+      "date": "2026-11-12",
+      "title": "Links to this page show the notebook",
+      "detail": "Each page in Links to this page shows its notebook's icon, as in the sidebar: its letter on its colour, or a book for a wiki space. Then comes the notebook, a section group if there is one, and the section."
+    },
+    {
+      "build": 365,
+      "date": "2026-11-12",
+      "title": "Links to this page in every notebook",
+      "detail": "The foot of a page lists the pages that link to it, in every notebook, not only in wiki spaces. A click opens one. A page no other page links to shows nothing there."
+    },
+    {
+      "build": 364,
+      "date": "2026-11-12",
+      "title": "Link to page from the toolbar",
+      "detail": "A new button beside Link types [[ for you, and the list of pages opens. Select words first, and the list shows the pages they name, or offers a new page of that name. If you had set up your toolbar, folia adds the button once; Settings › Toolbar moves or hides it."
+    },
     {
       "build": 363,
       "date": "2026-11-12",
@@ -228,24 +246,6 @@
       "date": "2026-11-07",
       "title": "Choose where your Cerebrum vault is",
       "detail": "Settings › Armarium › Cerebrum has a new row, Vault folder. Brief from Cerebrum reads your vault from the standard place in iCloud Drive, or from any folder you choose on this Mac, so a vault anywhere works, also another person's. The briefs are kept in the briefs folder of that vault. The row also says when a folder has no Cerebrum vault, or when the vault does not let folia keep briefs yet."
-    },
-    {
-      "build": 316,
-      "date": "2026-11-06",
-      "title": "Safer files, and a quicker page list",
-      "detail": "A stored file that could run code, such as an HTML or SVG file, now downloads instead of opening in a browser tab. In the Mac app, a program, script or installer shows in the Finder instead of opening. A picture added to a Markdown file whose _assets folder is not there yet now goes into that folder. folia reads your page list in fewer, quicker steps."
-    },
-    {
-      "build": 313,
-      "date": "2026-11-06",
-      "title": "scripta writes into the page you prepared",
-      "detail": "scripta's minutes, Prepare and the meetings panel find a meeting's page also when the calendar changed the meeting's id, had the meeting twice, or the page was made by hand for that day. A new page for the meeting goes to the section of its series."
-    },
-    {
-      "build": 312,
-      "date": "2026-11-06",
-      "title": "Changes by others are marked row by row in tables",
-      "detail": "When someone changes a cell, the bar beside the page now marks only that row, not the whole table. Rows in a row changed by one person share one bar, and ⌘G and the arrows go from row to row."
     }
   ]
 }
