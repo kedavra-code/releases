@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 360,
-  "commit": "4686c2e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-360/folia.dmg",
-  "sha256": "faafb409614baec6a4e4a104319d67d549845398bb0b2b6a6d630730db0d8117",
+  "build": 361,
+  "commit": "4a73fd4",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-361/folia.dmg",
+  "sha256": "75201396cfe3c384b12dea6ab82fef39d2b1950efc2fca1abe57d05cc044b072",
   "minimumSystemVersion": "26.0",
-  "notes": "Fold and open a heading beside its words\nFold-out headings open with a click on their words",
+  "notes": "Tab indents a list item again everywhere",
   "entries": [
+    {
+      "build": 361,
+      "date": "2026-11-12",
+      "title": "Tab indents a list item again everywhere",
+      "detail": "Some pages hold two lists right after each other that look like one. Tab in the first item of the second list did nothing and sent the cursor away. Now the two lists become one and the item goes under the item above it. Where an item cannot move, Tab keeps the cursor in the text."
+    },
     {
       "build": 360,
       "date": "2026-11-11",
@@ -240,12 +246,6 @@
       "date": "2026-11-05",
       "title": "A brief on every page of your ETH notebooks, on both Macs",
       "detail": "With Brief from Cerebrum on, every page of your ETH notebooks gets the folded brief card: what Cerebrum knows about its topic, the open items, and what was still open on the page before it in the section. folia reads the missing briefs one page at a time, the newest first; Settings › Armarium shows how far it is. The briefs are kept in your Cerebrum vault, in its own folder briefs, so your other Mac shows them too without reading them again."
-    },
-    {
-      "build": 308,
-      "date": "2026-11-05",
-      "title": "Align text left, centre, right or justified and 2 more",
-      "detail": "Align text left, centre, right or justified: As in Word, for text and headings: add the four tools to the toolbar in Settings › Toolbar, or give them keys in Settings › Keys. A second press of Centre, Right or Justify goes back to left. The alignment stays in History, copies and templates, and the Markdown copy writes it as GitHub does. Lists, quotes and tables keep their own alignment. Choose the tools above a selection: Settings › Toolbar now also sets what shows above selected words: the font colours as before, and any of Bold, Italic, Link, the alignments, headings, lists and more, in your order. Its switch moved there from Settings › General. ⌘G goes through the changes by others: With nothing in the search field, ⌘G goes to the next place someone else changed on the open page, and ⇧⌘G to the one before. With words in the search field, ⌘G still goes through the hits."
     }
   ]
 }
