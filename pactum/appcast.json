@@ -1,12 +1,24 @@
 {
   "app": "pactum",
-  "build": 81,
-  "commit": "d92cd15",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-81/pactum.dmg",
-  "sha256": "158847cf801fd20e6fa5e3985e081a2d3361b0d0c76188317ddfb8f85bb04016",
+  "build": 83,
+  "commit": "bc56cc0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-83/pactum.dmg",
+  "sha256": "1d350e7d024b2c2df321760b5d50d98d5cb049e5c465186a8d44a3c5fd47fcdb",
   "minimumSystemVersion": "26.0",
-  "notes": "Each spider label says its mean",
+  "notes": "Names closer to their bubbles\nNo lines from names to bubbles",
   "entries": [
+    {
+      "build": 83,
+      "date": "2026-11-13",
+      "title": "Names closer to their bubbles",
+      "detail": "In the efficiency and maturity chart, a name now tries every 45° round its bubble, the four corners too, before it moves a line or more away. So more names stand right beside their bubble."
+    },
+    {
+      "build": 82,
+      "date": "2026-11-13",
+      "title": "No lines from names to bubbles",
+      "detail": "In the efficiency and maturity chart, a name that stands a line or more away from its bubble no longer has a thin line to it. Every name keeps its place, and no name covers another or a bubble."
+    },
     {
       "build": 81,
       "date": "2026-11-09",
@@ -234,18 +246,6 @@
       "date": "2026-11-04",
       "title": "A quieter 2×2, no column Set by, more in the figures",
       "detail": "The efficiency and maturity chart no longer shows values under the mouse. Enter maturity has no column Set by any more: a factor you enter counts as set by ID. The figures of an ISG add its devices on ID Client Delivery platforms, and the tickets are named as what they are: tickets solved by ID Service Desk."
-    },
-    {
-      "build": 32,
-      "date": "2026-11-04",
-      "title": "Figures beside the table, a legend on every profile",
-      "detail": "The figures of the selected ISG stand to the right of the overview, always, so nothing jumps in when you pick a row. The column of KPIs without data is gone; they are in the KPI catalog. Every profile has its own legend, and the selected ISG's profile comes first. In the 2×2, the mouse shows its efficiency and maturity on the axes, and a bubble from fewer KPIs is a dashed ring. A complexity factor of 1 shows as 1.0, and Enter goes to the next factor."
-    },
-    {
-      "build": 31,
-      "date": "2026-11-04",
-      "title": "One number for efficiency, one for maturity",
-      "detail": "Each ISG has two single numbers for comparison. Efficiency Ø is the mean standing, 0 to 5, in the efficiency KPIs: it compares with the ISGs shown. Maturity Ø is the mean level entered, 1 to 5. Both end each row of the table and stand under the spiders on each card. When not all parts are in, the number says how many are, as in \"2 of 9\"."
     }
   ]
 }
