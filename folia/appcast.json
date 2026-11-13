@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 369,
-  "commit": "e12082f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-369/folia.dmg",
-  "sha256": "b83a3477bc65810402bdad342768cff92a27ec3f1c31db31005e2062fd349d9e",
+  "build": 371,
+  "commit": "56f0f25",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-371/folia.dmg",
+  "sha256": "aed0665b5bdc6543fe61cdc9d56002ad4468142222f8a23d2141914c2f0ca406",
   "minimumSystemVersion": "26.0",
-  "notes": "Six dots for each list line\nCopy or move a page, and you go with it\nA list line moves alone",
+  "notes": "Alert says when it cannot work",
   "entries": [
+    {
+      "build": 370,
+      "date": "2026-11-13",
+      "title": "Alert says when it cannot work",
+      "detail": "In a list line a note cannot start, so the Alert button is grey there. On hover it says \"not in a list\". Before, it looked ready but did nothing."
+    },
     {
       "build": 369,
       "date": "2026-11-12",
@@ -240,12 +246,6 @@
       "date": "2026-11-07",
       "title": "folia stays quick with a brief on every page and 2 more",
       "detail": "folia stays quick with a brief on every page: With briefs on all your knowledge bases, folia could slow down and stop with \"Something went wrong\". It worked out the list of briefed pages again at each change of any page, which took almost a second; now it takes a hundredth of that. At each start it also read every kept brief again; now it only asks which pages have none. Meetings finds pages the calendar renamed: When your calendar gives a meeting series a new id, Meetings still shows Open for the page you prepared, and does not offer Prepare again. folia finds it by the meeting's time and the title it had at Prepare, also when you changed the page's title. A link from scripta finds it the same way. No Brief button in Meetings: folia reads the briefs by itself, so Meetings shows only Prepare or Open. A meeting's brief is in its page, once you have prepared it."
-    },
-    {
-      "build": 323,
-      "date": "2026-11-07",
-      "title": "Calendar integration can be switched off",
-      "detail": "Settings › Mac app has a new switch, Calendar integration, as in tabula. On, Meetings shows the meetings of your Mac's Calendar app, with Prepare and Brief beside each. Off, folia reads no calendar, and Meetings says so. The briefs of your pages are read either way."
     }
   ]
 }
