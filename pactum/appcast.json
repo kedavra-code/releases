@@ -1,12 +1,42 @@
 {
   "app": "pactum",
-  "build": 83,
-  "commit": "bc56cc0",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-83/pactum.dmg",
-  "sha256": "1d350e7d024b2c2df321760b5d50d98d5cb049e5c465186a8d44a3c5fd47fcdb",
+  "build": 88,
+  "commit": "b94ed96",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-88/pactum.dmg",
+  "sha256": "b0b377514954fb25e518f3f733e32c206efb58f6ea9d8017221de5e3ef4e9e56",
   "minimumSystemVersion": "26.0",
-  "notes": "Names closer to their bubbles\nNo lines from names to bubbles",
+  "notes": "Spiders the same size in both views\nFigures as tall as the spiders\nSpiders in between, and one ISG laid out anew\nBigger spiders, each with its own labels\nOne maturity in the spiders, and no complexity factor",
   "entries": [
+    {
+      "build": 88,
+      "date": "2026-11-14",
+      "title": "Spiders the same size in both views",
+      "detail": "The spiders are 390 px, with all ISGs and with one ISG picked alike, so an ISG looks the same in both views."
+    },
+    {
+      "build": 87,
+      "date": "2026-11-14",
+      "title": "Figures as tall as the spiders",
+      "detail": "When you pick one ISG with its button, the figures beside its spiders are as tall as the spiders' card."
+    },
+    {
+      "build": 86,
+      "date": "2026-11-14",
+      "title": "Spiders in between, and one ISG laid out anew",
+      "detail": "The spiders are a size in between: at most 480 px, not as big as in build 85. When you pick one ISG with its button, the efficiency and maturity chart takes the whole width, and the figures stand to the right of its spiders."
+    },
+    {
+      "build": 85,
+      "date": "2026-11-14",
+      "title": "Bigger spiders, each with its own labels",
+      "detail": "The two spiders of each ISG now fill the width of its card. Under each spider is one row of labels, each with its line: its mean, the Average ID CxS with its value for that spider, and its minimum. The legend beside the spiders and its sentence about the area are gone."
+    },
+    {
+      "build": 84,
+      "date": "2026-11-14",
+      "title": "One maturity in the spiders, and no complexity factor",
+      "detail": "Each maturity spider draws one shape: the average of the ID's level and the ISG team's level in each dimension. Under it is one \"Maturity Ø\", like the \"Efficiency Ø\" under the other spider. The complexity factor is gone from the KPI page and from Data ISGs. The factors you entered stay in your file."
+    },
     {
       "build": 83,
       "date": "2026-11-13",
@@ -216,36 +246,6 @@
       "date": "2026-11-04",
       "title": "A picked spider goes first, and the table has no gaps",
       "detail": "A spider you click goes to the top of the profiles, as one picked in the table or the 2×2, and it stays under your mouse: the page moves with it. The overview has no gaps between its cells any more, so a row is one band and the amber edge of the selected row runs unbroken."
-    },
-    {
-      "build": 37,
-      "date": "2026-11-04",
-      "title": "The selected row in amber",
-      "detail": "The selected ISG's row in the overview has the same amber ground and amber edge as its figures and its spiders. Its KPI cells keep their grey steps on the amber, so the standing still shows."
-    },
-    {
-      "build": 36,
-      "date": "2026-11-04",
-      "title": "The figures turn amber with the selection",
-      "detail": "When you select an ISG, the figures beside the table turn amber, as its row, its bubble and its spiders do."
-    },
-    {
-      "build": 35,
-      "date": "2026-11-04",
-      "title": "The page stays where you are",
-      "detail": "Picking an ISG in the table, the 2×2 or the profiles no longer moves the page; only the search goes to its row. A profile you click stays in its place. Each profile's legend stands beside its spiders. The complexity factor is on from the start. The figures no longer show the total cost. The overview's groups read ID ISGs and Departmental ISGs."
-    },
-    {
-      "build": 34,
-      "date": "2026-11-04",
-      "title": "The figures name the factor's file",
-      "detail": "Under the complexity factor, the figures no longer say who set it. They name where it is saved, as for every other figure: Input/pactum-eingaben.json."
-    },
-    {
-      "build": 33,
-      "date": "2026-11-04",
-      "title": "A quieter 2×2, no column Set by, more in the figures",
-      "detail": "The efficiency and maturity chart no longer shows values under the mouse. Enter maturity has no column Set by any more: a factor you enter counts as set by ID. The figures of an ISG add its devices on ID Client Delivery platforms, and the tickets are named as what they are: tickets solved by ID Service Desk."
     }
   ]
 }
