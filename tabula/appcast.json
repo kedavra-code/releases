@@ -1,11 +1,11 @@
 {
   "app": "tabula",
-  "build": 765,
-  "commit": "1ceb4d6",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-765/tabula.dmg",
-  "sha256": "2da7ee59e7c84faab9123a0f20fecafc8dfa62f5150c1ac650e24c9b903479e6",
+  "build": 767,
+  "commit": "923b986",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-767/tabula.dmg",
+  "sha256": "0a59b58cd450403b22fbaf8d197fe8fbe2542ea9f889cf8b5c06ac0cad63bdd0",
   "minimumSystemVersion": "26.0",
-  "notes": "A link to a task in Review opens Review",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 765,
