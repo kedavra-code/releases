@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 527,
-  "commit": "9069f8b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-527/GLaDOS.dmg",
-  "sha256": "306e7cb3770fdca0ba57e79f9fb7ce751f5283ddf8abab4034c8ca7809a21b28",
+  "build": 528,
+  "commit": "76b95a9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-528/GLaDOS.dmg",
+  "sha256": "7708dbcdf2e64b05d072099466df6db9f10d446f969c79f3f39e2776c7af257d",
   "minimumSystemVersion": "26.0",
-  "notes": "The screensavers speak with Arthur and Martin",
+  "notes": "lumina answers sooner, and its words cannot steer her",
   "entries": [
+    {
+      "build": 528,
+      "date": "2026-11-14",
+      "title": "lumina answers sooner, and its words cannot steer her",
+      "detail": "\"Open lumina\" and a word cloud talk start one and a half seconds sooner. In a turn that reads the word cloud she now uses only the word cloud's own tools, so a word typed on a phone cannot make her change a task, read the vault or keep a note."
+    },
     {
       "build": 527,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-10-15",
       "title": "A Dock icon, and a choice where GLaDOS shows herself",
       "detail": "GLaDOS has an icon in the Dock now, beside her eye in the menu bar. Settings › General › \"Show GLaDOS in\" chooses: the menu bar and the Dock, the menu bar alone, or the Dock alone. A right-click on the Dock icon shows the items of the menu bar menu, and a click on it opens Settings."
-    },
-    {
-      "build": 355,
-      "date": "2026-10-12",
-      "title": "The room does not stop them while they perform",
-      "detail": "In a discussion, a story or a page, a voice in the room does not stop GLaDOS and J.A.R.V.I.S. any more. They talk on through a laugh and through people who talk to each other. To cut in, say \"GLaDOS\", \"Jarvis\" or \"Stopp\": they stop half a second to a second after the word began, and your sentence is heard from its first word. If they stop and nothing was said to them, a discussion and a page go on by themselves. A normal answer is as before: any voice cuts it."
     }
   ]
 }
