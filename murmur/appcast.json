@@ -1,9 +1,9 @@
 {
   "app": "murmur",
-  "build": 220,
-  "commit": "81521be",
-  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-220/murmur.dmg",
-  "sha256": "d518c7cea187030467894dca78106d166a9716eda1d219de9029fcb947fa247b",
+  "build": 222,
+  "commit": "164f7d1",
+  "url": "https://github.com/kedavra-code/releases/releases/download/murmur-222/murmur.dmg",
+  "sha256": "3bae801e718187ab206cfbd09390fc38a24f214db0ec45fc8d60fa834e97da4b",
   "minimumSystemVersion": "26.0",
   "notes": "Small fixes and improvements.",
   "entries": [
