@@ -1,11 +1,11 @@
 {
   "app": "GLaDOS",
-  "build": 531,
-  "commit": "dad7370",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-531/GLaDOS.dmg",
-  "sha256": "68a3be659a7a4218878841d8166f6f68605f4ff43ea0d71eb0db8984dbb8f631",
+  "build": 532,
+  "commit": "47b47a9",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-532/GLaDOS.dmg",
+  "sha256": "1a8010e903070fb7059211668bfc86c82d4c8e712eccd3d44b4d6d7166b01167",
   "minimumSystemVersion": "26.0",
-  "notes": "Pair lumina, and only GLaDOS writes on its big screen",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 529,
