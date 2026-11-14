@@ -1,9 +1,9 @@
 {
   "app": "unus",
-  "build": 236,
-  "commit": "b9942c4",
-  "url": "https://github.com/kedavra-code/releases/releases/download/unus-236/unus.dmg",
-  "sha256": "e3624ee48c16a3a8ace12118615e44eda2d49044357dcab2cbf1f02b7c74fbf7",
+  "build": 237,
+  "commit": "cdb2135",
+  "url": "https://github.com/kedavra-code/releases/releases/download/unus-237/unus.dmg",
+  "sha256": "eb42e52b8945bc2b3aa827fc0b39c0c5921ce40468140f1588b6b22ffffa0188",
   "minimumSystemVersion": "26.0",
   "notes": "Small fixes and improvements.",
   "entries": [
