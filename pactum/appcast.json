@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 88,
-  "commit": "b94ed96",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-88/pactum.dmg",
-  "sha256": "b0b377514954fb25e518f3f733e32c206efb58f6ea9d8017221de5e3ef4e9e56",
+  "build": 89,
+  "commit": "1b34b11",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-89/pactum.dmg",
+  "sha256": "9bc2b1d6559a8f13a9761e168600563a09f0853bd21e3acd431abb648a943af3",
   "minimumSystemVersion": "26.0",
-  "notes": "Spiders the same size in both views\nFigures as tall as the spiders\nSpiders in between, and one ISG laid out anew\nBigger spiders, each with its own labels\nOne maturity in the spiders, and no complexity factor",
+  "notes": "The Field Manual is up to date",
   "entries": [
+    {
+      "build": 89,
+      "date": "2026-11-14",
+      "title": "The Field Manual is up to date",
+      "detail": "Docs opens the fixed Field Manual: no complexity factor, the two minimums as petrol lines, the maturity spider as the average of the ID's and the ISG team's levels, and the Minimum Viable Efficiency as six standings from 1 to 5."
+    },
     {
       "build": 88,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-11-05",
       "title": "The ISG teams' own maturity",
       "detail": "Enter maturity has a second table, filled by the ISG teams: the same nine levels, for themselves. The first table is the one ID fills. The overview shows Maturity Ø ID and Maturity Ø ISG, and each maturity spider draws the ISG team's levels as a second line. Target is now Accepted Minimum, Research is Research/Business, and the complexity factor is off when the page opens."
-    },
-    {
-      "build": 38,
-      "date": "2026-11-04",
-      "title": "A picked spider goes first, and the table has no gaps",
-      "detail": "A spider you click goes to the top of the profiles, as one picked in the table or the 2×2, and it stays under your mouse: the page moves with it. The overview has no gaps between its cells any more, so a row is one band and the amber edge of the selected row runs unbroken."
     }
   ]
 }
