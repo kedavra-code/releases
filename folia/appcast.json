@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 371,
-  "commit": "56f0f25",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-371/folia.dmg",
-  "sha256": "aed0665b5bdc6543fe61cdc9d56002ad4468142222f8a23d2141914c2f0ca406",
+  "build": 372,
+  "commit": "587c744",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-372/folia.dmg",
+  "sha256": "81fb245b99439ee6eacfe50eb02508a32549c973305b98ce0fd526956095ebfc",
   "minimumSystemVersion": "26.0",
-  "notes": "Alert says when it cannot work",
+  "notes": "Safer and quicker",
   "entries": [
+    {
+      "build": 372,
+      "date": "2026-11-14",
+      "title": "Safer and quicker",
+      "detail": "An SVG picture can no longer run code when it is opened in a tab of its own. A mention in a comment shows the person it really tells. A reader of a notebook no longer gets its tasks in tabula, and finishing one there no longer ticks it in the page. On the Mac, folia writes only Markdown files in a folder you opened, and other files only in its _assets folder. Typing on a page with tabula task links is a little quicker."
+    },
     {
       "build": 370,
       "date": "2026-11-13",
@@ -240,12 +246,6 @@
       "date": "2026-11-07",
       "title": "Only new briefs are made",
       "detail": "folia makes a brief only for a meeting or page that has none. A brief it made once stays as it is, also after a day; press Read again in its card for a new one."
-    },
-    {
-      "build": 326,
-      "date": "2026-11-07",
-      "title": "folia stays quick with a brief on every page and 2 more",
-      "detail": "folia stays quick with a brief on every page: With briefs on all your knowledge bases, folia could slow down and stop with \"Something went wrong\". It worked out the list of briefed pages again at each change of any page, which took almost a second; now it takes a hundredth of that. At each start it also read every kept brief again; now it only asks which pages have none. Meetings finds pages the calendar renamed: When your calendar gives a meeting series a new id, Meetings still shows Open for the page you prepared, and does not offer Prepare again. folia finds it by the meeting's time and the title it had at Prepare, also when you changed the page's title. A link from scripta finds it the same way. No Brief button in Meetings: folia reads the briefs by itself, so Meetings shows only Prepare or Open. A meeting's brief is in its page, once you have prepared it."
     }
   ]
 }
