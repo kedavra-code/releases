@@ -1,11 +1,11 @@
 {
   "app": "specula",
-  "build": 134,
-  "commit": "7bb4c41",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-134/specula.dmg",
-  "sha256": "fdcce79a125c2a8d86fa14785c96af5582fe7f93733d6209f359050723516937",
+  "build": 135,
+  "commit": "1250595",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-135/specula.dmg",
+  "sha256": "d2ed50b8ce45229ffff4954ecb9f0b417b1a069285feca65b2caed63cb5dda81",
   "minimumSystemVersion": "26.0",
-  "notes": "No vault found: choose its folder right there",
+  "notes": "Small fixes and improvements.",
   "entries": [
     {
       "build": 134,
