@@ -1,12 +1,24 @@
 {
   "app": "GLaDOS",
-  "build": 519,
-  "commit": "92f1058",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-519/GLaDOS.dmg",
-  "sha256": "887d6c9ab07bf287520a568c0a5355cfc59cab37d64e54ebc2660957531edcf6",
+  "build": 525,
+  "commit": "a7ae96f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-525/GLaDOS.dmg",
+  "sha256": "0e49c36beedf97e32568a72def1a36900c692413fbe479c51c0edbef93590a11",
   "minimumSystemVersion": "26.0",
-  "notes": "lumina opens in its own app, with its QR code\nShe opens lumina\nThey group and discuss lumina's word cloud",
+  "notes": "Their word cloud talk on lumina's film transcript\nJ.A.R.V.I.S. speaks with Arthur and Martin",
   "entries": [
+    {
+      "build": 524,
+      "date": "2026-11-14",
+      "title": "Their word cloud talk on lumina's film transcript",
+      "detail": "While GLaDOS and J.A.R.V.I.S. discuss the word cloud, lumina's big screen shows a strip of old film in the middle of the cloud for the whole talk, and every sentence they say comes up in it as it is spoken. Nothing else they say goes there."
+    },
+    {
+      "build": 523,
+      "date": "2026-11-14",
+      "title": "J.A.R.V.I.S. speaks with Arthur and Martin",
+      "detail": "His voices are now the Mac's own: Arthur in English and Martin in German, both as a butler, with a warmer tone and a short breath after each sentence. He is as loud as GLaDOS. macOS downloads the two voices in System Settings › Accessibility › Read & Speak; Settings › Voice says whether this Mac has them."
+    },
     {
       "build": 518,
       "date": "2026-11-14",
@@ -234,18 +246,6 @@
       "date": "2026-10-08",
       "title": "The one that is off keeps its small black disc",
       "detail": "When only GLaDOS is on, the small black disc of J.A.R.V.I.S. stays in its place, and her disc stays when only he is on. Before, the second disc went away as soon as one of them started. In big mode the one that is off is not shown."
-    },
-    {
-      "build": 353,
-      "date": "2026-10-08",
-      "title": "Settings › Voice has no J.A.R.V.I.S. switch any more",
-      "detail": "The switch \"J.A.R.V.I.S. beside her\" is gone from Settings › Voice. It did what the hotkey \"J.A.R.V.I.S. eye\" and the J.A.R.V.I.S. row in the menu do, and both of those stay. His two voices are still listed there."
-    },
-    {
-      "build": 349,
-      "date": "2026-10-08",
-      "title": "She starts the film in Cerebrum",
-      "detail": "Say \"start the film in Cerebrum\". GLaDOS puts the vault's viewer on its 3D view and starts its Film: the vault's years as a time-lapse. An older viewer does not know this command. There she opens the 3D view and tells you to press the Film button."
     }
   ]
 }
