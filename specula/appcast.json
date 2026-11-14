@@ -1,12 +1,24 @@
 {
   "app": "specula",
-  "build": 135,
-  "commit": "1250595",
-  "url": "https://github.com/kedavra-code/releases/releases/download/specula-135/specula.dmg",
-  "sha256": "d2ed50b8ce45229ffff4954ecb9f0b417b1a069285feca65b2caed63cb5dda81",
+  "build": 137,
+  "commit": "d111041",
+  "url": "https://github.com/kedavra-code/releases/releases/download/specula-137/specula.dmg",
+  "sha256": "ca8de1ec228481d56cb4ddaa7fc23149a2691002bdecaa648bb5d5d18b6727be",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Only specula itself reads the vault\nAsk Claude stays inside the vault",
   "entries": [
+    {
+      "build": 137,
+      "date": "2026-11-14",
+      "title": "Only specula itself reads the vault",
+      "detail": "specula's server now gives the vault only to its own window and to a browser opened with specula › Open in Browser. Before, any program on this Mac could ask it for the whole vault. A browser tab opened another way shows that it needs specula's key; Open in Browser opens it with the key."
+    },
+    {
+      "build": 136,
+      "date": "2026-11-14",
+      "title": "Ask Claude stays inside the vault",
+      "detail": "A question to Claude can read the vault, write its report there and use the vault's index, and nothing else: it can no longer run commands, reach the web or write outside the vault. The vault holds other people's mail and notes, and a planted line in one of them could otherwise have steered Claude. The reports are written as before."
+    },
     {
       "build": 134,
       "date": "2026-11-10",
@@ -234,18 +246,6 @@
       "date": "2026-11-02",
       "title": "Search and Ask look the same way",
       "detail": "The Search and Ask buttons in the search bar are soft amber squares too, like the header's. The lit one is full amber."
-    },
-    {
-      "build": 71,
-      "date": "2026-11-02",
-      "title": "The header's buttons look like tabula's New task",
-      "detail": "The view buttons and Settings are small soft amber squares now. Point at one and its edge lights. The view that shows, and Settings while it is open, are full amber."
-    },
-    {
-      "build": 69,
-      "date": "2026-11-02",
-      "title": "Get the Mac app is now in About",
-      "detail": "Settings › About specula now holds the download of the Mac app. In a browser the Mac app part is gone, as it held nothing else. In the Mac app, that part keeps its hotkey, its icon and opening at login."
     }
   ]
 }
