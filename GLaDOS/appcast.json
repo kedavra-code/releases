@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 528,
-  "commit": "76b95a9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-528/GLaDOS.dmg",
-  "sha256": "7708dbcdf2e64b05d072099466df6db9f10d446f969c79f3f39e2776c7af257d",
+  "build": 531,
+  "commit": "dad7370",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-531/GLaDOS.dmg",
+  "sha256": "68a3be659a7a4218878841d8166f6f68605f4ff43ea0d71eb0db8984dbb8f631",
   "minimumSystemVersion": "26.0",
-  "notes": "lumina answers sooner, and its words cannot steer her",
+  "notes": "Pair lumina, and only GLaDOS writes on its big screen",
   "entries": [
+    {
+      "build": 529,
+      "date": "2026-11-14",
+      "title": "Pair lumina, and only GLaDOS writes on its big screen",
+      "detail": "Settings › Armarium › Pair with lumina… asks in your lumina app; allow it there once on each Mac. From then on the big screens hear GLaDOS only on a channel that this Mac and they know, so nobody else can write on the film strip. Reload an open lumina window once before you pair."
+    },
     {
       "build": 528,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-10-15",
       "title": "Updates look the same in every app",
       "detail": "Settings › General ends with Updates now, the same in all four apps: Check Now and an Automatic switch in one row, and under it what the last check found. Her build number is on the About page."
-    },
-    {
-      "build": 358,
-      "date": "2026-10-15",
-      "title": "A Dock icon, and a choice where GLaDOS shows herself",
-      "detail": "GLaDOS has an icon in the Dock now, beside her eye in the menu bar. Settings › General › \"Show GLaDOS in\" chooses: the menu bar and the Dock, the menu bar alone, or the Dock alone. A right-click on the Dock icon shows the items of the menu bar menu, and a click on it opens Settings."
     }
   ]
 }
