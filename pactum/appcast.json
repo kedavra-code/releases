@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 89,
-  "commit": "1b34b11",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-89/pactum.dmg",
-  "sha256": "9bc2b1d6559a8f13a9761e168600563a09f0853bd21e3acd431abb648a943af3",
+  "build": 90,
+  "commit": "65511d8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-90/pactum.dmg",
+  "sha256": "52978c8e7d9c3b88a231681126ec6f1193e7de9d0ca1df02260f69ca270b795c",
   "minimumSystemVersion": "26.0",
-  "notes": "The Field Manual is up to date",
+  "notes": "Safer, and faster to start",
   "entries": [
+    {
+      "build": 90,
+      "date": "2026-11-14",
+      "title": "Safer, and faster to start",
+      "detail": "pactum reads your files in about two thirds of the time it took. Its page now runs only its own code, and no other web page can show it inside itself or read from it. The app carries Node 24.22.3, with Node's security fixes of November."
+    },
     {
       "build": 89,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-11-05",
       "title": "Figures beside the table on the big screen",
       "detail": "In a window of 1720 px the figures went under the overview. The two maturity headers now take two lines, so the table is narrower and the figures stand beside it again."
-    },
-    {
-      "build": 39,
-      "date": "2026-11-05",
-      "title": "The ISG teams' own maturity",
-      "detail": "Enter maturity has a second table, filled by the ISG teams: the same nine levels, for themselves. The first table is the one ID fills. The overview shows Maturity Ø ID and Maturity Ø ISG, and each maturity spider draws the ISG team's levels as a second line. Target is now Accepted Minimum, Research is Research/Business, and the complexity factor is off when the page opens."
     }
   ]
 }
