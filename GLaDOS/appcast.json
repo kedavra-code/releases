@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 525,
-  "commit": "a7ae96f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-525/GLaDOS.dmg",
-  "sha256": "0e49c36beedf97e32568a72def1a36900c692413fbe479c51c0edbef93590a11",
+  "build": 527,
+  "commit": "9069f8b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-527/GLaDOS.dmg",
+  "sha256": "306e7cb3770fdca0ba57e79f9fb7ce751f5283ddf8abab4034c8ca7809a21b28",
   "minimumSystemVersion": "26.0",
-  "notes": "Their word cloud talk on lumina's film transcript\nJ.A.R.V.I.S. speaks with Arthur and Martin",
+  "notes": "The screensavers speak with Arthur and Martin",
   "entries": [
+    {
+      "build": 527,
+      "date": "2026-11-14",
+      "title": "The screensavers speak with Arthur and Martin",
+      "detail": "In GLaDOS Sound EN and GLaDOS Sound DE, J.A.R.V.I.S. now speaks with the same voices as in the app. The screensavers are built and installed on this Mac on their own, not with an update of the app."
+    },
     {
       "build": 524,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-10-12",
       "title": "The room does not stop them while they perform",
       "detail": "In a discussion, a story or a page, a voice in the room does not stop GLaDOS and J.A.R.V.I.S. any more. They talk on through a laugh and through people who talk to each other. To cut in, say \"GLaDOS\", \"Jarvis\" or \"Stopp\": they stop half a second to a second after the word began, and your sentence is heard from its first word. If they stop and nothing was said to them, a discussion and a page go on by themselves. A normal answer is as before: any voice cuts it."
-    },
-    {
-      "build": 354,
-      "date": "2026-10-08",
-      "title": "The one that is off keeps its small black disc",
-      "detail": "When only GLaDOS is on, the small black disc of J.A.R.V.I.S. stays in its place, and her disc stays when only he is on. Before, the second disc went away as soon as one of them started. In big mode the one that is off is not shown."
     }
   ]
 }
