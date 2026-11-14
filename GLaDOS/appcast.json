@@ -1,12 +1,30 @@
 {
   "app": "GLaDOS",
-  "build": 509,
-  "commit": "f19265c",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-509/GLaDOS.dmg",
-  "sha256": "18ef764ea87dcf6cd2c4fb39f70e5f8e3d654ed89a8a04b35cc4d32c341679e5",
+  "build": 519,
+  "commit": "92f1058",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-519/GLaDOS.dmg",
+  "sha256": "887d6c9ab07bf287520a568c0a5355cfc59cab37d64e54ebc2660957531edcf6",
   "minimumSystemVersion": "26.0",
-  "notes": "Both eyes to the other screen",
+  "notes": "lumina opens in its own app, with its QR code\nShe opens lumina\nThey group and discuss lumina's word cloud",
   "entries": [
+    {
+      "build": 518,
+      "date": "2026-11-14",
+      "title": "lumina opens in its own app, with its QR code",
+      "detail": "\"Open lumina\" now opens your lumina app instead of a browser tab, and the big screen shows its QR code at once, so phones can join."
+    },
+    {
+      "build": 516,
+      "date": "2026-11-14",
+      "title": "She opens lumina",
+      "detail": "Say \"open lumina\" and she opens lumina's big screen in her own Chrome tab, or brings that tab to the front. It is the same screen as before, with its code and its words."
+    },
+    {
+      "build": 513,
+      "date": "2026-11-14",
+      "title": "They group and discuss lumina's word cloud",
+      "detail": "With lumina's big screen open, say \"GLaDOS, discuss the word cloud with J.A.R.V.I.S.\": she reads its words, groups them by meaning, the big screen shows each group in one colour, and the two of them discuss the groups, in one chapter or in several. A switch in Settings › Armarium turns it off."
+    },
     {
       "build": 509,
       "date": "2026-11-09",
@@ -228,24 +246,6 @@
       "date": "2026-10-08",
       "title": "She starts the film in Cerebrum",
       "detail": "Say \"start the film in Cerebrum\". GLaDOS puts the vault's viewer on its 3D view and starts its Film: the vault's years as a time-lapse. An older viewer does not know this command. There she opens the 3D view and tells you to press the Film button."
-    },
-    {
-      "build": 347,
-      "date": "2026-10-07",
-      "title": "Haiku 5.5 replaces Haiku 4.5",
-      "detail": "Settings › Brain has Claude Haiku 5.5 where Haiku 4.5 was: the model that Anthropic released today. You can choose an effort for it, as for the other Claude models, and it starts at Low. A Mac that was on Haiku 4.5 is on Haiku 5.5 now."
-    },
-    {
-      "build": 345,
-      "date": "2026-10-06",
-      "title": "The one you speak to answers",
-      "detail": "With both of them on, a name now counts wherever it stands in your sentence, and the first name decides. GLaDOS's name also counts when it is heard a little wrong. And when you cut into one of them in a discussion, your next words go to that one."
-    },
-    {
-      "build": 344,
-      "date": "2026-10-06",
-      "title": "J.A.R.V.I.S. is as loud as GLaDOS on the Mac's speakers",
-      "detail": "On the Mac's speakers J.A.R.V.I.S. was less loud than GLaDOS, in German and in English. He is one and a half decibels louder there now, and a measurement at the speakers shows the two level."
     }
   ]
 }
