@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 373,
-  "commit": "5724c40",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-373/folia.dmg",
-  "sha256": "f35ae37df98af05aee26c05a35e8f9afe402f27bbf59ab452325cee7673c2a85",
+  "build": 374,
+  "commit": "ff257de",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-374/folia.dmg",
+  "sha256": "94f9f18d86b05d8b2040d7fa00549f1291cd57e6231f03407dadd3ddf23c0d0f",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Less memory, a quicker start",
   "entries": [
+    {
+      "build": 374,
+      "date": "2026-11-14",
+      "title": "Less memory, a quicker start",
+      "detail": "Search keeps your pages in a smaller form: with 8,000 pages, folia needs less than half the memory it did. The sign-in page loads about a fifth of the code it loaded before; the editor comes once you are signed in."
+    },
     {
       "build": 372,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-11-08",
       "title": "A bigger leaf in the Dock and the menu bar",
       "detail": "folia's leaf is a little bigger in its app icon, and fills the menu bar's height. So it now has the same size as the marks of your other apps."
-    },
-    {
-      "build": 327,
-      "date": "2026-11-07",
-      "title": "Only new briefs are made",
-      "detail": "folia makes a brief only for a meeting or page that has none. A brief it made once stays as it is, also after a day; press Read again in its card for a new one."
     }
   ]
 }
