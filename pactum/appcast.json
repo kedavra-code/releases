@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 92,
-  "commit": "d7a2064",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-92/pactum.dmg",
-  "sha256": "26d15c29ab277efcb2eb74001384a15e7decbbc4433ce25d30a5f278dfc7fda4",
+  "build": 93,
+  "commit": "3164c29",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-93/pactum.dmg",
+  "sha256": "7abdad42ef93dcc1b5a3cf0906762ecc156817ff9cf580486c9573534cc0b5af",
   "minimumSystemVersion": "26.0",
-  "notes": "One ISG without the 2×2",
+  "notes": "The 2×2 switch on every page",
   "entries": [
+    {
+      "build": 93,
+      "date": "2026-11-15",
+      "title": "The 2×2 switch on every page",
+      "detail": "The switch \"Efficiency and maturity\" is now always there, after the other switches. Turn it off, and the 2×2 chart goes away on the page of all ISGs and in the view of one ISG. It stays as you set it when you change the view or the ISG."
+    },
     {
       "build": 92,
       "date": "2026-11-15",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "Your files are in iCloud Drive",
       "detail": "pactum reads its files from iCloud Drive › Armarium › pactum › Input, so your other Mac has them too. Settings › About pactum says so under Where your data lives."
-    },
-    {
-      "build": 42,
-      "date": "2026-11-05",
-      "title": "The Field Manual has the updated rubric",
-      "detail": "Docs opens the Field Manual with the maturity rubric as it was sent to the ISGs: the strict requirements of each level, Accepted Minimum at Defined and Gold Standard at Optimised. It also names the two tables of Enter maturity."
     }
   ]
 }
