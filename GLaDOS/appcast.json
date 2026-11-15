@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 532,
-  "commit": "47b47a9",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-532/GLaDOS.dmg",
-  "sha256": "1a8010e903070fb7059211668bfc86c82d4c8e712eccd3d44b4d6d7166b01167",
+  "build": 534,
+  "commit": "a7dcbd0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-534/GLaDOS.dmg",
+  "sha256": "871e67ee17599525f03f2e9c221de866f8e695d6f1642f90b523da9e91815b3a",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "They introduce each other",
   "entries": [
+    {
+      "build": 533,
+      "date": "2026-11-15",
+      "title": "They introduce each other",
+      "detail": "Say \"introduce each other\" or \"stellt euch gegenseitig vor\": J.A.R.V.I.S. introduces GLaDOS, where she comes from, the game Portal and why she is as she is, and then she introduces him and the film Iron Man. In English and German, written in advance, and cut by your voice as a discussion is."
+    },
     {
       "build": 529,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-10-15",
       "title": "Settings look like scripta's",
       "detail": "Settings has the same look as in scripta now: no section titles, each box ends with one grey line that says what it does, and a warning is an orange line. Brain has a box each for the brain, Claude Code or the key, and the model on this Mac. General and Voice are each about 150 points shorter."
-    },
-    {
-      "build": 360,
-      "date": "2026-10-15",
-      "title": "Updates look the same in every app",
-      "detail": "Settings › General ends with Updates now, the same in all four apps: Check Now and an Automatic switch in one row, and under it what the last check found. Her build number is on the About page."
     }
   ]
 }
