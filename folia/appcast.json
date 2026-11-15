@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 374,
-  "commit": "ff257de",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-374/folia.dmg",
-  "sha256": "94f9f18d86b05d8b2040d7fa00549f1291cd57e6231f03407dadd3ddf23c0d0f",
+  "build": 375,
+  "commit": "662995f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-375/folia.dmg",
+  "sha256": "008b6c3cc086d4df673323ea812f49075997bd43ff757d2a7d5cc3cd1d3b821e",
   "minimumSystemVersion": "26.0",
-  "notes": "Less memory, a quicker start",
+  "notes": "Markdown copies with attached Markdown files",
   "entries": [
+    {
+      "build": 375,
+      "date": "2026-11-15",
+      "title": "Markdown copies with attached Markdown files",
+      "detail": "A page with a Markdown file attached stopped its notebook's Markdown copy: folia took the attached file for a note it had not written, and kept no copy in that folder any more. Attached files are folia's own now, and the copy runs again."
+    },
     {
       "build": 374,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-11-10",
       "title": "Share a notebook to read only",
       "detail": "In Share, each person can edit the notebook or only read it. A reader sees every page and can search it, but cannot type, rename, move or delete anything, and the status bar says \"Read only\". The owner can change it at any time, and an open page follows at once."
-    },
-    {
-      "build": 330,
-      "date": "2026-11-08",
-      "title": "A bigger leaf in the Dock and the menu bar",
-      "detail": "folia's leaf is a little bigger in its app icon, and fills the menu bar's height. So it now has the same size as the marks of your other apps."
     }
   ]
 }
