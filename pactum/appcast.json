@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 91,
-  "commit": "24469bb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-91/pactum.dmg",
-  "sha256": "d7994d4c0980d8867f2ff96cfc1ae8dbbbb3dcb12139ba48d2d8c5e2e92351a7",
+  "build": 92,
+  "commit": "d7a2064",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-92/pactum.dmg",
+  "sha256": "26d15c29ab277efcb2eb74001384a15e7decbbc4433ce25d30a5f278dfc7fda4",
   "minimumSystemVersion": "26.0",
-  "notes": "Only pactum reads your data",
+  "notes": "One ISG without the 2×2",
   "entries": [
+    {
+      "build": 92,
+      "date": "2026-11-15",
+      "title": "One ISG without the 2×2",
+      "detail": "When you press one ISG's button, a new switch \"Efficiency and maturity\" stands after the other switches. Turn it off, and the 2×2 chart goes away: you see the ISG's row and its spiders with figures. It stays off for the next ISG you press. The page of all ISGs always shows the 2×2."
+    },
     {
       "build": 91,
       "date": "2026-11-14",
@@ -240,12 +246,6 @@
       "date": "2026-11-05",
       "title": "The Field Manual has the updated rubric",
       "detail": "Docs opens the Field Manual with the maturity rubric as it was sent to the ISGs: the strict requirements of each level, Accepted Minimum at Defined and Gold Standard at Optimised. It also names the two tables of Enter maturity."
-    },
-    {
-      "build": 41,
-      "date": "2026-11-05",
-      "title": "The ISG teams' table holds the departmental ISGs",
-      "detail": "The table filled by the ISG teams lists the departmental ISGs only. Under each maturity spider, Maturity Ø ISG stands to the right of Maturity Ø ID, and the legend says Maturity by the ID in place of Own profile."
     }
   ]
 }
