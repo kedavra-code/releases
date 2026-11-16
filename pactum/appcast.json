@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 97,
-  "commit": "c4b704b",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-97/pactum.dmg",
-  "sha256": "5f7e3301bb54dc97c96808ee622d30a1cc9863d6f3c726fde2a837b0e32e060f",
+  "build": 98,
+  "commit": "582cb36",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-98/pactum.dmg",
+  "sha256": "3a6efe2e3f36e566b5e436c17e1c36834e83d0469bc8810386f137b1a71971ba",
   "minimumSystemVersion": "26.0",
-  "notes": "The ID ISGs rate themselves too",
+  "notes": "One maturity for one ISG",
   "entries": [
+    {
+      "build": 98,
+      "date": "2026-11-16",
+      "title": "One maturity for one ISG",
+      "detail": "When you show one ISG with its button, its row has one column \"Maturity Ø\" in place of \"Maturity Ø ID\" and \"Maturity Ø ISG\". It is the mean of the two, as in the 2×2. Its hover shows both. The overview of all ISGs keeps both columns."
+    },
     {
       "build": 97,
       "date": "2026-11-16",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "One ISG at a glance, and its specifics",
       "detail": "Buttons replace the group menu: All ISGs, ID ISGs, Departmental ISGs, and one button per ISG. An ISG's button shows that ISG alone: its row, the 2×2 of all ISGs with its figures, its spiders. Maturity ISGs has a section Specifics: a few points per ISG, shown between its spiders and in its figures. The KPI numbers are the ones in the sheet KPIs ID ISGs. A spider's hover names each KPI in full, Maturity Ø ID and ISG take one line each, and an ID ISG's own maturity is ID's."
-    },
-    {
-      "build": 48,
-      "date": "2026-11-06",
-      "title": "The pages as icons beside Settings, and the workbook's new rows",
-      "detail": "KPIs ISGs and Maturity ISGs are now icon buttons at the top right, left of Settings, in folia's style: amber when on. pactum reads the workbook's new rows, staff per FTE with and without workplace, with their Average ID CxS, and checks its own numbers against them. Where they differ, Settings › Data names the cells."
     }
   ]
 }
