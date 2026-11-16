@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 95,
-  "commit": "9567284",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-95/pactum.dmg",
-  "sha256": "7faa40bb87682855f8ecea54d966ba5de27a62fe7efa7a6800f3e0c477c01cd6",
+  "build": 96,
+  "commit": "e9cc85a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-96/pactum.dmg",
+  "sha256": "6873deea94c26bee70445c31f67b9a026d8993930ef95425622fe9f0b7a80ea9",
   "minimumSystemVersion": "26.0",
-  "notes": "Anonymize keeps all names until you select\nAnonymize the 2×2",
+  "notes": "Anonymize only in one ISG's view",
   "entries": [
+    {
+      "build": 96,
+      "date": "2026-11-16",
+      "title": "Anonymize only in one ISG's view",
+      "detail": "The switch \"Anonymize\" now works only when you press an ISG's button. Then the 2×2 chart shows only that ISG's name. When you press a row in the table, every bubble keeps its name."
+    },
     {
       "build": 95,
       "date": "2026-11-16",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "More room: the pages on top, Data in Settings",
       "detail": "The sidebar is gone. KPIs ISGs and Maturity ISGs are buttons at the top, so the pages have the whole width. Data is now in Settings. The overview has no column Heads; staff per FTE comes in two columns, with workplace and without workplace; and every column title takes two lines at most. The line about the Average ID CxS under the profiles is gone."
-    },
-    {
-      "build": 46,
-      "date": "2026-11-06",
-      "title": "The KPI page ends with the profiles",
-      "detail": "The section Development is gone from the KPI comparison. It only said that the trend begins with the second year."
     }
   ]
 }
