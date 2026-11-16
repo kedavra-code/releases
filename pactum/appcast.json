@@ -1,12 +1,24 @@
 {
   "app": "pactum",
-  "build": 93,
-  "commit": "3164c29",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-93/pactum.dmg",
-  "sha256": "7abdad42ef93dcc1b5a3cf0906762ecc156817ff9cf580486c9573534cc0b5af",
+  "build": 95,
+  "commit": "9567284",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-95/pactum.dmg",
+  "sha256": "7faa40bb87682855f8ecea54d966ba5de27a62fe7efa7a6800f3e0c477c01cd6",
   "minimumSystemVersion": "26.0",
-  "notes": "The 2×2 switch on every page",
+  "notes": "Anonymize keeps all names until you select\nAnonymize the 2×2",
   "entries": [
+    {
+      "build": 95,
+      "date": "2026-11-16",
+      "title": "Anonymize keeps all names until you select",
+      "detail": "With the switch \"Anonymize\" on and no ISG selected, every bubble in the 2×2 chart now has its name. Select an ISG, and only that ISG keeps its name."
+    },
+    {
+      "build": 94,
+      "date": "2026-11-16",
+      "title": "Anonymize the 2×2",
+      "detail": "A new switch \"Anonymize\" stands after the other switches. It is off at first: every ISG in the 2×2 chart has its name. Turn it on, and only the selected ISG keeps its name, also when you point at its bubble. With no ISG selected, no bubble has a name. It stays as you set it when you change the view or the ISG."
+    },
     {
       "build": 93,
       "date": "2026-11-15",
@@ -234,18 +246,6 @@
       "date": "2026-11-06",
       "title": "The KPI page ends with the profiles",
       "detail": "The section Development is gone from the KPI comparison. It only said that the trend begins with the second year."
-    },
-    {
-      "build": 45,
-      "date": "2026-11-06",
-      "title": "Data sources on the Data page, and a new title",
-      "detail": "The KPI catalog moved from under the profiles to the Data page. It is its own section there, Data sources: every KPI, where it comes from, and whether it has data. The search takes a KPI there. The KPI page is now called KPI comparison of ETH IT Service Groups."
-    },
-    {
-      "build": 44,
-      "date": "2026-11-06",
-      "title": "Your files are in iCloud Drive",
-      "detail": "pactum reads its files from iCloud Drive › Armarium › pactum › Input, so your other Mac has them too. Settings › About pactum says so under Where your data lives."
     }
   ]
 }
