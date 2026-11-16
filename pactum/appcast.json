@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 96,
-  "commit": "e9cc85a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-96/pactum.dmg",
-  "sha256": "6873deea94c26bee70445c31f67b9a026d8993930ef95425622fe9f0b7a80ea9",
+  "build": 97,
+  "commit": "c4b704b",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-97/pactum.dmg",
+  "sha256": "5f7e3301bb54dc97c96808ee622d30a1cc9863d6f3c726fde2a837b0e32e060f",
   "minimumSystemVersion": "26.0",
-  "notes": "Anonymize only in one ISG's view",
+  "notes": "The ID ISGs rate themselves too",
   "entries": [
+    {
+      "build": 97,
+      "date": "2026-11-16",
+      "title": "The ID ISGs rate themselves too",
+      "detail": "In Data ISGs, the table \"Filled by the ISG teams\" now has the 8 ID ISGs too, first, as in ID's table. Their levels start as ID's levels. Change them, and only Maturity Ø ISG changes, not Maturity Ø ID."
+    },
     {
       "build": 96,
       "date": "2026-11-16",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "The pages as icons beside Settings, and the workbook's new rows",
       "detail": "KPIs ISGs and Maturity ISGs are now icon buttons at the top right, left of Settings, in folia's style: amber when on. pactum reads the workbook's new rows, staff per FTE with and without workplace, with their Average ID CxS, and checks its own numbers against them. Where they differ, Settings › Data names the cells."
-    },
-    {
-      "build": 47,
-      "date": "2026-11-06",
-      "title": "More room: the pages on top, Data in Settings",
-      "detail": "The sidebar is gone. KPIs ISGs and Maturity ISGs are buttons at the top, so the pages have the whole width. Data is now in Settings. The overview has no column Heads; staff per FTE comes in two columns, with workplace and without workplace; and every column title takes two lines at most. The line about the Average ID CxS under the profiles is gone."
     }
   ]
 }
