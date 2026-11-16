@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 767,
-  "commit": "923b986",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-767/tabula.dmg",
-  "sha256": "0a59b58cd450403b22fbaf8d197fe8fbe2542ea9f889cf8b5c06ac0cad63bdd0",
+  "build": 768,
+  "commit": "74ee2de",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-768/tabula.dmg",
+  "sha256": "d318c17287594b1903e8a5f86999b131fd48c56ae11b9e0d6947f31a65a24507",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "For you scrolls",
   "entries": [
+    {
+      "build": 768,
+      "date": "2026-11-16",
+      "title": "For you scrolls",
+      "detail": "A long For you list was cut at the window's foot, and the rest could not be reached. It now scrolls with the wheel, the trackpad or a finger, with no scrollbar drawn, like every other window."
+    },
     {
       "build": 765,
       "date": "2026-11-10",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "Saved views",
       "detail": "Views, right after Select under the filters, keeps what the board shows under a name: the filters with their sorts, Kanban or Calendar, and the swimlanes. It opens a window like For you's, which lists each view with what it holds. Open one and all of it comes back at once; the search is left out. While the screen shows a saved view, the button names it. Saving under a name in use replaces that view, the bin deletes one, and twelve is the most. For you's list is drawn in the same cards."
-    },
-    {
-      "build": 681,
-      "date": "2026-11-02",
-      "title": "Work in progress limits",
-      "detail": "Settings › General › Kanban board sets the most tasks Backlog, Doing and Pending should hold. A column over its limit shows its count against the limit in amber, such as 4/3, with an amber line under its header; at the limit it stays quiet. Nothing is refused: a card can still be dropped there. With swimlanes each row keeps its own count, and the header turns amber when the whole column is over."
     }
   ]
 }
