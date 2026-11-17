@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 375,
-  "commit": "662995f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-375/folia.dmg",
-  "sha256": "008b6c3cc086d4df673323ea812f49075997bd43ff757d2a7d5cc3cd1d3b821e",
+  "build": 376,
+  "commit": "1bb4bba",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-376/folia.dmg",
+  "sha256": "0401f06ec96cac4180c24e7f79b573633b809b4ca9869c1e47bfb178de124d3c",
   "minimumSystemVersion": "26.0",
-  "notes": "Markdown copies with attached Markdown files",
+  "notes": "Selected list lines look even",
   "entries": [
+    {
+      "build": 376,
+      "date": "2026-11-16",
+      "title": "Selected list lines look even",
+      "detail": "When you select several lines of a list, every line is now highlighted alike. Before, the first row of each line after the first looked brighter, as the Mac app highlighted its bullet a second time. Bullets and numbers are now drawn by folia and look as before."
+    },
     {
       "build": 375,
       "date": "2026-11-15",
@@ -240,12 +246,6 @@
       "date": "2026-11-10",
       "title": "Wiki spaces",
       "detail": "The owner of a notebook can make it a wiki space in its … menu. It gets a book in place of its letter, its sections and pages stay where you put them, and it opens on its home page, which any page's … menu can set. Above each page's title a line shows where it is; each part takes you there."
-    },
-    {
-      "build": 332,
-      "date": "2026-11-10",
-      "title": "Share a notebook to read only",
-      "detail": "In Share, each person can edit the notebook or only read it. A reader sees every page and can search it, but cannot type, rename, move or delete anything, and the status bar says \"Read only\". The owner can change it at any time, and an open page follows at once."
     }
   ]
 }
