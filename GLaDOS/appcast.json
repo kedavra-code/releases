@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 536,
-  "commit": "58018eb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-536/GLaDOS.dmg",
-  "sha256": "6d369c847335ff4a3511cf9c1a5c3dc8b87748df5ba60096625a3cd5e9547752",
+  "build": 537,
+  "commit": "05c4d0d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-537/GLaDOS.dmg",
+  "sha256": "092c6535815c14af0f3284294138d2b3b3809afe8023b16af9be6b30b492098c",
   "minimumSystemVersion": "26.0",
-  "notes": "They discuss lumina's poll\nlumina only after pairing",
+  "notes": "A short discussion",
   "entries": [
+    {
+      "build": 537,
+      "date": "2026-11-17",
+      "title": "A short discussion",
+      "detail": "Ask GLaDOS and J.A.R.V.I.S. for a short discussion (\"a short discussion about …\", \"diskutiert kurz …\") and they speak four lines, not eight. In chapters, each chapter has four. It works for the word cloud and the poll too. Without \"short\", a discussion has eight lines, as before."
+    },
     {
       "build": 536,
       "date": "2026-11-16",
@@ -240,12 +246,6 @@
       "date": "2026-10-23",
       "title": "The same presentations on both Macs",
       "detail": "GLaDOS now finds the pages she presents in iCloud Drive, in the folder GLaDOS › Artifacts. iCloud keeps it the same on both of your Macs: a page you put there, and a duet script she writes for it, are on the other Mac too. The nine manuals are in it now. The old presentations folder on each Mac is no longer read."
-    },
-    {
-      "build": 369,
-      "date": "2026-10-23",
-      "title": "About has a Docs button",
-      "detail": "About has a new button on the left, Docs…. It opens the GLaDOS Field Manual in your browser."
     }
   ]
 }
