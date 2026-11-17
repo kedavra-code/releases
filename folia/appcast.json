@@ -1,12 +1,36 @@
 {
   "app": "folia",
-  "build": 377,
-  "commit": "a3c662e",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-377/folia.dmg",
-  "sha256": "da72b13aa6e745fb3a3c6566f9c478a856be45da65fc736bc4f9e5f5cd6e521d",
+  "build": 383,
+  "commit": "bd4bad3",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-383/folia.dmg",
+  "sha256": "3d3c15cf2ccf6154cb2152f14fef8de9199e9aa9a518736717d273986ac76d2c",
   "minimumSystemVersion": "26.0",
-  "notes": "Line marks in lists back in the margin",
+  "notes": "scripta’s minutes stay apart from your notes\nLarge pages open without a moment offline\nFont colours from OneNote\nOneNote copies of a page come into folia",
   "entries": [
+    {
+      "build": 382,
+      "date": "2026-11-17",
+      "title": "scripta’s minutes stay apart from your notes",
+      "detail": "scripta now writes a meeting’s summary, decisions, tasks and open points under one heading, Minutes by scripta, at the end of the page. Your own notes stay as you wrote them. Click the arrow before the heading to fold the minutes away. Copy fresh from OneNote and the ETH daily update keep them."
+    },
+    {
+      "build": 381,
+      "date": "2026-11-17",
+      "title": "Large pages open without a moment offline",
+      "detail": "A page changed often could grow very large in the background, with data folia no longer needs, and showed Offline for a second each time you opened it. Such a page now gets small again the first time you open it, and folia sends only what the server does not have yet."
+    },
+    {
+      "build": 379,
+      "date": "2026-11-17",
+      "title": "Font colours from OneNote",
+      "detail": "Copy fresh from OneNote and the ETH daily update now keep the colours you gave words in OneNote, in the nearest of folia’s colours. Headings keep folia’s own look."
+    },
+    {
+      "build": 378,
+      "date": "2026-11-17",
+      "title": "OneNote copies of a page come into folia",
+      "detail": "A page you make in OneNote as a copy of an older page now comes into folia with the ETH daily update, as a page of its own. Before, folia took it for the older page and left it out."
+    },
     {
       "build": 377,
       "date": "2026-11-17",
@@ -222,30 +246,6 @@
       "date": "2026-11-10",
       "title": "Fold-out headings",
       "detail": "A heading can fold the text under it, up to the next heading of its level, for an FAQ or long details. Add the tool Fold-out heading in Settings › Toolbar, put the cursor in a heading and press it. An arrow before the heading opens and closes it. People who can only read see it folded at first; folia remembers what you opened. In the Markdown file it is a small hidden note on the heading's line, so other apps show everything."
-    },
-    {
-      "build": 338,
-      "date": "2026-11-10",
-      "title": "Links to this page, in wiki spaces",
-      "detail": "At the foot of a page in a wiki space, folia lists the pages that link to it with [[ ]], each with its notebook and section. A click opens one. Plain notebooks stay without the list."
-    },
-    {
-      "build": 337,
-      "date": "2026-11-10",
-      "title": "Page owners and review dates",
-      "detail": "In a wiki space, a page's … menu has Owner and review…: who keeps the page up to date, and how often to look at it. When that time has come, the page says it may be out of date, its owner is told in the bell, and Mark as reviewed starts the time again. Search › In › Need review lists such pages."
-    },
-    {
-      "build": 336,
-      "date": "2026-11-10",
-      "title": "@mentions and notifications",
-      "detail": "Type @ in a page and pick a person: their name shows as a coloured pill. In a comment, write @ and their name. The person is told in the new bell at the top, also of replies in their threads and new comments on pages they made. A click opens the page, and the thread when there is one."
-    },
-    {
-      "build": 335,
-      "date": "2026-11-10",
-      "title": "Comments",
-      "detail": "The new Comments button in the top bar opens the comments of the page. Select words and write a comment on them, or comment on the whole page. The words get a soft mark; a click on them opens their thread. Everyone in the notebook can reply and mark a thread as resolved, also people who can only read; you can change and delete your own comments. The button shows how many threads are open."
     }
   ]
 }
