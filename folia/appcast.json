@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 376,
-  "commit": "1bb4bba",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-376/folia.dmg",
-  "sha256": "0401f06ec96cac4180c24e7f79b573633b809b4ca9869c1e47bfb178de124d3c",
+  "build": 377,
+  "commit": "a3c662e",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-377/folia.dmg",
+  "sha256": "da72b13aa6e745fb3a3c6566f9c478a856be45da65fc736bc4f9e5f5cd6e521d",
   "minimumSystemVersion": "26.0",
-  "notes": "Selected list lines look even",
+  "notes": "Line marks in lists back in the margin",
   "entries": [
+    {
+      "build": 377,
+      "date": "2026-11-17",
+      "title": "Line marks in lists back in the margin",
+      "detail": "A question, important or confidential mark on a list line stood in the middle of its text since the last update. It is in the left margin again, in one column with the other marks, also while the line is picked with its 6 dots."
+    },
     {
       "build": 376,
       "date": "2026-11-16",
@@ -240,12 +246,6 @@
       "date": "2026-11-10",
       "title": "Comments",
       "detail": "The new Comments button in the top bar opens the comments of the page. Select words and write a comment on them, or comment on the whole page. The words get a soft mark; a click on them opens their thread. Everyone in the notebook can reply and mark a thread as resolved, also people who can only read; you can change and delete your own comments. The button shows how many threads are open."
-    },
-    {
-      "build": 333,
-      "date": "2026-11-10",
-      "title": "Wiki spaces",
-      "detail": "The owner of a notebook can make it a wiki space in its … menu. It gets a book in place of its letter, its sections and pages stay where you put them, and it opens on its home page, which any page's … menu can set. Above each page's title a line shows where it is; each part takes you there."
     }
   ]
 }
