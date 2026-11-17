@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 98,
-  "commit": "582cb36",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-98/pactum.dmg",
-  "sha256": "3a6efe2e3f36e566b5e436c17e1c36834e83d0469bc8810386f137b1a71971ba",
+  "build": 99,
+  "commit": "16e8e70",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-99/pactum.dmg",
+  "sha256": "e9ad9d7e79b083c072055715ee4b8fbffce87475a9342ceb7f3eedf418349d7e",
   "minimumSystemVersion": "26.0",
-  "notes": "One maturity for one ISG",
+  "notes": "How far ID and the team are apart",
   "entries": [
+    {
+      "build": 99,
+      "date": "2026-11-17",
+      "title": "How far ID and the team are apart",
+      "detail": "In the 2×2 chart, a thin vertical bar now runs from Maturity Ø ID to Maturity Ø ISG. The bubble sits at its middle. A long bar means ID and the ISG team rate the maturity quite differently. Point at the bubble to see both values. The selected ISG's bar is amber."
+    },
     {
       "build": 98,
       "date": "2026-11-16",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "The whole 2×2 for a group too",
       "detail": "With ID ISGs or Departmental ISGs on, the efficiency and maturity chart still shows all ISGs, where they stand among all. The table and the spiders show the group."
-    },
-    {
-      "build": 49,
-      "date": "2026-11-06",
-      "title": "One ISG at a glance, and its specifics",
-      "detail": "Buttons replace the group menu: All ISGs, ID ISGs, Departmental ISGs, and one button per ISG. An ISG's button shows that ISG alone: its row, the 2×2 of all ISGs with its figures, its spiders. Maturity ISGs has a section Specifics: a few points per ISG, shown between its spiders and in its figures. The KPI numbers are the ones in the sheet KPIs ID ISGs. A spider's hover names each KPI in full, Maturity Ø ID and ISG take one line each, and an ID ISG's own maturity is ID's."
     }
   ]
 }
