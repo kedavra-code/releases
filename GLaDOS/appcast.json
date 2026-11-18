@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 542,
-  "commit": "6bd7a94",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-542/GLaDOS.dmg",
-  "sha256": "946396e4120fb7075c1b2aa6397b2b5c453fdd60dfcabf8fc0564f416b3b2809",
+  "build": 543,
+  "commit": "2de11d2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-543/GLaDOS.dmg",
+  "sha256": "0881977489c891d81d5a4882e69d52430beb307b711788db2187a8b723d5e04f",
   "minimumSystemVersion": "26.0",
-  "notes": "Their names heard better, and an amber dot\nPresentation mode: hold to talk",
+  "notes": "A new menu bar mark: two rings and five rays",
   "entries": [
+    {
+      "build": 543,
+      "date": "2026-11-18",
+      "title": "A new menu bar mark: two rings and five rays",
+      "detail": "The menu bar mark looks more like the app icon: J.A.R.V.I.S.'s two rings on the left, the dot, and her five rays on the right, as long above as below. It is as big as the marks of your other apps. While you hold the talk key, the amber dot beats a little less, so it no longer touches the rays. While he speaks, his two rings turn against each other."
+    },
     {
       "build": 542,
       "date": "2026-11-18",
@@ -240,12 +246,6 @@
       "date": "2026-10-24",
       "title": "She opens Cerebrum in specula",
       "detail": "specula is the new viewer of your vault. When you ask GLaDOS to open Cerebrum, show the 3D view or play the timelapse, she now opens it in specula, in her Chrome tab. If specula is not running, she starts it in the background and waits a few seconds for it."
-    },
-    {
-      "build": 375,
-      "date": "2026-10-24",
-      "title": "She opens Cerebrum when its name is misheard",
-      "detail": "The speech recogniser sometimes writes \"Cerebrum\" as \"Care Room\", \"Cary Room\", \"Caleb room\" or \"qué room\". These four now become Cerebrum in the word list that GLaDOS, murmur and scripta share. And GLaDOS and J.A.R.V.I.S. know that the name is often misheard: a \"room\" you ask them to open is your vault."
     }
   ]
 }
