@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 768,
-  "commit": "74ee2de",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-768/tabula.dmg",
-  "sha256": "d318c17287594b1903e8a5f86999b131fd48c56ae11b9e0d6947f31a65a24507",
+  "build": 769,
+  "commit": "a2bcbe8",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-769/tabula.dmg",
+  "sha256": "d96a01b2757b9072e80961717a527c3d82c260a70af9df5e87cfc7238141efee",
   "minimumSystemVersion": "26.0",
-  "notes": "For you scrolls",
+  "notes": "One Share window for tasks and objectives",
   "entries": [
+    {
+      "build": 769,
+      "date": "2026-11-18",
+      "title": "One Share window for tasks and objectives",
+      "detail": "An objective's Share window now lists the same people as a task's, in the same words: owner, member or invited. Someone who has not signed in yet is invited and is on the objective from their first sign-in, with a note in For you. On something only you are on, you show with your own name and colour."
+    },
     {
       "build": 768,
       "date": "2026-11-16",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "Activity: what changed on a task",
       "detail": "An open task ends with Activity: who changed its title, status, priority, size, dates, epic or key result, from what to what, and when, newest first, down to when it was made. A run of typing in the title is one line. The database writes it, so a change from another device or another person is there too. Signed in only."
-    },
-    {
-      "build": 682,
-      "date": "2026-11-02",
-      "title": "Saved views",
-      "detail": "Views, right after Select under the filters, keeps what the board shows under a name: the filters with their sorts, Kanban or Calendar, and the swimlanes. It opens a window like For you's, which lists each view with what it holds. Open one and all of it comes back at once; the search is left out. While the screen shows a saved view, the button names it. Saving under a name in use replaces that view, the bin deletes one, and twelve is the most. For you's list is drawn in the same cards."
     }
   ]
 }
