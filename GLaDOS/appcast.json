@@ -1,12 +1,24 @@
 {
   "app": "GLaDOS",
-  "build": 537,
-  "commit": "05c4d0d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-537/GLaDOS.dmg",
-  "sha256": "092c6535815c14af0f3284294138d2b3b3809afe8023b16af9be6b30b492098c",
+  "build": 542,
+  "commit": "6bd7a94",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-542/GLaDOS.dmg",
+  "sha256": "946396e4120fb7075c1b2aa6397b2b5c453fdd60dfcabf8fc0564f416b3b2809",
   "minimumSystemVersion": "26.0",
-  "notes": "A short discussion",
+  "notes": "Their names heard better, and an amber dot\nPresentation mode: hold to talk",
   "entries": [
+    {
+      "build": 542,
+      "date": "2026-11-18",
+      "title": "Their names heard better, and an amber dot",
+      "detail": "The German speech recognition often wrote J.A.R.V.I.S. as \"Javis\" and GLaDOS as \"Glatt aus\", so the wrong one answered. Those spellings now count as their names, and \"Jarvis\" is in the shared dictionary. While you hold the talk key, the dot in the menu bar mark is amber."
+    },
+    {
+      "build": 541,
+      "date": "2026-11-18",
+      "title": "Presentation mode: hold to talk",
+      "detail": "For a talk in a big room, tick Presentation Mode in the menu. Then no sound in the room starts or stops GLaDOS and J.A.R.V.I.S.: no laugh, no cough, no other voice. Hold ⌃⌥⌘L to talk, as in murmur: they stop, both eyes listen, and the dot in the menu bar mark beats. Let go, and she answers what she heard. You can record another key in Settings › General › Talk."
+    },
     {
       "build": 537,
       "date": "2026-11-17",
@@ -234,18 +246,6 @@
       "date": "2026-10-24",
       "title": "She opens Cerebrum when its name is misheard",
       "detail": "The speech recogniser sometimes writes \"Cerebrum\" as \"Care Room\", \"Cary Room\", \"Caleb room\" or \"qué room\". These four now become Cerebrum in the word list that GLaDOS, murmur and scripta share. And GLaDOS and J.A.R.V.I.S. know that the name is often misheard: a \"room\" you ask them to open is your vault."
-    },
-    {
-      "build": 374,
-      "date": "2026-10-24",
-      "title": "What's New looks like j4k's",
-      "detail": "What's New shows a card for each day, as in j4k. When you check for updates and one is there, its changes show in the same window, with Install and Relaunch."
-    },
-    {
-      "build": 372,
-      "date": "2026-10-23",
-      "title": "The same presentations on both Macs",
-      "detail": "GLaDOS now finds the pages she presents in iCloud Drive, in the folder GLaDOS › Artifacts. iCloud keeps it the same on both of your Macs: a page you put there, and a duet script she writes for it, are on the other Mac too. The nine manuals are in it now. The old presentations folder on each Mac is no longer read."
     }
   ]
 }
