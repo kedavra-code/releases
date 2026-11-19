@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 102,
-  "commit": "7ac38eb",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-102/pactum.dmg",
-  "sha256": "944eaa784646813a781c1be6895f179e5b1eaf5f26a6450f4a4a64d489b82f04",
+  "build": 103,
+  "commit": "d745bef",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-103/pactum.dmg",
+  "sha256": "132d3bb589746856bdde8fb4948fbfc25b40d466641b19424ea64d1824371d4a",
   "minimumSystemVersion": "26.0",
-  "notes": "A shorter name for the export\nExport the KPI page",
+  "notes": "ETHIS in capitals",
   "entries": [
+    {
+      "build": 103,
+      "date": "2026-11-19",
+      "title": "ETHIS in capitals",
+      "detail": "pactum now writes ETHIS, ETH's SAP, in capitals everywhere: in Settings › Data, in About and in What's new."
+    },
     {
       "build": 102,
       "date": "2026-11-19",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "Bigger spiders, cleaner figures and names",
       "detail": "The spiders are bigger and use the card's room, with the legend beside them. The specifics stay in the figures, not between the spiders. The figures show names and numbers only; point at a row to see its file. In the 2×2, every name sits right beside its bubble: names are measured, not guessed, so ID ISG D-BIOL no longer goes a line up."
-    },
-    {
-      "build": 54,
-      "date": "2026-11-06",
-      "title": "Whole specifics, readable names",
-      "detail": "Under Specifics ISGs, each field is as tall as its text, so long points are no longer cut off. In the 2×2, a picked ISG's name stays where it was, so it no longer lies on a neighbour's name (ISG D-INFK and ISG D-HEST)."
     }
   ]
 }
