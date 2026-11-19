@@ -1,12 +1,18 @@
 {
   "app": "GLaDOS",
-  "build": 543,
-  "commit": "2de11d2",
-  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-543/GLaDOS.dmg",
-  "sha256": "0881977489c891d81d5a4882e69d52430beb307b711788db2187a8b723d5e04f",
+  "build": 546,
+  "commit": "fabf4a0",
+  "url": "https://github.com/kedavra-code/releases/releases/download/GLaDOS-546/GLaDOS.dmg",
+  "sha256": "d8bb46611914ab98ee19024ec16a14a4448c6615c6f487daf2cd097e7875d1fd",
   "minimumSystemVersion": "26.0",
-  "notes": "A new menu bar mark: two rings and five rays",
+  "notes": "No crash when the Mac wakes on a cable",
   "entries": [
+    {
+      "build": 544,
+      "date": "2026-11-19",
+      "title": "No crash when the Mac wakes on a cable",
+      "detail": "GLaDOS could quit when the Mac woke up and its sound devices changed, for example when you plugged in a monitor with the lid closed. She rebuilt her sound and tore it down at the same moment. Now one waits for the other."
+    },
     {
       "build": 543,
       "date": "2026-11-18",
@@ -240,12 +246,6 @@
       "date": "2026-10-25",
       "title": "Check for Updates in the app menu",
       "detail": "The GLaDOS menu, at the left of the menu bar, has Check for Updates… under Settings…, in the same order as the menu bar icon's menu."
-    },
-    {
-      "build": 390,
-      "date": "2026-10-24",
-      "title": "She opens Cerebrum in specula",
-      "detail": "specula is the new viewer of your vault. When you ask GLaDOS to open Cerebrum, show the 3D view or play the timelapse, she now opens it in specula, in her Chrome tab. If specula is not running, she starts it in the background and waits a few seconds for it."
     }
   ]
 }
