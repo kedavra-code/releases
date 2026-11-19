@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 106,
-  "commit": "65e0415",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-106/pactum.dmg",
-  "sha256": "c45c4aa2cee111b9d04a893ec9095e3e568d588910e0c3d2114cb09c0a427f80",
+  "build": 107,
+  "commit": "c95292a",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-107/pactum.dmg",
+  "sha256": "f45357b9fb7539cfef1f31897dfe579a276053f7e321b449b981f0896c2a402e",
   "minimumSystemVersion": "26.0",
-  "notes": "Check an export\nA fingerprint for each export\nThe export carries the Field Manual",
+  "notes": "Check an export comes first",
   "entries": [
+    {
+      "build": 107,
+      "date": "2026-11-19",
+      "title": "Check an export comes first",
+      "detail": "The shield button, Check an export, now stands before Export in the top bar."
+    },
     {
       "build": 106,
       "date": "2026-11-19",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "Sort the overview",
       "detail": "Click a column's title in the overview to sort all ISGs by it, the best first. Click again to turn the order round, and a third time to go back. The table is one list now, without the rows \"ID ISGs\" and \"Departmental ISGs\"; without a click, the order is as before."
-    },
-    {
-      "build": 58,
-      "date": "2026-11-06",
-      "title": "No hover left behind",
-      "detail": "A scroll now closes every hover. Before, a hover of the 2×2 could stay on the page after a scroll with the trackpad, far from its bubble."
     }
   ]
 }
