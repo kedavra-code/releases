@@ -1,12 +1,24 @@
 {
   "app": "pactum",
-  "build": 100,
-  "commit": "59e85b1",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-100/pactum.dmg",
-  "sha256": "e6532ce2b737b80ec2d6aaca1b89fa349f3f7ee03f53bdac4f0669a40adfb6fe",
+  "build": 102,
+  "commit": "7ac38eb",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-102/pactum.dmg",
+  "sha256": "944eaa784646813a781c1be6895f179e5b1eaf5f26a6450f4a4a64d489b82f04",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "A shorter name for the export\nExport the KPI page",
   "entries": [
+    {
+      "build": 102,
+      "date": "2026-11-19",
+      "title": "A shorter name for the export",
+      "detail": "Export now names its file like pactum_KPIs-ISGs_20261119.html, with today's date as year, month and day. Files of several days sort by date."
+    },
+    {
+      "build": 101,
+      "date": "2026-11-19",
+      "title": "Export the KPI page",
+      "detail": "A new Export button stands first in the top bar. It saves one file with the KPIs ISGs and Settings › About pactum. Open it in any browser: the hovers, sorting, ISG buttons and switches all work, but nothing can be entered or saved. It holds your figures, so give it only to people who may see them."
+    },
     {
       "build": 99,
       "date": "2026-11-17",
@@ -234,18 +246,6 @@
       "date": "2026-11-06",
       "title": "Whole specifics, readable names",
       "detail": "Under Specifics ISGs, each field is as tall as its text, so long points are no longer cut off. In the 2×2, a picked ISG's name stays where it was, so it no longer lies on a neighbour's name (ISG D-INFK and ISG D-HEST)."
-    },
-    {
-      "build": 53,
-      "date": "2026-11-06",
-      "title": "Copy one ISG as a picture",
-      "detail": "In an ISG's view of its own, Copy picture puts its row, the 2×2 with its figures, and its spiders on the clipboard, sharp at twice the size, ready to paste. The amber of a selection is softer. The spiders' hover keeps each line on one line. The search is gone from the top bar. The second page is now called Data ISGs, with the titles Maturity ISGs and Specifics ISGs."
-    },
-    {
-      "build": 50,
-      "date": "2026-11-06",
-      "title": "The whole 2×2 for a group too",
-      "detail": "With ID ISGs or Departmental ISGs on, the efficiency and maturity chart still shows all ISGs, where they stand among all. The table and the spiders show the group."
     }
   ]
 }
