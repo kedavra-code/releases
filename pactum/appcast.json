@@ -1,12 +1,30 @@
 {
   "app": "pactum",
-  "build": 103,
-  "commit": "d745bef",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-103/pactum.dmg",
-  "sha256": "132d3bb589746856bdde8fb4948fbfc25b40d466641b19424ea64d1824371d4a",
+  "build": 106,
+  "commit": "65e0415",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-106/pactum.dmg",
+  "sha256": "c45c4aa2cee111b9d04a893ec9095e3e568d588910e0c3d2114cb09c0a427f80",
   "minimumSystemVersion": "26.0",
-  "notes": "ETHIS in capitals",
+  "notes": "Check an export\nA fingerprint for each export\nThe export carries the Field Manual",
   "entries": [
+    {
+      "build": 106,
+      "date": "2026-11-19",
+      "title": "Check an export",
+      "detail": "The new shield button after Export checks a file: pactum says whether it is one it exported, unchanged. It reads the file only for its fingerprint. Copy next to a fingerprint now says Copied."
+    },
+    {
+      "build": 105,
+      "date": "2026-11-19",
+      "title": "A fingerprint for each export",
+      "detail": "After an export, the top bar shows the file's fingerprint, with Copy. Send it apart from the file: anyone can check with shasum -a 256 that the file was not changed."
+    },
+    {
+      "build": 104,
+      "date": "2026-11-19",
+      "title": "The export carries the Field Manual",
+      "detail": "In an exported file, Docs in Settings › About pactum now opens the Field Manual from the file itself. Before, it opened the page on claude.ai, which only you can open. Now everyone who gets the file can read it, with no Claude account and no internet."
+    },
     {
       "build": 103,
       "date": "2026-11-19",
@@ -228,24 +246,6 @@
       "date": "2026-11-06",
       "title": "No hover left behind",
       "detail": "A scroll now closes every hover. Before, a hover of the 2×2 could stay on the page after a scroll with the trackpad, far from its bubble."
-    },
-    {
-      "build": 57,
-      "date": "2026-11-06",
-      "title": "Calm hovers",
-      "detail": "Every hover now looks the same: the ISG, what is shown, one value, then labels and numbers in straight columns and a short note, in one size of text. The spiders' hover shows the KPIs and the nine levels as two small tables."
-    },
-    {
-      "build": 56,
-      "date": "2026-11-06",
-      "title": "Nothing typed is lost when pactum quits, and a clear hover",
-      "detail": "Before pactum quits, for an update too, it saves what you are typing under Data ISGs. In the overview, the hover shows the ISG, the KPI under it, the value, and then the median, the standing and the two figures behind it in two straight columns, without file names."
-    },
-    {
-      "build": 55,
-      "date": "2026-11-06",
-      "title": "Bigger spiders, cleaner figures and names",
-      "detail": "The spiders are bigger and use the card's room, with the legend beside them. The specifics stay in the figures, not between the spiders. The figures show names and numbers only; point at a row to see its file. In the 2×2, every name sits right beside its bubble: names are measured, not guessed, so ID ISG D-BIOL no longer goes a line up."
     }
   ]
 }
