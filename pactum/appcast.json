@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 107,
-  "commit": "c95292a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-107/pactum.dmg",
-  "sha256": "f45357b9fb7539cfef1f31897dfe579a276053f7e321b449b981f0896c2a402e",
+  "build": 108,
+  "commit": "b96d539",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-108/pactum.dmg",
+  "sha256": "5462a6ac6b2c9c9b87879719e9ee4f302d96769631407b725837b1f20a41c80b",
   "minimumSystemVersion": "26.0",
-  "notes": "Check an export comes first",
+  "notes": "pactum's icon on the export's tab",
   "entries": [
+    {
+      "build": 108,
+      "date": "2026-11-20",
+      "title": "pactum's icon on the export's tab",
+      "detail": "An exported file now shows pactum's icon on its browser tab and in bookmarks, in place of the browser's plain page icon."
+    },
     {
       "build": 107,
       "date": "2026-11-19",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "Arrows on every column",
       "detail": "Every column title in the overview shows two small arrows, so you see that it sorts. A sorted title keeps only one: up when the lowest is first, down when the highest is first."
-    },
-    {
-      "build": 59,
-      "date": "2026-11-06",
-      "title": "Sort the overview",
-      "detail": "Click a column's title in the overview to sort all ISGs by it, the best first. Click again to turn the order round, and a third time to go back. The table is one list now, without the rows \"ID ISGs\" and \"Departmental ISGs\"; without a click, the order is as before."
     }
   ]
 }
