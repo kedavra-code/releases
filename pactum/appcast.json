@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 108,
-  "commit": "b96d539",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-108/pactum.dmg",
-  "sha256": "5462a6ac6b2c9c9b87879719e9ee4f302d96769631407b725837b1f20a41c80b",
+  "build": 109,
+  "commit": "a113faf",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-109/pactum.dmg",
+  "sha256": "a4bef85cbefbefcf3df8f9e6ab044ff1c5f638a1be8804b44a05b81f2ea814cc",
   "minimumSystemVersion": "26.0",
-  "notes": "pactum's icon on the export's tab",
+  "notes": "One switch: Anonymize",
   "entries": [
+    {
+      "build": 109,
+      "date": "2026-11-21",
+      "title": "One switch: Anonymize",
+      "detail": "The switches Average ID CxS, Minimum Viable Efficiency, Minimum Viable Maturity and Efficiency and maturity are gone. What they showed is always shown: the 2×2 chart, the Average ID CxS and both minimums. Anonymize is the one switch left."
+    },
     {
       "build": 108,
       "date": "2026-11-20",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "Accepted Minimum in the 2×2, whole names on the buttons",
       "detail": "The 2×2 draws the Accepted Minimum as an amber line at the mean of its levels, as in the spiders, with a legend under it. The ISG buttons show whole names, such as ID ISG D-BAUG and ISG D-ARCH. The note under the overview no longer points to the KPIs without data."
-    },
-    {
-      "build": 60,
-      "date": "2026-11-06",
-      "title": "Arrows on every column",
-      "detail": "Every column title in the overview shows two small arrows, so you see that it sorts. A sorted title keeps only one: up when the lowest is first, down when the highest is first."
     }
   ]
 }
