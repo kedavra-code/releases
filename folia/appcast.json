@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 383,
-  "commit": "bd4bad3",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-383/folia.dmg",
-  "sha256": "3d3c15cf2ccf6154cb2152f14fef8de9199e9aa9a518736717d273986ac76d2c",
+  "build": 385,
+  "commit": "2f9b472",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-385/folia.dmg",
+  "sha256": "760aba3d4e166cc3300a0bb2145822c18e72e8dfdde601add8bc172bbfcb1b5e",
   "minimumSystemVersion": "26.0",
-  "notes": "scripta’s minutes stay apart from your notes\nLarge pages open without a moment offline\nFont colours from OneNote\nOneNote copies of a page come into folia",
+  "notes": "Both Macs show the same notebooks, and write the same Markdown copy",
   "entries": [
+    {
+      "build": 385,
+      "date": "2026-11-22",
+      "title": "Both Macs show the same notebooks, and write the same Markdown copy",
+      "detail": "A Mac that slept or was offline missed the changes made meanwhile, such as renamed pages and the ETH daily update, until folia started again. It now reads them as soon as it is back online. The Markdown copy is now written from folia’s database, so a Mac that is behind never writes old titles or old text into the folder, and two Macs taking turns write the same files. Search reads every page once more after this update, so it finds what the pages say now."
+    },
     {
       "build": 382,
       "date": "2026-11-17",
@@ -240,12 +246,6 @@
       "date": "2026-11-10",
       "title": "tabula tasks in a page",
       "detail": "Paste a link to a tabula task into a page: beside it, folia shows the task's number, its state, the date it is due and who owns it, as tabula has it now. Select words and use Create tabula task (add it in Settings › Toolbar, or above a selection): the words become a new task in your tabula Review, and a link to it."
-    },
-    {
-      "build": 339,
-      "date": "2026-11-10",
-      "title": "Fold-out headings",
-      "detail": "A heading can fold the text under it, up to the next heading of its level, for an FAQ or long details. Add the tool Fold-out heading in Settings › Toolbar, put the cursor in a heading and press it. An arrow before the heading opens and closes it. People who can only read see it folded at first; folia remembers what you opened. In the Markdown file it is a small hidden note on the heading's line, so other apps show everything."
     }
   ]
 }
