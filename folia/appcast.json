@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 390,
-  "commit": "1715ff8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-390/folia.dmg",
-  "sha256": "1a37fb25d3181880e7dc6260cfe056580c2722c09d5721d6e3bdfcdb0a8a8da8",
+  "build": 391,
+  "commit": "dfc9724",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-391/folia.dmg",
+  "sha256": "abd262150c1d32a9d9f41b84f7bc68ca818874176b92e12d2ec3ad98fa83208c",
   "minimumSystemVersion": "26.0",
-  "notes": "Copy fresh from OneNote keeps each file in its place",
+  "notes": "The Markdown copy checks folia’s database at every run",
   "entries": [
+    {
+      "build": 391,
+      "date": "2026-11-22",
+      "title": "The Markdown copy checks folia’s database at every run",
+      "detail": "A Mac that had missed changes, for example while its connection had quietly stopped, wrote nothing new into the Markdown copy. Now each run compares the notebooks’ pages with the database, so every change reaches the copy within five minutes."
+    },
     {
       "build": 386,
       "date": "2026-11-22",
@@ -240,12 +246,6 @@
       "date": "2026-11-10",
       "title": "Pick people when you share",
       "detail": "The Share window of a notebook or wiki space lists the people you can add, with their face, name and address, as tabula does. Type a few letters of a name or an address to find someone, choose Can edit or Can read, and press Add. A new e-mail address still works with Share."
-    },
-    {
-      "build": 342,
-      "date": "2026-11-10",
-      "title": "Choose the top bar's buttons",
-      "detail": "Settings › Top bar shows the buttons at the top right as the top bar draws them. Click a button to take it out or put it back, drag it to a new place, or press ← → on it. Settings always stays at the right end, and the keys and ⌘K still work for a button you took out. Back to the start brings all of them back."
     }
   ]
 }
