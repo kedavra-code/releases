@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 391,
-  "commit": "dfc9724",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-391/folia.dmg",
-  "sha256": "abd262150c1d32a9d9f41b84f7bc68ca818874176b92e12d2ec3ad98fa83208c",
+  "build": 392,
+  "commit": "061f6cc",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-392/folia.dmg",
+  "sha256": "1ea03aece57a920c7c9990d99e22204712bb8347ee88f42591b75561e52a3c22",
   "minimumSystemVersion": "26.0",
-  "notes": "The Markdown copy checks folia’s database at every run",
+  "notes": "Empty bullets, dollar signs and links behave",
   "entries": [
+    {
+      "build": 392,
+      "date": "2026-11-23",
+      "title": "Empty bullets, dollar signs and links behave",
+      "detail": "A copied page keeps its empty bullets and tasks as empty lines: before, an empty bullet could become the text \"-\", and one under another bullet turned that bullet into a heading. Two \"$\" in one line stay text and no longer become a formula. A click after a link at the end of a line puts the cursor there and no longer opens the link."
+    },
     {
       "build": 391,
       "date": "2026-11-22",
@@ -240,12 +246,6 @@
       "date": "2026-11-10",
       "title": "Calmer @mentions, and the right colour for who is here",
       "detail": "An @mention in a page or a comment is now a quiet grey pill with no line under it, as folia's style guide draws a pill. A mention of you has an amber edge, so you see it at once. The name beside a page's dates that shows who else is on the page now has the same colour as that person's face in Settings › Users."
-    },
-    {
-      "build": 343,
-      "date": "2026-11-10",
-      "title": "Pick people when you share",
-      "detail": "The Share window of a notebook or wiki space lists the people you can add, with their face, name and address, as tabula does. Type a few letters of a name or an address to find someone, choose Can edit or Can read, and press Add. A new e-mail address still works with Share."
     }
   ]
 }
