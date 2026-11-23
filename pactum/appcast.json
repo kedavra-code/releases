@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 109,
-  "commit": "a113faf",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-109/pactum.dmg",
-  "sha256": "a4bef85cbefbefcf3df8f9e6ab044ff1c5f638a1be8804b44a05b81f2ea814cc",
+  "build": 110,
+  "commit": "6342521",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-110/pactum.dmg",
+  "sha256": "6e801c05e98dac504ecee2ed0e99a27537c2d9f84002d69798d568afc493e4ca",
   "minimumSystemVersion": "26.0",
-  "notes": "One switch: Anonymize",
+  "notes": "ISG D-USYS has its own figures",
   "entries": [
+    {
+      "build": 110,
+      "date": "2026-11-23",
+      "title": "ISG D-USYS has its own figures",
+      "detail": "The SLA workbook now has real FTE, devices and cost for ISG D-USYS. pactum shows its six KPIs and its bubble in the 2×2, no longer placeholders. ISG D-EAPS and ISG D-MATL are still placeholders."
+    },
     {
       "build": 109,
       "date": "2026-11-21",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "Minimum Viable Standard",
       "detail": "The Accepted Minimum is now called Minimum Viable Standard: on the switch, in the legends of the spiders and the 2×2, and in the table under Data ISGs. Your values stay as they were."
-    },
-    {
-      "build": 61,
-      "date": "2026-11-06",
-      "title": "Accepted Minimum in the 2×2, whole names on the buttons",
-      "detail": "The 2×2 draws the Accepted Minimum as an amber line at the mean of its levels, as in the spiders, with a legend under it. The ISG buttons show whole names, such as ID ISG D-BAUG and ISG D-ARCH. The note under the overview no longer points to the KPIs without data."
     }
   ]
 }
