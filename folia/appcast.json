@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 392,
-  "commit": "061f6cc",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-392/folia.dmg",
-  "sha256": "1ea03aece57a920c7c9990d99e22204712bb8347ee88f42591b75561e52a3c22",
+  "build": 395,
+  "commit": "a8a765d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-395/folia.dmg",
+  "sha256": "8cf83a6d2e30906b802b893c790fd01e3b0377098c5373f2d68f609f1e43f0da",
   "minimumSystemVersion": "26.0",
-  "notes": "Empty bullets, dollar signs and links behave",
+  "notes": "Frozen pages leave the OneNote list\nOlder ETH OneNote pages are frozen\nDeleted ETH pages stay deleted",
   "entries": [
+    {
+      "build": 395,
+      "date": "2026-11-24",
+      "title": "Frozen pages leave the OneNote list",
+      "detail": "Settings › OneNote no longer lists pages made in OneNote more than 30 days ago under \"Left as they are\": the evening update does not look at them any more."
+    },
+    {
+      "build": 394,
+      "date": "2026-11-24",
+      "title": "Older ETH OneNote pages are frozen",
+      "detail": "The evening OneNote update now takes only pages made in OneNote in the last 30 days. Older pages stay as they are in folia: change them there. Copy fresh from OneNote in a page's menu still takes any page by hand."
+    },
+    {
+      "build": 393,
+      "date": "2026-11-24",
+      "title": "Deleted ETH pages stay deleted",
+      "detail": "A page from your ETH OneNote that you delete in folia no longer comes back. Before, the evening OneNote update added it again as a new page once the Bin had deleted it for good after 30 days."
+    },
     {
       "build": 392,
       "date": "2026-11-23",
@@ -228,24 +246,6 @@
       "date": "2026-11-10",
       "title": "Import a Confluence space",
       "detail": "A notebook's … menu › Import Confluence export… (also in ⌘K) takes the zip of a Confluence space's HTML export. The space's home page becomes the wiki's home page, each page under it a section, and a page with pages under it a page group. Text, tables, code, info boxes, pictures and attached files come along; links between the pages become folia links. Files a page has attached but does not show are listed under Attachments at its end."
-    },
-    {
-      "build": 346,
-      "date": "2026-11-10",
-      "title": "Greyed-out tools say why",
-      "detail": "Point at a tool that is greyed out, and it says what to do: Create tabula task asks you to select some words first, Fold-out heading to put the cursor in a heading, and the alignment tools say they do not work in a list, a quote or a table."
-    },
-    {
-      "build": 345,
-      "date": "2026-11-10",
-      "title": "No more amber @mentions, and a list that fits",
-      "detail": "A mention of you is now the same quiet grey pill as every other @mention. The list that opens when you type @ is as wide as its names, so a name stays on one line, and an address shows in the normal font."
-    },
-    {
-      "build": 344,
-      "date": "2026-11-10",
-      "title": "Calmer @mentions, and the right colour for who is here",
-      "detail": "An @mention in a page or a comment is now a quiet grey pill with no line under it, as folia's style guide draws a pill. A mention of you has an amber edge, so you see it at once. The name beside a page's dates that shows who else is on the page now has the same colour as that person's face in Settings › Users."
     }
   ]
 }
