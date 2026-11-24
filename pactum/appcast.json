@@ -1,12 +1,18 @@
 {
   "app": "pactum",
-  "build": 111,
-  "commit": "e3f67fe",
-  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-111/pactum.dmg",
-  "sha256": "5a6926e1d70836b0a8029f05ced7fbd46bc0f584f3ca228531c8c7616c6a6fb5",
+  "build": 112,
+  "commit": "6c4c36c",
+  "url": "https://github.com/kedavra-code/releases/releases/download/pactum-112/pactum.dmg",
+  "sha256": "d370e2a4647196d874e861e2820d66be75ad2fa47e92f1135cd978218ced54f5",
   "minimumSystemVersion": "26.0",
-  "notes": "The Field Manual's new rule for a level",
+  "notes": "A shorter line under the title",
   "entries": [
+    {
+      "build": 112,
+      "date": "2026-11-24",
+      "title": "A shorter line under the title",
+      "detail": "Under KPI comparison of ETH IT Service Groups, the page no longer counts the ISGs and the KPIs with data. One line stays: where each group stands, not a ranking."
+    },
     {
       "build": 111,
       "date": "2026-11-24",
@@ -240,12 +246,6 @@
       "date": "2026-11-06",
       "title": "Both minimums at the top of Data ISGs",
       "detail": "Data ISGs starts with Minimum Viable: the Minimum Viable Efficiency, then the Minimum Viable Maturity, in a section of their own. The cross-hatch in the 2×2 is softer. Docs, the Field Manual, names today's pages and says your data is in iCloud."
-    },
-    {
-      "build": 63,
-      "date": "2026-11-06",
-      "title": "Minimum Viable Maturity and Minimum Viable Efficiency",
-      "detail": "The Minimum Viable Standard is now called Minimum Viable Maturity. Data ISGs has a new part, Efficiency ISGs: enter the Minimum Viable Efficiency, 0 to 5. The 2×2 draws it as an amber line up the chart, and cross-hatches the corner where an ISG meets both minimums. Docs, the Field Manual, says so too."
     }
   ]
 }
