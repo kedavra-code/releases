@@ -1,12 +1,18 @@
 {
   "app": "tabula",
-  "build": 769,
-  "commit": "a2bcbe8",
-  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-769/tabula.dmg",
-  "sha256": "d96a01b2757b9072e80961717a527c3d82c260a70af9df5e87cfc7238141efee",
+  "build": 770,
+  "commit": "cb996c2",
+  "url": "https://github.com/kedavra-code/releases/releases/download/tabula-770/tabula.dmg",
+  "sha256": "6586dd1e3c60727461ec17b09976bfeb3502f2ebd29a5554d1015576c5e79f31",
   "minimumSystemVersion": "26.0",
-  "notes": "One Share window for tasks and objectives",
+  "notes": "One gold border on the field you type in",
   "entries": [
+    {
+      "build": 770,
+      "date": "2026-11-24",
+      "title": "One gold border on the field you type in",
+      "detail": "A field you type in now shows one gold border, in light and dark. Before, the browser or the Mac app drew a second ring around it in its own colour. The title, the dates, Part of and Blocked by now show the gold border too."
+    },
     {
       "build": 769,
       "date": "2026-11-18",
@@ -240,12 +246,6 @@
       "date": "2026-11-02",
       "title": "Reports",
       "detail": "Reports, on the Goals page, shows the last 12 weeks: how many tasks got done each week, done and archived ones by the day they were done, and how long tasks took from their first move to Doing to Done, the median of each week. Three figures lead: done this week, done a week on average, and the time in progress. Point at a week, or tab to it, for its numbers; As a table lists them all. The time in progress needs the task history, so it starts the day that history does, and only signed in."
-    },
-    {
-      "build": 683,
-      "date": "2026-11-02",
-      "title": "Activity: what changed on a task",
-      "detail": "An open task ends with Activity: who changed its title, status, priority, size, dates, epic or key result, from what to what, and when, newest first, down to when it was made. A run of typing in the title is one line. The database writes it, so a change from another device or another person is there too. Signed in only."
     }
   ]
 }
