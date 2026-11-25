@@ -1,12 +1,18 @@
 {
   "app": "folia",
-  "build": 395,
-  "commit": "a8a765d",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-395/folia.dmg",
-  "sha256": "8cf83a6d2e30906b802b893c790fd01e3b0377098c5373f2d68f609f1e43f0da",
+  "build": 396,
+  "commit": "d06170f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-396/folia.dmg",
+  "sha256": "02a563a6b70084992b760cc30fef9b9b145e6e6c90a3aafb9fcbf18ca6c498b5",
   "minimumSystemVersion": "26.0",
-  "notes": "Frozen pages leave the OneNote list\nOlder ETH OneNote pages are frozen\nDeleted ETH pages stay deleted",
+  "notes": "Move, copy and sort sections",
   "entries": [
+    {
+      "build": 396,
+      "date": "2026-11-25",
+      "title": "Move, copy and sort sections",
+      "detail": "A section's menu has Move to notebook… and Copy to notebook…: the section goes on top of the notebook you pick, with its pages and page groups, their pictures and files. The sections column has a sort button, as the page list does: Sort by name A → Z or Z → A. An ETH section you move keeps getting its OneNote changes in its new place."
+    },
     {
       "build": 395,
       "date": "2026-11-24",
@@ -240,12 +246,6 @@
       "date": "2026-11-10",
       "title": "Find a tabula task from the page",
       "detail": "Type /task in a page, or use the tool Link tabula task: a field searches your tabula tasks by name or number, and a pick puts the task's link in the page with its state beside it. With words selected, the words become the link. The pill beside a task link now opens the task too, and in the Mac app a task link opens the tabula app instead of the website."
-    },
-    {
-      "build": 347,
-      "date": "2026-11-10",
-      "title": "Import a Confluence space",
-      "detail": "A notebook's … menu › Import Confluence export… (also in ⌘K) takes the zip of a Confluence space's HTML export. The space's home page becomes the wiki's home page, each page under it a section, and a page with pages under it a page group. Text, tables, code, info boxes, pictures and attached files come along; links between the pages become folia links. Files a page has attached but does not show are listed under Attachments at its end."
     }
   ]
 }
