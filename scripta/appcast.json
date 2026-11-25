@@ -1,12 +1,18 @@
 {
   "app": "scripta",
-  "build": 232,
-  "commit": "c27725a",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-232/scripta.dmg",
-  "sha256": "1406303c45f7c3fc193e949aa8ab36794ae3f4ec81cbaa716c395285e11dc543",
+  "build": 233,
+  "commit": "9dde34f",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-233/scripta.dmg",
+  "sha256": "20be3030a10cc6685d3bfce7f778431e9025fe9f06741377629d621c28db5154",
   "minimumSystemVersion": "26.0",
-  "notes": "Small fixes and improvements.",
+  "notes": "Delete a speaker",
   "entries": [
+    {
+      "build": 233,
+      "date": "2026-11-25",
+      "title": "Delete a speaker",
+      "detail": "Sometimes scripta catches someone who is not in the meeting, or an echo. Right-click that speaker in the Speakers column and choose Delete. scripta asks first. Then the speaker and everything they said leave the transcript and the note. The minutes stay as they were written: Write Again writes them without those words. This works on a finished meeting, not while one records."
+    },
     {
       "build": 230,
       "date": "2026-11-08",
@@ -240,12 +246,6 @@
       "date": "2026-10-14",
       "title": "Speakers can be named again",
       "detail": "A click on a trackpad did not put the cursor into a speaker's name field, so no voice could be named. It does now, in every meeting."
-    },
-    {
-      "build": 134,
-      "date": "2026-10-07",
-      "title": "Haiku 5.5 takes the place of Haiku 4.5",
-      "detail": "Settings › Brain › Model now offers Haiku 5.5, Anthropic's new small and fast model, where Haiku 4.5 was. It takes an effort, as the other models do. If you had chosen Haiku 4.5, scripta uses Haiku 5.5 from now on."
     }
   ]
 }
