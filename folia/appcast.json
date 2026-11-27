@@ -1,12 +1,30 @@
 {
   "app": "folia",
-  "build": 396,
-  "commit": "d06170f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/folia-396/folia.dmg",
-  "sha256": "02a563a6b70084992b760cc30fef9b9b145e6e6c90a3aafb9fcbf18ca6c498b5",
+  "build": 399,
+  "commit": "28c811d",
+  "url": "https://github.com/kedavra-code/releases/releases/download/folia-399/folia.dmg",
+  "sha256": "f27d82dd0f16479d9628d7b5402fa3e6c6716c9eeb58b192dd626f28c47da3c2",
   "minimumSystemVersion": "26.0",
-  "notes": "Move, copy and sort sections",
+  "notes": "The 6 dots select a fold-out section when it is open too\nThe 6 dots select a folded heading with all its content\nA folded heading copies with what it hides",
   "entries": [
+    {
+      "build": 399,
+      "date": "2026-11-27",
+      "title": "The 6 dots select a fold-out section when it is open too",
+      "detail": "Click the 6 dots beside a fold-out heading, such as Minutes by scripta: the heading and everything under it are selected, open or folded. You see each part of it highlighted."
+    },
+    {
+      "build": 398,
+      "date": "2026-11-27",
+      "title": "The 6 dots select a folded heading with all its content",
+      "detail": "Click the 6 dots beside a folded heading: it is selected with everything under it, and says how many hidden blocks come along. Copy, cut, delete or drag it, and all of it goes. The heading stays folded."
+    },
+    {
+      "build": 397,
+      "date": "2026-11-27",
+      "title": "A folded heading copies with what it hides",
+      "detail": "Select a folded heading, with its 6 dots or all its words, and copy: the text under it comes along, as Minutes by scripta with its summary, decisions, tasks and open points. Cut takes it all too. The 6 dots no longer open the heading they select."
+    },
     {
       "build": 396,
       "date": "2026-11-25",
@@ -228,24 +246,6 @@
       "date": "2026-11-10",
       "title": "All side windows the same width",
       "detail": "Comments on the right is now as wide as Meetings, Outline and History, so the page keeps the same room whichever side window is open."
-    },
-    {
-      "build": 350,
-      "date": "2026-11-10",
-      "title": "Picking a tabula task works every time",
-      "detail": "In the Link tabula task box, a task is picked as soon as you press it, and a press anywhere in the box keeps it open. A long list moves above the cursor when there is no room below, so it stays in the window."
-    },
-    {
-      "build": 349,
-      "date": "2026-11-10",
-      "title": "Many new pages at once all show",
-      "detail": "When many pages arrive at once, from an import or from someone else's work, folia now shows them all together. Before, from about 50 at once, a few could be missing from the list until folia was opened again."
-    },
-    {
-      "build": 348,
-      "date": "2026-11-10",
-      "title": "Find a tabula task from the page",
-      "detail": "Type /task in a page, or use the tool Link tabula task: a field searches your tabula tasks by name or number, and a pick puts the task's link in the page with its state beside it. With words selected, the words become the link. The pill beside a task link now opens the task too, and in the Mac app a task link opens the tabula app instead of the website."
     }
   ]
 }
