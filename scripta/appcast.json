@@ -1,12 +1,24 @@
 {
   "app": "scripta",
-  "build": 233,
-  "commit": "9dde34f",
-  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-233/scripta.dmg",
-  "sha256": "20be3030a10cc6685d3bfce7f778431e9025fe9f06741377629d621c28db5154",
+  "build": 235,
+  "commit": "4c00262",
+  "url": "https://github.com/kedavra-code/releases/releases/download/scripta-235/scripta.dmg",
+  "sha256": "18581b35ef54fa8c4d6bae56224fe2e250285f2f1814f7c609c258fe8d0e3c21",
   "minimumSystemVersion": "26.0",
-  "notes": "Delete a speaker",
+  "notes": "Take a wrong voice out of a person\nLong meetings get longer summaries",
   "entries": [
+    {
+      "build": 235,
+      "date": "2026-11-27",
+      "title": "Take a wrong voice out of a person",
+      "detail": "When several voices carry the same name, the Speakers column shows them as one person, \"2 voices\". Click \"2 voices\" to see each voice: ▶ plays it, and ✕ takes it out if it is not that person. Only that voice loses the name and gets a row of its own; the others keep it."
+    },
+    {
+      "build": 234,
+      "date": "2026-11-27",
+      "title": "Long meetings get longer summaries",
+      "detail": "Claude's summary now grows with the meeting: about 300 words for each hour, one paragraph per topic. A five-hour session gets about 1,500 words, not the 400 it got before, and the decisions, tasks and open points list everything. A meeting of an hour or less is summed up as before. For a meeting that already has minutes, press Write Again."
+    },
     {
       "build": 233,
       "date": "2026-11-25",
@@ -234,18 +246,6 @@
       "date": "2026-10-14",
       "title": "Choose the microphone when you record",
       "detail": "The Record sheet has the Microphone menu of Settings › General. It is the same choice: pick one in either place and the other shows it. As before, every start of scripta begins with the Mac's own microphone."
-    },
-    {
-      "build": 136,
-      "date": "2026-10-14",
-      "title": "Fold the meeting list by month",
-      "detail": "Each month in the list is headed like 202610 now. Point at a heading and click the arrow that appears: the month folds, and a second click opens it again. A folded month stays folded the next time you open scripta. While you search, every month is open, so no meeting found is hidden."
-    },
-    {
-      "build": 135,
-      "date": "2026-10-14",
-      "title": "Speakers can be named again",
-      "detail": "A click on a trackpad did not put the cursor into a speaker's name field, so no voice could be named. It does now, in every meeting."
     }
   ]
 }
